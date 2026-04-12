@@ -5,7 +5,7 @@ date: 2026-04-13
 author: Anthony
 categories: [Python, 程式設計]
 description: "從零開始接觸 Python"
-# image: images/LaTeX_logo.svg
+image: images/Python_logo_and_wordmark.png
 ---
 
 在撰寫此篇文章的 2026，Python 依舊是全球最受歡迎、最廣受使用的語言。根據 [IEEE 科技縱覽](https://spectrum.ieee.org/top-programming-languages-2025) 在 2025 年的統計，無論從綜合排名、長期趨勢以及職缺的角度，Python 都位居第一，緊追其後的則是老語言 C/C++ 與 Java。

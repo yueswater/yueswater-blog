@@ -5,7 +5,7 @@ date: 2026-04-12
 author: Anthony
 categories: [LaTeX]
 description: "從零開始學 LaTeX，排版不再是噩夢。"
-image: images/LaTeX_logo.svg
+image: images/LaTeX_logo.png
 ---
 
 相信一定不少人在學生時期或出社會工作之後，都面臨著撰寫報告的地獄需求。不過，經常使用 Microsoft Word、PowerPoint 的人一定會發現，插入圖片並且讓它在正確的位置上似乎是一件很費時的任務，一方面是因為將圖片導入文件後，還要調整大小，且每一張圖片的大小都不相同；另一方面是 Word、PPT 在文字與圖片排列稍顯的不聰明[^1]一點。

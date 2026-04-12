@@ -5,7 +5,7 @@ date: 2026-04-12
 author: Anthony
 categories: [LaTeX]
 description: "A beginner's guide to LaTeX — typesetting doesn't have to be a nightmare."
-image: images/LaTeX_logo.svg
+image: images/LaTeX_logo.png
 ---
 
 Many people, whether during their student years or in their professional careers, have experienced the painful process of writing reports. Those who frequently use Microsoft Word or PowerPoint may have noticed that inserting images and placing them exactly where you want is surprisingly time-consuming. On one hand, every image has a different size, requiring individual adjustment after importing. On the other hand, Word and PowerPoint are not particularly smart[^1] when it comes to arranging text and images together.
