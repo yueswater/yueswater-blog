@@ -1,0 +1,21 @@
+---
+pagetitle: 專案 | Yueswater Blog
+lang: zh-TW
+title: 專案
+subtitle: 我做過的東西
+search: false
+repo-actions: false
+listing:
+  contents:
+  - posts
+  - "!index.qmd"
+  - "!index-en.qmd"
+  - "!posts/**/*-en.qmd"
+  sort: "date desc"
+  type: grid
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  page-size: 30
+  feed: true
+---

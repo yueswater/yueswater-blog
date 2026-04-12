@@ -1,0 +1,50 @@
+---
+pagetitle: About | Yueswater Blog
+lang: en
+title: "About"
+image: images/profile.JPG
+about:
+  template: trestles
+  links:
+    - icon: github
+      href: https://github.com/yueswater
+    - icon: facebook
+      href: https://www.facebook.com/yueswater/
+    - icon: instagram
+      href: https://instagram.com/yues_19_water
+    - icon: threads-fill
+      href: https://www.threads.com/@yues_19_water
+---
+
+## Hi, I'm Anthony 👋
+
+My full name is **Pin Yue Sung**, but feel free to call me **Anthony**. I'm a student at [National Chengchi University (NCCU)](https://www.nccu.edu.tw/index.php?Lang=en), majoring in **International Business** — and yes, I somehow ended up deep in the world of software along the way.
+
+Alongside my studies, I work as a **software intern** at a tech company, where I get to turn caffeine and curiosity into actual products.
+
+## What I Build
+
+I work across the full stack — from backend APIs to mobile apps. Here's what I reach for most often:
+
+- **Backend:** Python with [FastAPI](https://fastapi.tiangolo.com/), [Django](https://www.djangoproject.com/), and [Flask](https://flask.palletsprojects.com/); also [Node.js](https://nodejs.org/)
+- **Frontend:** [React](https://react.dev/) and [Next.js](https://nextjs.org/)
+- **Mobile:** [Flutter](https://flutter.dev/)
+- **Data & analysis:** **R** and Python
+
+## What This Blog Is About
+
+This is a space for **tutorials and technical writing**, focused on topics I genuinely use and care about:
+
+- **Python** — from scripting to building full web applications
+- **R** — data analysis, visualization, and statistical thinking
+- **LaTeX** — because good typesetting matters
+
+The goal is simple: write the guides I wish I had when I was learning. If something here saves you a few hours of frustration, that's a win.
+
+> *Stay curious.*
+
+## Beyond the Screen
+
+When I'm not coding, I'm probably in the kitchen experimenting with **Chinese cuisine** — the kind of cooking that takes patience and rewards it. Food, to me, is its own kind of creative problem-solving.
+
+Music-wise, I'm a dedicated **EDM** listener. My taste leans toward **Trance** and **House**, and [Avicii](https://avicii.com/) remains my all-time favorite — his music is proof that something digital can still feel deeply human.

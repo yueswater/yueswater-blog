@@ -1,0 +1,111 @@
+---
+pagetitle: "Yueswater Blog"
+lang: en
+page-layout: custom
+section-divs: false
+editor: source
+sidebar: false
+search: false
+repo-actions: false
+description: |
+  A personal blog by Anthony — tutorials on Python, R, and LaTeX, alongside projects and life notes.
+image: images/LaTeX_logo.svg
+listing:
+  - id: en-latest-articles
+    contents:
+    - "articles/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+  - id: en-latest-projects
+    contents:
+    - "projects/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+  - id: en-latest-diary
+    contents:
+    - "diary/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+toc: false
+---
+
+::: {.pullout-text}
+::: {.pullout-container}
+::: {.pullout-block .black-background}
+![](images/quote-purple.png){width="100px"}
+
+## The best programs are written so that computing machines can perform them quickly and so that human beings can understand them clearly.
+Donald Knuth, "*The Art of Computer Programming*"
+
+::: {.button}
+[Read the tutorials](articles/index.qmd)
+:::
+
+:::
+:::
+:::
+
+::: {.header-text}
+::: {.content-container}
+::: {.header-block}
+A personal blog by **Anthony** — tutorials on **Python**, **R**, and **LaTeX**, things I've built, and notes from everyday life. Stay curious.
+:::
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="articles/index.qmd">
+
+## Article
+</a>
+
+::: {#en-latest-articles}
+:::
+
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="projects/index.qmd">
+
+## Project
+</a>
+
+::: {#en-latest-projects}
+:::
+
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="diary/index.qmd">
+
+## Diary
+</a>
+
+::: {#en-latest-diary}
+:::
+
+:::
+:::

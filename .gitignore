@@ -1,0 +1,22 @@
+# Quarto build output
+_site/
+.quarto/
+
+# Quarto freeze cache (uncomment if you don't want to commit freeze)
+# _freeze/
+
+# Generated feed/listing staging files
+latest-content.feed-full-staged
+latest-content-listing.json
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo

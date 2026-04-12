@@ -1,0 +1,71 @@
+project:
+  type: website
+  preview: 
+    port: 4200
+
+website:
+  title: "Yueswater Blog"
+  image: images/logo.png
+  favicon: images/favicon.svg
+  twitter-card:
+    site: "@your_handle"
+  open-graph: true
+  site-url: https://your-domain.com
+  repo-url: https://github.com/your-username/yueswater-blog
+  repo-actions: [edit, issue]
+  navbar:
+    toggle-position: right
+    background: "#f0eeeb"
+    logo: images/logo.png
+    title: " "
+    collapse-below: lg
+    right:
+      - text: "文章"
+        href: articles/index.qmd
+      - text: "專案"
+        href: projects/index.qmd
+      - text: "日記"
+        href: diary/index.qmd
+      - text: "關於"
+        href: about.qmd
+
+  page-navigation: true
+  back-to-top-navigation: true
+
+  page-footer:
+    background: "#000000"
+    left: |
+      Copyright © 2026 Yueswater. All rights reserved.
+    center:
+      - href: https://github.com/yueswater
+        icon: github
+      - href: https://www.facebook.com/yueswater/
+        icon: facebook
+      - href: https://instagram.com/yues_19_water
+        icon: instagram
+      - href: https://www.threads.com/@yues_19_water
+        icon: threads-fill
+      - icon: rss
+        href: index.xml
+    right: |
+      Built with Quarto
+
+format:
+  html:
+    theme: [lux, assets/css/rwds.scss]
+    css: assets/css/rwds.css
+    toc: true
+    lang: zh-TW
+    include-after-body:
+      - _includes/lang-switch.html
+      - _includes/latex-runner.html
+    grid:
+      sidebar-width: 0px
+      body-width: 1000px
+      margin-width: 250px
+
+filters:
+  - latex-runner
+
+execute:
+  freeze: auto

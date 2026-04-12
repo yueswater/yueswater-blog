@@ -1,0 +1,21 @@
+---
+pagetitle: 文章 | Yueswater Blog
+lang: zh-TW
+title: 文章
+subtitle: 教學文章與技術筆記
+search: false
+repo-actions: false
+listing:
+  contents:
+  - posts
+  - "!index.qmd"
+  - "!index-en.qmd"
+  - "!posts/**/*-en.qmd"
+  sort: "date desc"
+  type: grid
+  categories: true
+  sort-ui: true
+  filter-ui: true
+  page-size: 10
+  feed: true
+---

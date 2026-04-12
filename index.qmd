@@ -1,0 +1,117 @@
+---
+pagetitle: "Yueswater Blog"
+lang: zh-TW
+page-layout: custom
+section-divs: false
+editor: source
+sidebar: false
+search: false
+repo-actions: false
+description: |
+  Anthony 的個人部落格——Python、R、LaTeX 教學，以及專案與生活筆記。
+image: images/logo.png
+listing:
+  - id: latest-articles
+    contents:
+    - articles/posts
+    - "!index.qmd"
+    - "!articles/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+  - id: latest-projects
+    contents:
+    - projects/posts
+    - "!index.qmd"
+    - "!projects/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+  - id: latest-diary
+    contents:
+    - diary/posts
+    - "!index.qmd"
+    - "!diary/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
+toc: false
+---
+
+::: {.pullout-text}
+::: {.pullout-container}
+::: {.pullout-block .black-background}
+![](images/quote-purple.png){width="100px"}
+
+## 良程之作，機行其迅；人讀其文，義理自明。
+Donald Knuth，《電腦程式設計藝術》
+
+::: {.button}
+[閱讀文章](articles/index.qmd)
+:::
+
+:::
+:::
+:::
+
+::: {.header-text}
+::: {.content-container}
+::: {.header-block}
+**Anthony** 的個人部落格──**Python**、**R**、**LaTeX** 教學，還有我做過的專案和日常生活的隻字片語。保持好奇。
+:::
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="articles/index.qmd">
+
+## 文章
+</a>
+
+::: {#latest-articles}
+:::
+
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="projects/index.qmd">
+
+## 專案
+</a>
+
+::: {#latest-projects}
+:::
+
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="diary/index.qmd">
+
+## 日記
+</a>
+
+::: {#latest-diary}
+:::
+
+:::
+:::

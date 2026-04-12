@@ -1,0 +1,50 @@
+---
+pagetitle: 關於 | Yueswater Blog
+lang: zh-TW
+title: "關於"
+image: images/profile.JPG
+about:
+  template: trestles
+  links:
+    - icon: github
+      href: https://github.com/yueswater
+    - icon: facebook
+      href: https://www.facebook.com/yueswater/
+    - icon: instagram
+      href: https://instagram.com/yues_19_water
+    - icon: threads-fill
+      href: https://www.threads.com/@yues_19_water
+---
+
+## 嗨，我是 Anthony 👋
+
+我叫**宋品岳**，不過叫我**阿岳**就好。我是[國立政治大學（政大）](https://www.nccu.edu.tw/)國貿所的學生——對，就是一個念商科卻一頭栽進軟體世界的人。
+
+除了課業之外，我在一間軟體公司擔任**軟體實習生**，把咖啡因和好奇心轉化成真正能用的產品。
+
+## 我做什麼
+
+我橫跨前後端開發，以下是我最常用的工具：
+
+- **後端：** Python 搭配 [FastAPI](https://fastapi.tiangolo.com/)、[Django](https://www.djangoproject.com/) 和 [Flask](https://flask.palletsprojects.com/)；也用 [Node.js](https://nodejs.org/)
+- **前端：** [React](https://react.dev/) 和 [Next.js](https://nextjs.org/)
+- **行動端：** [Flutter](https://flutter.dev/)
+- **資料分析：** **R** 和 Python
+
+## 這個部落格
+
+這裡是我寫**教學文章**的地方，主題都是我實際在用、真正在乎的東西：
+
+- **Python** ── 從腳本到完整的 Web 應用程式
+- **R** ── 資料分析、視覺化與統計思維
+- **LaTeX** ── 因為好的排版很重要
+
+目標很簡單：寫出我當初學習時希望能找到的那種教學。如果這裡的文章幫你省了幾個小時的頭痛，那就值得了！
+
+> *保持好奇。*
+
+## 螢幕之外
+
+不寫程式的時候，我大概在廚房研究**中式料理**──需要耐心、也用耐心回報你的烹飪。畢竟對我來說，料理是另一種形式的創意問題解決。
+
+音樂方面，我是個忠實的 **EDM** 狂粉，口味偏 **Trance** 和 **House**。[Avicii](https://avicii.com/) 是我的最愛──他的音樂證明了數位的東西也能讓人感受到真實的情感。

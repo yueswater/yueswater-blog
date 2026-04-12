@@ -1,0 +1,18 @@
+---
+pagetitle: Articles | Yueswater Blog
+lang: en
+title: Articles
+subtitle: Tutorials and technical writing
+search: false
+repo-actions: false
+listing:
+  contents:
+  - "posts/**/*-en.qmd"
+  sort: "date desc"
+  type: grid
+  categories: true
+  sort-ui: true
+  filter-ui: true
+  page-size: 10
+  feed: true
+---

@@ -1,0 +1,216 @@
+---
+title: "LaTeX 教學系列: LaTeX 簡介"
+lang: zh-TW
+date: 2026-04-12
+author: Anthony
+categories: [LaTeX]
+description: "從零開始學 LaTeX，排版不再是噩夢。"
+image: images/LaTeX_logo.svg
+---
+
+相信一定不少人在學生時期或出社會工作之後，都面臨著撰寫報告的地獄需求。不過，經常使用 Microsoft Word、PowerPoint 的人一定會發現，插入圖片並且讓它在正確的位置上似乎是一件很費時的任務，一方面是因為將圖片導入文件後，還要調整大小，且每一張圖片的大小都不相同；另一方面是 Word、PPT 在文字與圖片排列稍顯的不聰明[^1]一點。
+
+## LaTeX 的前世今生
+
+LaTeX 是一種強大的排版系統，廣泛應用於科學、技術、工程及數學領域的文件編輯。LaTeX 的前身是 [Donald Knuth](https://www-cs-faculty.stanford.edu/~knuth/) 於 1978 年發明的 [TeX 系統](https://svn.tug.org:8369/texlive/)。Knuth 是一位著名的計算機科學家，為了解決當時排版系統的不足，親自設計了 TeX，以便創作高品質的文件和書籍。
+
+然而，TeX 雖然功能強大，但對於一般用戶來說並不友好（必須撰寫許多程式碼、前置設定等）。因此，為了解決這個問題，[Leslie Lamport](https://lamport.org/) 於 1984 年在 TeX 的基礎上開發了 [LaTeX](https://latex-project.org/)。LaTeX 簡化了文件編寫的流程，使用者只需關注所輸入的內容，而不必操心具體的排版細節，這正是 LaTeX 最引以為傲的功能：所得及所見 (*What You See Is What You Get*)。
+
+## 前置作業：編譯器與編輯器
+
+> 「工欲善其事、必先利其器。」
+
+從學生時期撰寫撰寫作文，到出社會撰寫公司業務報告，都需要一些硬體工具 (例如紙筆、電腦、平板等)，以及既有的知識。LaTeX 的轉寫也是一樣，編輯一份 LaTeX 文件需要兩個重要的工具：**編譯器**和**編輯器**[^2]。
+
+![LaTeX 編譯流程[^3]](images/latex-file-flow.png)
+
+### 編譯器
+
+在進入 LaTeX 的世界之前，最重要的一步就是建置環境。請務必遵守一個黃金原則：**先安裝編譯器，再安裝編輯器！**這是因為編輯器只是打字的地方，它需要後端的編譯器引擎來處理排版邏輯。若順序顛倒，你可能會遇到路徑偵測不到的麻煩。
+
+| 作業系統 | 建議編譯器 | 特色與優點 | 適合對象 |
+| :--- | :--- | :--- | :--- |
+| **Windows** | [MiKTeX](https://miktex.org/) | 體積精簡，具備「自動安裝缺失套件」功能，用到什麼才裝什麼。 | 硬碟空間有限、喜歡介面簡潔的入門者。 |
+| | [TeX Live](https://tug.org/texlive/) | 國際標準版，採一次性完整安裝，相容性與穩定性最高。 | 追求一勞永逸、硬碟空間充裕的專業使用者。 |
+| **macOS** | [MacTeX](https://www.tug.org/mactex/) | 專為 macOS 優化的 TeX Live 版本，整合了 Mac 專用的字體與路徑管理工具。 | 所有 macOS 使用者（避免系統路徑排擠的首選）。 |
+| **Linux** | **TeX Live** | 大多數發行版的官方倉庫均有收錄，與系統內核結合緊密。 | 開源愛好者、需要高度自訂環境的開發者。 |
+
+如果你不想在本地端安裝龐大的軟體包，或者需要多人協作，那麼推薦使用 [Overleaf](https://www.overleaf.com/)。Overleaf 是一個強大的 Web 端平台，直接在瀏覽器執行，並且內建了最新的 TeX Live 環境，不需要任何安裝步驟，是懶人與輕量使用者的福音。不過 Overleaf 時不時就會維修，所以還是要了解如何在本機安裝編譯器與編輯器。
+
+### 編輯器
+
+相較於編譯器有嚴格的系統建議，編輯器的選擇就顯得自由許多。編輯器本質上就是一個「文字處理介面」，只要能產生 `.tex` 檔案，甚至連電腦預設的**記事本**都能成為你的 LaTeX 工具。
+
+不過，為了提升撰寫效率，選擇具備語法高亮、自動補全與即時預覽功能的專業編輯器會讓你事半功倍。
+
+| 編輯器名稱 | 優點與特色 | 適合對象 |
+| :--- | :--- | :--- |
+| [TeXstudio](https://www.texstudio.org/) | 功能最完備的整合開發環境 (IDE)，內建大量的數學符號面板與即時語法檢查。 | 剛從 Word 轉過來，需要視覺化工具輔助的使用者。 |
+| [TeXmaker](https://www.xm1math.net/texmaker/) | 介面簡潔、跨平台支援良好，配置非常直覺，是許多老手的經典選擇。 | 追求穩定、不希望功能太過複雜的使用者。 |
+| [Visual Studio Code](https://code.visualstudio.com/) | 透過安裝 [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) 擴充功能，能提供極強的代碼補全、斷點跳轉與極美觀的 UI。 | 已經在使用 VS Code 開發、喜歡現代感介面與高度自定義的開發者。 |
+
+::: {.callout-tip}
+## 小叮嚀
+
+不論你選擇哪一個，請記得先確認你的**編譯器** (MikTeX / TeX Live / MacTeX) 已經安裝完成，編輯器才能順利幫你把代碼轉成漂亮的 PDF 喔！
+:::
+
+## LaTeX 語法概說
+
+在正式進入語法教學之前，我們先透過一個簡單的範例，觀察 LaTeX 文件的基本結構：
+
+::: {.latex-runner}
+```latex
+\documentclass[12pt]{article}  % 定義文件類型與字體大小
+
+\title{My First Document}      % 標題
+\author{Author}                % 作者
+\date{\today}                  % 日期
+
+\begin{document}               % 正文開始
+\maketitle                     % 產生標題區塊
+
+This is my first \LaTeX\ document!
+
+\end{document}                 % 正文結束
+```
+:::
+
+細心的你肯定有發現，LaTeX 的指令是以反斜線 (backslash) `\` 開頭的。如果你需要使用一些指令，那麼就必須用 `\` 告訴 LaTeX 編譯器需要使用該指令，否則電腦無法判讀，僅會將其視為一般字母顯示。
+
+除了反斜線，LaTeX 中還有許多具有特定功能的**保留字元**。若要在文中使用這些功能，必須正確使用：
+
+| 符號 | 功能名稱 | 詳細說明 |
+| :--- | :--- | :--- |
+| `\` | 下排版命令 | 所有 LaTeX 指令的啟始點，用於調用格式或功能。 |
+| `%` | 註解 | 在此符號後方輸入的文字，編譯器會自動忽略，常用於寫備忘錄。 |
+| `#` | 參數定義 | 用於定義巨集或自定義指令時，指定參數的代號（如 #1, #2）。 |
+| `~` | 硬空白 | 產生一個不會被自動換行（Non-breaking space）切斷的空格。 |
+| `$` | 數學模式切換 | 夾在兩個 `$` 之間的文字會進入數學環境（Math Mode）。 |
+| `^` | 上標 | 在數學模式中將後方字元變為上標（如：$x^2$）。 |
+| `_` | 下標 | 在數學模式中將後方字元變為下標（如：$a_n$）。 |
+| `&` | 分隔符號 | 主要用於製作表格或對齊方程式，用來區隔欄位。 |
+| `{ }` | 分組與參數 | 用來界定指令的影響範圍，或包裹指令所需的必要參數。 |
+
+: 常見的 LaTeX 特殊符號表
+
+如果你想在文章中直接顯示上述的符號，例如 50% 或 $，不能直接輸入。大部分的符號需要在前面多加一個反斜線來「轉義」，例如：
+
+- 輸入 `\%` 才會顯示 `%`
+- 輸入 `\$` 才會顯示 `$`
+- 輸入 `\_` 才會顯示 `_`
+
+
+### 使用參數
+
+在 `\documentclass[12pt]{article}` 中，我們可以看到兩種不同外型的括號，它們在 LaTeX 中各司其職：
+
+* **選擇參數 (optional argument) `[...]`**：
+    通常用於調整設定 (如字體大小 `12pt`)。這類參數是可以留空的，若不輸入，系統會直接套用預設值。
+* **必要參數 (mandatory argument) `{...}`**：
+    定義指令的核心內容 (如文件類別 `article`)。如果留空或不輸入，編譯器會因為不知道具體對象而噴出錯誤。
+
+:::{.callout-tip}
+## 小叮嚀
+
+在開始打字前，請先建立這兩個與 Word 大不相同的認知：
+
+1.  **空格的意義**：
+    在 LaTeX 文件中，**空一個格與空十個格的效果是一樣的**，編譯器一律認作「一個空白」。
+2.  **換行的邏輯**：
+    直接按 `Enter` 鍵並不代表 PDF 會換行。若要強迫換行，請使用：
+    * 指令：`\\`、`\newline` 或 `\linebreak`。
+    * 快捷鍵：**Windows** 使用者可按 `Ctrl + Enter`；**macOS** 使用者可按 `⌘ + ↩︎`。
+:::
+
+### 使用指令
+
+LaTeX 的指令通常從反斜線 `\` 開始，直到第一個「非字母」符號 (如空白、標點或數字) 為止。這會導致一個常見問題：
+
+```latex
+This is my first \LaTeX typesetting example.
+```
+
+由於 `\LaTeX` 後面的空白會被當成指令的結束符號而被「吃掉」，輸出結果會變成：`This is my first LaTeXtypesetting example.`，字會全部擠在一起！
+
+若要避免這種情況，可以使用以下三種標準寫法：
+
+1.  `{\LaTeX}`：用花括號將指令隔離。
+2.  `\LaTeX{}`：在指令後加空的花括號。
+3.  `\LaTeX\`：在指令後加一個反斜線與空白，強迫輸出一個空格。
+
+::: {.latex-runner}
+```latex
+\documentclass[12pt]{article}
+
+\title{My First Document}
+\author{Author}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+This is my first \LaTeX typesetting example.    % 會擠在一起
+
+This is my first {\LaTeX} typesetting example.  % 方法一：用花括號隔離
+
+This is my first \LaTeX{} typesetting example.  % 方法二：在指令後加入空的花括號
+
+This is my first \LaTeX\ typesetting example.   % 方法三：加入反斜線與空白強迫輸出空格
+
+\end{document}
+```
+:::
+
+### 使用註解
+
+註解符號 `%` 可以放在任何地方。`%` 之後的文字會被編譯器無視，通常在編輯器中會變色。註解的用途除了寫備忘錄，最常用於「實驗」──當你想測試某個設定好不好看時，可以先把舊的設定「註解掉」而不是刪掉，方便隨時切換回來對比差異。
+
+### 使用環境
+
+LaTeX 有一種強大的結構稱為環境，它能定義一個特定範圍，讓內部的文字遵循特定的排版規則。
+
+所有的環境都必須有頭有尾：
+
+```latex
+\begin{環境名稱}
+這裡是被影響的內容 ...
+\end{環境名稱}
+```
+
+最核心的環境就是 `document`。所有你想印出來的內容都必須包在這裡。這形成了 LaTeX 文稿的標準骨幹：
+
+```latex
+\documentclass[12pt]{article}
+% 這裡是前言區
+
+\begin{document}
+這裡是「正文區」...
+\end{document}
+```
+
+## 本章小結
+
+在這一章中，我們揭開了 LaTeX 的神秘面紗，並建立了正確的排版思維。以下是幾個關鍵筆記：
+
+### 核心觀念：內容與排版分離
+
+* **LaTeX** 讓你可以專注於「寫作內容」，而「專業排版」則交給編譯器處理。
+* 與 Word 不同，LaTeX 透過**指令**來精確控制文件的結構。
+
+### 環境建置：先後順序很重要
+
+* **黃金法則**：必須**先安裝編譯器**（如 TeX Live, MiKTeX, MacTeX），**再安裝編輯器**（如 TeXstudio, VS Code）。
+* 若想省去安裝麻煩，**Overleaf** 是最便利的雲端替代方案。
+
+### 語法重點速記
+
+* **指令啟動碼**：所有指令皆以反斜線 `\` 開頭。
+* **參數區分**：方括號 `[]` 是可有可無的「選配」，花括號 `{}` 是不可或缺的「必配」。
+* **空白與換行**：多個空格會被視為一個；換行請用 `\\` 或空一行。
+* **文件結構**：一份完整的文稿包含「前言區 (Preamble)」與包裹在 `document` 環境內的「正文區」。
+
+
+[^1]: 此處的不聰明並不是指「文繞圖」(wrap text around a picture) 的功能，而是指圖片時常不會在正確的位置上，容易因為文字的多寡而跑版，調整時往往需要耗費大量精力。
+[^2]: 編輯器用於編寫和管理 LaTeX 程式碼，提供便捷的編寫環境；編譯器則負責將這些程式碼轉換為最終輸出的文件。
+[^3]: Choosing a LaTeX Compiler. (n.d.). Overleaf, Online LaTeX Editor. [https://es.overleaf.com/learn/latex/Choosing_a_LaTeX_Compiler%23Other_compilers](https://es.overleaf.com/learn/latex/Choosing_a_LaTeX_Compiler%23Other_compilers)
