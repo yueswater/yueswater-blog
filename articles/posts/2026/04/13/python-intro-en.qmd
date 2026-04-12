@@ -1,0 +1,54 @@
+---
+title: "Python Tutorial Series: An Introduction to Python"
+lang: en
+date: 2026-04-13
+author: Anthony
+categories: [Python, Programming]
+description: "Starting from scratch with Python"
+image: images/Python_logo_and_wordmark.png
+---
+
+As of 2026, Python remains the most popular and widely used programming language in the world. According to the [IEEE Spectrum](https://spectrum.ieee.org/top-programming-languages-2025) survey published in 2025, Python ranks first across all dimensions — overall ranking, long-term trends, and job market demand — with C/C++ and Java following closely behind.
+
+<details>
+<summary>2025 Programming Language Rankings (IEEE Spectrum)</summary>
+<div style="display: flex; justify-content: center;">
+<iframe scrolling="no" frameborder="0" title="Interactive or visual content" sandbox="allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" style="width: 70%; height: 1776.58px;" src="https://flo.uri.sh/visualisation/24825595/embed?auto=1"></iframe>
+</div>
+</details>
+
+From data analysis and artificial intelligence to automation scripts and back-end web development, Python is truly everywhere. However, despite the abundance of learning resources available online, there is a significant gap that rarely gets addressed: **the distance between basic syntax and real-world engineering practice**. Many learners pick up control flow and can even write small programs that run on their local machine — but the moment they open a professional open-source project, they find themselves lost among type annotations, decorators, and complex project management tools. This is precisely why I decided to write this series — not just to teach you how to write code that works, but to teach you how to write code that is professional, elegant, and maintainable. Along the way, I will also share some of the mistakes I have made myself.
+
+## About This Series
+
+The **Python Tutorial Series** is not a traditional syntax reference guide. When planning this series, I set several core principles that will run throughout every article:
+
+1. **Engineering-first mindset**: Every example and project in this series will be built on top of a proper project structure. You may have heard of virtual environments in school or online courses, but without truly understanding their purpose — or even their importance — they remain an abstract concept. This series starts from the very beginning: setting up a virtual environment, and building a solid foundation from there.
+
+2. **Embracing type annotations**: Although Python is a dynamically typed language, code written without type annotations is considered technical debt in modern development. From the very first chapter, we will make type declarations a standard practice. This not only reduces bugs significantly, but also allows your editor to provide intelligent auto-completion and error detection.
+
+3. **Exploring the Python standard library in depth**: When Python developers encounter a problem, the first instinct is often to install a third-party package. In reality, Python's built-in standard library is remarkably powerful. We will explore these built-in tools in depth, learning how to accomplish more with fewer dependencies.
+
+## Why I Wrote This Series
+
+To be honest, this series is also written for myself.
+
+Software development is a field where standing still means falling behind. As Python continues to evolve with each new release[^1], many old habits have already been replaced by safer and more efficient modern syntax. By putting all of this together in a structured way, I get to review and consolidate my own knowledge at the same time.
+
+## A Note for Readers
+
+If you are a beginner, please do not just read the code — make sure you actually type it out yourself.
+
+One of Python's guiding philosophies is[^2]:
+
+> *There should be one-- and preferably only one --obvious way to do it.*
+
+The goal of this series is to help you find that "most obvious, most correct, and most elegant" way of doing things.
+
+
+[^1]: This article was written on 2026/04/13. The latest version at the time of writing is `3.14.4`. Please refer to the [official website](https://www.python.org/downloads/) for the most up-to-date release.
+[^2]: See [The Zen of Python](https://peps.python.org/pep-0020/#the-zen-of-python) for the full text. You can read it directly by entering the following command in a Python interpreter (interactive environment):
+    ```python
+    import this
+    ```
+    The output is a collection of 19 core design principles for Python, written by [Tim Peters](https://en.wikipedia.org/wiki/Tim_Peters_(software_engineer)) — a core contributor to the Python programming language — emphasising simplicity, clarity, and readability.
