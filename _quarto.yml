@@ -54,14 +54,17 @@ website:
 
 format:
   html:
-    theme: [lux, assets/css/rwds.scss]
-    css: assets/css/rwds.css
+    theme:
+      light: [lux, assets/css/yueswater.scss]
+      dark:  [darkly, assets/css/yueswater.scss]
+    css: assets/css/yueswater.css
     toc: true
     lang: zh-TW
     include-after-body:
       - _includes/lang-switch.html
       - _includes/latex-runner.html
       - _includes/exercises.html
+      - _includes/dark-mode.html
     grid:
       sidebar-width: 0px
       body-width: 1000px
