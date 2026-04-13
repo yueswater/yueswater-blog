@@ -192,6 +192,75 @@ This is the "body" ...
 \end{document}
 ```
 
+## Exercises
+
+::: {.exercises}
+
+::: {.exercise data-answer="A"}
+What is the correct order when setting up a LaTeX environment?
+
+::: {.options}
+- Install the **compiler** first, then the editor
+- Install the **editor** first, then the compiler
+- The order doesn't matter — install both at the same time
+- Just use Overleaf; no installation needed
+:::
+
+::: {.answer}
+The correct answer is to **install the compiler first**. Editors need to detect the compiler's path to function correctly. If you install the editor first, it may fail to locate the compiler, making configuration difficult. While Overleaf requires no installation, you should still follow this order when setting up a local environment.
+:::
+:::
+
+::: {.exercise data-answer="B"}
+In `\documentclass[12pt]{article}`, what kind of argument is `12pt`?
+
+::: {.options}
+- A mandatory argument, placed inside `{}`
+- An optional argument, placed inside `[]`
+- An environment name, placed inside `\begin{}`
+- Part of the command name, placed after `\`
+:::
+
+::: {.answer}
+`12pt` is placed inside square brackets `[]`, making it an **optional argument** — it can be omitted, in which case LaTeX defaults to 10pt. The `article` inside curly braces `{}` is the **mandatory argument** and cannot be left out.
+:::
+:::
+
+::: {.exercise data-answer="C"}
+What does the `%` symbol do in LaTeX source code?
+
+::: {.options}
+- Enters math mode
+- Produces a percentage sign
+- Marks a comment — everything after `%` on that line is ignored by the compiler
+- Separates table columns
+:::
+
+::: {.answer}
+`%` is LaTeX's **comment character**. Everything following it on the same line is ignored during compilation and will not appear in the PDF. To display an actual percentage sign in your document, you must type `\%` (escaped with a backslash).
+:::
+:::
+
+::: {.exercise}
+Write a minimal LaTeX document using the `article` class with a 12pt font size that outputs the line `Hello, LaTeX!`.
+
+::: {.answer}
+```latex
+\documentclass[12pt]{article}
+
+\begin{document}
+
+Hello, LaTeX!
+
+\end{document}
+```
+
+This is the simplest valid LaTeX document. `\documentclass` defines the class and options; all body content must sit between `\begin{document}` and `\end{document}`; the preamble (between the two) is left empty here but is where you would load packages and configure global settings.
+:::
+:::
+
+:::
+
 ## Chapter Summary
 
 In this chapter, we have lifted the curtain on LaTeX and established the correct mindset for typesetting. Here are the key takeaways:

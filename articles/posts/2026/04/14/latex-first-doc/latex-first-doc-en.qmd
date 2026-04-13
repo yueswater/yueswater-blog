@@ -305,6 +305,103 @@ Cras elementum dui a nulla volutpat...
 ```
 :::
 
+## Exercises
+
+::: {.exercises}
+
+::: {.exercise data-answer="A"}
+Which document class does **not** support the `\chapter{}` command?
+
+::: {.options}
+- `article`
+- `report`
+- `book`
+- `beamer`
+:::
+
+::: {.answer}
+**`article`** does not support `\chapter{}`; its highest-level sectioning command is `\section{}`. Both `report` and `book` include `\chapter{}`. `beamer` also lacks `\chapter{}`, but it is a presentation class with an entirely different structure. This is why this chapter uses `report` to demonstrate the full range of sectioning depth.
+:::
+:::
+
+::: {.exercise data-answer="C"}
+After setting `\title{}`, `\author{}`, and `\date{}` in the preamble, which command must appear in the document body to actually output the title page?
+
+::: {.options}
+- `\begin{title}`
+- `\titlepage`
+- `\maketitle`
+- `\printtitle`
+:::
+
+::: {.answer}
+You must call **`\maketitle`** inside `\begin{document}` to render the title information set in the preamble. A common beginner mistake is to define `\title{}` and friends but forget `\maketitle`, resulting in a document with no title page at all.
+:::
+:::
+
+::: {.exercise data-answer="C"}
+The `abstract` environment is **not** available in which document class?
+
+::: {.options}
+- `article`
+- `report`
+- `book`
+- All three support it
+:::
+
+::: {.answer}
+**`book`** does not support the `abstract` environment — attempting to use it will throw an error. Both `article` and `report` support it, though with slightly different behaviour: in `article`, the abstract appears directly below the title; in `report`, it occupies its own unnumbered page and does not appear in the table of contents.
+:::
+:::
+
+::: {.exercise}
+Using the `report` class, write a LaTeX document that includes: a title `My Report`, an author `Your Name`, today's date, a short abstract, and a chapter named `Introduction`.
+
+::: {.answer}
+```latex
+\documentclass{report}
+
+\title{My Report}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This is the abstract. It typically summarises the purpose, methods, and conclusions of the work.
+\end{abstract}
+
+\chapter{Introduction}
+
+This is the body of the first chapter.
+
+\end{document}
+```
+
+Key points: `\maketitle` must come after `\begin{document}`; the `abstract` environment follows immediately after `\maketitle`; `\chapter{}` is only available in the `report` and `book` classes.
+:::
+:::
+
+::: {.exercise}
+Add a footnote to the following sentence, with the content "This is a sample footnote.":
+
+```latex
+LaTeX is a typesetting system.
+```
+
+::: {.answer}
+```latex
+LaTeX is a typesetting system\footnote{This is a sample footnote.}.
+```
+
+`\footnote{}` is inserted directly after the word or phrase being annotated. LaTeX automatically numbers and typesets it at the bottom of the page. Note the punctuation placement: the full stop goes **after** `\footnote{}`, not before it.
+:::
+:::
+
+:::
+
 ## Chapter Summary
 
 This chapter started with setting up the project folder and concluded with a fully structured LaTeX document. Here is a summary of the key points covered:
