@@ -12,19 +12,6 @@
   align-items: center;
 }
 
-/* ── Dark mode toggle ─────────────────────────── */
-.dark-mode-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem 0.4rem;
-  display: flex;
-  align-items: center;
-  opacity: 0.7;
-  transition: opacity 0.15s;
-  color: inherit;
-}
-.dark-mode-btn:hover { opacity: 1; }
 
 .lang-icon-link {
   opacity: 0.7;

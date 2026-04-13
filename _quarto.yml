@@ -54,9 +54,7 @@ website:
 
 format:
   html:
-    theme:
-      light: [lux, assets/css/yueswater.scss]
-      dark:  [darkly, assets/css/yueswater.scss]
+    theme: [lux, assets/css/yueswater.scss]
     css: assets/css/yueswater.css
     toc: true
     lang: zh-TW
@@ -64,7 +62,6 @@ format:
       - _includes/lang-switch.html
       - _includes/latex-runner.html
       - _includes/exercises.html
-      - _includes/dark-mode.html
     grid:
       sidebar-width: 0px
       body-width: 1000px
