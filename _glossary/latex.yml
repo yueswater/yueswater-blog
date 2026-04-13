@@ -1,0 +1,26 @@
+文件類別: |
+  LaTeX 排版的基礎設定，以 `\documentclass{}` 宣告。常見類別包含 `article`（短文）、`report`（報告）、`book`（書籍）、`beamer`（簡報）。
+
+序言: |
+  LaTeX 文件中 `\documentclass{}` 到 `\begin{document}` 之間的區域，用來載入套件與進行全域設定。
+
+環境: |
+  以 `\begin{name}` 和 `\end{name}` 包圍的區塊，用來控制特定排版行為，例如 `document`、`figure`、`table`、`align`。
+
+套件: |
+  以 `\usepackage{}` 載入的擴充功能，例如 `geometry`（版面）、`fontspec`（字型）、`amsmath`（數學）。
+
+編譯器: |
+  將 `.tex` 原始碼轉換為 PDF 的程式。常見編譯器有 `pdflatex`、`xelatex`（支援 Unicode）、`lualatex`。
+
+章節指令: |
+  LaTeX 用來劃分文件結構的指令，包括 `\chapter{}`、`\section{}`、`\subsection{}`、`\subsubsection{}`。
+
+腳註: |
+  以 `\footnote{}` 插入，LaTeX 會自動編號並排在頁面底部。
+
+摘要: |
+  以 `abstract` 環境撰寫，通常出現在標題頁之後，用於簡述文章內容。主要用於 `article` 與 `report` 類別。
+
+標題頁: |
+  以 `\maketitle` 指令生成，需事先在序言中設定 `\title{}`、`\author{}`、`\date{}`。

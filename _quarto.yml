@@ -26,6 +26,8 @@ website:
         href: projects/index.qmd
       - text: "日記"
         href: diary/index.qmd
+      - text: "術語表"
+        href: glossary/index.qmd
       - text: "關於"
         href: about.qmd
 
@@ -59,6 +61,7 @@ format:
     include-after-body:
       - _includes/lang-switch.html
       - _includes/latex-runner.html
+      - _includes/exercises.html
     grid:
       sidebar-width: 0px
       body-width: 1000px
@@ -66,6 +69,8 @@ format:
 
 filters:
   - latex-runner
+
+jupyter: python3
 
 execute:
   freeze: auto

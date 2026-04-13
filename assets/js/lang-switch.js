@@ -36,7 +36,8 @@
     { href: '/articles',   zh: '文章',   en: 'Articles'   },
     { href: '/projects',   zh: '專案',   en: 'Projects'   },
     { href: '/diary',      zh: '日記',   en: 'Diary'      },
-{ href: '/about',      zh: '關於',   en: 'About'      },
+    { href: '/about',      zh: '關於',   en: 'About'      },
+    { href: '/glossary',   zh: '術語表', en: 'Glossary'   },
   ];
 
   // Glassmorphism navbar on scroll

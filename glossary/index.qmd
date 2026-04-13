@@ -1,0 +1,70 @@
+---
+title: "術語表"
+lang: zh-TW
+toc: false
+---
+
+::: {.panel-tabset}
+
+## Python
+
+**變數**
+: Python 中用來指向物件的名字（標籤）。賦值時，Python 將名字綁定到物件，而非複製值。
+
+**物件**
+: Python 中一切皆物件。每個物件擁有型別、值與引用計數三個屬性。
+
+**型別**
+: 決定一個物件能做什麼操作、佔多少記憶體。Python 的內建基本型別包含 `int`、`float`、`str`、`bool`、`None`。
+
+**`int`**
+: 整數型別。Python 的 `int` 沒有大小上限（arbitrary precision），可直接計算極大的數字。
+
+**`float`**
+: 浮點數型別。遵循 IEEE 754 雙精度標準，存在精度誤差（例如 `0.1 + 0.2 != 0.3`）。
+
+**`str`**
+: 字串型別。不可變的 Unicode 字元序列，支援 f-string、`strip()`、`replace()` 等操作。
+
+**`bool`**
+: 布林型別，是 `int` 的子類別。`True` 等於 `1`，`False` 等於 `0`。
+
+**`None`**
+: 代表「沒有值」的特殊物件，是 `NoneType` 的唯一實例（singleton）。比較時應使用 `is` 而非 `==`。
+
+**型別標註**
+: 在變數、函式參數或回傳值旁加上型別資訊（如 `x: int = 5`）。Python 不強制執行，但有助於靜態分析工具（如 mypy）進行檢查。
+
+**f-string**
+: 格式化字串字面值（Formatted String Literal），Python 3.6 引入。語法為 `f"..."` 或 `f'...'`，可在大括號內嵌入任意運算式。
+
+## LaTeX
+
+**文件類別**
+: LaTeX 排版的基礎設定，以 `\documentclass{}` 宣告。常見類別包含 `article`（短文）、`report`（報告）、`book`（書籍）、`beamer`（簡報）。
+
+**序言**
+: LaTeX 文件中 `\documentclass{}` 到 `\begin{document}` 之間的區域，用來載入套件與進行全域設定。
+
+**環境**
+: 以 `\begin{name}` 和 `\end{name}` 包圍的區塊，用來控制特定排版行為，例如 `document`、`figure`、`table`、`align`。
+
+**套件**
+: 以 `\usepackage{}` 載入的擴充功能，例如 `geometry`（版面）、`fontspec`（字型）、`amsmath`（數學）。
+
+**編譯器**
+: 將 `.tex` 原始碼轉換為 PDF 的程式。常見編譯器有 `pdflatex`、`xelatex`（支援 Unicode）、`lualatex`。
+
+**章節指令**
+: LaTeX 用來劃分文件結構的指令，包括 `\chapter{}`、`\section{}`、`\subsection{}`、`\subsubsection{}`。
+
+**腳註**
+: 以 `\footnote{}` 插入，LaTeX 會自動編號並排在頁面底部。
+
+**摘要**
+: 以 `abstract` 環境撰寫，通常出現在標題頁之後，用於簡述文章內容。主要用於 `article` 與 `report` 類別。
+
+**標題頁**
+: 以 `\maketitle` 指令生成，需事先在序言中設定 `\title{}`、`\author{}`、`\date{}`。
+
+:::

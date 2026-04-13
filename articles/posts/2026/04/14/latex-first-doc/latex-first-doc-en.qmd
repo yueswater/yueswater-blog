@@ -6,6 +6,9 @@ author: Anthony
 categories: [LaTeX]
 description: "Creating your first LaTeX document"
 image: images/LaTeX_logo.png
+glossary:
+  path: ../../../../../../_glossary/latex.yml
+  popup: hover
 ---
 
 In the previous article, [Introduction to LaTeX](../../../04/12/latex-intro-en.qmd), we covered how to choose a compiler and editor, along with the basic operations of LaTeX — entering commands, writing comments, opening environments, and setting section depth. In this article, you will learn:

@@ -12,6 +12,10 @@ latest-content-listing.json
 # Claude Code
 .claude/
 
+# Python virtualenv
+.venv/
+.env
+
 # OS
 .DS_Store
 Thumbs.db
