@@ -1,5 +1,7 @@
 (function () {
   var LETTERS = ['A', 'B', 'C', 'D', 'E'];
+  var isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
+  var LABEL_SOLUTION = isEn ? 'View Solution' : '查看解析';
 
   document.addEventListener('DOMContentLoaded', function () {
     var exercises = document.querySelectorAll('.exercises .exercise');
@@ -59,7 +61,7 @@
         details.className = 'answer-details';
 
         var summary = document.createElement('summary');
-        summary.textContent = '查看解析';
+        summary.textContent = LABEL_SOLUTION;
 
         var inner = document.createElement('div');
         inner.className = 'answer-content';
