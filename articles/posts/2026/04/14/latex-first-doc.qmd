@@ -1,0 +1,324 @@
+---
+title: "LaTeX 教學系列: 第一份 LaTeX 文件"
+lang: zh-TW
+date: 2026-04-14
+author: Anthony
+categories: [LaTeX]
+description: "製作第一份 LaTeX 文件"
+image: images/LaTeX_logo.png
+---
+
+在上一篇文章[LaTeX 簡介](../../04/12/latex-intro.qmd)中，我們介紹了如何選擇編譯器與編輯器，以及 LaTeX 的基本操作，包含輸入指令、撰寫註解、開啟環境與設定章節深度。在這篇文章中，你將學到：
+
+- 建立 LaTeX 文件
+- LaTeX 文件環境設置
+
+## 建立 LaTeX 文件
+
+LaTeX 的工作資料夾可以比喻為一間工廠：設計圖、原物料、生產流程，缺一不可。`.tex` 檔是整個工廠的設計圖，描述了最終產品的樣貌；字體、圖片等素材則是原材料，在生產過程中被一一取用；編譯過程就是工廠的生產線，將所有原材料依照設計圖組裝排版，最終輸出 `.pdf` 檔。至於參考文獻（如 `.bib` 文件），則是確保產品完整性的輔助材料——少了它，報告便失去了引用的依據。
+
+在開始撰寫 LaTeX 文件前，除了建立 `.tex` 檔之外，建議另外新增資料夾，將所有需要的素材分門別類集中放置，例如圖片應該放到 `images/`，而字體則應該放在 `fonts/`。這樣做有兩個好處：一是便於管理，只需瀏覽子資料夾便能掌握所有素材的狀態；二是方便 LaTeX 引用這些檔案——若素材散落各處，不僅路徑繁瑣，也容易出錯。
+
+
+### 資料夾的設定
+
+以下是一個建議的 LaTeX 專案樹狀結構，子資料夾並非強制，可依需求自行增減：
+
+```bash
+my-project/
+├── main.tex          # 主文件
+├── references.bib    # 參考文獻
+├── images/           # 圖片素材
+│   ├── figure1.png
+│   └── figure2.pdf
+├── fonts/            # 自訂字體
+│   └── custom.ttf
+└── output/           # 編譯輸出
+    └── main.pdf
+```
+
+在這個樹狀結構中：
+
+- **`main.tex`**：專案的主文件，所有內容的起點。LaTeX 從這裡開始編譯，負責定義文件類別（`\documentclass{}`）、載入套件（`\usepackage{}`）以及組織整體架構。若文件篇幅較長（如論文），可將各章節拆分為獨立的 `.tex` 檔，再透過 `\input{}` 或 `\include{}` 引入主文件[^input-include]。
+
+- **`references.bib`**：存放參考文獻資料的資料庫檔案，每筆文獻以結構化格式記錄作者、標題、年份等資訊。配合 BibTeX 或 BibLaTeX 使用時，只需在文中以 `\cite{}` 引用，編譯後便會自動在文末生成參考書目，格式也可依需求套用 APA、MLA 等引用風格。
+
+- **`images/`**：集中存放所有圖片素材。LaTeX 支援 `.png`、`.jpg` 等點陣圖，以及 `.pdf`、`.eps` 等向量圖——其中向量圖在縮放時不失真，學術文件中優先推薦使用[^vector]。建議以有意義的檔名命名 (如 `fig-result-comparison.pdf`)，方便日後維護。
+
+- **`fonts/`**：存放自訂字體檔案（`.ttf`、`.otf` 等）。使用 XeLaTeX 或 LuaLaTeX 編譯時才需要此資料夾，因為這兩種編譯器可直接呼叫系統字體或自訂字體；若使用傳統的 pdfLaTeX，字體機制不同，通常不需要此資料夾[^compiler]。
+
+  ::: {.callout-tip}
+  ## 不同系統的字體建議
+  - **Windows**：字體通常安裝在 `C:\Windows\Fonts\`，可直接在 XeLaTeX 中以字體名稱呼叫，無需手動複製到專案資料夾。
+  - **macOS**：字體位於 `/Library/Fonts/` 或 `~/Library/Fonts/`，同樣可直接呼叫。
+  - **Linux**：字體路徑依發行版而異，常見位於 `/usr/share/fonts/`。若字體無法被識別，可執行 `fc-cache -fv` 重新整理字體快取。
+  :::
+
+- **`output/`**：存放編譯後產生的所有檔案，包含最終的 `.pdf`，以及編譯過程中自動生成的中間檔，如 `.aux`（交叉引用資料）、`.log`（編譯日誌）、`.toc`（目錄資料）等。將輸出集中在此，可避免中間檔散落在專案根目錄[^output]。
+
+  ::: {.callout-tip}
+  ## 不同系統的輸出設定
+  - **VS Code（LaTeX Workshop）**：在 `settings.json` 中設定 `"latex-workshop.latex.outDir": "%DIR%/output"` 即可將所有輸出導向 `output/` 資料夾。
+  - **Overleaf**：雲端平台自動管理輸出，無需手動設定。
+  - **命令列**：使用 `xelatex -output-directory=output main.tex` 指定輸出目錄。
+  :::
+
+### 資料夾樹狀結構
+
+若想快速檢視當前 LaTeX 專案的目錄結構，可以善用 `tree` 指令。進入專案資料夾後執行：
+
+```bash
+tree
+```
+
+終端機便會以樹狀圖呈現整個資料夾的層級，例如：
+
+```bash
+my-project/
+├── main.tex
+├── references.bib
+├── images/
+│   ├── figure1.png
+│   └── figure2.pdf
+├── fonts/
+│   └── custom.ttf
+└── output/
+    └── main.pdf
+```
+
+若只想顯示資料夾（不列出檔案），可加上 `-d` 參數：
+
+```bash
+tree -d
+```
+
+若專案層級很深，可用 `-L` 限制顯示的深度，例如只顯示兩層：
+
+```bash
+tree -L 2
+```
+
+::: {.callout-tip}
+## 不同系統的安裝方式
+`tree` 在多數 Linux 發行版中已內建；macOS 與 Windows 則需另行安裝：
+
+- **macOS**：使用 Homebrew 安裝
+
+    ```bash
+    brew install tree
+    ```
+- **Windows**：使用 Scoop 安裝：
+
+    ```bash
+    scoop install tree
+    ```
+
+    或直接使用 PowerShell 內建的 `tree` 指令[^win-tree]
+:::
+
+## 實際操作
+
+接著，我們將前一篇文章提到的指令與技巧梳理出脈絡，實際放入編輯器中，透過編譯產出一份 `.tex` 文件並輸出為 `.pdf`。需要先說明的是，這一節會預先使用 `report` 類別，以便涵蓋章節深度的相關概念[^report-class]。
+
+```latex
+\documentclass{report}
+\begin{document}
+
+This is my first {\LaTeX} typesetting example.\\
+This is my first \LaTeX{} typesetting example.\\
+This is my first \LaTeX\ typesetting example.\\
+I am Mr. Edward G.J. Lee, G.J. is a abbreviation of my name.\\
+I am Mr.\ Edward G.J. Lee, G.J. is a abbreviation of my name.\\
+Please see Appendix A. We will be there soon.\\
+Please see Appendix A\null. We will be there soon.
+
+\end{document}
+```
+
+### 文件類別設定
+
+在 LaTeX 中，文件類別決定了文件的整體外觀與格式。不同類別適用於不同場合，其中 `article`、`report`、`book` 是最常用的三種標準類別。
+
+文件開頭必須使用 `\documentclass` 指令指定類別與選項，例如：
+
+```latex
+\documentclass[12pt, a4paper, twoside]{article}
+```
+
+這段指令將字體大小設為 12pt、紙張設為 A4，並啟用雙面列印模式。除了上述三種類別，LaTeX 還支援 `letter`、`standalone` 等類別，以及 `landscape`（橫向版面）等選項。若想深入了解各類別的差異，可參考 [LaTeX documentclass options illustrated](https://texblog.org/2013/02/13/latex-documentclass-options-illustrated/)。
+
+### 關於縮排
+
+在上面的例子中，可以發現文件第一行會自動縮排，這是因為 LaTeX 在沒有分章節時，會將換行前的內容視為引言段落。要解決這個問題，有兩種方法：
+
+- 在第一行加入 `\noindent`，告知 LaTeX 不縮排該行。但此方法僅作用於下指令之處，其餘段落仍會依規則縮排。
+- 在 preamble 加入 `\parindent=0pt`，使全文縮排量為零，也就是全文都不縮排。
+
+需要注意的是，若文件要求每段都縮排（例如學術報告），上述方法便不適用，仍需依實際需求調整[^indent]。
+
+### 文章的身分證：標題頁資訊
+
+標題頁是整份文件的精華，也可說是這份文件的「身分證」——記載了標題（文件的名字）、作者（是誰把它生出來的）以及日期（這份文件的生日，或第一次說出 "Hello, World!" 的時間）。
+
+在 `report` 類別中，標題頁位於文件的第一頁，包含標題、作者、日期與致謝詞。來看以下範例：
+
+```latex
+\documentclass{report}
+\title{Report File}
+\author{Noname\thanks{Thanks to the readers.}}
+\date{\today}
+\begin{document}
+
+This is the first sentence in my \LaTeX\ file.
+
+\chapter{First Chapter}
+\section{Section}
+...
+\end{document}
+```
+
+編譯之後若發現文件根本沒有標題頁，那你已經發現端倪了！原因在於：加入標題頁資訊後，還必須在 `\begin{document}` 與 `\end{document}` 之間加入 `\maketitle`，LaTeX 才會實際將這些資訊輸出到文件中：
+
+```latex
+\documentclass{report}
+\title{Report File}
+\author{Noname\thanks{Thanks to the readers.}}
+\date{\today}
+\begin{document}
+\maketitle
+
+This is the first sentence in my \LaTeX\ file.
+
+\chapter{First Chapter}
+\section{Section}
+...
+\end{document}
+```
+
+### 加入章節標題
+
+在 LaTeX 中加入章節標題非常直觀，無需手動調整字體大小，只需使用對應的指令即可[^word-heading]。在 `report` 類別中，`\chapter{}` 用於新增章，`\section{}` 與 `\subsection{}` 則分別對應小節與次小節。LaTeX **預設以阿拉伯數字**標示章節編號；若不需要編號，可在指令後加上星號（`*`），例如 `\chapter*{}` 或 `\section*{}`，LaTeX 便會省略數字、只顯示標題文字。
+
+::: {.latex-runner}
+```latex
+\documentclass{report}          % 使用 report 類別
+\begin{document}                % 文件開始
+
+\chapter{Introduction}          % 有編號的章
+
+\section{Background Theories}   % 節
+
+\subsection{Purpose}            % 小節
+
+\chapter*{Acknowledgements}     % 無編號章節
+
+\end{document}                  % 文件結束
+```
+:::
+
+LaTeX 會自動處理章節編號、目錄更新與字體大小，寫作者只需專注於內容本身。以下是完整的章節深度對照表：
+
+| 深度編號 | 指令 | 說明 |
+|:---:|---|---|
+| -1 | `\part{}` | 部 |
+| 0 | `\chapter{}` | 章 (`article` 類別無此層級) |
+| 1 | `\section{}` | 節 |
+| 2 | `\subsection{}` | 小節 |
+| 3 | `\subsubsection{}` | 次小節 |
+| 4 | `\paragraph{}` | 段落 |
+| 5 | `\subparagraph{}` | 次段落 |
+
+### 加入摘要
+
+若要加入摘要，可使用 `abstract` 環境：
+
+::: {.latex-runner}
+```latex
+\documentclass{report}          % 使用 report 類別
+\title{Report File}             % 文件標題
+% 作者名稱，\thanks 生成頁底致謝腳註
+\author{Noname\thanks{Thanks to the readers.}}
+\date{\today}                   % 自動填入今日日期
+\begin{document}                % 文件開始
+\maketitle                      % 輸出標題頁
+
+\begin{abstract}                % 摘要環境開始
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius neque vel
+commodo aliquet. Integer ornare hendrerit ligula et ultricies...
+\end{abstract}                  % 摘要環境結束
+
+\chapter{Introduction}          % 第一章
+
+\section{Background Theories}   % 節
+
+\subsection{Purpose}            % 小節
+
+\chapter*{Acknowledgements}     % 無編號章節
+
+\end{document}                  % 文件結束
+```
+:::
+
+`abstract` 環境中的文字左右會自動縮排。需要注意的是，只有 `article` 與 `report` 類別支援 `abstract`，`book` 類別無法使用。此外，`report` 類別的摘要會自成一頁、不編頁碼，也不會出現在目錄中，這與部分論文格式的要求可能不同，使用時請多留意。
+
+### 加入腳註
+
+LaTeX 的腳註有兩種形式：**腳註（footnote）** 與 **邊註（marginal note）**。腳註預設以阿拉伯數字編號，置於頁面底部；`report`/`book` 類別中，編號每章重新計算，`article` 類別則全文連續。邊註不編號，字體為正常大小。由於邊註涉及套件與版面邊界設定，本文先略過，僅介紹腳註的用法。
+
+加入腳註只需在對應文字後接上 `\footnote{你的註腳內容}` 即可：
+
+::: {.latex-runner}
+```latex
+\documentclass{report}          % 使用 report 類別
+\title{Report File}             % 文件標題
+% 作者名稱，\thanks 生成頁底致謝腳註
+\author{Noname\thanks{Thanks to the readers.}}
+\date{\today}                   % 自動填入今日日期
+\begin{document}                % 文件開始
+\maketitle                      % 輸出標題頁
+
+\begin{abstract}                % 摘要環境開始
+Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+\end{abstract}                  % 摘要環境結束
+
+\chapter{Introduction}          % 第一章
+
+Proin sed lorem sed est malesuada dictum...
+
+\section{Background Theories}   % 節
+
+Vivamus ut consequat nisl...
+
+\subsection{Purpose}            % 小節
+
+% \footnote{} 在文字後直接插入腳註
+Sed sagittis quis est in mollis.\footnote{Curabitur vel tortor a lorem commodo volutpat eget nec dui.}
+
+\chapter*{Acknowledgements}     % 無編號章節
+
+Cras elementum dui a nulla volutpat...
+
+\end{document}                  % 文件結束
+```
+:::
+
+## 本章小結
+
+本章從建立專案資料夾開始，一路走到完成一份有架構的 LaTeX 文件。以下是本章涵蓋的重點：
+
+- **專案結構**：一個良好的 LaTeX 專案應將 `.tex`、圖片、字體、輸出分開管理，可用 `tree` 指令隨時檢視資料夾狀態。
+- **文件類別**：透過 `\documentclass[]{}` 決定文件的基本格式，`article`、`report`、`book` 是最常用的三種類別。
+- **縮排控制**：可用 `\noindent` 處理單行，或在 preamble 設定 `\parindent=0pt` 取消全文縮排，依需求選用。
+- **標題頁**：在 preamble 設定 `\title{}`、`\author{}`、`\date{}`，再於文件中呼叫 `\maketitle` 才會實際輸出。
+- **章節結構**：`\chapter{}`、`\section{}`、`\subsection{}` 等指令讓 LaTeX 自動處理編號與排版，加 `*` 可取消編號。
+- **摘要**：使用 `abstract` 環境，僅適用於 `article` 與 `report` 類別。
+- **腳註**：`\footnote{}` 直接插入行內，LaTeX 自動排版至頁底。
+
+[^input-include]: `\input{}` 會直接將目標檔案的內容嵌入，如同複製貼上；`\include{}` 則會另起新頁，並支援 `\includeonly{}` 選擇性編譯，適合大型文件加快編譯速度。
+[^vector]: 向量圖的來源通常是繪圖工具（如 Inkscape、Illustrator）匯出的 `.pdf`，或以 TikZ、PGFPlots 等 LaTeX 套件直接繪製。
+[^compiler]: pdfLaTeX 使用 `.tfm` 與 `.pfb` 格式的字體，透過 `fontenc`、`inputenc` 等套件管理，與 XeLaTeX/LuaLaTeX 的字體處理方式不同。
+[^output]: 部分編輯器或編譯工具預設會將中間檔輸出到根目錄，需手動調整設定才能導向 `output/`。
+[^win-tree]: Windows 內建的 `tree` 指令（`tree /F`）格式與 Unix 版略有不同，但同樣能列出完整的樹狀結構。
+[^report-class]: 使用 `report` 類別的原因很簡單：`article` 類別沒有 `\chapter`，無法完整示範章節深度，因此選用 `report`。
+[^indent]: 個人觀點：筆者不喜歡首段縮排，偏好首段以外的段落縮排所帶來的**不對稱感**，但若教授或上司有特定要求，按規定走才是最穩妥的做法。
+[^word-heading]: Word 則需逐一調整字體大小，且稍有不慎便可能跑版。若不熟悉 Word 標題設定，可參考 [Word 排版技巧：樣式、階層、目錄、頁首頁尾、段落](http://tul.blog.ntu.edu.tw/archives/21623)。
