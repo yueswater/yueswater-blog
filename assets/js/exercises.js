@@ -3,7 +3,7 @@
   var isEn = (document.documentElement.lang || '').toLowerCase().startsWith('en');
   var LABEL_SOLUTION = isEn ? 'View Solution' : '查看解析';
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initExercises() {
     var exercises = document.querySelectorAll('.exercises .exercise');
 
     exercises.forEach(function (ex, i) {
@@ -72,5 +72,13 @@
         ansDiv.parentNode.replaceChild(details, ansDiv);
       }
     });
-  });
+  }
+
+  // Script is injected at end of <body> via include-after-body,
+  // so DOM is already ready — run directly, with DOMContentLoaded as fallback.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initExercises);
+  } else {
+    initExercises();
+  }
 })();
