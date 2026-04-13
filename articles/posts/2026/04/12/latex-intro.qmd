@@ -192,6 +192,75 @@ LaTeX 有一種強大的結構稱為{{< glossary 環境 >}}，它能定義一個
 \end{document}
 ```
 
+## 練習
+
+::: {.exercises}
+
+::: {.exercise data-answer="A"}
+建置 LaTeX 環境時，正確的安裝順序是？
+
+::: {.options}
+- 先安裝**編譯器**，再安裝編輯器
+- 先安裝**編輯器**，再安裝編譯器
+- 兩者順序無所謂，同時安裝即可
+- 直接使用 Overleaf，不需安裝任何東西
+:::
+
+::: {.answer}
+正確答案是**先安裝編譯器**。編輯器需要偵測後端編譯器的路徑才能正常運作；若順序顛倒，編輯器可能找不到編譯器，導致設定困難。雖然 Overleaf 不需安裝，但本機環境仍應遵守此順序。
+:::
+:::
+
+::: {.exercise data-answer="B"}
+在 `\documentclass[12pt]{article}` 中，`12pt` 屬於哪種參數？
+
+::: {.options}
+- 必要參數，放在 `{}` 中
+- 選擇參數，放在 `[]` 中
+- 環境名稱，放在 `\begin{}` 中
+- 指令本體，放在 `\` 後面
+:::
+
+::: {.answer}
+`12pt` 放在方括號 `[]` 中，屬於**選擇參數（optional argument）**，可省略；若不填，LaTeX 會套用預設字體大小（10pt）。花括號 `{}` 內的 `article` 才是**必要參數（mandatory argument）**，不可省略。
+:::
+:::
+
+::: {.exercise data-answer="C"}
+在 LaTeX 原始碼中，`%` 符號的作用是？
+
+::: {.options}
+- 進入數學模式
+- 產生百分比符號
+- 標記註解，`%` 之後的文字編譯器會忽略
+- 分隔表格欄位
+:::
+
+::: {.answer}
+`%` 是 LaTeX 的**註解符號**，其後的文字在編譯時會被完全忽略，不會出現在 PDF 中。若要在文件中顯示百分比符號，必須輸入 `\%`（加上反斜線轉義）。
+:::
+:::
+
+::: {.exercise}
+寫出一份最基本的 LaTeX 文件骨架，要求：使用 `article` 類別、字體大小 12pt、在正文中輸出一行文字 `Hello, LaTeX!`。
+
+::: {.answer}
+```latex
+\documentclass[12pt]{article}
+
+\begin{document}
+
+Hello, LaTeX!
+
+\end{document}
+```
+
+這是最精簡的合法 LaTeX 文件：`\documentclass` 定義類別與選項；所有正文內容必須放在 `\begin{document}` 與 `\end{document}` 之間；序言區（兩者之間）此處留空，實際使用時用來載入套件與進行全域設定。
+:::
+:::
+
+:::
+
 ## 本章小結
 
 在這一章中，我們揭開了 LaTeX 的神秘面紗，並建立了正確的排版思維。以下是幾個關鍵筆記：

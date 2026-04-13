@@ -305,6 +305,103 @@ Cras elementum dui a nulla volutpat...
 ```
 :::
 
+## 練習
+
+::: {.exercises}
+
+::: {.exercise data-answer="A"}
+以下哪個文件類別**沒有** `\chapter{}` 指令？
+
+::: {.options}
+- `article`
+- `report`
+- `book`
+- `beamer`
+:::
+
+::: {.answer}
+**`article`** 類別不支援 `\chapter{}`，其最高層級為 `\section{}`。`report` 和 `book` 都有 `\chapter{}`，`beamer` 雖然也沒有 `\chapter{}`，但它是投影片類別，架構完全不同。這也是為什麼本章範例改用 `report` 來示範章節深度。
+:::
+:::
+
+::: {.exercise data-answer="C"}
+在 preamble 設定了 `\title{}`、`\author{}`、`\date{}` 之後，要讓標題頁實際輸出到文件中，需要在正文區加上哪個指令？
+
+::: {.options}
+- `\begin{title}`
+- `\titlepage`
+- `\maketitle`
+- `\printtitle`
+:::
+
+::: {.answer}
+必須在 `\begin{document}` 之後呼叫 **`\maketitle`**，LaTeX 才會將 preamble 中設定的標題資訊排版輸出。許多初學者設定完 `\title{}` 卻忘記呼叫 `\maketitle`，導致文件中完全看不到標題頁。
+:::
+:::
+
+::: {.exercise data-answer="C"}
+`abstract` 環境**不適用**於哪個文件類別？
+
+::: {.options}
+- `article`
+- `report`
+- `book`
+- 以上三種都支援
+:::
+
+::: {.answer}
+**`book`** 類別不支援 `abstract` 環境；嘗試使用會直接報錯。`article` 與 `report` 均支援，但行為略有不同：`article` 的摘要會緊接在標題後方，`report` 的摘要則會獨立佔一頁、不編頁碼。
+:::
+:::
+
+::: {.exercise}
+使用 `report` 類別，寫出一份包含以下元素的 LaTeX 文件：標題 `My Report`、作者 `Your Name`、今日日期、一段摘要文字，以及一個名為 `Introduction` 的章節。
+
+::: {.answer}
+```latex
+\documentclass{report}
+
+\title{My Report}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+這是摘要的內容。通常用來簡述研究目的、方法與結論。
+\end{abstract}
+
+\chapter{Introduction}
+
+這裡是第一章的正文內容。
+
+\end{document}
+```
+
+重點：`\maketitle` 必須在 `\begin{document}` 之後；`abstract` 環境緊跟在 `\maketitle` 後；`\chapter{}` 只在 `report` 與 `book` 類別中有效。
+:::
+:::
+
+::: {.exercise}
+在以下句子中加入一個腳註，腳註內容為「此為示範腳註」：
+
+```latex
+LaTeX 是一種排版系統。
+```
+
+::: {.answer}
+```latex
+LaTeX 是一種排版系統\footnote{此為示範腳註}。
+```
+
+`\footnote{}` 直接插入在需要標注的文字之後，LaTeX 會自動在頁面底部排版並編號。注意標點符號的位置：句號通常放在 `\footnote{}` 之後，而非之前。
+:::
+:::
+
+:::
+
 ## 本章小結
 
 本章從建立專案資料夾開始，一路走到完成一份有架構的 LaTeX 文件。以下是本章涵蓋的重點：
