@@ -7,7 +7,7 @@ categories: [Python, 程式語言]
 description: "一個看似簡單的內建函數，卻藏著理解 Python 變數行為的關鍵"
 image: images/Python_logo.png
 glossary:
-  path: ../../../../../../_glossary/latex.yml
+  path: ../../../../../../_glossary/python.yml
   popup: hover
 ---
 

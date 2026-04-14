@@ -7,7 +7,7 @@ categories: [Python, Programming Languages]
 description: "A simple built-in function that reveals how Python variables really work"
 image: images/Python_logo.png
 glossary:
-  path: ../../../../../../_glossary/latex.yml
+  path: ../../../../../../_glossary/python.yml
   popup: hover
 ---
 

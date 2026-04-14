@@ -770,7 +770,14 @@ div.quarto-post .listing-description {
 }
 
 .quarto-grid-item .card-attribution.justify {
-  justify-content: left;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.quarto-grid-item .listing-date {
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .quarto-grid-item .card-attribution {
