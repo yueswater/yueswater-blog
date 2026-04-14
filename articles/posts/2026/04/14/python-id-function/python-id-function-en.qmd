@@ -1,426 +1,362 @@
 ---
-title: "LaTeX Tutorial Series: Your First LaTeX Document"
+title: "Python Tutorial Series: The Nature of Variables Through `id()`"
 lang: en
 date: 2026-04-14
 author: Anthony
-categories: [LaTeX]
-description: "Creating your first LaTeX document"
+categories: [Python, Programming Languages]
+description: "A simple built-in function that reveals how Python variables really work"
 image: images/Python_logo.png
 glossary:
   path: ../../../../../../_glossary/latex.yml
   popup: hover
 ---
 
-In the previous article, [Introduction to LaTeX](../../../04/12/latex-intro-en.qmd), we covered how to choose a compiler and editor, along with the basic operations of LaTeX — entering commands, writing comments, opening environments, and setting section depth. In this article, you will learn:
+At first glance, `id()` looks like a tiny utility: it just returns an integer. But once you start using it to inspect real code, you quickly realize something deeper: many bugs and "weird" behaviors come from misunderstanding what a Python variable actually is.
 
-- Setting up a LaTeX document
-- Configuring the LaTeX document environment
+This article uses runnable examples to explain one core idea: in Python, variables are names, and objects are the real entities. Along the way, we will cover small integer caching, constant pooling, string interning, `is` vs `==`, and a few classic pitfalls that appear in production code.
 
-## Setting Up a LaTeX Document
+## A Counter-Intuitive Start
 
-A LaTeX working folder can be compared to a factory: blueprints, raw materials, and a production line — all are essential. The `.tex` file serves as the blueprint, describing the final product; fonts, images, and other assets are the raw materials used during production; the compilation process is the assembly line that arranges all the materials according to the blueprint and ultimately outputs a `.pdf` file. As for references (such as `.bib` files), they are supplementary materials that ensure the product is complete — without them, a report loses its citation foundation.
+Let us begin with a famous example:
 
-Before you start writing a LaTeX document, in addition to creating the `.tex` file, it is recommended to create additional folders to organise your assets by category — for example, images in `images/` and fonts in `fonts/`. This has two advantages: first, it makes management easier, as you only need to browse the subfolders to see all your assets at a glance; second, it makes it easier for LaTeX to reference these files — if assets are scattered around, paths become complicated and errors are more likely to occur.
+```{python}
+a = 256
+b = 256
+print(a is b)  # Expected: True
 
-
-### Folder Setup
-
-The following is a recommended LaTeX project structure. The subfolders are not mandatory and can be adjusted based on your needs:
-
-```bash
-my-project/
-├── main.tex          # Main document
-├── references.bib    # References
-├── images/           # Image assets
-│   ├── figure1.png
-│   └── figure2.pdf
-├── fonts/            # Custom fonts
-│   └── custom.ttf
-└── output/           # Compilation output
-    └── main.pdf
+x = 257
+y = 257
+print(x is y)  # Expected: may be True or False
 ```
 
-Within this structure:
+Many developers see this and think Python is inconsistent. It is not. The behavior is usually consistent *within a given implementation and execution context*, but the result can vary across contexts (script vs REPL) and across implementations.
 
-- **`main.tex`**: The main document — the starting point of everything. LaTeX begins compilation here, where the document class (`\documentclass{}`), packages (`\usepackage{}`), and the overall structure are defined. For longer documents such as theses, individual chapters can be split into separate `.tex` files and imported into the main file using `\input{}` or `\include{}`[^input-include].
+To understand why, we first need to be precise about what `id()` means.
 
-- **`references.bib`**: A database file that stores your reference entries. Each entry records information such as the author, title, and year in a structured format. When used with BibTeX or BibLaTeX, you simply cite sources in the text using `\cite{}`, and the bibliography is automatically generated at the end of the document. Citation styles such as APA and MLA can also be applied as needed.
+## What `id()` Actually Means
 
-- **`images/`**: A centralised folder for all image assets. LaTeX supports raster images (`.png`, `.jpg`) as well as vector graphics (`.pdf`, `.eps`). Vector graphics do not lose quality when scaled and are the preferred format for academic documents[^vector]. It is recommended to use descriptive filenames (e.g., `fig-result-comparison.pdf`) for easier maintenance.
+According to the official Python docs, `id(object)` returns an integer that is unique and constant **during the object's lifetime**.
 
-- **`fonts/`**: Stores custom font files (`.ttf`, `.otf`, etc.). This folder is only needed when compiling with XeLaTeX or LuaLaTeX, as these compilers can directly access system fonts or custom font files. If you are using the traditional pdfLaTeX, the font mechanism works differently and this folder is generally not required[^compiler].
+That statement has two important parts:
 
-  ::: {.callout-tip}
-  ## Font Recommendations by System
-  - **Windows**: Fonts are typically installed in `C:\Windows\Fonts\` and can be referenced directly by name in XeLaTeX — no need to copy them into the project folder.
-  - **macOS**: Fonts are located in `/Library/Fonts/` or `~/Library/Fonts/` and can also be referenced directly by name.
-  - **Linux**: Font paths vary by distribution but are commonly found in `/usr/share/fonts/`. If fonts are not recognised, run `fc-cache -fv` to refresh the font cache.
-  :::
+1. As long as an object is alive, its `id()` does not change.
+2. Two different live objects cannot share the same `id()`.
 
-- **`output/`**: Stores all files generated during compilation, including the final `.pdf` and intermediate files such as `.aux` (cross-reference data), `.log` (compilation log), and `.toc` (table of contents data). Keeping all output here prevents these intermediate files from cluttering the project root directory[^output].
+In CPython (the most widely used implementation), this value is often the memory address of the object.
 
-  ::: {.callout-tip}
-  ## Output Configuration by System
-  - **VS Code (LaTeX Workshop)**: In `settings.json`, set `"latex-workshop.latex.outDir": "%DIR%/output"` to redirect all output to the `output/` folder.
-  - **Overleaf**: The cloud platform manages output automatically — no configuration needed.
-  - **Command line**: Use `xelatex -output-directory=output main.tex` to specify the output directory.
-  :::
-
-### Viewing the Folder Structure
-
-If you want to quickly inspect the directory structure of your LaTeX project, you can use the `tree` command. Navigate to the project folder and run:
-
-```bash
-tree
+```{python}
+s = "python"
+print(id(s))             # Expected: an integer
+print(id(s) == id(s))    # Expected: True
 ```
 
-The terminal will display the entire folder hierarchy in a tree format, for example:
+::: {.callout-warning}
+In CPython, `id()` is often the memory address, but this is an implementation detail, not a language-level guarantee. PyPy, Jython, and other implementations may use different strategies.
+:::
 
-```bash
-my-project/
-├── main.tex
-├── references.bib
-├── images/
-│   ├── figure1.png
-│   └── figure2.pdf
-├── fonts/
-│   └── custom.ttf
-└── output/
-    └── main.pdf
+So `id()` is useful for debugging and learning internals, but you should not rely on CPython-specific behavior as business logic.
+
+## Lifetime-Unique, Not Globally Unique
+
+A common misunderstanding is: "If `id()` is unique, it should never repeat." That is incorrect.
+
+The docs say unique **during the object’s lifetime**. After an object is destroyed, its old `id()` may be reused.
+
+```{python}
+print(id(object()))
+print(id(object()))
+print(id(object()))  # May repeat previous values
 ```
 
-To display only directories (without listing files), add the `-d` flag:
+These temporary objects are created and discarded immediately, so CPython may reuse the same memory slot.
 
-```bash
-tree -d
+If you want to compare identities safely, keep references alive:
+
+```{python}
+a = object()
+b = object()
+print(id(a), id(b))  # Expected: two different integers
+print(a is b)        # Expected: False
 ```
 
-To limit the depth of the output — for example, showing only two levels — use the `-L` flag:
+## Small Integer Cache
 
-```bash
-tree -L 2
+Now back to `256` vs `257`.
+
+CPython pre-allocates a range of small integer objects and reuses them. In many tutorials you will see `-5..256` as the typical range. In newer CPython branches, related constants are internal and version-dependent, so avoid treating one exact range as a language guarantee.
+
+```{python}
+a = 256
+b = 256
+print(a is b)  # Expected: usually True in CPython
+
+c = -5
+d = -5
+print(c is d)  # Expected: usually True in CPython
 ```
 
-::: {.callout-tip}
-## Installation by System
-`tree` is pre-installed on most Linux distributions. On macOS and Windows, it needs to be installed separately:
+For values outside the commonly cached range:
 
-- **macOS**: Install via Homebrew
-
-    ```bash
-    brew install tree
-    ```
-- **Windows**: Install via Scoop:
-
-    ```bash
-    scoop install tree
-    ```
-
-    Or use the built-in PowerShell `tree` command[^win-tree]
-:::
-
-## Hands-On Practice
-
-Now we will take the commands and techniques from the previous article, put them into action in the editor, and compile them into a `.tex` file that outputs as a `.pdf`. One thing to note: this section introduces the `report` class in advance to cover the concept of section depth[^report-class].
-
-```latex
-\documentclass{report}
-\begin{document}
-
-This is my first {\LaTeX} typesetting example.\\
-This is my first \LaTeX{} typesetting example.\\
-This is my first \LaTeX\ typesetting example.\\
-I am Mr. Edward G.J. Lee, G.J. is a abbreviation of my name.\\
-I am Mr.\ Edward G.J. Lee, G.J. is a abbreviation of my name.\\
-Please see Appendix A. We will be there soon.\\
-Please see Appendix A\null. We will be there soon.
-
-\end{document}
+```{python}
+x = 257
+y = 257
+print(x is y)  # Expected: may be True or False depending on context
 ```
 
-### Document Class Setup
+The key message is not the exact boundary. The key message is that identity behavior for literals can be affected by implementation-level reuse.
 
-In LaTeX, the document class determines the overall appearance and format of the document. Different classes are suited to different purposes. The three most commonly used standard classes are `article`, `report`, and `book`.
+## Constant Pooling and Compilation Context
 
-Every document must begin with the `\documentclass` command to specify the class and its options, for example:
+If `257` is not always from the small-int cache, why is `x is y` sometimes `True` anyway?
 
-```latex
-\documentclass[12pt, a4paper, twoside]{article}
+Because equal literals in the same code object may be loaded from the same constant slot.
+
+```{python}
+import dis
+
+def f():
+    a = 257
+    b = 257
+    return a is b
+
+dis.dis(f)
 ```
 
-This command sets the font size to 12pt, the paper size to A4, and enables double-sided printing. Besides the three main classes, LaTeX also supports classes such as `letter` and `standalone`, as well as options like `landscape` for a horizontal layout. For a deeper look at the differences between document classes, refer to [LaTeX documentclass options illustrated](https://texblog.org/2013/02/13/latex-documentclass-options-illustrated/).
+You may see both assignments load the same constant index (for example, `LOAD_CONST 1`). That means both names refer to the same constant object in that compiled unit.
 
-### About Indentation
+This is also why script files and REPL input can differ:
 
-In the example above, you may notice that the first line of the document is automatically indented. This happens because LaTeX treats the content before the first line break as an introductory paragraph when no chapter or section has been defined yet. There are two ways to address this:
+- In a `.py` file, both lines are often compiled together.
+- In REPL, each input is usually a separate compile unit.
 
-- Add `\noindent` at the start of the first line to tell LaTeX not to indent that specific line. However, this only takes effect where the command is placed — other paragraphs will still follow the default indentation rules.
-- Add `\parindent=0pt` in the preamble to set the indentation to zero throughout the entire document, effectively removing all paragraph indentation.
+So "same text" does not always mean "same compiled context."
 
-Note that if your document requires every paragraph to be indented (such as an academic report), neither of the above methods is ideal, and you will need to adjust based on your specific requirements[^indent].
+::: {.callout-note}
+When `is` changes across contexts, it often reflects constant reuse strategy, not value semantics. For value comparison, use `==`.
+:::
 
-### The Document's Identity Card: Title Page Information
+## String Interning
 
-The title page is the centrepiece of the entire document — it can be thought of as the document's "identity card." It records the title (the document's name), the author (who created it), and the date (the document's "birthday," or the moment it first said "Hello, World!").
+Strings can also be reused through **string interning**.
 
-In the `report` class, the title page appears as the first page of the document. In the standard LaTeX format, it includes the title, author, date, and acknowledgements. Let us look at the following example:
+A simple way to think about it: if two strings are identical, Python may keep one shared copy in memory.
 
-```latex
-\documentclass{report}
-\title{Report File}
-\author{Noname\thanks{Thanks to the readers.}}
-\date{\today}
-\begin{document}
-
-This is the first sentence in my \LaTeX\ file.
-
-\chapter{First Chapter}
-\section{Section}
-...
-\end{document}
+```{python}
+a = "hello"
+b = "hello"
+print(a is b)  # Expected: often True
 ```
 
-After compiling, if you find that there is no title page at all, you have spotted the issue! Even after setting the title page information in the preamble, you must add `\maketitle` between `\begin{document}` and `\end{document}` for LaTeX to actually render that information in the document:
+For strings with spaces or symbols, identity is less predictable:
 
-```latex
-\documentclass{report}
-\title{Report File}
-\author{Noname\thanks{Thanks to the readers.}}
-\date{\today}
-\begin{document}
-\maketitle
-
-This is the first sentence in my \LaTeX\ file.
-
-\chapter{First Chapter}
-\section{Section}
-...
-\end{document}
+```{python}
+s1 = "hello world"
+s2 = "hello world"
+print(s1 is s2)  # Expected: may be True or False
 ```
 
-### Adding Chapter Headings
+You can force interning with `sys.intern()`:
 
-Adding chapter headings in LaTeX is very straightforward — there is no need to adjust font sizes manually; you simply use the corresponding command[^word-heading]. In the `report` class, `\chapter{}` adds a chapter, while `\section{}` and `\subsection{}` correspond to sections and subsections respectively. By default, LaTeX uses **Arabic numerals** for chapter numbering. If you do not want a number, add an asterisk (`*`) after the command — for example, `\chapter*{}` or `\section*{}` — and LaTeX will omit the number and display only the heading text.
+```{python}
+import sys
 
-::: {.latex-runner}
-```latex
-\documentclass{report}          % Use the report class
-\begin{document}                % Document begins
+raw1 = "user_id"
+raw2 = "user_" + "id"
 
-\chapter{Introduction}          % Numbered chapter
+i1 = sys.intern(raw1)
+i2 = sys.intern(raw2)
 
-\section{Background Theories}   % Section
-
-\subsection{Purpose}            % Subsection
-
-\chapter*{Acknowledgements}     % Unnumbered chapter
-
-\end{document}                  % Document ends
-```
-:::
-
-LaTeX automatically handles numbering, table of contents updates, and font sizing — the author only needs to focus on the content itself. The table below shows the full hierarchy of section commands:
-
-| Depth | Command | Description |
-|:---:|---|---|
-| -1 | `\part{}` | Part |
-| 0 | `\chapter{}` | Chapter (not available in `article` class) |
-| 1 | `\section{}` | Section |
-| 2 | `\subsection{}` | Subsection |
-| 3 | `\subsubsection{}` | Sub-subsection |
-| 4 | `\paragraph{}` | Paragraph |
-| 5 | `\subparagraph{}` | Subparagraph |
-
-### Adding an Abstract
-
-To add an abstract, use the `abstract` environment:
-
-::: {.latex-runner}
-```latex
-\documentclass{report}          % Use the report class
-\title{Report File}             % Document title
-% Author name; \thanks generates a footnote acknowledgement
-\author{Noname\thanks{Thanks to the readers.}}
-\date{\today}                   % Automatically inserts today's date
-\begin{document}                % Document begins
-\maketitle                      % Renders the title page
-
-\begin{abstract}                % Abstract environment begins
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius neque vel
-commodo aliquet. Integer ornare hendrerit ligula et ultricies...
-\end{abstract}                  % Abstract environment ends
-
-\chapter{Introduction}          % Chapter 1
-
-\section{Background Theories}   % Section
-
-\subsection{Purpose}            % Subsection
-
-\chapter*{Acknowledgements}     % Unnumbered chapter
-
-\end{document}                  % Document ends
-```
-:::
-
-Text inside the `abstract` environment is automatically indented on both sides. Note that only the `article` and `report` classes support `abstract` — the `book` class cannot use this environment. Additionally, in the `report` class, the abstract appears on its own page, has no page number, and is not included in the table of contents. This may differ from the formatting requirements of some academic journals or institutions, so please keep this in mind.
-
-### Adding Footnotes
-
-LaTeX supports two types of notes: **footnotes** and **marginal notes**. Footnotes are numbered using Arabic numerals by default and appear at the bottom of the page. In the `report`/`book` class, numbering resets at each new chapter; in the `article` class, numbering is continuous throughout the document. Marginal notes have no number and use the normal font size. Since marginal notes involve package configuration and page margin settings, they are not covered in this article — only footnotes are introduced here.
-
-To add a footnote, simply append `\footnote{your footnote content}` after the relevant text:
-
-::: {.latex-runner}
-```latex
-\documentclass{report}          % Use the report class
-\title{Report File}             % Document title
-% Author name; \thanks generates a footnote acknowledgement
-\author{Noname\thanks{Thanks to the readers.}}
-\date{\today}                   % Automatically inserts today's date
-\begin{document}                % Document begins
-\maketitle                      % Renders the title page
-
-\begin{abstract}                % Abstract environment begins
-Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-\end{abstract}                  % Abstract environment ends
-
-\chapter{Introduction}          % Chapter 1
-
-Proin sed lorem sed est malesuada dictum...
-
-\section{Background Theories}   % Section
-
-Vivamus ut consequat nisl...
-
-\subsection{Purpose}            % Subsection
-
-% \footnote{} inserts a footnote directly after the text
-Sed sagittis quis est in mollis.\footnote{Curabitur vel tortor a lorem commodo volutpat eget nec dui.}
-
-\chapter*{Acknowledgements}     % Unnumbered chapter
-
-Cras elementum dui a nulla volutpat...
-
-\end{document}                  % Document ends
-```
-:::
-
-## Exercises
-
-::: {.exercises}
-
-::: {.exercise data-answer="A"}
-Which document class does **not** support the `\chapter{}` command?
-
-::: {.options}
-- `article`
-- `report`
-- `book`
-- `beamer`
-:::
-
-::: {.answer}
-**`article`** does not support `\chapter{}`; its highest-level sectioning command is `\section{}`. Both `report` and `book` include `\chapter{}`. `beamer` also lacks `\chapter{}`, but it is a presentation class with an entirely different structure. This is why this chapter uses `report` to demonstrate the full range of sectioning depth.
-:::
-:::
-
-::: {.exercise data-answer="C"}
-After setting `\title{}`, `\author{}`, and `\date{}` in the preamble, which command must appear in the document body to actually output the title page?
-
-::: {.options}
-- `\begin{title}`
-- `\titlepage`
-- `\maketitle`
-- `\printtitle`
-:::
-
-::: {.answer}
-You must call **`\maketitle`** inside `\begin{document}` to render the title information set in the preamble. A common beginner mistake is to define `\title{}` and friends but forget `\maketitle`, resulting in a document with no title page at all.
-:::
-:::
-
-::: {.exercise data-answer="C"}
-The `abstract` environment is **not** available in which document class?
-
-::: {.options}
-- `article`
-- `report`
-- `book`
-- All three support it
-:::
-
-::: {.answer}
-**`book`** does not support the `abstract` environment — attempting to use it will throw an error. Both `article` and `report` support it, though with slightly different behaviour: in `article`, the abstract appears directly below the title; in `report`, it occupies its own unnumbered page and does not appear in the table of contents.
-:::
-:::
-
-::: {.exercise}
-Using the `report` class, write a LaTeX document that includes: a title `My Report`, an author `Your Name`, today's date, a short abstract, and a chapter named `Introduction`.
-
-::: {.answer}
-```latex
-\documentclass{report}
-
-\title{My Report}
-\author{Your Name}
-\date{\today}
-
-\begin{document}
-
-\maketitle
-
-\begin{abstract}
-This is the abstract. It typically summarises the purpose, methods, and conclusions of the work.
-\end{abstract}
-
-\chapter{Introduction}
-
-This is the body of the first chapter.
-
-\end{document}
+print(i1 is i2)  # Expected: True
 ```
 
-Key points: `\maketitle` must come after `\begin{document}`; the `abstract` environment follows immediately after `\maketitle`; `\chapter{}` is only available in the `report` and `book` classes.
-:::
-:::
+Practical use case: repeated short strings (CSV field names, status labels, protocol tokens) can consume less memory when interned carefully.
 
-::: {.exercise}
-Add a footnote to the following sentence, with the content "This is a sample footnote.":
+```{python}
+import sys
 
-```latex
-LaTeX is a typesetting system.
+rows = ["OK", "OK", "FAIL", "OK", "FAIL"]
+rows = [sys.intern(x) for x in rows]
+
+print(rows[0] is rows[1])  # Expected: True
+print(rows[2] is rows[4])  # Expected: True
 ```
 
-::: {.answer}
-```latex
-LaTeX is a typesetting system\footnote{This is a sample footnote.}.
+## `is` vs `==`: Practical Rules
+
+The difference is fundamental:
+
+- `is` compares identity (same object)
+- `==` compares value (via `__eq__`)
+
+```{python}
+a = [1, 2]
+b = [1, 2]
+
+print(a == b)  # Expected: True
+print(a is b)  # Expected: False
 ```
 
-`\footnote{}` is inserted directly after the word or phrase being annotated. LaTeX automatically numbers and typesets it at the bottom of the page. Note the punctuation placement: the full stop goes **after** `\footnote{}`, not before it.
-:::
-:::
+One strong rule in real projects: use `is None`, not `== None`.
 
-:::
+```{python}
+x = None
+print(x is None)  # Expected: True
+print(x == None)  # Expected: True, but not recommended
+```
 
-## Chapter Summary
+Why is `is None` better?
 
-This chapter started with setting up the project folder and concluded with a fully structured LaTeX document. Here is a summary of the key points covered:
+1. `None` is a singleton, so identity is the correct semantic check.
+2. `==` calls `__eq__`, which may have custom behavior.
 
-- **Project structure**: A well-organised LaTeX project should separate `.tex` files, images, fonts, and output into their own folders. The `tree` command can be used to inspect the folder structure at any time.
-- **Document class**: The `\documentclass[]{}` command determines the basic format of the document. `article`, `report`, and `book` are the three most commonly used classes.
-- **Indentation control**: Use `\noindent` for a single line, or set `\parindent=0pt` in the preamble to disable indentation document-wide. Choose based on your needs.
-- **Title page**: Set `\title{}`, `\author{}`, and `\date{}` in the preamble, then call `\maketitle` in the document body for the title page to appear.
-- **Chapter structure**: Commands such as `\chapter{}`, `\section{}`, and `\subsection{}` let LaTeX handle numbering and layout automatically. Adding `*` removes the numbering.
-- **Abstract**: Use the `abstract` environment — available only in the `article` and `report` classes.
-- **Footnotes**: `\footnote{}` is inserted inline in the text, and LaTeX automatically formats it at the bottom of the page.
+For example, with NumPy arrays:
 
-The next article will cover LaTeX document environment configuration, including page layout, font selection, and package usage.
+```{python}
+import numpy as np
 
-[^input-include]: `\input{}` directly embeds the content of the target file, similar to copy-paste. `\include{}` starts the content on a new page and supports `\includeonly{}` for selective compilation, which is useful for speeding up builds in large documents.
-[^vector]: Vector graphics are typically exported as `.pdf` files from tools such as Inkscape or Illustrator, or drawn directly in LaTeX using packages like TikZ or PGFPlots.
-[^compiler]: pdfLaTeX uses `.tfm` and `.pfb` font formats managed through packages such as `fontenc` and `inputenc`, which is a different font handling approach from XeLaTeX and LuaLaTeX.
-[^output]: Some editors or compilation tools output intermediate files to the root directory by default. You may need to adjust the settings manually to redirect them to `output/`.
-[^win-tree]: The built-in Windows `tree` command (`tree /F`) has a slightly different format from the Unix version but can also display the full directory structure.
-[^report-class]: The reason for using the `report` class is simple: the `article` class does not have `\chapter`, which makes it impossible to fully demonstrate section depth. Therefore, `report` is used here.
-[^indent]: Personal note: I personally dislike first-paragraph indentation and prefer the **asymmetry** that comes from indenting only subsequent paragraphs. That said, if your professor or supervisor has specific requirements, it is always safer to follow their instructions.
-[^word-heading]: In Word, you would need to manually adjust font sizes for each heading, which can easily lead to formatting issues. If you are unfamiliar with Word's heading styles, refer to [Word Layout Tips: Styles, Hierarchy, Table of Contents, Headers & Footers, Paragraphs](http://tul.blog.ntu.edu.tw/archives/21623).
+arr = np.array([1, 2, 3])
+print(arr == None)  # Expected: array([False, False, False])
+print(arr is None)  # Expected: False
+```
+
+`is None` is both safer and clearer.
+
+## Mutable Objects and Identity Changes
+
+`id()` is also a great tool to understand in-place mutation vs rebinding.
+
+`append` mutates a list in place; `+` creates a new list:
+
+```{python}
+lst = [1, 2]
+old_id = id(lst)
+
+lst.append(3)
+print(id(lst) == old_id)  # Expected: True
+
+lst = lst + [4]
+print(id(lst) == old_id)  # Expected: False
+```
+
+`+=` has type-specific behavior:
+
+```{python}
+# list: usually in-place
+l = [1, 2]
+l_id = id(l)
+l += [3]
+print(id(l) == l_id)  # Expected: True
+
+# tuple: creates a new tuple and rebinds
+t = (1, 2)
+t_id = id(t)
+t += (3,)
+print(id(t) == t_id)  # Expected: False
+```
+
+Classic trap:
+
+```{python}
+t = ([1, 2], [3, 4])
+
+try:
+    t[0] += [5]
+except TypeError as e:
+    print(type(e).__name__)  # Expected: TypeError
+
+print(t)  # Expected: ([1, 2, 5], [3, 4])
+```
+
+Why does it mutate even though it errors?
+
+1. `t[0]` is a list, so in-place addition happens first.
+2. Python then attempts to assign the result back.
+3. Tuple item assignment is illegal, so a `TypeError` is raised.
+
+The mutation already happened before the exception.
+
+## Functions, Classes, and Modules Also Have `id()`
+
+Everything in Python is an object, including functions, classes, and modules.
+
+```{python}
+import sys
+
+def foo():
+    pass
+
+class Bar:
+    pass
+
+print(id(foo))
+print(id(Bar))
+print(id(sys))
+```
+
+Modules often behave like singletons due to import caching in `sys.modules`:
+
+```{python}
+import math
+import math as m2
+
+print(math is m2)  # Expected: True
+```
+
+## Practical Use and Real Pitfalls
+
+Understanding identity is useful, but misuse is dangerous.
+
+A bad pattern is using `id()` as a long-term tracking key:
+
+```{python}
+obj = object()
+tracking = {id(obj): "alive"}
+
+del obj
+# Later, a new object may reuse the same id
+```
+
+This can create false matches in long-running programs.
+
+A better approach is `weakref`:
+
+```{python}
+import weakref
+
+class Node:
+    pass
+
+n = Node()
+meta = weakref.WeakKeyDictionary()
+meta[n] = "alive"
+
+print(len(meta))  # Expected: 1
+
+del n
+# After garbage collection, key-value can disappear automatically
+```
+
+This tracks object relationships safely without relying on reusable integer identities.
+
+## Conclusion
+
+`id()` helps you see Python’s object model in action: variables are names, objects hold state and behavior.
+
+Once you internalize that model, many confusing behaviors become predictable: `is` vs `==`, mutable vs immutable operations, interning, constant pooling, and identity reuse.
+
+At the same time, keep this boundary clear: many examples here are CPython implementation details. They are excellent for debugging and performance tuning, but they should not become hard assumptions in application logic.
+
+In the next article, we will go deeper into mutable vs immutable objects, especially how they affect function arguments, default values, and side effects.
+
+## References
+
+- Python Built-in Functions: `id()`
+  <https://docs.python.org/3/library/functions.html#id>
+- CPython source (`Objects/longobject.c`)
+  <https://github.com/python/cpython/blob/main/Objects/longobject.c>
+- CPython internal runtime constants
+  <https://github.com/python/cpython/blob/main/Include/internal/pycore_runtime_structs.h>
+- Python `sys.intern()`
+  <https://docs.python.org/3/library/sys.html#sys.intern>
+- Python `weakref`
+  <https://docs.python.org/3/library/weakref.html>

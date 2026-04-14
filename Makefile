@@ -13,7 +13,7 @@ help:
 install:
 	python3 -m venv .venv
 	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install jupyter pyyaml
+	$(PYTHON) -m pip install jupyter pyyaml numpy
 
 preview:
 	$(QUARTO_ENV) quarto preview
