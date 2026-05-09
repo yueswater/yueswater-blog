@@ -251,7 +251,7 @@ print(math is m2)  # 預期輸出: True
 
 這個機制也是 Python 生態系大量使用「模組層級狀態」的基礎之一。
 
-### 常見陷阱：別把 `id()` 當成永久的追蹤鍵
+### 常見陷阱
 
 理解 `id()` 與 intern，對於效能調校與除錯有直接的價值。例如在資料分析世界裡，[`pandas`](https://pandas.pydata.org/) 的 `category` dtype，底層概念也是把重複值映射成共享字典與代碼，藉此減少重複儲存。
 

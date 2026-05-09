@@ -1,0 +1,344 @@
+---
+title: "Python Tutorial Series: Cleaner Loops with `zip` and `enumerate`"
+lang: en
+date: 2026-05-09
+author: Anthony
+categories: [Python, Programming Languages]
+description: "Two built-in functions that make loops more readable and more Pythonic"
+image: images/Python_logo.png
+glossary:
+  path: ../../../../../../_glossary/python.yml
+  popup: hover
+---
+
+Loops are central to almost every Python project. The syntax is straightforward, and for simple cases, a plain `for` loop does the job cleanly. Problems arise when you need to track the current index while iterating, or when you need to process two related sequences at the same time. Many beginners reach for `range(len())` in both situations — it works, but it introduces unnecessary complexity.
+
+Suppose you have the following data:
+
+```plain-text
+Name         Score
+Wang Daming   95
+Chen Xiaomei  71
+Lin Xiaohua   82
+```
+
+You could store this as a dictionary:
+
+```{python}
+scores = {
+    "Wang Daming":  95,
+    "Chen Xiaomei": 71,
+    "Lin Xiaohua":  82,
+}
+```
+
+Or split it into two lists:
+
+```{python}
+names  = ["Wang Daming", "Chen Xiaomei", "Lin Xiaohua"]
+grades = [95, 71, 82]
+```
+
+The traditional approach uses `range(len())` to generate indices:
+
+```{python}
+for i in range(len(names)):
+    print(f"Name: {names[i]}  Score: {grades[i]}")
+```
+
+This works, but it is harder to read than it needs to be, and it carries a hidden risk: if `names` and `grades` ever have different lengths, an `IndexError` will be thrown at runtime with no advance warning.
+
+Python has two built-in functions that eliminate both problems: `enumerate()` and `zip()`. Used well, they make loops shorter, safer, and considerably easier to read.
+
+## `enumerate()`: Automatic Index Tracking
+
+The [official Python documentation](https://docs.python.org/3/library/functions.html#enumerate) defines `enumerate()` as:
+
+```python
+enumerate(iterable, start=0)
+```
+
+It takes any iterable and attaches a counter to each element, returning `(index, value)` tuples on each iteration.
+
+### Using It in a Loop
+
+Rather than explaining it in the abstract, let us step through the behaviour directly. First, wrap `names` with `enumerate()`:
+
+```{python}
+enumerate(names)
+```
+
+Converting to a list reveals the structure:
+
+```{python}
+list(enumerate(names))
+```
+
+Each element is a `(index, value)` tuple. Because the `enumerate` object itself is iterable, it can go straight into a `for` loop. **Unpacking** assigns the two values to separate variables in a single step:
+
+```{python}
+for i, name in enumerate(names):
+    print(f"#{i}: {name}")
+```
+
+Compared to `range(len(names))`, this version states its intent clearly: "give me both the index and the value." There is no manual subscripting required.
+
+### Adjusting the Start Value
+
+By default, the counter starts at `0`. Pass `start=1` to match the one-based numbering that most readers expect:
+
+```{python}
+for i, name in enumerate(names, start=1):
+    print(f"#{i}: {name}")
+```
+
+### Equivalent Implementation
+
+The Python documentation also provides an equivalent implementation, which makes the internal logic transparent:
+
+```python
+def enumerate(iterable, start=0):
+    n = start               # counter, defaults to 0
+    for elem in iterable:
+        yield n, elem       # produce an (index, element) pair
+        n += 1              # increment the counter
+```
+
+The key is the `yield` statement: on each step, the current counter and element are produced together, then the counter advances. This also explains why `enumerate()` returns a *lazy* iterator rather than a fully computed list — it generates each pair only when the loop asks for it, which keeps memory usage low regardless of the input size.
+
+## `zip()`: Parallel Iteration Over Multiple Sequences
+
+Where `enumerate()` adds an index to a single sequence, `zip()` goes further: it lets you iterate over **multiple** sequences simultaneously. The [official definition](https://docs.python.org/3/library/functions.html#zip):
+
+```python
+zip(*iterables, strict=False)
+```
+
+The `*iterables` signature means you can pass any number of iterables. On each iteration, `zip()` takes one element from each and bundles them into a tuple.[^zip]
+
+### Using It in a Loop
+
+Following the same approach as before, wrap `names` and `grades` with `zip()`:
+
+```{python}
+zip(names, grades)
+```
+
+Convert to a list to inspect the output — a sequence of `(name, score)` pairs:
+
+```{python}
+list(zip(names, grades))
+```
+
+In a `for` loop, unpack the tuple directly. No index required:
+
+```{python}
+for name, grade in zip(names, grades):
+    print(f"Name: {name}  Score: {grade}")
+```
+
+Comparing this to the `range(len())` version at the top of this article, the difference is stark. The `zip()` version reads almost like a plain English sentence.
+
+### When Lengths Differ
+
+`zip()` stops as soon as the shortest sequence is exhausted. Any remaining elements in longer sequences are silently discarded:
+
+```{python}
+names_extra = ["Wang Daming", "Chen Xiaomei", "Lin Xiaohua", "Zhang Dawei"]  # one extra
+for name, grade in zip(names_extra, grades):
+    print(f"Name: {name}  Score: {grade}")
+```
+
+Zhang Dawei never appears. Silent truncation is convenient in many cases, but it can also hide data quality issues when two sequences are supposed to be the same length. Python 3.10 introduced `strict=True` to address this: if the lengths do not match, a `ValueError` is raised immediately:
+
+```python
+for name, grade in zip(names_extra, grades, strict=True):
+    print(f"Name: {name}  Score: {grade}")
+# ValueError: zip() argument 2 is shorter than argument 1
+```
+
+### Equivalent Implementation
+
+The equivalent implementation for `zip()` is slightly more involved than `enumerate()`, but the logic is still straightforward:
+
+```python
+def zip(*iterables):
+    iterators = [iter(it) for it in iterables]   # convert each input to an iterator
+    while True:
+        result = []
+        for it in iterators:
+            try:
+                result.append(next(it))           # pull one element from each iterator
+            except StopIteration:
+                return                            # stop if any iterator is exhausted
+        yield tuple(result)                       # produce the combined tuple
+```
+
+Each iteration calls `next()` on every iterator in turn. The moment any iterator raises `StopIteration`, the function returns — that is exactly where the "shortest sequence wins" behaviour comes from.
+
+## Advanced Patterns
+
+Once you are comfortable with both functions individually, combining them opens up a few useful patterns.
+
+### Mixing `zip` and `enumerate`
+
+If you need an index *and* want to iterate over multiple sequences at once, wrap the `zip()` result in `enumerate()`:
+
+```{python}
+for i, (name, grade) in enumerate(zip(names, grades), start=1):
+    print(f"#{i}: {name} — {grade}")
+```
+
+::: {.callout-tip}
+## The inner parentheses matter
+
+In `for i, (name, grade) in ...`, the parentheses around `name, grade` are not optional. They tell Python that this position holds a tuple that needs to be unpacked further. Without them — `for i, name, grade in ...` — Python expects each element to unpack into exactly three variables, but `enumerate()` produces `(i, (name, grade))`, which is only two levels deep, so a `ValueError` is raised.
+:::
+
+### Unzipping with `zip(*...)`
+
+`zip()` pairs sequences together; the same function can reverse the operation. Passing a list of tuples with `*` unpacks them so `zip()` can re-group them by position:
+
+```{python}
+pairs = [("Wang Daming", 95), ("Chen Xiaomei", 71), ("Lin Xiaohua", 82)]
+
+names_unzipped, grades_unzipped = zip(*pairs)
+print(names_unzipped)
+print(grades_unzipped)
+```
+
+::: {.callout-note}
+## The result is a tuple, not a list
+
+`zip(*pairs)` returns tuples. If you need lists, wrap each with `list()`.
+:::
+
+### Building a Dictionary in One Line
+
+Combining `zip()` with `dict()` is a common Python idiom for creating a key–value mapping from two parallel sequences:
+
+```{python}
+scores_dict = dict(zip(names, grades))
+print(scores_dict)
+```
+
+You will encounter this pattern frequently when reading other people's Python code.
+
+## Exercises
+
+::: {.exercises}
+
+::: {.exercise data-answer="C"}
+### Question 1
+
+What does `zip(["a", "b", "c"], [1, 2])` produce?
+
+::: {.options}
+- A. `[("a", 1), ("b", 2), ("c", None)]`
+- B. A `ValueError` is raised
+- C. `[("a", 1), ("b", 2)]`
+- D. `[("a", 1), ("b", 2), ("c",)]`
+:::
+
+::: {.answer}
+**Answer: C**
+
+`zip()` stops at the shortest sequence. The element `"c"` has no matching value and is silently dropped. To raise a `ValueError` when lengths differ, pass `strict=True` (Python 3.10+).
+:::
+:::
+
+::: {.exercise data-answer="B"}
+### Question 2
+
+Which of the following correctly prints an index (starting from 1), a name, and a score on each line?
+
+::: {.options}
+- A. `for i, name, grade in enumerate(zip(names, grades), start=1):`
+- B. `for i, (name, grade) in enumerate(zip(names, grades), start=1):`
+- C. `for i, name, grade in zip(enumerate(names), grades):`
+- D. `for i, (name, grade) in zip(enumerate(names, start=1), grades):`
+:::
+
+::: {.answer}
+**Answer: B**
+
+`enumerate(zip(names, grades), start=1)` produces `(i, (name, grade))` on each step. The inner parentheses in `for i, (name, grade)` tell Python to unpack that nested tuple. Option A is missing the inner parentheses and will raise a `ValueError`; options C and D have incorrect structure.
+:::
+:::
+
+::: {.exercise data-answer="C"}
+### Question 3
+
+`dict(zip(keys, values))` is equivalent to which of the following?
+
+::: {.options}
+- A. `{k: v for k, v in zip(keys, values)}`
+- B. `{keys[i]: values[i] for i in range(len(keys))}`
+- C. Both A and B are equivalent
+- D. Neither A nor B is equivalent
+:::
+
+::: {.answer}
+**Answer: C**
+
+All three produce the same dictionary. The differences are stylistic: `dict(zip(...))` is the most concise; the dict comprehension is the most flexible (conditions can be added); `range(len())` is the most verbose and least Pythonic.
+:::
+:::
+
+::: {.exercise}
+### Question 4
+
+Given the list of tuples below, use `zip(*...)` to unzip it into two separate lists stored in `cities` and `populations`:
+
+```python
+data = [("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000)]
+```
+
+::: {.answer}
+```{python}
+data = [("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000)]
+
+cities, populations = zip(*data)
+print(list(cities))
+print(list(populations))
+```
+
+`zip(*data)` expands `data` into `zip(("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000))`. `zip()` then groups the first elements together and the second elements together, effectively transposing the structure.
+:::
+:::
+
+:::
+
+## Chapter Summary
+
+This article started from the limitations of `range(len())` and introduced two built-in functions that handle the common loop patterns more cleanly.
+
+### `enumerate()`
+
+- Attaches an automatic index to each element, returning `(index, value)` tuples
+- The `start` parameter adjusts the initial counter value
+- Returns a lazy iterator: elements are produced on demand, not all at once
+
+### `zip()`
+
+- Iterates over multiple sequences in parallel, producing one tuple per step
+- Stops at the shortest sequence by default; use `strict=True` (Python 3.10+) to raise an error on length mismatch
+- Works in reverse with `zip(*pairs)` to unzip a list of tuples
+- Combines with `dict()` to build a mapping from two sequences in one line
+
+### Combining Both
+
+Wrapping a `zip()` result in `enumerate()` gives you indices and multiple values at once. Remember the inner parentheses: `for i, (a, b) in enumerate(zip(...))`.
+
+::: {.callout-tip}
+## Which one should you use?
+
+| Situation | Recommended |
+|-----------|-------------|
+| Need an index while iterating | `enumerate()` |
+| Need to iterate two or more sequences together | `zip()` |
+| Need both | `enumerate(zip(...))` |
+| Need to reverse a list of pairs | `zip(*pairs)` |
+:::
+
+[^zip]: The name comes from the everyday meaning of *zip* — a fastener that interlocks two rows of teeth one pair at a time. `zip()` does the same thing with sequences: it pairs up elements from each input, one position at a time.

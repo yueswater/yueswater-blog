@@ -29,6 +29,14 @@
     '/articles/posts/2026/04/11/latex-intro-en.html': '/articles/posts/2026/04/11/latex-intro.html',
     '/articles/posts/2026/04/12/latex-intro.html':    '/articles/posts/2026/04/12/latex-intro-en.html',
     '/articles/posts/2026/04/12/latex-intro-en.html': '/articles/posts/2026/04/12/latex-intro.html',
+    '/articles/posts/2026/04/13/latex-first-doc/latex-first-doc.html':    '/articles/posts/2026/04/13/latex-first-doc/latex-first-doc-en.html',
+    '/articles/posts/2026/04/13/latex-first-doc/latex-first-doc-en.html': '/articles/posts/2026/04/13/latex-first-doc/latex-first-doc.html',
+    '/articles/posts/2026/04/14/latex-basic-setting/latex-basic-setting.html':    '/articles/posts/2026/04/14/latex-basic-setting/latex-basic-setting-en.html',
+    '/articles/posts/2026/04/14/latex-basic-setting/latex-basic-setting-en.html': '/articles/posts/2026/04/14/latex-basic-setting/latex-basic-setting.html',
+    '/articles/posts/2026/04/14/python-id-function/python-id-function.html':    '/articles/posts/2026/04/14/python-id-function/python-id-function-en.html',
+    '/articles/posts/2026/04/14/python-id-function/python-id-function-en.html': '/articles/posts/2026/04/14/python-id-function/python-id-function.html',
+    '/articles/posts/2026/05/09/python-zip-enum/python-zip-enum.html':    '/articles/posts/2026/05/09/python-zip-enum/python-zip-enum-en.html',
+    '/articles/posts/2026/05/09/python-zip-enum/python-zip-enum-en.html': '/articles/posts/2026/05/09/python-zip-enum/python-zip-enum.html',
   };
 
   // Navbar label translations: href substring → [zh, en]

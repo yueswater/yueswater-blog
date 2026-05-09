@@ -1,0 +1,452 @@
+---
+title: "LaTeX 教學系列: 基本設定"
+lang: zh-TW
+date: 2026-04-14
+author: Anthony
+categories: [LaTeX]
+description: "LaTeX 文件的基本設定，包含字型、頁面版面與常用套件"
+image: images/LaTeX_logo.png
+glossary:
+  path: ../../../../../../_glossary/latex.yml
+  popup: hover
+---
+
+在上一篇文章[第一份 LaTeX 文件](../../../04/13/latex-first-doc/latex-first-doc.qmd)中，我們建立了第一份可以成功編譯的 LaTeX 文件，認識了{{< glossary "文件類別" >}}、{{< glossary "序言" >}}與本文的基本架構。然而，一份「能跑」的文件，距離「好看」還有一段距離——預設的 LaTeX 輸出在字型、中文支援、頁面邊距等方面都有明顯的侷限。
+
+在這篇文章中，你將學到如何透過幾個常用{{< glossary "套件" >}}與設定，讓文件更符合實際需求：
+
+- 設定頁面版面({{< glossary "邊距" >}}、紙張大小)
+- 載入中文支援
+- 調整字型與{{< glossary "行距" >}}
+- 認識幾個必備套件
+- 設定{{< glossary "頁眉" >}}與{{< glossary "頁尾" >}}
+
+## TeX 世界的巴別塔
+
+跟許多程式語言一樣，TeX 語言也是由西方世界的人所發明的，因此自然地對於東亞國家的使用者不太友好，就像《聖經》中提到的巴別塔 (Tower of Babel)一樣，每個語言使用者隔絕隔來。然而，隨著電腦的普及，有需求的人越來越多，因此不同的編譯系統便被許多無私奉獻的工程師魔改，製作出可以允許不同語言使用者的{{< glossary "編譯器" >}}。
+
+| 編譯系統 | 優點 | 缺點 |
+|----------|------|------|
+| pdfLaTeX | 穩定且廣泛支援，直接產生 PDF 文件 | 對非拉丁字母和 OpenType 字體支援較差 |
+| XeLaTeX | 支援 Unicode 和 OpenType 字體，可以使用不同語言 | 編譯速度可能較慢 |
+| LuaLaTeX | 支援 Unicode 和 OpenType 字體，基於 Lua 擴充功能強大 | 編譯速度可能較慢 |
+| LaTeX | 可以產生 DVI 文件，靈活性高 | 需要額外步驟將 DVI 轉換為 PS 或 PDF 文件，使用較為繁瑣 |
+| TeX | 高度靈活性和可控性 | 語法較為複雜，不如 LaTeX 方便實用 |
+| ConTeXt | 對多語言和複雜排版處理較好，開發活躍 | 與 LaTeX 相容性較差，需要學習新的語法 |
+| OpTeX | 簡單實用，語法設計現代 | 使用者社群較小，資料和資源相對較少 |
+| AMS-TeX | 數學公式排版效果極佳，專為數學家設計 | 相比 LaTeX 功能更單一 |
+
+: 不同的 TeX 編譯系統
+
+看到這裡的你一定會想到，之前文章中的範例都是用英文寫的，那如果我的文件是中文要怎麼辦呢？如果你有這個問題的話，恭喜你已經省了許多人了，在這篇文章的第一小節就會介紹如何設定中文字體。
+
+## 套件
+
+如果你有玩過線上遊戲，尤其是角色扮演類，經驗一定都知道，需要使用裝備才能夠使特定職業、魔法。LaTeX 也是一樣，需要使用裝備才能夠使用特定功能，例如下一節將介紹的使用中文。因此，這個小節將帶你了解如何安裝並使用套件，並且在不清楚套件可以如何設定的想法下，到哪裡尋求更多協助。
+
+### 安裝與使用套件
+
+使用 LaTeX 套件時，我們需要以 `\usepackage[套件設定]{套件名稱}` 指令，告訴編譯器需要使用特定套件。[^optional] 不過需要注意，如果你是在本機裡面使用 LaTeX，也就是已經裝好編譯器，那麼在使用套件之前，編譯器通常都會詢問是否要安裝特定套件[^miktex]，必須要確保確實安裝該套件才能成功編譯。
+
+[^optional]: 如果你不熟悉 `[]` 與 `{}` 的差異在哪，請回去看第一篇文章的[決定美醜的關鍵：參數](../../../04/12/latex-intro.qmd)。
+
+[^miktex]: 筆者未有使用過 MikTeX 以外編譯器的經驗，因此不確定其他編譯器是否如此貼心。MikTeX 的好處是可以在 MikTeX Console 裡面設定自動安裝套件，不用每次詢問。
+
+在上一篇[第一份 LaTeX 文件](../../../04/13/latex-first-doc/latex-first-doc.qmd)的最後，你有沒有發現，在範例中有一些很奇怪的非英文字母。這些文字就是所謂的虛擬一大串亂碼碎碎念的 **[Lorem ipsum](https://zh.wikipedia.org/zh-tw/Lorem_ipsum)**(簡稱為 Lipsum)。Lipsum 是一段常見的假文字，俗稱為亂文，起源於古羅馬西塞羅(Cicero)的作品，通常用於設計和排版的過程中，用來填充文本位置以模擬實際的文字內容，幫助測試版面效果。以下我們以 `lipsum` 與 `blindtext` 兩個套件加以說明。[^lipsum]
+
+[^lipsum]: `lipsum` 與 `blindtext` 最大的差異是：`lipsum` 只會產生 Lorem ipsum 假文本，而 `blindtext` 則可以產生各種格式的測試文本，例如標題、副標題等。
+
+```latex
+\documentclass{article}
+\usepackage{lipsum}
+
+\begin{document}
+\lipsum[1-2]  % 產生第 1 到第 2 段 Lorem ipsum 文本
+\end{document}
+
+\documentclass{article}
+\usepackage{blindtext}
+
+\begin{document}
+\blinddocument  % 產生一個包含標題、段落、列表等的範例
+\end{document}
+```
+
+### 說明書：CTAN
+
+如果你買了一個東西卻不知道如何使用的話，那麼這個物品對你的意義就不大了。因此通常廠商都會給使用者說明書(manual)，清楚地告訴使用者應該如何使用，以及一些問題與解決的提示。
+
+TeX 的各種套件也有各自的使用說明書，而這個說明書被存放在 [CTAN](https://ctan.org/?lang=en) 這個使用說明書儲存庫中。[^ctan] 假設我們要查看 `lipsum` 這個套件的使用說明，可以在瀏覽器的搜索欄上搜索「CTAN lipsum」這兩個關鍵字，大部分第一個都是正確的搜尋結果。點進去之後就會看到 CTAN 上存放該套件的使用說明，多以 Package documentation 命名。
+
+[^ctan]: 但是這個儲存庫可惜的就是在英文，不過現在 chatGPT 等 AI 工具如此發達，只要將文件內容上進去即可翻譯，因此不用擔心不懂英文。
+
+## 設定文字
+
+終於來到大家最想看的第一小節了，在本小節開始之前，必須說明，由於我是串接 TeXLive.net，無法將字體檔、圖片檔等上傳至 TeXLive，因此我是使用 TeXLive.net 官網提供的範例加以調整，還請讀者多多見諒。
+
+### 設定字體大小
+
+在 LaTeX 中，更改字體大小有多種方法，主要是使用預定義的字體大小指令和 `\selectfont` 指令兩種不同方法。預定義的字體大小指令通常簡單且易於使用：
+
+| 字體大小指令 | 字體大小 (pt) | 字體大小指令 | 字體大小 (pt) |
+|:---:|:---:|:---:|:---:|
+| `\tiny` | 5 | `\large` | 12 |
+| `\scriptsize` | 7 | `\Large` | 14 |
+| `\footnotesize` | 8 | `\LARGE` | 17 |
+| `\small` | 9 | `\huge` | 20 |
+| `\normalsize` | 10 | `\Huge` | 25 |
+
+```latex
+\documentclass{article}
+\begin{document}
+
+This is \tiny tiny text.
+This is \large large text.
+This is \Huge the largest text.
+
+\end{document}
+```
+
+另一種設定字體大小則是使用 `\fontsize{size}{baselineskip}\selectfont` 指令。在這裡，`size` 是字體大小，`baselineskip` 是{{< glossary "行距" >}}。例如，若要設定字體大小為 25pt 並將行距設定為 14pt，可以使用 `{\fontsize{25}{14}\selectfont 要更改大小的字體}`。
+
+在這裡有一個小技巧，我們使用花括號 `{}` 創建一個**局部範圍**，範圍內的設定只影響本括號內的內容，本括號外的內容不受影響。
+
+### 設定字體系列
+
+這張表顯示了 LaTeX 中三個字體系列(typeface/family)的設定方法，包括 serif(襯線字體)、sans serif(無襯線字體)和 typewriter(等寬字體)。每種字體系列都有相應的指令和效果指令：
+
+| 字體系列 | 指令 | 替代指令 |
+|:---:|:---:|:---:|
+| serif (roman) | `\textrm{Sample Text 0123}` | `\rmfamily` |
+| sans serif | `\textsf{Sample Text 0123}` | `\sffamily` |
+| typewriter (monospace) | `\texttt{Sample Text 0123}` | `\ttfamily` |
+
+在 Word 裡面，使用者可以對準一段文字反白，接著選擇想要的字型進行更改。不過這樣的設定方式顯然麻煩，而且如果某個地方的電腦沒有特定字型檔案，那就會顯示預設字體(通常都是新細明或宋體)。LaTeX 很好地解決這個問題，在 LaTeX 中可以使用 `fontspec` 套件，該套件提供了一個簡便的方法來設定和更改字型，特別適用於使用 XeLaTeX 或 LuaLaTeX 編譯的文件。
+
+首先，你需要在文件的序言中引入 `fontspec` 套件，接著使用 `\setmainfont`、`\setsansfont` 與 `\setmonofont`，接著就可以更改你想要的字體。不過一般來說，字體檔應該都要儲存在資料夾中的 `fonts` 資料夾，並且指定路徑，否則編譯器不知道你想要的字體是什麼。
+
+```latex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+\begin{document}
+This is Serif.
+\textsf{This is Sans Serif.}
+\texttt{This is Mono.}
+\end{document}
+```
+
+### 設定字型
+
+在 LaTeX 中，粗體、斜體和粗斜體的用途各有不同，主要用於凸出和強調文章內容。**粗體**(Bold)常用於強調重要的詞或句子、標題或副標題；**斜體**(Italic)則通常用於書名、文章名稱或強調外來詞；至於**粗斜體**(Bold Italic)，則用於需要特別強調的文本，例如在強調的前提需要更強的視覺感受，或者在標題中的特別強調部分。
+
+```latex
+\documentclass{article}
+\begin{document}
+This is normal text.
+This is \textbf{bold} text.
+This is \textit{italic} text.
+This is \textbf{\textit{bold italic}} text.
+\end{document}
+```
+
+### 設定中文
+
+在 LaTeX 中，使用中文需要特別的套件來處理字體和字符編碼問題。常用的套件是 `xeCJK`，該套件需要 XeLaTeX 編譯器來正確顯示中文。[^cjk] 首先，你需要確保系統已安裝 XeLaTeX 編譯器，接著，在你的 LaTeX 文件中引入 `xeCJK` 和 `fontspec` 兩個套件。`xeCJK` 用於處理中文文字，而 `fontspec` 用於設定字體。以下是範例程式碼，展示如何設定中文：
+
+[^cjk]: 另外還有 `CTEX`、`CJK`、`CJKutf8`，但是最常見且最好用的套件是 `xeCJK`。而 CJK 代表的意思是中文(Chinese)、日文(Japanese)與韓文(Korean)。
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\begin{document}
+你好，這是一份測試文件。
+\end{document}
+```
+
+由於前面提到無法上傳字體檔至 TeXLive 上，因此以下提供在本機建立 fonts 資料夾的處理方式。首先，在 `.tex` 的同層資料夾路徑下建立 fonts 資料夾，並將中文字體檔(可檔案格式有多個，分別是 `.ttf`、`.TTF` 或 `.otf`)放在裡面，中文字體檔案建議用 [cwTeX 字體](https://github.com/l10n-tw/cwtex-q-fonts)。範例如下，來一一解析如何設定。
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+
+% 設定中文字體
+\setCJKmainfont[Path=./fonts/]{cwTeXQMing-Medium.ttf}
+\setCJKfamilyfont{kai}[Path=./fonts/]{cwTeXQKai-Medium.ttf}
+\newcommand{\kai}[1]{{\CJKfamily{kai}#1}}
+\setCJKfamilyfont{hei}[Path=./fonts/]{cwTeXQHei-Bold.ttf}
+\newcommand{\hei}[1]{{\CJKfamily{hei}#1}}
+
+\begin{document}
+你好，這是一份測試文件。
+\end{document}
+```
+
+在範例程式碼中，我們使用 `\setCJKmainfont` 設定文件的**主要**中文字體，也就是如果你不加以修改字體，那就是依據使用者預設的字體呈現。接著，`\setCJKfamilyfont` 則是新增中文字體的**字體家族**，例如 `\setCJKfamilyfont{kai}[Path=./fonts/]{cwTeXQKai-Medium.ttf}` 便指定了字體家族為 `kai`(也就是楷書)，在選擇參數中加入 `Path=./fonts/`，代表將字體檔路徑設定在子資料夾 fonts 中，最後告訴編譯器字體檔案名稱是什麼。
+
+設定到這邊並未結束，因為這樣只有告訴編譯器有這個字體家族，但是並沒有呼叫該字體的指令。不過因為是每個人設定的字體家族名稱都不盡相同，因此需要**新增指令**。新增指令的方式很簡單，只要用 `\newcommand{指令名稱}[參數數量]{定義指令}` 即可。[^newcommand] 回到剛剛包含的例子，文件中已經設定一個字體家族名稱為 `kai`，我們就創建新指令 `\kai`，定義為 `\newcommand{\kai}[1]{{\CJKfamily{kai}#1}}`，也就是當使用者需要將字體變成楷書時，使用 `\kai{欲變更文字}` 即可。其他的字體類型以此類推，我們就可以建立一個好看的中文文件了。
+
+[^newcommand]: 新指令的定義其實包含你希望指令執行的內容。如果指令可以允許接受參數，則可以在定義中使用 `#1`、`#2` 等來引用這些參數，`#1` 表示第一個參數，依此類推。
+
+## 頁面設定
+
+有了上面的設定概念後，接著我們就可以針對文件中的其他部分進行修改。我們可以透過一些套件，讓我們的文件變得更加美觀。這一節將帶你學到如何進行邊距設定、章節標題字體設定，以及{{< glossary "頁眉" >}}與{{< glossary "頁尾" >}}的設定。
+
+### 邊距設定
+
+在 Word 中，我們可以進行頁面設定，即設定上、下、左、右邊距，LaTeX 也有提供相同的功能。設定{{< glossary "邊距" >}}的方式很簡單，只要使用 `geometry` 套件即可。引用套件後，我們可以使用 `\geometry{}` 來設定。以下是範例，假設要將頁面的上邊距和下邊距設定為 2 公分，左邊距和右邊距設定為 2.5 公分：
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{第一份 \LaTeX\ 文件}
+\author{某大名}
+\date{\today}
+
+\begin{document}
+\maketitle
+你好，這是一份測試文件。
+\end{document}
+```
+
+如果你想要將所有邊距設成同一數值，例如 `\geometry{margin=2cm}`，這樣就將使得文件的所有邊距都設定為 2 公分。如果只想設定某一方向的邊距，可以使用以下指令：`\geometry{left=3cm}`，類似地，可以設定 `top`、`right` 和 `bottom` 邊距。
+
+`geometry` 套件還提供了其他設定選項，例如紙張大小、頁面方向和裝訂邊距等。使用者可以透過 a4paper、letterpaper 等選項來設定紙張大小，或是可以用 `landscape` 將頁面設定為縱向或橫向；[^landscape] 如果需要為裝訂留的額外的邊距，可以使用 `bindingoffset` 參數。假設我們要將文件設定為 a3 的橫向大小，邊距均為 2.5 公分，並預留裝訂側的額外為 1 公分，可參考以下範例：
+
+[^landscape]: 預設方向不是縱向(portrait)，因此不需要設定。
+
+```latex
+\usepackage{geometry}
+\geometry{a3paper, margin=2.5cm, landscape, bindingoffset=1cm}
+```
+
+### 章節標題格式設定
+
+Word 裡面對於章節標題格式設定，需要先選取某一個章節的標題，接著點選樣式進行設定；[^word] 不過這樣的設定方式顯然麻煩，容易因為加入新的小節而跑掉。
+
+[^word]: 請參考 [Word標題設定，1步操作，更改整份文件所有設計](https://zanzan.tw/archives/18528)。
+
+在 LaTeX 中，我們使用 `titlesec` 進行設定。首先，在序言中載入 `titlesec` 套件後，使用 `\titleformat{欲設定標題}[形狀]{格式}{標籤樣式}{標題編號與文本距離}{標題文本前指令}[標題文本後指令]` 指令來設定章節標題的格式。這個指令好幾個部分：
+
+1. **欲設定標題**：指定要設定格式的標題指令，例如 `\section`、`\subsection` 等。
+2. **形狀**：可選參數，用於指定標題的形狀或樣式，例如 `block`(塊狀)或 `display`(顯示)。如果不需要特別的形狀，這部分可以省略。
+3. **格式**：設定標題的字體、大小、顏色等格式，使用 LaTeX 的文本格式指令。
+4. **標籤樣式**：指定標題的標籤樣式，即標題編號部分。可以使用 `\thesection`、`\thesubsection` 等指令來設定。如果不需要標題編號，可以使用空的大括號 `{}`。
+5. **標題編號與文本距離**：設定標題編號與標題文本之間的距離，單位可以是 `pt`、`em`、`cm` 等。
+6. **標題文本前指令**：指定在標題文本之前執行的 LaTeX 指令，例如插入圖示、水平線等。如果不需要，可以留空。
+7. **標題文本後指令**：可選參數，指定在標題文本之後執行的 LaTeX 指令。
+
+直接從以下範例看一下如何處理：
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{xeCJK, CJKnumb}
+\setmainfont{FandolSong}
+
+\usepackage{zhlipsum}
+
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\CJKnumber{\thesection}、}
+  {1em}
+  {}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{第一份 \LaTeX\ 文件}
+\author{某大名}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{前言}
+\zhlipsum[1-3]
+\end{document}
+```
+
+在上面的範例程式碼中，有幾個小地方值得注意：
+
+1. 可以看到我們使用 `\usepackage{xeCJK, CJKnumb}` 將兩個套件載入進來。如果欲載入沒有要設定其它的內容，那麼就可以將多個套件以逗號隔開一次載入。
+2. 前面我們提到有一串英文假文字產生器 `lipsum`，中文也有相對應的套件 `zhlipsum`，使用方法與 `lipsum` 大致相同，即輸入 `\zhlipsum[起始段落-結束段落]` 即可。
+
+### 頁眉頁尾設定
+
+在 Word 中，{{< glossary "頁眉" >}}與{{< glossary "頁尾" >}}的設定複雜，除了資訊的設定外，更包含奇數頁的設定、頁碼、頁眉文字等。LaTeX 則提供 `fancyhdr` 套件，透過預先設定，就不用一頁一頁前微調。
+
+在以下的範例程式碼中有一個地方必須注意，我們以頁首的設定來說，程式碼中有 `fancyfoot` 與 `cfoot`、`lfoot`、`rfoot`，你可能會想說這是不一樣的東西嗎？答案是肯定，也是確實。事實上 `fancyfoot` 是較為正式的用法，可以設定的參數較多，常用位置參數包括：`L` 左側(Left)、`C` 中間(Center)、`R` 右側(Right)、`E` 偶數頁(Even)、`O` 奇數頁(Odd)。而 `cfoot`、`lfoot`、`rfoot` 則是 `fancyhdr` 套件提供的快捷命令，用於快速設置頁首的中間、左側和右側內容。
+
+```latex
+% !TeX xelatex
+\documentclass[twoside]{article}
+\usepackage{fontspec}
+\usepackage{xeCJK, CJKnumb}
+\setmainfont{FandolSong}
+
+\usepackage{zhlipsum}
+
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\CJKnumber{\thesection}、}
+  {1em}
+  {}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+% 設定頁眉頁尾
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\normalsize 左上文字 \\ 左下文字}
+\rhead{\normalsize 右上文字 \\ 右下文字}
+
+\fancyfoot[C]{}
+\fancyfoot[LE,RO]{第~\thepage~頁}
+
+\title{第一份 \LaTeX\ 文件}
+\author{某大名}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{前言}
+\zhlipsum[1-10]
+\section{研究方法}
+\zhlipsum[11-20]
+\end{document}
+```
+
+在使用 `fancyhdr` 之前，建議使用 `\fancyhf{}` 清除任何預設的頁眉和頁尾設定。然後，使用 `\lhead` 和 `\rhead` 命令分別設定頁眉的左側和右側內容，其中 `\lhead{\normalsize 左上文字 \\ 左下文字}` 將頁眉的左側設定為包含「左上文字」加「左下文字」，而 `\rhead{\normalsize 右上文字 \\ 右下文字}` 則將頁眉的右側設定為包含「右上文字」加「右下文字」。
+
+頁尾部分，使用 `\fancyfoot[C]{}` 清空中央的頁尾內容，然後使用 `\fancyfoot[LE,RO]{第~\thepage~頁}` 設定頁碼，使其在偶數頁的左側和奇數頁的右側顯示，並且格式為「第 頁碼 頁」。
+
+## 練習題
+
+::: {.exercises}
+
+::: {.exercise data-answer="B"}
+### 問題 1
+
+下列哪個{{< glossary "編譯器" >}}同時支援 Unicode 與 OpenType 字體，適合處理中文文件？
+
+::: {.options}
+- A. pdfLaTeX
+- B. XeLaTeX
+- C. TeX
+- D. AMS-TeX
+:::
+
+::: {.answer}
+**答案：B — XeLaTeX**
+
+XeLaTeX 原生支援 Unicode 和 OpenType 字體，可以直接使用系統字體，是處理中文最常見的選擇。pdfLaTeX 對非拉丁字符的支援較差，TeX 與 AMS-TeX 功能也不適合此需求。
+:::
+:::
+
+::: {.exercise data-answer="C"}
+### 問題 2
+
+下列哪個{{< glossary "套件" >}}用於設定頁面{{< glossary "邊距" >}}與紙張大小？
+
+::: {.options}
+- A. `fontspec`
+- B. `fancyhdr`
+- C. `geometry`
+- D. `titlesec`
+:::
+
+::: {.answer}
+**答案：C — `geometry`**
+
+`geometry` 套件負責頁面版面設定，包含 `margin`、`a4paper`、`landscape`、`bindingoffset` 等參數。`fontspec` 設定字型，`fancyhdr` 設定{{< glossary "頁眉" >}}與{{< glossary "頁尾" >}}，`titlesec` 設定章節標題格式。
+:::
+:::
+
+::: {.exercise data-answer="A"}
+### 問題 3
+
+以下哪個指令可以設定局部字體大小為 20pt、{{< glossary "行距" >}}為 24pt？
+
+::: {.options}
+- A. `{\fontsize{20}{24}\selectfont 文字}`
+- B. `\fontsize[20][24]{文字}`
+- C. `\setfontsize{20pt}{24pt}`
+- D. `{\huge 文字}`
+:::
+
+::: {.answer}
+**答案：A**
+
+`\fontsize{size}{baselineskip}\selectfont` 是正確語法，必須在花括號內建立局部範圍。`\huge` 雖可改大小，但無法精確指定數值，且不能同時設定{{< glossary "行距" >}}。
+:::
+:::
+
+::: {.exercise}
+### 問題 4
+
+請寫出一份使用 XeLaTeX 的最小中文文件，要求：
+
+1. 載入 `xeCJK` 與 `fontspec` 套件
+2. 設定主要中文字體為 `FandolSong`
+3. 文件本文輸出「你好，LaTeX！」
+
+::: {.answer}
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\begin{document}
+你好，LaTeX！
+\end{document}
+```
+
+`% !TeX xelatex` 是魔法注釋(magic comment)，告訴編輯器使用 XeLaTeX 編譯。`\usepackage{xeCJK}` 負責中文字符處理，`fontspec` 搭配 `\setmainfont` 設定字型。
+:::
+:::
+
+::: {.exercise}
+### 問題 5
+
+請在{{< glossary "序言" >}}中加入 `fancyhdr` 設定，讓所有頁面的{{< glossary "頁尾" >}}中央顯示「第 N 頁」格式的頁碼。
+
+::: {.answer}
+```latex
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{第~\thepage~頁}
+```
+
+`\fancyhf{}` 先清除所有預設內容，`\cfoot` 是設定{{< glossary "頁尾" >}}中央的快捷命令，`\thepage` 是當前頁碼，`~` 是不可斷行的空格。
+:::
+:::
+
+:::
+
+## 本章小結
+
+這篇文章涵蓋了 LaTeX 排版中幾個最基礎也最重要的設定。首先我們了解了不同{{< glossary "編譯器" >}}的特性，確認 XeLaTeX 是處理中文的主要選擇；接著學會透過 `\usepackage` 載入{{< glossary "套件" >}}，並透過 CTAN 查找說明文件；然後掌握了字體大小、字體系列、字型樣式與中文字體的設定方法；最後學會用 `geometry`、`titlesec`、`fancyhdr` 三個套件分別控制{{< glossary "邊距" >}}、章節標題格式與{{< glossary "頁眉" >}}{{< glossary "頁尾" >}}。
+
+掌握這些設定後，已經可以產出一份排版整齊、外觀專業的中文 LaTeX 文件。下一篇文章將進入數學公式的排版，LaTeX 在這方面的能力是它最廣為人知的強項。
