@@ -1,0 +1,12 @@
+---
+title: "Python Tutorial Series: lambda, filter, map, and reduce"
+lang: en
+date: 2026-05-10
+author: Anthony
+categories: [Python, Programming Languages]
+description: "Master lambda, filter, map, and reduce to write less loop code and cleaner Python data pipelines."
+image: ../../cover/Python_logo.png
+glossary:
+  path: ../../../../_glossary/python.yml
+  popup: hover
+---

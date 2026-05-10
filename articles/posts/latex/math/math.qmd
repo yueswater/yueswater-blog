@@ -729,7 +729,160 @@ $$
 ```
 :::
 
+## 公式練習與轉換工具
+
+### TeXnique：LaTeX 公式排版遊戲
+
+[TeXnique](https://texnique.xyz/) 是一個 LaTeX 公式排版遊戲，而不只是查語法網站，有點像打字遊戲 + 解謎：看到目標公式，接著要用正確的 LaTeX 指令把它還原。每過一關，就都會更熟悉符號、括號、上下標與空白控制，久而久之會建立出一種很實用的肌肉反射：看到數學式，腦中就會自然浮現對應的 LaTeX 寫法。[^texnique]
+
+如果目前的狀態是懂概念但寫不快，或是常常知道要什麼符號但忘記指令，TeXnique 非常適合當每日 10 分鐘的練習工具。其價值不在於取代你寫正式文件，而是幫你降低實作摩擦，將注意力從「這行又報錯了」轉回「到底要表達什麼數學內容」。
+
+下面這支影片可以先幫你建立使用情境，理解它為什麼對初學者與進階使用者都實用：
+
+<div class="video-embed ratio ratio-16x9">
+  <iframe src="https://www.youtube.com/embed/ZtxdTd6o9Fg" title="TeXnique Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+看完之後可以立刻做一個小練習：挑三條最近最常用的公式（例如一條極限、一條矩陣、一條分段函數），在 TeXnique 裡重打到不看提示也能完整輸出。正所謂：**不積跬步，無以至千里**，經過反覆的訓練，短時間雖然很煩躁，但一兩週後會明顯感覺到寫作順暢度提升，尤其是作為死線戰士時會非常有感。
+
+### Mathpix Snip：圖片公式轉 LaTeX
+
+[Mathpix Snip](https://mathpix.com/) 的核心用途是把圖片中的公式快速轉成 LaTeX。Mathpix Snip 很適合用在資料來源不是純文字的情境，例如PDF 講義、老師手寫白板、投影片截圖，或者平板筆記裡的推導。這些內容如果逐字重打，通常耗時而且耗神，而且最容易在小地方打錯。
+
+不過要提醒的是，它再聰明也不是零失誤。建議至少做三層檢查：第一層看相似字元（`l`、`1`、`I`、`O`、`0`）；第二層看上下標巢狀結構（像 `x^{a_b}`、`\sum_{i=1}^n`）；第三層看括號與定界符是否完整配對（`(`、`[`、`\{`）。只要這三層有做，錯誤率會大幅下降。
+
+下面這支影片示範了 Mathpix Snip 的基本操作流程，先看一次會更容易上手：
+
+<div class="video-embed ratio ratio-16x9">
+  <iframe src="https://www.youtube.com/embed/Jki2FcW8Bw8" title="Mathpix Snip Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+再次重申，看完後建議為自己建立一個兩段式工作流：先用 Mathpix 把來源公式批次轉出，再回到 LaTeX 文件逐段校對與統一風格（像運算子命名、空白慣例、括號大小）。在同時兼顧效率時，也保證輸出的數學公式有一定程度的品質。
+
+## 練習題
+
+::: {.exercises}
+
+::: {.exercise data-answer="C"}
+### 問題 1
+
+若你要在論文中輸入「可被編號，且可交叉引用」的單行方程式，最適合使用哪個環境？
+
+::: {.options}
+- A. `\[ ... \]`
+- B. `displaymath`
+- C. `equation`
+- D. `math`
+:::
+
+::: {.answer}
+**答案：C — `equation`**
+
+`equation` 會自動產生方程式編號，最適合用於需要在正文中引用的公式。`\[...\]` 與 `displaymath` 只會顯示行間公式，不會編號。
+:::
+:::
+
+::: {.exercise data-answer="B"}
+### 問題 2
+
+在 `align` 環境中，哪個符號用來標記對齊位置（通常是等號位置）？
+
+::: {.options}
+- A. `\\`
+- B. `&`
+- C. `%`
+- D. `#`
+:::
+
+::: {.answer}
+**答案：B — `&`**
+
+在 `align` 內，`&` 是對齊錨點；`\\` 則是換行。通常會把 `&` 放在 `=` 前面，讓多行公式沿著等號整齊排列。
+:::
+:::
+
+::: {.exercise data-answer="D"}
+### 問題 3
+
+若要在公式中插入一般文字說明（例如 `if`, `where`），避免被當成斜體變數，應該使用哪個指令？
+
+::: {.options}
+- A. `\mathrm{}`
+- B. `\operatorname{}`
+- C. `\textbf{}`
+- D. `\text{}`
+:::
+
+::: {.answer}
+**答案：D — `\text{}`**
+
+`\text{}` 會在數學模式中插入正體文字，適合放說明詞句。`\operatorname{}` 主要用於定義運算子名稱，例如 `\operatorname{rank}`。
+:::
+:::
+
+::: {.exercise}
+### 問題 4
+
+請寫出一段 LaTeX 程式碼，將下列分段函數正確排版：
+
+$$
+f(x)=
+\begin{cases}
+x^2, & x \ge 0\\
+-x^2, & x < 0
+\end{cases}
+$$
+
+::: {.answer}
+```latex
+\[
+f(x) = \begin{cases}
+  x^2,  & x \ge 0 \\
+ -x^2,  & x < 0
+\end{cases}
+\]
+```
+
+`cases` 環境會自動提供左大括號，並用 `&` 對齊條件欄位，是分段函數的標準寫法。
+:::
+:::
+
+::: {.exercise}
+### 問題 5
+
+請在序言區宣告 `argmax` 這個運算子，並在本文中輸出：
+
+$$
+\arg \max_{x \in \mathbb{R}} f(x)
+$$
+
+::: {.answer}
+```latex
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\[
+  \argmax_{x \in \mathbb{R}} f(x)
+\]
+```
+
+使用 `\DeclareMathOperator*` 可讓上下限在行間模式下像 `\sum` 一樣排在符號上下，排版較符合數學慣例。
+:::
+:::
+
+:::
+
+## 本章小結
+
+這一章完整介紹了 LaTeX 數學排版的核心流程：先理解行內與行間公式的差異，再建立常用符號與字體的使用習慣，接著進入分數、根號、括號縮放、空白控制與省略號等進階細節。你也學會了用 `align`、`equation`、`split`、`gather` 處理不同型態的方程式，以及用矩陣與 `cases` 環境呈現線性代數與分段函數。
+
+在更正式的學術寫作中，`amsthm` 提供了定理、定義、備註與證明等數學環境，讓文件不只公式漂亮，邏輯結構也更清楚。當你能把這些環境組合運用，LaTeX 就不只是「打公式工具」，而是完整的數學寫作系統。
+
+掌握本章後，你已具備撰寫大多數課堂作業、研究報告與論文數學段落的能力。下一步可以練習加入標籤（`\label`）與交叉引用（`\ref`），讓長篇文件的可讀性再提升一個層次。
+
 
 [^greek]: 請注意，雖然 $\Pi$ （`\Pi`） 與 $\prod$ （`\prod`）、$\Sigma$ （`\Sigma`） 與 $\sum$ （`\sum`） 外形相似，但用途截然不同：`\Pi` 與 `\Sigma` 是純粹的希臘字母，通常用於代表某個數學量；而 `\prod` 與 `\sum` 則是**大型運算子** （large operator），會在行間公式中自動產生上下標位置，分別對應連乘積 （$\prod_{i=1}^{n}$） 與求和 （$\sum_{i=1}^{n}$），在使用上切勿混用。
 
 [^align]: 若不需要編號，改用 `align*` 即可。
+
+[^texnique]: 剛開始接觸 LaTeX 時，最常卡住的不是高深數學，而是排版小細節。像是 `\left` 和 `\right` 什麼時候該用、`align` 的 `&` 放哪裡比較整齊、為什麼同樣是分數 `\frac` 和 `\dfrac` 看起來差很多。當時最痛苦的是每改一點都要回到整份文件重編譯，等待、看結果、再改、再編譯。後來把 TeXnique 當成「暖身場」，先在小範圍把寫法練熟，再貼回主文件，速度快非常多。

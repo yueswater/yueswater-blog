@@ -413,6 +413,26 @@ div.csl-entry {
   height: 100%;
 }
 
+.video-embed {
+  width: 100%;
+  max-width: 960px;
+  margin: 1rem auto;
+}
+
+.video-embed > p {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-embed > p > iframe,
+.video-embed > iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /*-- sidebar --*/
 
 .sidebar nav[role=doc-toc]>h2,
@@ -552,7 +572,7 @@ h1,
   font-family: 'Oswald';
   font-weight: 500;
   color: black;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: normal;
   opacity: 1;
 }

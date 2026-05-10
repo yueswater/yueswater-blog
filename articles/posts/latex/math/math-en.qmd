@@ -1,12 +1,455 @@
 ---
-title: "math"
+title: "LaTeX Tutorial Series: Mathematical Typesetting"
 lang: en
 date: 2026-05-10
 author: Anthony
 categories: [LaTeX]
-description: ""
+description: "A clear and practical guide to math typesetting in LaTeX"
 image: ../../cover/LaTeX_logo.png
 glossary:
   path: ../../../../_glossary/latex.yml
   popup: hover
 ---
+
+After learning the basic layout settings in LaTeX, it is time to move to its strongest feature: mathematical typesetting.
+
+In many technical fields, formulas are not optional. We use them to define models, report results, and explain proofs. Word processors can handle simple equations, but they often become hard to manage when formulas get long or structured. LaTeX solves this problem with a full math system that is precise and consistent.
+
+## Basic Math Setup
+
+Before writing advanced formulas, we should load the right packages. The most common set is the **AMS package family**:
+
+| Package | Main purpose |
+| :--- | :--- |
+| [`amsmath`](https://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf) | Extra math environments: alignment, multi-line equations, cases, matrices |
+| [`amssymb`](https://mirror.ctan.org/fonts/amsfonts/doc/amssymb.pdf) | More math symbols |
+| [`amsfonts`](https://mirror.ctan.org/fonts/amsfonts/doc/amsfonts.pdf) | Extra math fonts |
+| [`amsthm`](https://mirror.ctan.org/macros/latex/required/amscls/doc/amsthdoc.pdf) | Theorem-style environments |
+
+: AMS package family {#tbl-ams-packages-en tbl-colwidths="[25,75]"}
+
+### Inline vs Display Math
+
+LaTeX has two main math modes:
+
+- **Inline math**: appears inside normal text
+- **Display math**: shown on its own line
+
+#### Inline math
+
+Common syntax:
+
+| Syntax | Note |
+| :--- | :--- |
+| `$...$` | Most common |
+| `\(...\)` | Native LaTeX form |
+| `\begin{math}...\end{math}` | Longer form |
+
+: Inline math syntax {#tbl-inline-math-en tbl-colwidths="[40,60]"}
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+$a^2 + b^2 = c^2$
+\( a^2 + b^2 = c^2 \)
+\begin{math} a^2 + b^2 = c^2 \end{math}
+
+\end{document}
+```
+:::
+
+#### Display math
+
+Common syntax:
+
+| Syntax | Note |
+| :--- | :--- |
+| `\[...\]` | Simple unnumbered display |
+| `\begin{displaymath}...\end{displaymath}` | Same idea, longer form |
+| `\begin{equation}...\end{equation}` | Numbered equation |
+
+: Display math syntax {#tbl-display-math-en tbl-colwidths="[40,60]"}
+
+If you need references like "Eq. (3)", use `equation`.
+
+## Symbols and Math Fonts
+
+### Greek letters
+
+Greek letters are used everywhere in STEM writing: $\alpha$, $\beta$, $\sigma$, $\pi$, and so on.
+
+| Command | Output | Command | Output |
+| :--- | :---: | :--- | :---: |
+| `\alpha` | $\alpha$ | `\beta` | $\beta$ |
+| `\gamma` | $\gamma$ | `\delta` | $\delta$ |
+| `\theta` | $\theta$ | `\lambda` | $\lambda$ |
+| `\sigma` | $\sigma$ | `\omega` | $\omega$ |
+| `\Gamma` | $\Gamma$ | `\Sigma` | $\Sigma$ |
+| `\Pi` | $\Pi$ | `\Omega` | $\Omega$ |
+
+: Common Greek letters {#tbl-greek-en}
+
+### Common operators and relations
+
+| Command | Symbol | Command | Symbol | Command | Symbol |
+| :--- | :---: | :--- | :---: | :--- | :---: |
+| `\times` | $\times$ | `\leq` | $\leq$ | `\approx` | $\approx$ |
+| `\div` | $\div$ | `\geq` | $\geq$ | `\equiv` | $\equiv$ |
+| `\pm` | $\pm$ | `\neq` | $\neq$ | `\sim` | $\sim$ |
+| `\cdot` | $\cdot$ | `\ll` | $\ll$ | `\propto` | $\propto$ |
+
+: Operators and relations {#tbl-operators-en}
+
+### Sets and logic
+
+| Command | Symbol | Command | Symbol | Command | Symbol |
+| :--- | :---: | :--- | :---: | :--- | :---: |
+| `\in` | $\in$ | `\cup` | $\cup$ | `\forall` | $\forall$ |
+| `\notin` | $\notin$ | `\cap` | $\cap$ | `\exists` | $\exists$ |
+| `\subseteq` | $\subseteq$ | `\emptyset` | $\emptyset$ | `\Rightarrow` | $\Rightarrow$ |
+
+: Sets and logic symbols {#tbl-sets-en}
+
+### Math font commands
+
+| Command | Output | Typical use |
+| :--- | :---: | :--- |
+| `\mathcal{N}` | $\mathcal{N}$ | Distribution or family notation |
+| `\mathbb{R}` | $\mathbb{R}$ | Number sets |
+| `\mathbf{v}` | $\mathbf{v}$ | Vectors and matrices |
+| `\mathrm{d}` | $\mathrm{d}$ | Differential operator |
+| `\boldsymbol{\alpha}` | $\boldsymbol{\alpha}$ | Bold Greek symbols |
+
+: Common math font commands {#tbl-mathfonts-en}
+
+::: {.callout-note}
+`\mathbb` and `\mathcal` are typically used with `amssymb`/`amsfonts`, and `\boldsymbol` needs `amsmath`.
+:::
+
+## Practical Advanced Skills
+
+### Fractions and roots
+
+Use `\frac{a}{b}` for fractions and `\sqrt{...}` for square roots.
+
+::: {.latex-runner}
+```latex
+\[
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\]
+
+\[
+\sqrt[3]{8} = 2, \quad \sqrt{\sqrt{x}} = x^{1/4}
+\]
+```
+:::
+
+### Spacing and text in math mode
+
+LaTeX ignores normal spaces in math mode. Use spacing commands when needed:
+
+| Command | Space size | Typical use |
+| :--- | :--- | :--- |
+| `\,` | thin | before `\mathrm{d}x`, unit spacing |
+| `\:` | medium | slightly wider operator spacing |
+| `\;` | thick | stronger separation |
+| `\quad` | 1em | visible separation |
+| `\qquad` | 2em | larger separation |
+
+: Math spacing commands {#tbl-spacing-en}
+
+If you need normal words in formulas, use `\text{...}`.
+
+```latex
+\[
+f(x) = x^2 \quad \text{where} \quad x \in \mathbb{R}
+\]
+```
+
+### Brackets and delimiters
+
+Use `\left` and `\right` for auto-sized brackets:
+
+```latex
+\[
+\left( \frac{a}{b} + \frac{c}{d} \right)^2
+\]
+```
+
+For one-sided delimiters, use an invisible boundary like `\left.`.
+
+### Alignment (`align`)
+
+Use `align` for multi-line derivations with aligned symbols:
+
+::: {.latex-runner}
+```latex
+\begin{align}
+(a+b)^2 &= a^2 + 2ab + b^2 \\
+(a-b)^2 &= a^2 - 2ab + b^2
+\end{align}
+```
+:::
+
+Use `align*` when you do not want equation numbers.
+
+### Matrices
+
+| Environment | Bracket style |
+| :--- | :--- |
+| `matrix` | none |
+| `pmatrix` | `( )` |
+| `bmatrix` | `[ ]` |
+| `vmatrix` | `| |` |
+
+: Matrix environments {#tbl-matrix-en}
+
+### Piecewise functions
+
+Use `cases`:
+
+::: {.latex-runner}
+```latex
+\[
+f(x) = \begin{cases}
+  x^2,  & \text{if } x \ge 0 \\
+ -x^2,  & \text{if } x < 0
+\end{cases}
+\]
+```
+:::
+
+### Custom operators
+
+For operators like `var`, `cov`, `rank`, define them properly:
+
+```latex
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator*{\argmax}{arg\,max}
+```
+
+This gives better spacing and correct limit placement.
+
+## Equation Environments
+
+### `equation`
+
+Use `equation` for one centered formula with one number:
+
+```latex
+\begin{equation}
+  e^{i\pi} + 1 = 0
+\end{equation}
+```
+
+### Long equations with `split`
+
+If one equation is too long, nest `split` inside `equation`:
+
+```latex
+\begin{equation}
+\begin{split}
+(a+b+c)^2 &= a^2+b^2+c^2 \\
+          &\quad + 2ab + 2bc + 2ca
+\end{split}
+\end{equation}
+```
+
+### Multiple centered equations with `gather`
+
+Use `gather` when lines are independent and do not need alignment.
+
+## Theorem Environments (`amsthm`)
+
+### Numbered theorem environments
+
+Define with `\newtheorem`:
+
+```latex
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+```
+
+### Unnumbered environments
+
+Use a star version:
+
+```latex
+\newtheorem*{remark}{Remark}
+```
+
+### Styles
+
+- `plain`: bold heading + italic body (default)
+- `definition`: bold heading + normal body
+- `remark`: italic heading + normal body
+
+Switch style with `\theoremstyle{...}` before defining environments.
+
+### Proof environment
+
+`proof` is built in by `amsthm` and ends with a QED symbol automatically.
+
+## Tools for Practice and Conversion
+
+### TeXnique: A LaTeX Equation Typesetting Game
+
+[TeXnique](https://texnique.xyz/) is better understood as a LaTeX equation typesetting game, not just a syntax reference page. You see a target formula, then try to reproduce it with correct LaTeX commands. That loop trains your reflexes: after enough practice, you start to “see” LaTeX when you look at math.
+
+When I first wrote technical reports, the hardest part was not advanced math ideas. It was small formatting details: where to place `&` in `align`, when to use `\left...\right`, and why two similar fraction commands can produce very different visual results. TeXnique works well as a warm-up space for these details. You can test quickly without rebuilding a full document.
+
+If your goal is to build typing fluency, not just memorize commands, TeXnique is a strong starting point. It reduces friction and lets you focus on mathematical meaning instead of syntax anxiety.
+
+The video below gives a quick overview of how people use it in real practice:
+
+<div class="video-embed ratio ratio-16x9">
+  <iframe src="https://www.youtube.com/embed/ZtxdTd6o9Fg" title="TeXnique Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+After watching, try a small drill: pick three formulas you often use (for example, one limit, one matrix, and one piecewise function), and retype them until you can do it smoothly. This kind of short repetition creates long-term speed gains.
+
+### Mathpix Snip: Convert Formula Images to LaTeX
+
+[Mathpix Snip](https://mathpix.com/) helps you convert formula images into LaTeX quickly. It is especially useful when your source is not editable text: lecture slides, scanned PDFs, whiteboard photos, or handwritten notes.
+
+In one of my own note-cleaning sessions, I had a page full of matrix derivations and conditional expectation expressions. Typing everything manually would take a long time. With Mathpix, I got a usable draft much faster, then spent my time on review instead of raw typing.
+
+That is the key: treat OCR output as a first draft, not a final answer. A practical check sequence is:
+
+1. Similar characters (`l`, `1`, `I`, `O`, `0`)
+2. Superscript/subscript nesting
+3. Bracket and delimiter matching
+
+The video below shows the basic Mathpix Snip workflow:
+
+<div class="video-embed ratio ratio-16x9">
+  <iframe src="https://www.youtube.com/embed/Jki2FcW8Bw8" title="Mathpix Snip Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+A robust workflow is: convert in batch first, then do a focused manual pass in your LaTeX document to unify style and correctness. In short, TeXnique trains your intuition, and Mathpix saves your input time. Using both gives the best balance of speed and quality.
+
+## Exercises
+
+::: {.exercises}
+
+::: {.exercise data-answer="C"}
+### Question 1
+
+Which environment is best for a single equation that needs numbering and cross-reference?
+
+::: {.options}
+- A. `\[...\]`
+- B. `displaymath`
+- C. `equation`
+- D. `math`
+:::
+
+::: {.answer}
+**Answer: C — `equation`**
+
+`equation` provides an automatic equation number, which is necessary for references like Eq. (1).
+:::
+:::
+
+::: {.exercise data-answer="B"}
+### Question 2
+
+In the `align` environment, which symbol marks the alignment point?
+
+::: {.options}
+- A. `\\`
+- B. `&`
+- C. `%`
+- D. `#`
+:::
+
+::: {.answer}
+**Answer: B — `&`**
+
+`&` marks the alignment anchor (usually before `=`), while `\\` is used for line breaks.
+:::
+:::
+
+::: {.exercise data-answer="D"}
+### Question 3
+
+If you want to insert normal words such as "if" or "where" inside math mode, what should you use?
+
+::: {.options}
+- A. `\mathrm{}`
+- B. `\operatorname{}`
+- C. `\textbf{}`
+- D. `\text{}`
+:::
+
+::: {.answer}
+**Answer: D — `\text{}`**
+
+`\text{}` is designed for normal text inside formulas.
+:::
+:::
+
+::: {.exercise}
+### Question 4
+
+Write a LaTeX snippet for the following piecewise function:
+
+$$
+f(x)=
+\begin{cases}
+x^2, & x \ge 0\\
+-x^2, & x < 0
+\end{cases}
+$$
+
+::: {.answer}
+```latex
+\[
+f(x)=\begin{cases}
+  x^2,  & x \ge 0 \\
+ -x^2,  & x < 0
+\end{cases}
+\]
+```
+
+`cases` is the standard environment for piecewise definitions.
+:::
+:::
+
+::: {.exercise}
+### Question 5
+
+Declare an `argmax` operator in the preamble and typeset:
+
+$$
+\arg\max_{x \in \mathbb{R}} f(x)
+$$
+
+::: {.answer}
+```latex
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\[
+\argmax_{x \in \mathbb{R}} f(x)
+\]
+```
+
+`\DeclareMathOperator*` lets limits appear above/below in display mode.
+:::
+:::
+
+:::
+
+## Chapter Summary
+
+In this chapter, you learned the full workflow of LaTeX math typesetting: choosing the right AMS packages, switching between inline and display math, using symbols and math fonts correctly, and handling advanced details like spacing, scalable brackets, alignment, matrices, and piecewise functions.
+
+You also learned how to structure formal mathematical writing with `amsthm`, including theorem, definition, remark, and proof environments. With these tools, you can produce clear and professional math writing for assignments, reports, and papers.
+
+A good next step is to practice equation labels (`\label`) and references (`\ref`) in longer documents.

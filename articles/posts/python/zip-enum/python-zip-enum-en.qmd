@@ -1,5 +1,5 @@
 ---
-title: "Python Tutorial Series: Cleaner Loops with `zip` and `enumerate`"
+title: "Python Tutorial Series: Cleaner and Safer Loops with zip and enumerate"
 lang: en
 date: 2026-05-09
 author: Anthony

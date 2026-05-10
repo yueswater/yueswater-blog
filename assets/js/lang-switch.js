@@ -3,51 +3,54 @@
   // Trailing-slash paths are included so directory URLs are handled too.
   var PAGE_MAP = {
     // Root
-    '/':                       '/index-en.html',
-    '/index.html':             '/index-en.html',
-    '/index-en.html':          '/index.html',
+    '/': '/index-en.html',
+    '/index.html': '/index-en.html',
+    '/index-en.html': '/index.html',
     // About
-    '/about.html':             '/about-en.html',
-    '/about-en.html':          '/about.html',
+    '/about.html': '/about-en.html',
+    '/about-en.html': '/about.html',
     // Articles listing
-    '/articles/':              '/articles/index-en.html',
-    '/articles/index.html':    '/articles/index-en.html',
+    '/articles/': '/articles/index-en.html',
+    '/articles/index.html': '/articles/index-en.html',
     '/articles/index-en.html': '/articles/index.html',
     // Diary listing
-    '/diary/':                 '/diary/index-en.html',
-    '/diary/index.html':       '/diary/index-en.html',
-    '/diary/index-en.html':    '/diary/index.html',
+    '/diary/': '/diary/index-en.html',
+    '/diary/index.html': '/diary/index-en.html',
+    '/diary/index-en.html': '/diary/index.html',
     // Projects listing
-    '/projects/':              '/projects/index-en.html',
-    '/projects/index.html':    '/projects/index-en.html',
+    '/projects/': '/projects/index-en.html',
+    '/projects/index.html': '/projects/index-en.html',
     '/projects/index-en.html': '/projects/index.html',
     // Projects – econ-viz
-    '/projects/posts/econ-viz/econ-viz.html':    '/projects/posts/econ-viz/econ-viz-en.html',
+    '/projects/posts/econ-viz/econ-viz.html': '/projects/posts/econ-viz/econ-viz-en.html',
     '/projects/posts/econ-viz/econ-viz-en.html': '/projects/posts/econ-viz/econ-viz.html',
     // Articles — LaTeX series
-    '/articles/posts/latex/intro/latex-intro.html':             '/articles/posts/latex/intro/latex-intro-en.html',
-    '/articles/posts/latex/intro/latex-intro-en.html':          '/articles/posts/latex/intro/latex-intro.html',
-    '/articles/posts/latex/first-doc/latex-first-doc.html':     '/articles/posts/latex/first-doc/latex-first-doc-en.html',
-    '/articles/posts/latex/first-doc/latex-first-doc-en.html':  '/articles/posts/latex/first-doc/latex-first-doc.html',
-    '/articles/posts/latex/basic-setting/latex-basic-setting.html':     '/articles/posts/latex/basic-setting/latex-basic-setting-en.html',
-    '/articles/posts/latex/basic-setting/latex-basic-setting-en.html':  '/articles/posts/latex/basic-setting/latex-basic-setting.html',
+    '/articles/posts/latex/intro/latex-intro.html': '/articles/posts/latex/intro/latex-intro-en.html',
+    '/articles/posts/latex/intro/latex-intro-en.html': '/articles/posts/latex/intro/latex-intro.html',
+    '/articles/posts/latex/first-doc/latex-first-doc.html': '/articles/posts/latex/first-doc/latex-first-doc-en.html',
+    '/articles/posts/latex/first-doc/latex-first-doc-en.html': '/articles/posts/latex/first-doc/latex-first-doc.html',
+    '/articles/posts/latex/basic-setting/latex-basic-setting.html': '/articles/posts/latex/basic-setting/latex-basic-setting-en.html',
+    '/articles/posts/latex/basic-setting/latex-basic-setting-en.html': '/articles/posts/latex/basic-setting/latex-basic-setting.html',
     // Articles — Python series
-    '/articles/posts/python/id-function/python-id-function.html':     '/articles/posts/python/id-function/python-id-function-en.html',
-    '/articles/posts/python/id-function/python-id-function-en.html':  '/articles/posts/python/id-function/python-id-function.html',
-    '/articles/posts/python/zip-enum/python-zip-enum.html':     '/articles/posts/python/zip-enum/python-zip-enum-en.html',
-    '/articles/posts/python/zip-enum/python-zip-enum-en.html':  '/articles/posts/python/zip-enum/python-zip-enum.html',
+    '/articles/posts/python/id-function/python-id-function.html': '/articles/posts/python/id-function/python-id-function-en.html',
+    '/articles/posts/python/id-function/python-id-function-en.html': '/articles/posts/python/id-function/python-id-function.html',
+    '/articles/posts/python/zip-enum/python-zip-enum.html': '/articles/posts/python/zip-enum/python-zip-enum-en.html',
+    '/articles/posts/python/zip-enum/python-zip-enum-en.html': '/articles/posts/python/zip-enum/python-zip-enum.html',
     // latex/math
-    '/articles/posts/latex/math/math.html':    '/articles/posts/latex/math/math-en.html',
+    '/articles/posts/latex/math/math.html': '/articles/posts/latex/math/math-en.html',
     '/articles/posts/latex/math/math-en.html': '/articles/posts/latex/math/math.html',
+    // python/lambda-filter-map-reduce
+    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html':    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html',
+    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html': '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html',
   };
 
   // Navbar label translations: href substring → [zh, en]
   var NAV_LABELS = [
-    { href: '/articles',   zh: '文章',   en: 'Articles'   },
-    { href: '/projects',   zh: '專案',   en: 'Projects'   },
-    { href: '/diary',      zh: '日記',   en: 'Diary'      },
-    { href: '/about',      zh: '關於',   en: 'About'      },
-    { href: '/glossary',   zh: '術語表', en: 'Glossary'   },
+    { href: '/articles', zh: '文章', en: 'Articles' },
+    { href: '/projects', zh: '專案', en: 'Projects' },
+    { href: '/diary', zh: '日記', en: 'Diary' },
+    { href: '/about', zh: '關於', en: 'About' },
+    { href: '/glossary', zh: '術語表', en: 'Glossary' },
   ];
 
   // Glassmorphism navbar on scroll
@@ -74,9 +77,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var path    = getPath();
+    var path = getPath();
     var altHref = PAGE_MAP[path];
-    var isEn    = path.endsWith('-en.html') || path.endsWith('-en/');
+    var isEn = path.endsWith('-en.html') || path.endsWith('-en/');
 
     // Translate navbar labels based on current language
     var allNavLinks = document.querySelectorAll('.navbar-nav .nav-link');

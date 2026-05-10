@@ -1,5 +1,5 @@
 ---
-title: "Python 教學系列: 迴圈中的 `zip` 與 `enumerate`"
+title: "Python 教學系列：用 zip 與 enumerate 寫出更乾淨的迴圈"
 lang: zh-TW
 date: 2026-05-09
 author: Anthony
@@ -360,4 +360,3 @@ print(list(populations))
 :::
 
 [^zip]: 根據[劍橋詞典](https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/zip)，zip 作為名詞指的是拉鍊，而 `zip()` 的命名正是源自這個意象：就像拉鍊將左右兩排齒一一配對咬合，`zip()` 也將多個序列的元素逐一配成一組。
-
