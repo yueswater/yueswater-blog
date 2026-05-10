@@ -1,0 +1,735 @@
+---
+title: "LaTeX 教學系列: 數學排版"
+lang: zh-TW
+date: 2026-05-10
+author: Anthony
+categories: [LaTeX]
+description: "用最簡單、明瞭的方式進行 LaTeX 數學排版"
+image: ../../cover/LaTeX_logo.png
+glossary:
+  path: ../../../../_glossary/latex.yml
+  popup: hover
+---
+
+在掌握 LaTeX 排版的基礎之後，接下來要進入 LaTeX 最令人稱道的核心功能：數學排版。
+
+排版的身影幾乎遍及各個領域，舉凡活動文宣、企劃書、書籍、網頁，無一不需要精心設計。在學術領域中，排版更是知識傳遞不可或缺的媒介——學術論文往往需要遵循嚴格的格式規範，包含頁邊距、字體大小、行距、引用格式等，以確保刊登於學術期刊或研討會時的一致性與可讀性。
+
+> 為什麼需要數學排版？
+
+如前所述，不同領域的學術排版各有其規範，正所謂「**隔行如隔山**」。人文社會領域與理工領域的排版需求便大相逕庭：理工領域高度仰賴數學表達，舉凡模型設定、模擬結果等，幾乎都離不開數學式。然而使用 Word 排版時，往往難以達到理想的呈現效果，加上 Word 內建的數學輸入介面並不直覺。正因為 LaTeX 是專為專業數學排版所設計的工具，透過它強大的數學排版系統，便能輕鬆排出精確、美觀的數學式。
+
+## 數學排版基本設定
+
+在正式進入數學排版教學之前，有一件事值得先釐清：TeX 系統本身僅提供最基礎的排版能力，若需要更進階的功能，就必須仰賴外部套件的協助。
+
+在眾多數學相關套件中，最廣泛使用的是 `amsmath`、`amssymb`、`amsfonts`、`amsthm` 這四個套件，皆由[美國數學學會（American Mathematical Society, AMS）](https://www.ams.org/home/page)開發與維護，合稱 **AMS 套件組**。各套件的主要功能如下表所示：
+
+| 套件名稱 | 功能描述 |
+| :----------|:----------|
+| [`amsmath`](https://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf) | 拓展數學環境與指令，涵蓋對齊方程組、多行方程式、分段函數、矩陣環境等進階排版功能 |
+| [`amssymb`](https://mirror.ctan.org/fonts/amsfonts/doc/amssymb.pdf) | 提供豐富的數學符號庫，包含黑板粗體、花體字母及其他特殊符號，常用於表示集合、邏輯運算子等 |
+| [`amsfonts`](https://mirror.ctan.org/fonts/amsfonts/doc/amsfonts.pdf) | 提供專屬的數學字體集，讓數學公式的排版更多元、更精緻 |
+| [`amsthm`](https://mirror.ctan.org/macros/latex/required/amscls/doc/amsthdoc.pdf) | 擴充定理環境，讓定理、引理、命題等數學結構的呈現更加規範與美觀 |
+
+: AMS 套件組功能一覽 {#tbl-ams-packages tbl-colwidths="[20,80]"}
+
+### 行內與行間公式
+
+LaTeX 的數學模式分為兩大類：**行內公式** （inline math） 將數學式嵌入段落文字中，與正文混排；**行間公式** （display math） 則讓方程式單獨置中成行，適合需要突顯或結構較複雜的數學式。
+
+#### 行內公式
+
+行內數學模式適合在說明文字中穿插簡短的符號或式子，例如「設 $n > 0$」或「令 $f(x) = x^2$」，讀起來自然，也不會影響行距。LaTeX 提供三種等效的行內公式語法：
+
+| 語法 | 說明 |
+|:-----|:-----|
+| `$...$` | 最常見的簡潔寫法，推薦使用 |
+| `\(...\)` | LaTeX 原生語法，語意更明確 |
+| `\begin{math}...\end{math}` | 完整環境語法，較冗長，少用 |
+
+: 行內公式語法比較 {#tbl-inline-math tbl-colwidths="[35,65]"}
+
+三種語法效果完全相同，習慣上仍以 `$...$` 以及 `\(...\)` 為主。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+$a^2 + b^2 = c^2$\\                        % 最常用，推薦使用
+\( a^2 + b^2 = c^2 \)\\                    % LaTeX 原生語法
+\begin{math} a^2 + b^2 = c^2 \end{math}\\  % 完整環境語法，少用
+
+\end{document}
+```
+:::
+
+#### 行間公式
+
+不同於行內模式，行間數學模式適合用於需要**強調**、**獨立呈現**的方程式，或含有分數、積分、矩陣等垂直空間較大的數學式。
+
+| LaTeX 語法 | 說明 |
+|:-----------|:-----|
+| `\begin{displaymath}...\end{displaymath}` | 不帶編號的行間公式環境 |
+| `\[...\]` | `displaymath` 的簡化語法，推薦使用 |
+| `$$...$$` | 與 `displaymath` 等效，可搭配 `\eqno`、`\leqno` 人工編號 |
+| `\begin{equation}...\end{equation}` | **自動編號**的行間公式環境 |
+
+: 行間公式語法比較 {#tbl-display-math tbl-colwidths="[40,60]"}
+
+其中 `equation` 環境在學術寫作中最為常用，因為論文通常需要替重要公式加上編號，以便在文中交互引用。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{displaymath}             % 不帶編號的行間公式
+  E = mc^2
+\end{displaymath}
+
+\[ E = mc^2 \]                  % displaymath 的簡化語法，推薦
+
+$$ E = mc^2 $$                  % 等效於 displaymath
+
+\begin{equation}                % 自動產生公式編號
+  E = mc^2
+\end{equation}
+
+\end{document}
+```
+:::
+
+### 數學符號
+
+了解完行內與行間公式後，接下來就要開始應用。LaTeX 內建了極為豐富的數學符號庫，涵蓋希臘字母、運算子、關係符號、集合符號等各類型，是學術寫作不可或缺的工具。礙於篇幅限制，以下僅列出最常用的符號，完整清單請參考[官方符號表](https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf)。
+
+#### 希臘字母
+
+希臘字母在數學、統計與物理中極為常見，例如 $\alpha$、$\beta$ 常作為迴歸係數，$\sigma$ 表示標準差，$\Sigma$ 表示求和，$\pi$ 表示圓周率。[^greek]
+
+| 指令 | 符號 | 指令 | 符號 |
+|:-----|:----:|:-----|:----:|
+| `\alpha` / `A` | $\alpha A$ | `\nu` / `N` | $\nu N$ |
+| `\beta` / `B` | $\beta B$ | `\xi` / `\Xi` | $\xi\Xi$ |
+| `\gamma` / `\Gamma` | $\gamma\Gamma$ | `o` / `O` | $oO$ |
+| `\delta` / `\Delta` | $\delta\Delta$ | `\pi` / `\Pi` | $\pi\Pi$ |
+| `\epsilon` / `\varepsilon` / `E` | $\epsilon\,\varepsilon\, E$ | `\rho` / `\varrho` / `P` | $\rho\,\varrho\, P$ |
+| `\zeta` / Z | $\zeta Z$ | `\sigma` / `\Sigma` | $\sigma\Sigma$ |
+| `\eta` / `H` | $\eta H$ | `\tau` / `T` | $\tau T$ |
+| `\theta` / `\vartheta` / `\Theta` | $\theta\,\vartheta\,\Theta$ | `\upsilon` / `\Upsilon` | $\upsilon\Upsilon$ |
+| `\iota` / `I` | $\iota I$ | `\phi` / `\varphi` / `\Phi` | $\phi\,\varphi\,\Phi$ |
+| `\kappa` / `K` | $\kappa K$ | `\chi` / `X` | $\chi X$ |
+| `\lambda` / `\Lambda` | $\lambda\Lambda$ | `\psi` / `\Psi` | $\psi\Psi$ |
+| `\mu` / `M` | $\mu M$ | `\omega` / `\Omega` | $\omega\Omega$ |
+
+: 希臘字母（小寫 / 大寫） {#tbl-greek tbl-colwidths="[35,15,35,15]"}
+
+#### 常用數學符號
+
+除了希臘字母之外，LaTeX 也提供了大量用於描述數學關係與運算的符號。這些符號大致可分為兩類：
+
+**運算與關係符號**是數學式中最頻繁出現的元素，涵蓋四則運算的延伸 （`\times`、`\div`、`\pm`、`\cdot`）、大小關係 （`\leq`、`\geq`、`\ll`、`\gg`）、近似與等價關係 （`\approx`、`\equiv`、`\sim`、`\propto`），以及微積分中常見的偏微分與無窮大。
+
+| 指令 | 符號 | 指令 | 符號 | 指令 | 符號 |
+|:-----|:----:|:-----|:----:|:-----|:----:|
+| `\times` | $\times$ | `\leq` | $\leq$ | `\approx` | $\approx$ |
+| `\div` | $\div$ | `\geq` | $\geq$ | `\equiv` | $\equiv$ |
+| `\pm` | $\pm$ | `\neq` | $\neq$ | `\sim` | $\sim$ |
+| `\cdot` | $\cdot$ | `\ll` | $\ll$ | `\propto` | $\propto$ |
+| `\infty` | $\infty$ | `\gg` | $\gg$ | `\partial` | $\partial$ |
+
+: 運算與關係符號 {#tbl-operators}
+
+**集合與邏輯符號**則在離散數學、線性代數與統計理論中不可或缺。集合運算包含聯集（`\cup`）、交集（`\cap`）、包含關係（`\subset`、`\subseteq`）與空集合（`\emptyset`）；邏輯量詞則有全稱（`\forall`）、存在（`\exists`）與蘊含（`\Rightarrow`、`\Leftrightarrow`）。`\nabla`（梯度算子）則常見於向量微積分與機器學習的推導中。
+
+| 指令 | 符號 | 指令 | 符號 | 指令 | 符號 |
+|:-----|:----:|:-----|:----:|:-----|:----:|
+| `\in` | $\in$ | `\cup` | $\cup$ | `\forall` | $\forall$ |
+| `\notin` | $\notin$ | `\cap` | $\cap$ | `\exists` | $\exists$ |
+| `\subset` | $\subset$ | `\emptyset` | $\emptyset$ | `\Rightarrow` | $\Rightarrow$ |
+| `\subseteq` | $\subseteq$ | `\nabla` | $\nabla$ | `\Leftrightarrow` | $\Leftrightarrow$ |
+
+: 集合與邏輯符號 {#tbl-sets}
+
+**箭頭符號**在數學推導中扮演重要角色，舉凡蘊含關係（$A \Rightarrow B$）、函數映射（$f: X \rightarrow Y$）、極限趨近（$x \rightarrow \infty$）乃至向量空間的線性映射，都仰賴箭頭符號來表達方向與邏輯關係。
+
+| 指令 | 符號 | 指令 | 符號 |
+|:-----|:----:|:-----|:----:|
+| `\rightarrow` | $\rightarrow$ | `\leftarrow` | $\leftarrow$ |
+| `\uparrow` | $\uparrow$ | `\downarrow` | $\downarrow$ |
+| `\Rightarrow` | $\Rightarrow$ | `\Leftarrow` | $\Leftarrow$ |
+| `\Uparrow` | $\Uparrow$ | `\Downarrow` | $\Downarrow$ |
+| `\rightharpoonup` | $\rightharpoonup$ | `\leftharpoonup` | $\leftharpoonup$ |
+| `\rightharpoondown` | $\rightharpoondown$ | `\leftharpoondown` | $\leftharpoondown$ |
+| `\longrightarrow` | $\longrightarrow$ | `\longleftarrow` | $\longleftarrow$ |
+| `\hookrightarrow` | $\hookrightarrow$ | `\hookleftarrow` | $\hookleftarrow$ |
+
+: 箭頭符號 {#tbl-arrows tbl-colwidths="[35,15,35,15]"}
+
+::: {.callout-important}
+## 到底該用 `\rightarrow` 還是 `\to`？
+
+在 LaTeX 中，`\to` （$\to$） 與 `\rightarrow` （$\rightarrow$） 產生的符號完全相同，但語意上有所區別。`\to` 更加簡潔，且在表達極限時語意更明確，因此通常建議在極限運算中使用 `\to`，例如：
+
+$$
+\lim_{x \to \infty} f(x)
+$$
+
+而 `\rightarrow` 則適合用在其他需要明確表示方向的場合，例如函數映射 $f: X \rightarrow Y$。
+:::
+
+**數學字體**在公式排版中同樣舉足輕重。不同的字體傳達不同的數學意涵，例如向量慣例用粗體、數系用黑板粗體、分布名稱用花體，若字體用錯，讀者可能產生誤解。LaTeX 提供一系列數學字體指令，常用者如下：
+
+| 指令 | 效果 | 常見用途 |
+|:-----|:----:|:---------|
+| `\mathcal{N}` | $\mathcal{N}$ | 花體，常用於機率分布、集合族 |
+| `\mathbb{R}` | $\mathbb{R}$ | 黑板粗體，常用於數系 |
+| `\mathbf{v}` | $\mathbf{v}$ | 粗體，多用於向量與矩陣 |
+| `\mathrm{d}` | $\mathrm{d}$ | 正體，用於微分符號、單位縮寫或運算子名稱 |
+| `\boldsymbol{\alpha}` | $\boldsymbol{\alpha}$ | 粗體希臘字母與符號，需載入 `amsmath` |
+
+: 常用數學字體指令 {#tbl-mathfonts tbl-colwidths="[20,10,70]"}
+
+::: {.callout-note}
+`\mathbb` 與 `\mathcal` 需載入 `amssymb` 套件方能使用；`\boldsymbol` 則需 `amsmath`。
+:::
+
+將上述符號與字體組合起來，便能精確描述複雜的數學關係。統計迴歸模型、常態分布假設與集合包含定義，都是日常學術寫作中的典型場景，範例如下：
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}            % 提供額外數學符號
+
+\begin{document}
+
+\begin{equation}                % 線性迴歸模型
+    y_i = \alpha + \beta x_i + \varepsilon_i
+\end{equation}
+
+\begin{equation}                % 誤差項的常態分布假設
+    \varepsilon_i \sim \mathcal{N}(0,\, \sigma^2), \quad \sigma > 0
+\end{equation}
+
+\begin{equation}                % 集合包含關係的邏輯定義
+    A \subseteq B \iff \forall x \in A \Rightarrow x \in B
+\end{equation}
+
+\end{document}
+```
+:::
+
+## 進階設定
+
+掌握基本符號之後，實際撰寫數學論文時還會遇到許多排版細節：分數的大小、根號的層次、括號的自動縮放、多行公式的對齊、矩陣的呈現等。這些進階功能主要由 `amsmath` 提供，是讓公式從**能看**到**好看**的關鍵。
+
+### 分數與根號
+
+**分數** （fraction） 使用 `\frac{分子}{分母}`，在行間公式中會自動放大；若在行內公式中希望強制使用較大的顯示尺寸，可改用 `\dfrac`。
+
+**根號** （square root） 則使用 `\sqrt{...}`，開 $n$ 次方根加上選擇性參數 `\sqrt[n]{...}` 即可。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+$\frac{a}{b}$\\     % 行內分數
+
+$\dfrac{a}{b}$\\    % 強制大分數
+
+\[
+    % 二次公式
+    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\]
+
+\[
+    % 三次方根與巢狀根號
+    \sqrt[3]{8} = 2, \quad \sqrt{\sqrt{x}} = x^{\frac{1}{4}}     
+\]
+
+\end{document}
+```
+:::
+
+### 空白與文字
+
+寫過幾篇數學文章之後，你可能會發現一件令人困惑的事：為什麼明明在原始碼中加了空格，LaTeX 卻視而不見？這是因為數學模式有自己的間距邏輯——它會根據符號的類型（運算子、關係符號、普通符號等）自動決定前後的間距，而不理會你輸入的空白字元。
+
+大多數情況下，這套自動邏輯運作得很好；但在某些細節上，例如微分符號前的薄空白、積分記號後的分隔，或條件式前後的留白，就需要手動微調，才能符合數學排版的傳統慣例。因此，若需手動調整間距，可使用以下指令：
+
+| 指令 | 間距大小 | 常見用途 |
+|:-----|:--------|:---------|
+| `\,` | 細空白 （thinspace） | 微分符號前、數字與單位間 |
+| `\:` | 中空白 （medspace） | 二元運算子前後 |
+| `\;` | 粗空白 （thickspace） | 強調間距 |
+| `\quad` | 1em | 條件說明、並排公式 |
+| `\qquad` | 2em | 較大的段落分隔 |
+
+: 數學模式空白指令 {#tbl-spacing tbl-colwidths="[15,25,60]"}
+
+除了間距之外，另一個常見需求是在公式中插入說明性文字，例如「其中 $x > 0$」或「若 $n$ 為奇數」。若直接在數學模式中輸入字母，這些字母會被視為**變數**並以斜體排版——`if` 會被排成像 $if$ 這樣（讓人誤以為是 $i \cdot f$）。正確的做法是使用 `\text{...}` 包裹，文字便會以正體排版，視覺上清楚地與數學符號區隔。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\[
+    f(x) = x^2 \quad \text{ where } \quad x \in \mathbb{R}   % \text{} 插入正體文字
+\]
+
+\[
+    \int_a^b f(x)\,\mathrm{d}x                            % \, 使 dx 與被積函數分開
+\]
+
+\end{document}
+```
+:::
+
+### 括號與定界符
+
+初學者常犯的一個視覺錯誤，是將分數或根號直接放進括號裡，結果括號的高度完全不夠，顯得格格不入。想像 $(\frac{a+b}{c+d})^2$ 這樣的排版：括號的高度和普通字母差不多，卻要包住一個高聳的分數，讀起來既奇怪又難辨識邊界。
+
+解法十分簡單：在括號前後分別加上 `\left` 與 `\right`，LaTeX 便會自動測量內容高度並放大括號。此技巧適用於所有定界符，包括方括號 `[ ]`、大括號 `\{ \}`、絕對值 `| |`，乃至上下混搭（左圓括號搭右方括號）。
+
+若需手動指定大小，可使用 `\bigl`、`\Bigl`、`\biggl`、`\Biggl`（由小到大）；這在某些情況下比自動縮放更精準。另外，若只需要單側定界符（例如導函數的「豎線取值」$\frac{d}{dx}x^2\big|_{x=3}$），可用 `\left.` 搭配 `\right|` 來構成一個隱形左邊界。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+% 自動縮放括號
+\[
+    \left( \frac{a}{b} + \frac{c}{d} \right)^2            % \left \right 自動縮放
+\]
+
+% 手動指定大小
+\[
+    \bigl( x \bigr), \quad
+    \Bigl( x \Bigr), \quad
+    \biggl( x \biggr), \quad
+    \Biggl( x \Biggr)                                      % 四種手動尺寸
+\]
+
+% 單側定界符：導函數取值
+\[
+    \left. \frac{d}{dx} x^2 \right|_{x=3} = 6             % \left. 為隱形左邊界
+\]
+
+\end{document}
+```
+:::
+
+### 省略號
+
+省略號看似小事，但位置放錯很容易讓公式顯得不專業。關鍵在於：省略號的垂直位置應當與它所代替的符號對齊。在 $a_1, a_2, \ldots, a_n$ 這樣以逗號分隔的序列中，逗號落在基線，省略號也應在基線（`\ldots`）；在 $a_1 + a_2 + \cdots + a_n$ 這樣的加法鏈中，加號在中線高度，省略號也應在中線（`\cdots`）。若弄反了，讀者大多數時候仍能看懂，但版面的精緻感就差強人意。
+
+若不確定應用哪個，`amsmath` 提供的 `\dots` 指令會根據前後文自動選擇，是個安全的折中方案。撰寫矩陣時則另有垂直省略的 `\vdots` 與對角省略的 `\ddots`，三者常常搭配使用。
+
+| 指令 | 效果 | 使用場合 |
+|:-----|:----:|:---------|
+| `\ldots` | $\ldots$ | 基線，用於逗號分隔的序列（$a_1, a_2, \ldots, a_n$） |
+| `\cdots` | $\cdots$ | 中線，用於加法或乘法序列（$a_1 + \cdots + a_n$） |
+| `\vdots` | $\vdots$ | 垂直，用於矩陣的行省略 |
+| `\ddots` | $\ddots$ | 對角線，用於矩陣的對角省略 |
+| `\dots` | $\dots$ | 自動判斷位置，適合大多數情況 |
+
+: 省略號指令 {#tbl-dots tbl-colwidths="[15,10,75]"}
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\[
+    a_1, a_2, \ldots, a_n                                  % 基線省略號（序列）
+\]
+
+\[
+    a_1 + a_2 + \cdots + a_n                               % 中線省略號（加法）
+\]
+
+\[
+    \begin{pmatrix}
+        a_{11} & \cdots & a_{1n} \\
+        \vdots & \ddots & \vdots \\
+        a_{m1} & \cdots & a_{mn}
+    \end{pmatrix}                                          % 矩陣中的省略號組合
+\]
+
+\end{document}
+```
+:::
+
+### 對齊環境
+
+數學推導很少能在一行內完成。當展開一個乘積、化簡一個積分，或逐步推導一個等式鏈時，往往需要多行，而且讀者期待每一行的等號整齊對齊——這是數學排版中**無聲的慣例**，幾乎所有教科書和論文都遵循此慣例。
+
+使用單行的 `equation` 環境放不下如此長的推導，強行換行也不會自動對齊。LaTeX 的 `align` 環境正是為此而生：
+
+- `&`：標記對齊點，通常放在欲對齊的符號前
+- `\\`：換行，每一行還會自動加上獨立的方程式編號，方便在文中引用[^align]
+
+當公式非常長，或想讓整個推導只顯示一個編號時，可在 `equation` 環境內嵌套 `aligned` 子環境，兼顧多行對齊與單一編號的需求。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{align}
+    (a + b)^2 &= a^2 + 2ab + b^2    \\   % 第一行，有編號
+    (a - b)^2 &= a^2 - 2ab + b^2         % 第二行，有編號
+\end{align}
+
+\begin{align*}
+    f(x)  &= x^2 + 3x + 2           \\   % 無編號版本
+          &= (x + 1)(x + 2)              % & 對齊等號
+\end{align*}
+
+\end{document}
+```
+:::
+
+### 矩陣
+
+矩陣在線性代數、統計學、機器學習等領域無所不在——從描述線性變換到表示共變異數結構，都少不了它。LaTeX 提供了多種矩陣環境，差別僅在於周圍的括號樣式，矩陣內部以 `&` 分隔同一列的元素，以 `\\` 換列，語法和 `align` 環境完全一致，學會一種就能觸類旁通。
+
+| 環境 | 括號樣式 | 效果 |
+|:-----|:--------|:----|
+| `matrix` | 無 | $\begin{matrix} a & b \\ c & d \end{matrix}$ |
+| `pmatrix` | 圓括號 | $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$ |
+| `bmatrix` | 方括號 | $\begin{bmatrix} a & b \\ c & d \end{bmatrix}$ |
+| `vmatrix` | 單豎線 | $\begin{vmatrix} a & b \\ c & d \end{vmatrix}$ |
+
+: 矩陣環境比較 {#tbl-matrix tbl-colwidths="[20,20,60]"}
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\[
+    \mathbf{A} = \begin{bmatrix}                % 方括號矩陣
+        1 & 2 & 3 \\
+        4 & 5 & 6 \\
+        7 & 8 & 9
+    \end{bmatrix}
+\]
+
+\end{document}
+```
+:::
+
+### 分段函數
+
+分段函數是另一個常見需求：根據輸入值的範圍套用不同公式，最典型的例子是絕對值定義或 Heaviside 階梯函數，如：
+
+$$
+|x| = 
+\begin{cases} 
+x, &\text{if } x \geq 0,\\
+-x, &\text{if } x < 0
+\end{cases}
+$$
+
+`cases` 環境讓左側公式與右側條件自動對齊，並在最左側加上一個大括號，是撰寫任何分段定義時的標準寫法。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\[
+    f(x) = \begin{cases}                        % 分段函數
+        x^2   & \text{若 } x \geq 0 \\
+        -x^2  & \text{若 } x < 0
+    \end{cases}
+\]
+
+\end{document}
+```
+:::
+
+### 自訂數學運算子
+
+翻開統計或機器學習的論文，你很快就會遇到 $\text{var}(X)$、$\text{cov}(X, Y)$、$\text{tr}(\mathbf{A})$ 這類符號。初學者可能直覺地用 `\text{Var}` 或甚至直接打 `var`，但這兩種方式都有問題：直接輸入的 $var$ 會以斜體呈現，看起來像三個相乘的變數；而 `\text{var}` 雖然是正體，但前後間距與 `\sin`、`\log` 這類內建函數不一致，視覺上顯得突兀。正確的做法是將它們定義為**數學運算子** （math operator），讓 LaTeX 以和內建函數完全相同的規則排版——包括前後間距與上下限標記的位置。
+
+使用 `\operatorname{...}` 可以在行內臨時定義一個運算子名稱；若同一個運算子在文件中重複出現，更建議在序言中以 `\DeclareMathOperator` 統一聲明。需要支援上下限標記（如 $\operatorname*{argmax}_{x}$）的運算子，則改用 `\DeclareMathOperator*`。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\DeclareMathOperator{\var}{var}         % 定義變異數運算子
+\DeclareMathOperator{\cov}{cov}         % 定義共變異數運算子
+\DeclareMathOperator{\tr}{tr}           % 定義跡運算子
+
+\begin{document}
+
+\[
+    \var(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2        % 使用自訂運算子
+\]
+
+\[
+    \cov(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\]
+
+\[
+    \operatorname{rank}(\mathbf{A}) \leq \tr(\mathbf{A})  % \operatorname 臨時定義
+\]
+
+\end{document}
+```
+:::
+
+
+## 方程式
+
+上一節介紹的 `align` 環境適合有邏輯關係的多行推導；但更普遍的場景是：只有**一條**公式，需要給它一個編號以便在正文中交叉引用。這正是 `equation` 環境的用途。本節進一步介紹如何處理過長的方程式，以及如何並排幾條互不相關的方程式。
+
+### `equation` 環境
+
+`equation` 環境是撰寫**帶編號單行方程式**的標準選擇：公式自動置中，右側附上連續的方程式編號。初學者常問
+
+> `\[...\]` 和 `equation` 有什麼差別？
+
+差就差在編號！
+
+`\[...\]` 讓公式顯示成行間公式但不附編號；`equation` 則在右側自動加上 `(1)`、`(2)` 這樣的編號，讓你在正文中能以「**式 (1)**」的方式引用。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{equation}
+    e^{i\pi} + 1 = 0                            % 歐拉恆等式
+\end{equation}
+
+\begin{equation}
+    \int_{-\infty}^{\infty} e^{-x^2}\,\mathrm{d}x = \sqrt{\pi}   % 高斯積分
+\end{equation}
+
+\end{document}
+```
+:::
+
+### 長方程式
+
+遇到特別長的方程式，硬是塞在一行往往溢出頁面，排版難以接受，~~簡直不可饒恕~~。此時可以用 `split` 環境**巢狀在** `equation` 內，將一條長方程式拆成多行並以 `&` 對齊——但整個 `equation` 仍只有一個編號，視覺上仍是完整的一條式子。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{equation}
+\begin{split}
+    (a + b + c)^2
+        &= a^2 + b^2 + c^2          \\
+        &\quad + 2ab + 2bc + 2ca    % 第二行以 \quad 縮排
+\end{split}
+\end{equation}
+
+\end{document}
+```
+:::
+
+### 方程式置中
+
+`gather` 環境讓多條**互不相關**的方程式各自置中排列，每一行自動取得獨立的編號。與 `align` 的差異在於：`align` 以 `&` 為對齊軸，適合有邏輯關聯的推導鏈；`gather` 則讓每條式子各自置中，適合並列幾條獨立公式。加上星號改用 `gather*` 可取消編號。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{gather}
+    a + b = c               \\   % 每行各自置中、各自編號
+    x^2 + y^2 = z^2         \\
+    e^{i\pi} + 1 = 0
+\end{gather}
+
+\end{document}
+```
+:::
+
+## 數學環境
+
+撰寫數學論文或講義，除了公式本身，還需要呈現**定理**、**引理**、**定義**、**推論**與**證明**這些邏輯結構。`amsthm` 套件提供了一套完整的機制，讓你用一行設定就能建立具有自動編號、一致格式的數學環境，讓讀者能一眼辨別當前閱讀的是定義還是定理。
+
+### 帶編號數學環境
+
+在前言區使用 `\newtheorem{環境名}{顯示名稱}` 即可建立帶編號的數學環境。顯示名稱是排版時呈現給讀者的文字，環境名則是你在文中呼叫 `\begin{...}` 時使用的識別符。此外，還可透過可選參數控制計數器的行為：
+
+- `\newtheorem{theorem}{Theorem}[section]`：計數器依章節重置，產生「**定理 2.1**」、「**定理 2.2**」這樣的階層編號。
+- `\newtheorem{corollary}{Corollary}[theorem]`：計數器跟隨 `theorem` 重置，使推論與所源自的定理共享計數器深度。
+- `\newtheorem{lemma}[theorem]{Lemma}`：與 `theorem` 共用同一計數器，讓引理與定理的編號連續排列。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath, amsthm}
+
+\newtheorem{theorem}{Theorem}[section]           % 按章節編號
+\newtheorem{corollary}{Corollary}[theorem]       % 跟隨定理計數器
+\newtheorem{lemma}[theorem]{Lemma}               % 共用定理計數器
+
+\begin{document}
+
+\section{Linear Algebra}
+
+\begin{theorem}
+    Let $A$ be an $n \times n$ invertible matrix. Then the
+    column vectors of $A$ form a basis for $\mathbb{R}^n$.
+\end{theorem}
+
+\begin{lemma}
+    If $\det(A) \neq 0$, then $A$ is invertible.
+\end{lemma}
+
+\begin{corollary}
+    If $A$ is invertible, the homogeneous system
+    $A\mathbf{x} = \mathbf{0}$ has only the trivial solution.
+\end{corollary}
+
+\end{document}
+```
+:::
+
+### 無編號數學環境
+
+並非所有的數學陳述都需要編號。備註、說明或例子通常不需要在文中被引用，強行給它們編號反而讓讀者以為漏掉了什麼。使用 `\newtheorem*{環境名}{顯示名稱}`（加上星號）即可建立無編號版本。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath, amsthm}
+
+\newtheorem*{remark}{Remark}                     % 無編號備註環境
+\newtheorem*{example}{Example}                   % 無編號例子環境
+
+\begin{document}
+
+\begin{example}
+    Let $f(x) = x^2$. Find $f'(x)$.
+\end{example}
+
+\begin{remark}
+    The result holds for all $x \in \mathbb{R}$.
+\end{remark}
+
+\end{document}
+```
+:::
+
+### 定義環境設定
+
+`amsthm` 預設提供三種排版風格，透過 `\theoremstyle{樣式}` 切換，影響的是顯示名稱與內文的字體格式：
+
+- `plain`（預設）：顯示名稱粗體、內文**斜體**，用於定理、引理、命題等需要突出的陳述。
+- `definition`：顯示名稱粗體、內文正體，用於定義、例子等內容較為具體的環境。
+- `remark`：顯示名稱斜體、內文正體，用於備註、說明等輔助性內容。
+
+`\theoremstyle` 一旦宣告，之後的所有 `\newtheorem` 都套用該風格，直到下一個 `\theoremstyle` 出現為止，因此建議在前言區按風格分組宣告。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath, amsthm}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]           % 斜體內文
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]     % 正體內文
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}                     % 斜體標題、正體內文
+
+\begin{document}
+
+\section{Topology}
+
+\begin{definition}[Topological Space]
+    Let $X$ be a set and $\tau$ a collection of subsets of $X$.
+    If $\tau$ satisfies the three open-set axioms, $(X, \tau)$ is a topological space.
+\end{definition}
+
+\begin{theorem}
+    Every closed subset of a compact topological space is compact.
+\end{theorem}
+
+\begin{remark}
+    The converse holds in Hausdorff spaces.
+\end{remark}
+
+\end{document}
+```
+:::
+
+### 證明環境
+
+`amsthm` 內建了 `proof` 環境，無需額外宣告即可直接使用。`proof` 環境會在開頭自動印出「*Proof.*」，並在結尾右下角附上 QED 符號 $\square$，代表「此證明完畢 （quod erat demonstrandum）」。若需要更換 QED 符號，可在前言區以 `\renewcommand{\qedsymbol}{...}` 修改。
+
+::: {.latex-runner}
+```latex
+\documentclass{article}
+\usepackage{amsmath, amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}        % 將 QED 改為實心方塊
+
+\begin{document}
+
+\begin{theorem}
+    $\sqrt{2}$ is irrational.
+\end{theorem}
+
+\begin{proof}
+    Suppose $\sqrt{2} = \frac{p}{q}$ with $p, q \in \mathbb{Z}$ coprime.
+    Then $p^2 = 2q^2$, so $p^2$ is even and hence $p$ is even.
+    Write $p = 2k$; substituting gives $q^2 = 2k^2$,
+    so $q$ is also even, contradicting $\gcd(p, q) = 1$.
+\end{proof}
+
+\end{document}
+```
+:::
+
+
+[^greek]: 請注意，雖然 $\Pi$ （`\Pi`） 與 $\prod$ （`\prod`）、$\Sigma$ （`\Sigma`） 與 $\sum$ （`\sum`） 外形相似，但用途截然不同：`\Pi` 與 `\Sigma` 是純粹的希臘字母，通常用於代表某個數學量；而 `\prod` 與 `\sum` 則是**大型運算子** （large operator），會在行間公式中自動產生上下標位置，分別對應連乘積 （$\prod_{i=1}^{n}$） 與求和 （$\sum_{i=1}^{n}$），在使用上切勿混用。
+
+[^align]: 若不需要編號，改用 `align*` 即可。

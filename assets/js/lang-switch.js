@@ -36,6 +36,9 @@
     '/articles/posts/python/id-function/python-id-function-en.html':  '/articles/posts/python/id-function/python-id-function.html',
     '/articles/posts/python/zip-enum/python-zip-enum.html':     '/articles/posts/python/zip-enum/python-zip-enum-en.html',
     '/articles/posts/python/zip-enum/python-zip-enum-en.html':  '/articles/posts/python/zip-enum/python-zip-enum.html',
+    // latex/math
+    '/articles/posts/latex/math/math.html':    '/articles/posts/latex/math/math-en.html',
+    '/articles/posts/latex/math/math-en.html': '/articles/posts/latex/math/math.html',
   };
 
   // Navbar label translations: href substring → [zh, en]

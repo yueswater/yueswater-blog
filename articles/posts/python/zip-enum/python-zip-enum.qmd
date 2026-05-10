@@ -92,7 +92,7 @@ enumerate(names)
 list(enumerate(names))
 ```
 
-這個列表裡面儲存了一個包含每個元素的索引值與元素的值的元組。因為 `enumerate` 物件本身也是可迭代的，因此可以直接放進 `for` 迴圈中使用，並透過**解包 (unpacking)**將索引與元素分別指派給兩個變數：
+這個列表裡面儲存了一個包含每個元素的索引值與元素的值的元組。因為 `enumerate` 物件本身也是可迭代的，因此可以直接放進 `for` 迴圈中使用，並透過**解包 （unpacking）**將索引與元素分別指派給兩個變數：
 
 ```{python}
 for i, name in enumerate(names):
