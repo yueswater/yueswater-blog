@@ -5,9 +5,9 @@ date: 2026-04-12
 author: Anthony
 categories: [LaTeX]
 description: "A beginner's guide to LaTeX — typesetting doesn't have to be a nightmare."
-image: images/LaTeX_logo.png
+image: ../../cover/LaTeX_logo.png
 glossary:
-  path: ../../../../../_glossary/latex.yml
+  path: ../../../../_glossary/latex.yml
   popup: hover
 ---
 

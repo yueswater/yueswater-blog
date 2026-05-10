@@ -5,13 +5,13 @@ date: 2026-04-14
 author: Anthony
 categories: [LaTeX]
 description: "LaTeX 文件的基本設定，包含字型、頁面版面與常用套件"
-image: images/LaTeX_logo.png
+image: ../../cover/LaTeX_logo.png
 glossary:
-  path: ../../../../../../_glossary/latex.yml
+  path: ../../../../_glossary/latex.yml
   popup: hover
 ---
 
-在上一篇文章[第一份 LaTeX 文件](../../../04/13/latex-first-doc/latex-first-doc.qmd)中，我們建立了第一份可以成功編譯的 LaTeX 文件，認識了{{< glossary "文件類別" >}}、{{< glossary "序言" >}}與本文的基本架構。然而，一份「能跑」的文件，距離「好看」還有一段距離——預設的 LaTeX 輸出在字型、中文支援、頁面邊距等方面都有明顯的侷限。
+在上一篇文章[第一份 LaTeX 文件](../first-doc/latex-first-doc.qmd)中，我們建立了第一份可以成功編譯的 LaTeX 文件，認識了{{< glossary "文件類別" >}}、{{< glossary "序言" >}}與本文的基本架構。然而，一份「能跑」的文件，距離「好看」還有一段距離——預設的 LaTeX 輸出在字型、中文支援、頁面邊距等方面都有明顯的侷限。
 
 在這篇文章中，你將學到如何透過幾個常用{{< glossary "套件" >}}與設定，讓文件更符合實際需求：
 
@@ -48,11 +48,11 @@ glossary:
 
 使用 LaTeX 套件時，我們需要以 `\usepackage[套件設定]{套件名稱}` 指令，告訴編譯器需要使用特定套件。[^optional] 不過需要注意，如果你是在本機裡面使用 LaTeX，也就是已經裝好編譯器，那麼在使用套件之前，編譯器通常都會詢問是否要安裝特定套件[^miktex]，必須要確保確實安裝該套件才能成功編譯。
 
-[^optional]: 如果你不熟悉 `[]` 與 `{}` 的差異在哪，請回去看第一篇文章的[決定美醜的關鍵：參數](../../../04/12/latex-intro.qmd)。
+[^optional]: 如果你不熟悉 `[]` 與 `{}` 的差異在哪，請回去看第一篇文章的[決定美醜的關鍵：參數](../intro/latex-intro.qmd)。
 
 [^miktex]: 筆者未有使用過 MikTeX 以外編譯器的經驗，因此不確定其他編譯器是否如此貼心。MikTeX 的好處是可以在 MikTeX Console 裡面設定自動安裝套件，不用每次詢問。
 
-在上一篇[第一份 LaTeX 文件](../../../04/13/latex-first-doc/latex-first-doc.qmd)的最後，你有沒有發現，在範例中有一些很奇怪的非英文字母。這些文字就是所謂的虛擬一大串亂碼碎碎念的 **[Lorem ipsum](https://zh.wikipedia.org/zh-tw/Lorem_ipsum)**(簡稱為 Lipsum)。Lipsum 是一段常見的假文字，俗稱為亂文，起源於古羅馬西塞羅(Cicero)的作品，通常用於設計和排版的過程中，用來填充文本位置以模擬實際的文字內容，幫助測試版面效果。以下我們以 `lipsum` 與 `blindtext` 兩個套件加以說明。[^lipsum]
+在上一篇[第一份 LaTeX 文件](../first-doc/latex-first-doc.qmd)的最後，你有沒有發現，在範例中有一些很奇怪的非英文字母。這些文字就是所謂的虛擬一大串亂碼碎碎念的 **[Lorem ipsum](https://zh.wikipedia.org/zh-tw/Lorem_ipsum)**(簡稱為 Lipsum)。Lipsum 是一段常見的假文字，俗稱為亂文，起源於古羅馬西塞羅(Cicero)的作品，通常用於設計和排版的過程中，用來填充文本位置以模擬實際的文字內容，幫助測試版面效果。以下我們以 `lipsum` 與 `blindtext` 兩個套件加以說明。[^lipsum]
 
 [^lipsum]: `lipsum` 與 `blindtext` 最大的差異是：`lipsum` 只會產生 Lorem ipsum 假文本，而 `blindtext` 則可以產生各種格式的測試文本，例如標題、副標題等。
 
