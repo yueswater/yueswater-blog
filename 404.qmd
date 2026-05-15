@@ -1,0 +1,35 @@
+---
+pagetitle: "找不到頁面 | Yueswater Blog"
+lang: zh-TW
+page-layout: custom
+sidebar: false
+search: false
+repo-actions: false
+description: "這個頁面不存在。"
+---
+
+```{=html}
+<div style="
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 2rem;
+  gap: 1rem;
+">
+  <p style="font-size: 6rem; font-weight: 700; margin: 0; line-height: 1;">404</p>
+  <p style="font-size: 1.25rem; color: #666; margin: 0;">找不到這個頁面</p>
+  <p style="font-size: 0.95rem; color: #999; margin: 0;">可能是連結錯了，或是這頁已經不存在了。</p>
+  <a href="/" style="
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    background: #181818;
+    color: #f2f2f2;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 4px;
+  ">回首頁</a>
+</div>
+```
