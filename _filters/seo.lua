@@ -4,12 +4,13 @@ local SITE_URL = "https://yueswater.com"
 local AUTHOR   = "Anthony Sung"
 
 -- Resolve a (possibly relative) image path to an absolute URL.
--- Relative paths are resolved against the current input file's directory.
+-- Uses quarto.project.directory as the project root so it works both locally
+-- and on Netlify (where the path is /opt/build/repo/ not ~/yueswater-blog/).
 local function resolve_image(img, input_file)
   if img:match("^https?://") then return img end
   if img:match("^/") then return SITE_URL .. img end
 
-  -- Relative: combine with input file's directory and normalise `..`
+  -- Resolve relative path against input file's directory and normalise `..`
   local dir = input_file:match("(.+)/[^/]+$") or ""
   local abs = dir .. "/" .. img
   local prev
@@ -19,8 +20,19 @@ local function resolve_image(img, input_file)
   until abs == prev
   abs = abs:gsub("/[^/]+/%.$", "")
 
-  local rel = abs:match(".+/yueswater%-blog/(.+)$") or abs
-  return SITE_URL .. "/" .. rel
+  -- Strip project root to get a site-relative path
+  local project_root = (quarto and quarto.project and quarto.project.directory) or ""
+  local rel
+  if project_root ~= "" then
+    local esc = project_root:gsub("([^%w/])", "%%%1")
+    rel = abs:match("^" .. esc .. "/(.+)$")
+  end
+  -- Fallback: legacy local path pattern
+  if not rel then
+    rel = abs:match(".+/yueswater%-blog/(.+)$")
+  end
+
+  return rel and (SITE_URL .. "/" .. rel) or (SITE_URL .. "/" .. img)
 end
 
 function Meta(meta)
