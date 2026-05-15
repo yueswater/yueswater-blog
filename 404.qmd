@@ -20,8 +20,8 @@ description: "這個頁面不存在。"
   gap: 1rem;
 ">
   <p style="font-size: 6rem; font-weight: 700; margin: 0; line-height: 1;">404</p>
-  <p style="font-size: 1.25rem; color: #666; margin: 0;">找不到這個頁面</p>
-  <p style="font-size: 0.95rem; color: #999; margin: 0;">可能是連結錯了，或是這頁已經不存在了。</p>
+  <p style="font-size: 1.25rem; color: #666; margin: 0;">找不到這個頁面 &nbsp;·&nbsp; Page Not Found</p>
+  <p style="font-size: 0.95rem; color: #999; margin: 0;">可能是連結錯了，或是這頁已經不存在了。<br>The link might be broken, or the page may no longer exist.</p>
   <a href="/" style="
     margin-top: 1rem;
     padding: 0.6rem 1.5rem;
@@ -29,7 +29,6 @@ description: "這個頁面不存在。"
     color: #f2f2f2;
     text-decoration: none;
     font-size: 0.9rem;
-    border-radius: 4px;
-  ">回首頁</a>
+  ">回首頁 &nbsp;/&nbsp; Back to Home</a>
 </div>
 ```
