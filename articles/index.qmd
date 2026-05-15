@@ -1,6 +1,7 @@
 ---
 pagetitle: 文章 | Yueswater Blog
 lang: zh-TW
+description: "Python、R、LaTeX 教學文章與技術筆記，由 Anthony 撰寫，適合初學者與進階學習者。"
 title: 文章
 subtitle: 教學文章與技術筆記
 search: false

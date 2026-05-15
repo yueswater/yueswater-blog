@@ -1,6 +1,7 @@
 ---
 pagetitle: Diary | Yueswater Blog
 lang: en
+description: "Personal notes and reflections by Anthony — everyday observations, learning experiences, and random thoughts."
 title: Diary
 subtitle: Notes from everyday life
 search: false

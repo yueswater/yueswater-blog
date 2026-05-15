@@ -1,6 +1,7 @@
 ---
 pagetitle: 專案 | Yueswater Blog
 lang: zh-TW
+description: "Anthony 做過的軟體專案，涵蓋全端 Web 應用、資料視覺化工具與社團管理系統。"
 title: 專案
 subtitle: 我做過的東西
 search: false

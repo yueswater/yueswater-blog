@@ -7,11 +7,9 @@ website:
   title: "Yueswater Blog"
   image: images/logo.png
   favicon: images/favicon.svg
-  twitter-card:
-    site: "@your_handle"
   open-graph: true
-  site-url: https://your-domain.com
-  repo-url: https://github.com/your-username/yueswater-blog
+  site-url: https://yueswater.com
+  repo-url: https://github.com/yueswater/yueswater-blog
   repo-actions: [edit, issue]
   navbar:
     toggle-position: right

@@ -1,6 +1,7 @@
 ---
 title: "術語表"
 lang: zh-TW
+description: "LaTeX、Python、R 等技術術語的中文解釋，配合 Yueswater Blog 教學文章使用。"
 toc: false
 ---
 

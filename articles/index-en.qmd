@@ -1,6 +1,7 @@
 ---
 pagetitle: Articles | Yueswater Blog
 lang: en
+description: "Tutorials and technical notes on Python, R, and LaTeX by Anthony — written for learners at all levels."
 title: Articles
 subtitle: Tutorials and technical writing
 search: false

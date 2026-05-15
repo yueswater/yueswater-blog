@@ -1,6 +1,7 @@
 ---
 pagetitle: Projects | Yueswater Blog
 lang: en
+description: "Software projects by Anthony — full-stack web apps, data visualization tools, and club management systems."
 title: Projects
 subtitle: Things I've built
 search: false

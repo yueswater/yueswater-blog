@@ -1,6 +1,7 @@
 ---
 pagetitle: 日記 | Yueswater Blog
 lang: zh-TW
+description: "Anthony 的生活隨筆，記錄日常觀察、學習心得與各種雜想。"
 title: 日記
 subtitle: 生活隨筆
 search: false

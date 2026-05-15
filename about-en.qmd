@@ -2,6 +2,7 @@
 pagetitle: About | Yueswater Blog
 lang: en
 title: "About"
+description: "I'm Anthony (宋品岳), a graduate student at NCCU and software intern. This blog documents my work in Python, R, LaTeX, and full-stack development."
 image: images/profile.JPG
 about:
   template: trestles

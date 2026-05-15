@@ -2,6 +2,7 @@
 pagetitle: 關於 | Yueswater Blog
 lang: zh-TW
 title: "關於"
+description: "我是宋品岳（Anthony），政大國貿所學生，同時擔任軟體實習生。這裡記錄我在 Python、R、LaTeX 與全端開發上的學習與實作。"
 image: images/profile.JPG
 about:
   template: trestles
