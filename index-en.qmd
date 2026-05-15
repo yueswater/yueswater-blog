@@ -9,7 +9,7 @@ search: false
 repo-actions: false
 description: |
   A personal blog by Anthony — tutorials on Python, R, and LaTeX, alongside projects and life notes.
-image: images/LaTeX_logo.svg
+image: images/og-image.png
 listing:
   - id: en-latest-articles
     contents:

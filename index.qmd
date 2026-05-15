@@ -9,7 +9,7 @@ search: false
 repo-actions: false
 description: |
   Anthony 的個人部落格——Python、R、LaTeX 教學，以及專案與生活筆記。
-image: images/logo.png
+image: images/og-image.png
 listing:
   - id: latest-articles
     contents:
