@@ -6,6 +6,7 @@ author: Anthony
 categories: [React, TypeScript, Socket.io, 全端開發]
 description: "為臺大國安社 2026 青年國安論壇打造的多人即時兵推平台，四個角色同時上線，模擬台海危機下的決策談判。"
 image: images/cover.svg
+alternate-lang: "/projects/posts/wargaming/wargaming-en.html"
 ---
 
 [![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)

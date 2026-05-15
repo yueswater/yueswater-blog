@@ -5,9 +5,12 @@ project:
 
 website:
   title: "Yueswater Blog"
-  image: images/logo.png
+  image: images/og-image.png
   favicon: images/favicon.svg
-  open-graph: true
+  open-graph:
+    site-name: "Yueswater Blog"
+  twitter-card:
+    card-style: summary_large_image
   site-url: https://yueswater.com
   repo-url: https://github.com/yueswater/yueswater-blog
   repo-actions: [edit, issue]
@@ -67,6 +70,7 @@ format:
 
 filters:
   - latex-runner
+  - _filters/seo.lua
 
 jupyter: python3
 

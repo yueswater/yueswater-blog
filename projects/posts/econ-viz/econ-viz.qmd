@@ -6,6 +6,7 @@ author: Anthony
 categories: [Python, 資料視覺化, 經濟學]
 description: "一個專為個體經濟學設計的 Python 套件，幾行程式碼就能產出出版等級的無異曲線圖、需求圖與均衡分析圖。"
 image: images/cover.svg
+alternate-lang: "/projects/posts/econ-viz/econ-viz-en.html"
 ---
 
 ## 專案簡介

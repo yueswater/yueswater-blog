@@ -9,4 +9,5 @@ image: ../../cover/Python_logo.png
 glossary:
   path: ../../../../_glossary/python.yml
   popup: hover
+alternate-lang: "/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html"
 ---

@@ -51,6 +51,7 @@ listing:
     feed: false
 
 toc: false
+alternate-lang: "/index-en.html"
 ---
 
 ::: {.pullout-text}

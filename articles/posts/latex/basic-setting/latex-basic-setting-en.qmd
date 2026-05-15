@@ -6,6 +6,7 @@ author: Anthony
 categories: [LaTeX]
 description: "Basic document settings in LaTeX, including fonts, page layout, and commonly used packages."
 image: ../../cover/LaTeX_logo.png
+alternate-lang: "/articles/posts/latex/basic-setting/latex-basic-setting.html"
 ---
 
 In the previous article, [Your First LaTeX Document](../first-doc/latex-first-doc.qmd), we created a document that compiles successfully and learned about the basic structure of a document class, preamble, and body. However, a document that "runs" is still quite far from one that "looks good" — the default LaTeX output has noticeable limitations in terms of fonts, Chinese support, and page margins.

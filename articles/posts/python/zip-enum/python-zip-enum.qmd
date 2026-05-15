@@ -9,6 +9,7 @@ image: ../../cover/Python_logo.png
 glossary:
   path: ../../../../_glossary/python.yml
   popup: hover
+alternate-lang: "/articles/posts/python/zip-enum/python-zip-enum-en.html"
 ---
 
 迴圈在 Python 中具有舉足輕重的地位，大多數的專案多會使用迴圈來處理大量重複性高的任務。然而，雖然迴圈的語法已經十分直觀，但當需要同時處理多組**相關聯**的資料，或是在迴圈迭代過程中追蹤當前的索引值時，許多初學者往往會仰賴傳統的 `range(len())`。雖然這樣寫沒有問題，但是當程式碼一多，閱讀性就會降低。

@@ -9,6 +9,7 @@ image: ../../cover/LaTeX_logo.png
 glossary:
   path: ../../../../_glossary/latex.yml
   popup: hover
+alternate-lang: "/articles/posts/latex/first-doc/latex-first-doc.html"
 ---
 
 In the previous article, [Introduction to LaTeX](../intro/latex-intro-en.qmd), we covered how to choose a compiler and editor, along with the basic operations of LaTeX — entering commands, writing comments, opening environments, and setting section depth. In this article, you will learn:

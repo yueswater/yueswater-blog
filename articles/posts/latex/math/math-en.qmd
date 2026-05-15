@@ -9,6 +9,7 @@ image: ../../cover/LaTeX_logo.png
 glossary:
   path: ../../../../_glossary/latex.yml
   popup: hover
+alternate-lang: "/articles/posts/latex/math/math.html"
 ---
 
 After learning the basic layout settings in LaTeX, it is time to move to its strongest feature: mathematical typesetting.

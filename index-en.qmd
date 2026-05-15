@@ -45,6 +45,7 @@ listing:
     feed: false
 
 toc: false
+alternate-lang: "/index.html"
 ---
 
 ::: {.pullout-text}

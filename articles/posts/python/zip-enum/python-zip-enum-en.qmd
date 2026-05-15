@@ -9,6 +9,7 @@ image: ../../cover/Python_logo.png
 glossary:
   path: ../../../../_glossary/python.yml
   popup: hover
+alternate-lang: "/articles/posts/python/zip-enum/python-zip-enum.html"
 ---
 
 Loops are central to almost every Python project. The syntax is straightforward, and for simple cases, a plain `for` loop does the job cleanly. Problems arise when you need to track the current index while iterating, or when you need to process two related sequences at the same time. Many beginners reach for `range(len())` in both situations — it works, but it introduces unnecessary complexity.

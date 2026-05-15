@@ -6,6 +6,7 @@ author: Anthony
 categories: [React, TypeScript, Socket.io, Full-Stack]
 description: "A multi-player real-time wargame platform built for NTU National Security Society's 2026 Youth Forum, simulating crisis negotiations across four stakeholder roles."
 image: images/cover.svg
+alternate-lang: "/projects/posts/wargaming/wargaming.html"
 ---
 
 [![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)

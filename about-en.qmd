@@ -15,6 +15,7 @@ about:
       href: https://instagram.com/yues_19_water
     - icon: threads-fill
       href: https://www.threads.com/@yues_19_water
+alternate-lang: "/about.html"
 ---
 
 ## Hi, I'm Anthony 👋

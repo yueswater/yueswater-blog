@@ -6,6 +6,7 @@ author: Anthony
 categories: [React, Node.js, MongoDB, Full-Stack]
 description: "A full-stack club management platform built for NTU National Security Society, covering event registration, officer management, and article publishing."
 image: images/cover.svg
+alternate-lang: "/projects/posts/ntun3si/ntun3si.html"
 ---
 
 [![](https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://ntun3si.space) [![](https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/ntun3si)

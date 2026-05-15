@@ -9,6 +9,7 @@ image: ../../cover/Python_logo.png
 glossary:
   path: ../../../../_glossary/python.yml
   popup: hover
+alternate-lang: "/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html"
 ---
 
 撰寫 Python 時，或多或少有過這種經驗：明明只想把一串資料「改一改、篩一篩、加總一下」，結果迴圈越寫越長，`if` 越疊越深，最後自己都不想讀。這時候，`lambda`、`map`、`filter`、`reduce` 通常會被拿出來，像是 Python 世界裡的瑞士刀。

@@ -6,6 +6,7 @@ author: Anthony
 categories: [Python, Data Visualization, Economics]
 description: "A Python toolkit for publication-quality microeconomics diagrams — indifference maps, demand curves, and equilibrium analysis in a few lines of code."
 image: images/cover.svg
+alternate-lang: "/projects/posts/econ-viz/econ-viz.html"
 ---
 
 ## Overview

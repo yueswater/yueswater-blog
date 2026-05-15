@@ -16,4 +16,5 @@ listing:
   filter-ui: true
   page-size: 10
   feed: true
+alternate-lang: "/articles/index.html"
 ---

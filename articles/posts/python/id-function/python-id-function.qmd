@@ -9,6 +9,7 @@ image: ../../cover/Python_logo.png
 glossary:
   path: ../../../../_glossary/python.yml
   popup: hover
+alternate-lang: "/articles/posts/python/id-function/python-id-function-en.html"
 ---
 
 先來看一段會讓很多人愣住的程式碼：

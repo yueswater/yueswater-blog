@@ -9,6 +9,7 @@ image: ../../cover/LaTeX_logo.png
 glossary:
   path: ../../../../_glossary/latex.yml
   popup: hover
+alternate-lang: "/articles/posts/latex/math/math-en.html"
 ---
 
 在掌握 LaTeX 排版的基礎之後，接下來要進入 LaTeX 最令人稱道的核心功能：數學排版。
