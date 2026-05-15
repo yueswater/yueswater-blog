@@ -1,0 +1,143 @@
+---
+title: "TSMC Crisis Wargame System"
+lang: en
+date: 2026-05-15
+author: Anthony
+categories: [React, TypeScript, Socket.io, Full-Stack]
+description: "A multi-player real-time wargame platform built for NTU National Security Society's 2026 Youth Forum, simulating crisis negotiations across four stakeholder roles."
+image: images/cover.svg
+---
+
+[![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)
+
+## About This Project
+
+The NTU National Security Society's 2026 Youth Forum included a wargame exercise set during a Taiwan Strait crisis. TSMC serves as the central strategic asset, and four parties — TSMC, the Executive Yuan, the US Government, and a Think Tank — must negotiate a mutually acceptable outcome within a limited number of rounds.
+
+Traditional wargames like this rely on paper forms and verbal exchanges, making decision information opaque and results hard to calculate in real time. This system moves the entire process to the web: each role logs in separately, sees the lobby status live, and submits decisions each round. The server resolves the outcome and pushes results to everyone simultaneously.
+
+The front end is built with React 19 and TypeScript. Real-time sync runs on Socket.io. The back end uses Express and SQLite.
+
+## Scenario
+
+The wargame centers on a single question:
+
+> **When a Taiwan Strait crisis breaks out, how should TSMC decide on blackout duration, technology transfer ceilings, and defense supply positions under pressure from all sides?**
+
+After each round, the system outputs two indicators:
+
+::: {style="width: fit-content; margin: auto;"}
+| Indicator | Pass Threshold |
+| :--- | :--- |
+| Public opinion (`finalOpinion`) | $\geq 60\%$ |
+| Probability of military action (`finalAttack`) | $\leq 30\%$ |
+:::
+
+The game ends early if both targets are met simultaneously, with a maximum of three rounds.
+
+## Roles and Decision Fields
+
+Each role can only see their own decision fields — no one can see what others have submitted:
+
+| Role | Decision Fields |
+| :--- | :--- |
+| TSMC | Blackout weeks, tech transfer ceiling, defense supply position |
+| Executive Yuan | Preferred blackout weeks, defense supply demand, emergency order intent |
+| US Government | Requested fund size, security commitment years, tech transfer demand |
+| Think Tank | Endorsement position, policy signal strength |
+
+Once all four submissions are in, the server merges the parameters, runs the resolution engine, and broadcasts the results to everyone at once.
+
+## System Flow
+
+```{mermaid}
+%%| label: fig-flow
+%%| fig-cap: Complete wargame flow — from login and lobby to multi-round resolution and end conditions
+flowchart LR
+    A([Login]) --> B[Lobby]
+    B --> C{All four online?}
+    C -->|No| B
+    C -->|Yes| D[Game starts]
+    D --> E[Each role submits decisions]
+    E --> F{All four submitted?}
+    F -->|No| E
+    F -->|Yes| G[Server resolves round]
+    G --> H[Broadcast results]
+    H --> I{Targets met or round 3?}
+    I -->|Next round| D
+    I -->|Yes| J([Game ends])
+
+    classDef default fill:#2f2f2f,stroke:#181818,color:#f2f2f2
+    classDef decision fill:#181818,stroke:#2f2f2f,color:#f2f2f2
+    classDef terminal fill:#181818,stroke:#181818,color:#f2f2f2
+
+    class C,F,I decision
+    class A,J terminal
+```
+
+## Technical Challenges
+
+A summary of each problem, its cause, impact, and solution:
+
+::: {style="width: fit-content; margin: auto;"}
+| Problem | Cause | Impact | Solution |
+| :--- | :--- | :--- | :--- |
+| State desync | Missed presence updates on disconnect/reconnect | Lobby shows online when player has left | Clear state on disconnect, rebroadcast on reconnect |
+| Double resolution | Near-simultaneous submissions cause read race | Resolution engine runs twice, inconsistent result | Unique constraint + transaction lock |
+| Info leakage | Socket broadcast includes decision payload | Breaks fairness of the wargame | `submission-status` only reveals who submitted; full result sent once all four are in |
+| Token expiry | JWT issued at connect expires mid-game | Socket auth fails, player gets kicked silently | Front end proactively refreshes before expiry |
+:::
+
+### State Synchronization
+
+The core challenge is keeping every player's view consistent. Socket.io presence is straightforward enough, but the edge cases are not:
+
+- A player disconnects and reconnects while waiting in the lobby
+- The network drops mid-game and the page reloads to an uncertain state
+- Multiple roles connect almost simultaneously, causing broadcast ordering issues
+
+The fix is to remove a player from the online list the moment a disconnect event fires, then rebroadcast the full presence state on reconnect — rather than waiting for the front end to detect the change on its own.
+
+### Race Condition in Round Resolution
+
+Four submissions can theoretically arrive at the server within milliseconds of each other. The main risk:
+
+- Two requests both read "only one submission left"
+- Both conclude they are the final submission and trigger resolution independently
+
+The solution is a unique database constraint on `(gameId, roundNumber, role)`, with a transaction wrapping the entire "write + count + trigger" sequence. Only the first successful write proceeds to resolution.
+
+### Role Information Isolation
+
+Each role can only see their own fields and must not be able to retrieve other roles' submissions through the API or Socket.io events. Isolation is enforced at three layers:
+
+- **API layer**: Submission endpoints only accept the fields belonging to the requesting role
+- **Socket broadcast**: `round:submission-status` only tells clients who has submitted — no decision content; the full merged result is sent once all four are in
+- **Front-end layer**: The UI hides other roles' fields (though this layer is not relied on for security)
+
+### JWT Lifecycle in Socket.io
+
+HTTP requests can intercept and refresh tokens in middleware, but Socket.io long-lived connections are trickier:
+
+- The access token attached at connection time may expire while the game is in progress
+- Once expired, socket event authentication fails and the player gets kicked without warning
+
+The solution is to have the front end monitor the token's remaining lifetime and proactively call the refresh endpoint before it expires, then re-establish the socket connection with the new token — rather than waiting for a 401 from the server.
+
+## Tech Stack
+
+::: {style="width: fit-content; margin: auto;"}
+| Layer | Technology |
+| :--- | :--- |
+| Front-end framework | React 19, TypeScript 5 |
+| Build tool | Vite 5 |
+| Styling | Tailwind CSS 3 |
+| Routing | React Router 6 |
+| Real-time | Socket.io Client 4 |
+| UI primitives | Radix UI |
+| Charts | Recharts |
+| Back end | Node.js 24, Express 4 |
+| WebSocket server | Socket.io 4 |
+| Database | SQLite |
+| Auth | JWT + bcrypt |
+:::

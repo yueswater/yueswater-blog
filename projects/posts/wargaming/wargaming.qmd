@@ -1,0 +1,143 @@
+---
+title: "臺積電危機兵推系統"
+lang: zh-TW
+date: 2026-05-15
+author: Anthony
+categories: [React, TypeScript, Socket.io, 全端開發]
+description: "為臺大國安社 2026 青年國安論壇打造的多人即時兵推平台，四個角色同時上線，模擬台海危機下的決策談判。"
+image: images/cover.svg
+---
+
+[![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)
+
+## 關於這個專案
+
+[臺大國安社](https://ntun3si.space/) 2026 年[青年國安論壇](https://ntun3si.space/events/2026-national-security-youth-forum)安排了一場兵推活動，情境設定在台海危機下，台積電作為關鍵戰略籌碼，四方行為者——台積電、行政院、美國政府、智庫——必須在有限輪次內談出一個對各方都能接受的方案。
+
+以往兵推僅靠紙本和口頭進行，決策資訊不透明、**結果難以即時計算**。為了解決上述問題，[戰略兵推系統](http://wargaming.ntun3si.space/)將兵推的整個流程搬到網頁上，四個角色各自登入、即時看到大廳狀態，每輪送出決策後由伺服器統一結算，結果同步推送給所有人。
+
+前端用 React 19 + TypeScript，實時同步走 Socket.io，後端 Express + SQLite。
+
+## 情境設定
+
+兵推圍繞一個核心問題：
+
+> **台海危機爆發時，台積電該如何在各方壓力下決定斷電週數、技術轉移上限與軍需供應立場？**
+
+每輪結束後系統會輸出兩個指標：
+
+::: {style="width: fit-content; margin: auto;"}
+| 指標 | 通過門檻 |
+| :--- | :--- |
+| 民意支持度（`finalOpinion`） | $\geq 60\%$ |
+| 軍事行動機率（`finalAttack`） | $\leq 30\%$ |
+:::
+
+同時達標即提前結束，最多進行三輪。
+
+## 角色與決策欄位
+
+四個角色各自只看到自己的決策欄位，不能看到其他角色送出什麼：
+
+| 角色 | 決策欄位 |
+| :--- | :--- |
+| 台積電 | 斷電週數、技術轉移上限、軍需供應立場 |
+| 行政院 | 期望斷電週數、軍需供應需求、緊急徵用意向 |
+| 美國政府 | 要求資金規模、安全承諾年限、技術轉移要求 |
+| 智庫 | 背書立場、政策訊號強度 |
+
+四筆決策全數送出後，伺服器合併參數、跑結算邏輯，把結果同時廣播給所有人。
+
+## 系統流程
+
+```{mermaid}
+%%| label: fig-flow
+%%| fig-cap: 兵推系統完整流程，從登入、大廳等待到多輪結算與結束條件
+flowchart LR
+    A([登入]) --> B[大廳]
+    B --> C{四方全員上線？}
+    C -->|否| B
+    C -->|是| D[兵推開始]
+    D --> E[各角色送出決策]
+    E --> F{四方全部送出？}
+    F -->|否| E
+    F -->|是| G[伺服器結算]
+    G --> H[廣播本輪結果]
+    H --> I{達標或已滿三輪？}
+    I -->|進入下一輪| D
+    I -->|是| J([兵推結束])
+
+    classDef default fill:#2f2f2f,stroke:#181818,color:#f2f2f2
+    classDef decision fill:#181818,stroke:#2f2f2f,color:#f2f2f2
+    classDef terminal fill:#181818,stroke:#181818,color:#f2f2f2
+
+    class C,F,I decision
+    class A,J terminal
+```
+
+## 技術困難點
+
+各問題點的成因、影響與解法一覽：
+
+::: {style="width: fit-content; margin: auto;"}
+| 問題 | 成因 | 影響 | 解法 |
+| :--- | :--- | :--- | :--- |
+| 狀態不同步 | 斷線/重連導致 presence 更新遺漏 | 大廳顯示在線但實際已離線 | 斷線事件主動清除狀態，重連時重新廣播 |
+| 重複結算 | 四方幾乎同時送出，資料庫讀取競爭 | 結算邏輯觸發兩次，結果不一致 | 唯一約束 + 交易鎖，確保只跑一次 |
+| 資訊洩漏 | Socket.io 廣播若帶決策內容，其他角色可攔截 | 破壞兵推公正性 | `round:submission-status` 只播「誰送了」，決策內容等四方齊才一次廣播 |
+| Token 過期 | Socket.io 長連線建立後 JWT 在遊戲中到期 | 連線驗證失敗，玩家被踢出 | 前端主動偵測到期時間，提前重新握手 |
+:::
+
+### 四方狀態同步
+
+這個系統最核心的挑戰是「所有人看到的畫面必須一致」。Socket.io 的 presence 機制本身不難，難的是邊界情況：
+
+- 有人在大廳等待時突然斷線、重連
+- 兵推進行到一半網路不穩，頁面重整後狀態不確定
+- 多個角色幾乎同時上線，廣播順序可能造成短暫不一致
+
+解法是在斷線事件觸發時立即從在線清單移除，重連後重新廣播目前狀態給全體，而不是等前端自行偵測。
+
+### 結算時機的競爭條件
+
+四個角色的送出請求理論上可能在極短時間內同時抵達伺服器。主要風險：
+
+- 兩個請求幾乎同時讀到「只剩一筆未送」
+- 兩者都判斷自己是最後一筆，各自觸發結算
+
+最後在資料庫層對 `(gameId, roundNumber, role)` 加唯一約束，並用交易包住「寫入 + 計數 + 觸發結算」的整段邏輯，確保只有第一筆成功寫入的請求會觸發結算。
+
+### 角色資訊隔離
+
+每個角色只能看到自己的決策欄位，不能透過 API 或 Socket.io 撈到其他角色的提交內容。隔離設計分三層：
+
+- **API 層**：送出決策只接受自己角色的欄位，其他角色的欄位直接忽略
+- **Socket 廣播**：`round:submission-status` 只告訴大家「誰送了」，不帶決策內容；合併結果等四方全到才一次廣播
+- **前端層**：UI 不顯示其他角色欄位（但不依賴這層做安全保護）
+
+### JWT 在 Socket.io 的生命週期
+
+HTTP 請求可以在 middleware 攔截 token、自動刷新，Socket.io 的長連線就麻煩一些：
+
+- 連線建立時帶的 access token，可能在兵推進行到一半就到期
+- 到期後 socket 事件驗證失敗，玩家無預警被踢出大廳
+
+處理方式是讓前端在 token 剩餘時間低於閾值時主動呼叫 refresh endpoint，拿到新 token 後重新建立 socket 連線，而不是等到伺服器回 401 才補救。
+
+## 技術架構
+
+::: {style="width: fit-content; margin: auto;"}
+| 層級 | 技術 |
+| :--- | :--- |
+| 前端框架 | React 19、TypeScript 5 |
+| 建構工具 | Vite 5 |
+| 樣式 | Tailwind CSS 3 |
+| 路由 | React Router 6 |
+| 即時通訊 | Socket.io Client 4 |
+| UI 元件 | Radix UI |
+| 圖表 | Recharts |
+| 後端 | Node.js 24、Express 4 |
+| 即時伺服器 | Socket.io 4 |
+| 資料庫 | SQLite |
+| 認證 | JWT + bcrypt |
+:::

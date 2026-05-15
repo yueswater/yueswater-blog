@@ -1,0 +1,449 @@
+---
+title: "LaTeX Tutorial Series: Basic Settings"
+lang: en
+date: 2026-04-14
+author: Anthony
+categories: [LaTeX]
+description: "Basic document settings in LaTeX, including fonts, page layout, and commonly used packages."
+image: ../../cover/LaTeX_logo.png
+---
+
+In the previous article, [Your First LaTeX Document](../first-doc/latex-first-doc.qmd), we created a document that compiles successfully and learned about the basic structure of a document class, preamble, and body. However, a document that "runs" is still quite far from one that "looks good" — the default LaTeX output has noticeable limitations in terms of fonts, Chinese support, and page margins.
+
+In this article, you will learn how to use a few common packages and settings to make your document more practical:
+
+- Setting the page layout (margins and paper size)
+- Loading Chinese language support
+- Adjusting fonts and line spacing
+- Getting familiar with some essential packages
+- Setting up headers and footers
+
+## The Tower of Babel in the TeX World
+
+Like many programming languages, TeX was invented by people in the Western world, so it is not very friendly to users from East Asian countries by default — much like the Tower of Babel in the Bible, where each language group is separated from the others. As computers became more widely used, demand from non-English users grew, and engineers developed different compilation systems that support various languages.
+
+| Compilation System | Advantages | Disadvantages |
+|---|---|---|
+| pdfLaTeX | Stable and widely supported, produces PDF directly | Poor support for non-Latin scripts and OpenType fonts |
+| XeLaTeX | Supports Unicode and OpenType fonts, works with multiple languages | Compilation may be slower |
+| LuaLaTeX | Supports Unicode and OpenType, with powerful Lua extensions | Compilation may be slower |
+| LaTeX | Can produce DVI output, highly flexible | Requires extra steps to convert DVI to PS or PDF |
+| TeX | Highly flexible and controllable | More complex syntax, less convenient than LaTeX |
+| ConTeXt | Good for multilingual and complex typesetting, actively developed | Less compatible with LaTeX, requires learning new syntax |
+| OpTeX | Simple and practical, modern syntax design | Smaller user community, fewer resources available |
+| AMS-TeX | Excellent math typesetting, designed specifically for mathematicians | More limited in scope compared to LaTeX |
+
+: Different TeX compilation systems
+
+If you have been following the examples in the previous articles, you may have noticed that they were all written in English. What if your document is in Chinese? If you have been thinking about this, you are ahead of many beginners — the first section of this article will explain how to set up Chinese fonts.
+
+## Packages
+
+If you have played online role-playing games, you probably know that you need equipment to unlock certain skills or abilities. LaTeX works in a similar way — you need packages to access specific features, such as the Chinese support we are about to discuss. This section will show you how to install and use packages, and where to look for help when you are not sure how to configure one.
+
+### Installing and Using Packages
+
+To use a LaTeX package, you use the `\usepackage[options]{package-name}` command in the preamble to tell the compiler which package you need.[^optional] If you are running LaTeX locally (with a compiler already installed), the compiler will usually ask whether you want to install a missing package before it can be used.[^miktex] Make sure the package is actually installed before trying to compile.
+
+[^optional]: If you are not sure about the difference between `[]` and `{}`, please refer to the section on parameters in the introductory article.
+
+[^miktex]: The author only has experience with MiKTeX, so it is unclear whether other compilers behave the same way. One useful feature of MiKTeX is that it can be configured in MiKTeX Console to install missing packages automatically, without asking each time.
+
+At the end of the previous article, you may have noticed some unfamiliar non-English characters in the example. That text is the well-known **[Lorem ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum)** (often called Lipsum) — a piece of placeholder text derived from a work by the ancient Roman writer Cicero. It is commonly used in design and typesetting to fill space and test layout appearance. The following examples use the `lipsum` and `blindtext` packages to demonstrate this.[^lipsum]
+
+[^lipsum]: The main difference between `lipsum` and `blindtext` is that `lipsum` only generates Lorem ipsum text, while `blindtext` can produce test content in various formats, including headings and subheadings.
+
+```latex
+\documentclass{article}
+\usepackage{lipsum}
+
+\begin{document}
+\lipsum[1-2]  % generates paragraphs 1 to 2 of Lorem ipsum
+\end{document}
+
+\documentclass{article}
+\usepackage{blindtext}
+
+\begin{document}
+\blinddocument  % generates a sample document with headings, paragraphs, lists, etc.
+\end{document}
+```
+
+### The Manual: CTAN
+
+If you buy something but do not know how to use it, the item is not very useful to you. That is why manufacturers provide user manuals — to clearly explain how to operate the product and how to deal with common problems.
+
+LaTeX packages each have their own documentation, and these are stored in a repository called [CTAN](https://ctan.org/?lang=en).[^ctan] For example, to look up the documentation for the `lipsum` package, search for "CTAN lipsum" in your browser. The first result is usually the correct one. Clicking into it will show the package page on CTAN, where the documentation is typically listed under "Package documentation."
+
+[^ctan]: CTAN documentation is written in English, but with AI tools like ChatGPT now widely available, you can easily paste the content and have it translated.
+
+## Text Settings
+
+This is the section most readers have been waiting for. Before we begin, I should mention that because this tutorial is connected to TeXLive.net, it is not possible to upload local font files or images to TeXLive. The examples below are therefore adapted from those available on the TeXLive.net website.
+
+### Font Size
+
+In LaTeX, there are two main ways to change font size: using predefined size commands, or using the `\selectfont` command. The predefined commands are simpler and easier to use:
+
+| Command | Size (pt) | Command | Size (pt) |
+|:---:|:---:|:---:|:---:|
+| `\tiny` | 5 | `\large` | 12 |
+| `\scriptsize` | 7 | `\Large` | 14 |
+| `\footnotesize` | 8 | `\LARGE` | 17 |
+| `\small` | 9 | `\huge` | 20 |
+| `\normalsize` | 10 | `\Huge` | 25 |
+
+```latex
+\documentclass{article}
+\begin{document}
+
+This is \tiny tiny text.
+This is \large large text.
+This is \Huge the largest text.
+
+\end{document}
+```
+
+The second approach is to use `\fontsize{size}{baselineskip}\selectfont`. Here, `size` is the font size and `baselineskip` is the line spacing. For example, to set the font to 25pt with a 14pt line spacing, you would write `{\fontsize{25}{14}\selectfont text to resize}`.
+
+Notice the curly braces `{}` — they create a **local scope**, so the settings inside only affect the content within the braces and do not change anything outside.
+
+### Font Families
+
+The table below shows how to set the three main font families in LaTeX: serif, sans serif, and typewriter (monospace). Each has a corresponding command and a shorthand alternative:
+
+| Font Family | Command | Alternative |
+|:---:|:---:|:---:|
+| serif (roman) | `\textrm{Sample Text 0123}` | `\rmfamily` |
+| sans serif | `\textsf{Sample Text 0123}` | `\sffamily` |
+| typewriter (monospace) | `\texttt{Sample Text 0123}` | `\ttfamily` |
+
+In Word, you select a block of text and choose a font from a dropdown menu. This is straightforward but inconvenient — if the font file is not installed on a particular computer, it will fall back to a default font. LaTeX handles this more cleanly with the `fontspec` package, which provides a reliable way to set and change fonts, especially when compiling with XeLaTeX or LuaLaTeX.
+
+To use it, load `fontspec` in the preamble, then use `\setmainfont`, `\setsansfont`, and `\setmonofont` to specify your fonts. In general, font files should be stored in a `fonts` subfolder with the path specified, so the compiler knows where to find them.
+
+```latex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Courier New}
+
+\begin{document}
+This is Serif.
+\textsf{This is Sans Serif.}
+\texttt{This is Mono.}
+\end{document}
+```
+
+### Font Styles
+
+In LaTeX, bold, italic, and bold italic each serve a different purpose. **Bold** is commonly used to emphasize important words, headings, or subheadings. *Italic* is typically used for book titles, article names, or foreign-language terms. ***Bold italic*** is used when even stronger visual emphasis is needed.
+
+```latex
+\documentclass{article}
+\begin{document}
+This is normal text.
+This is \textbf{bold} text.
+This is \textit{italic} text.
+This is \textbf{\textit{bold italic}} text.
+\end{document}
+```
+
+### Setting Up Chinese
+
+To use Chinese in LaTeX, you need a special package to handle font rendering and character encoding. The most common choice is `xeCJK`, which requires the XeLaTeX compiler.[^cjk] First, make sure XeLaTeX is installed on your system. Then load both `xeCJK` and `fontspec` in your preamble — `xeCJK` handles the Chinese characters, while `fontspec` manages the font settings. Here is a minimal example:
+
+[^cjk]: Other options include `CTEX`, `CJK`, and `CJKutf8`, but `xeCJK` is the most widely used and easiest to set up. CJK stands for Chinese, Japanese, and Korean.
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\begin{document}
+你好，這是一份測試文件。
+\end{document}
+```
+
+For local setups where you want to use your own font files, create a `fonts` folder in the same directory as your `.tex` file and place your Chinese font files there (`.ttf`, `.TTF`, or `.otf` formats are all supported). The [cwTeX fonts](https://github.com/l10n-tw/cwtex-q-fonts) are a recommended option. Here is how to set them up:
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+
+% Set Chinese fonts
+\setCJKmainfont[Path=./fonts/]{cwTeXQMing-Medium.ttf}
+\setCJKfamilyfont{kai}[Path=./fonts/]{cwTeXQKai-Medium.ttf}
+\newcommand{\kai}[1]{{\CJKfamily{kai}#1}}
+\setCJKfamilyfont{hei}[Path=./fonts/]{cwTeXQHei-Bold.ttf}
+\newcommand{\hei}[1]{{\CJKfamily{hei}#1}}
+
+\begin{document}
+你好，這是一份測試文件。
+\end{document}
+```
+
+In this example, `\setCJKmainfont` sets the **default** Chinese font — the one that appears when no other font is specified. `\setCJKfamilyfont` registers a named font family, such as `kai` for the Kai (regular script) style. The `Path=./fonts/` option tells the compiler where to look for the file, and the filename comes last.
+
+Registering a font family is not enough on its own — you also need a command to invoke it. This is done with `\newcommand`. The syntax is `\newcommand{command name}[number of arguments]{definition}`.[^newcommand] In the example above, `\newcommand{\kai}[1]{{\CJKfamily{kai}#1}}` creates a `\kai` command that wraps any text you pass to it in the Kai font. The same pattern applies to `\hei` and any other font families you register.
+
+[^newcommand]: The definition of a new command describes what you want it to do. If the command accepts arguments, you reference them inside the definition using `#1`, `#2`, and so on, where `#1` refers to the first argument.
+
+## Page Settings
+
+With the text configuration covered, we can now move on to other parts of the document. This section will show you how to adjust margins, section heading styles, and headers and footers.
+
+### Margin Settings
+
+Just like in Word, LaTeX allows you to set the top, bottom, left, and right margins of a page. The `geometry` package makes this straightforward. After loading the package, use `\geometry{}` to configure the settings. Here is an example that sets top and bottom margins to 2 cm and left and right margins to 2.5 cm:
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{My First \LaTeX\ Document}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+Hello, this is a test document.
+\end{document}
+```
+
+To set all margins to the same value, use `\geometry{margin=2cm}`. To set only one side, use `\geometry{left=3cm}` — and similarly for `top`, `right`, and `bottom`.
+
+The `geometry` package also supports other options such as paper size, page orientation, and binding offset. Use `a4paper`, `letterpaper`, and similar options for paper size, or add `landscape` to switch to horizontal orientation.[^landscape] If you need extra space on the binding side, use the `bindingoffset` parameter. For example, an A3 landscape document with 2.5 cm margins and a 1 cm binding offset would look like this:
+
+[^landscape]: Portrait orientation is the default, so you do not need to specify it explicitly.
+
+```latex
+\usepackage{geometry}
+\geometry{a3paper, margin=2.5cm, landscape, bindingoffset=1cm}
+```
+
+### Section Heading Format
+
+In Word, formatting section headings requires selecting each heading and applying a style manually.[^word] This is inconvenient and can break easily when new sections are added.
+
+[^word]: See the Word documentation on heading styles for more detail.
+
+In LaTeX, the `titlesec` package handles this. After loading it, use the `\titleformat{heading}[shape]{format}{label}{sep}{before-code}[after-code]` command to define the heading style. Each part of this command does the following:
+
+1. **heading**: The heading command you want to style, such as `\section` or `\subsection`
+2. **shape**: An optional parameter for the heading shape, such as `block` or `display`. Can be omitted if not needed
+3. **format**: Sets the font, size, color, and other styling for the heading text
+4. **label**: Defines how the heading number is displayed; use `\thesection`, `\thesubsection`, etc., or leave it empty `{}` for no numbering
+5. **sep**: The horizontal space between the number and the heading text
+6. **before-code**: Commands to run before the heading text, such as inserting a rule or icon
+7. **after-code**: Optional commands to run after the heading text
+
+Here is a working example:
+
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{xeCJK, CJKnumb}
+\setmainfont{FandolSong}
+
+\usepackage{zhlipsum}
+
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\CJKnumber{\thesection}、}
+  {1em}
+  {}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{My First \LaTeX\ Document}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+\zhlipsum[1-3]
+\end{document}
+```
+
+Two things worth noting in this example:
+
+1. `\usepackage{xeCJK, CJKnumb}` loads two packages at once using a comma. If you do not need to pass any options, you can load multiple packages this way in a single line.
+2. Just as `lipsum` generates English placeholder text, `zhlipsum` does the same for Chinese. The syntax is the same: `\zhlipsum[start-end]`.
+
+### Header and Footer Settings
+
+Headers and footers in Word can be complicated to configure — you need to handle odd and even pages, page numbers, header text, and more. LaTeX offers the `fancyhdr` package, which lets you define everything in the preamble so you do not need to adjust each page individually.
+
+One thing to note in the example below: you will see both `\fancyfoot` and shorthand commands like `\cfoot`, `\lfoot`, and `\rfoot`. These are not the same thing. `\fancyfoot` is the full command with more configuration options; its position parameters include `L` (left), `C` (center), `R` (right), `E` (even pages), and `O` (odd pages). The shorthand commands `\cfoot`, `\lfoot`, and `\rfoot` are convenience aliases provided by `fancyhdr` for quickly setting the center, left, and right footer content.
+
+```latex
+% !TeX xelatex
+\documentclass[twoside]{article}
+\usepackage{fontspec}
+\usepackage{xeCJK, CJKnumb}
+\setmainfont{FandolSong}
+
+\usepackage{zhlipsum}
+
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\CJKnumber{\thesection}、}
+  {1em}
+  {}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+% Header and footer settings
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\normalsize Top-left text \\ Bottom-left text}
+\rhead{\normalsize Top-right text \\ Bottom-right text}
+
+\fancyfoot[C]{}
+\fancyfoot[LE,RO]{Page~\thepage}
+
+\title{My First \LaTeX\ Document}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+\zhlipsum[1-10]
+\section{Methodology}
+\zhlipsum[11-20]
+\end{document}
+```
+
+Before using `fancyhdr`, it is recommended to call `\fancyhf{}` to clear any default header and footer settings. Then use `\lhead` and `\rhead` to set the left and right header content respectively. The `\\` inside the braces creates a line break within the header cell.
+
+For the footer, `\fancyfoot[C]{}` clears the center footer, and `\fancyfoot[LE,RO]{Page~\thepage}` places the page number on the left side of even pages and the right side of odd pages. The `~` character is a non-breaking space, and `\thepage` outputs the current page number.
+
+## Practice Exercises
+
+::: {.exercises}
+
+::: {.exercise data-answer="B"}
+### Question 1
+
+Which compiler supports both Unicode and OpenType fonts, making it suitable for Chinese documents?
+
+::: {.options}
+- A. pdfLaTeX
+- B. XeLaTeX
+- C. TeX
+- D. AMS-TeX
+:::
+
+::: {.answer}
+**Answer: B — XeLaTeX**
+
+XeLaTeX natively supports Unicode and OpenType fonts and can directly use system fonts, making it the most common choice for Chinese documents. pdfLaTeX has poor support for non-Latin scripts, while TeX and AMS-TeX are not well-suited for this purpose.
+:::
+:::
+
+::: {.exercise data-answer="C"}
+### Question 2
+
+Which package is used to set page margins and paper size?
+
+::: {.options}
+- A. `fontspec`
+- B. `fancyhdr`
+- C. `geometry`
+- D. `titlesec`
+:::
+
+::: {.answer}
+**Answer: C — `geometry`**
+
+The `geometry` package handles page layout settings, including `margin`, `a4paper`, `landscape`, and `bindingoffset`. The `fontspec` package manages fonts, `fancyhdr` sets headers and footers, and `titlesec` formats section headings.
+:::
+:::
+
+::: {.exercise data-answer="A"}
+### Question 3
+
+Which command sets the local font size to 20pt with a line spacing of 24pt?
+
+::: {.options}
+- A. `{\fontsize{20}{24}\selectfont text}`
+- B. `\fontsize[20][24]{text}`
+- C. `\setfontsize{20pt}{24pt}`
+- D. `{\huge text}`
+:::
+
+::: {.answer}
+**Answer: A**
+
+`\fontsize{size}{baselineskip}\selectfont` is the correct syntax. It must be placed inside curly braces to create a local scope. While `\huge` increases font size, it cannot specify an exact value or control line spacing at the same time.
+:::
+:::
+
+::: {.exercise}
+### Question 4
+
+Write a minimal XeLaTeX document that:
+
+1. Loads the `xeCJK` and `fontspec` packages
+2. Sets the main Chinese font to `FandolSong`
+3. Outputs "你好，LaTeX！" in the document body
+
+::: {.answer}
+```latex
+% !TeX xelatex
+\documentclass{article}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont{FandolSong}
+
+\begin{document}
+你好，LaTeX！
+\end{document}
+```
+
+`% !TeX xelatex` is a magic comment that tells the editor to compile using XeLaTeX. `\usepackage{xeCJK}` handles Chinese character rendering, and `fontspec` combined with `\setmainfont` sets the font.
+:::
+:::
+
+::: {.exercise}
+### Question 5
+
+Add `fancyhdr` settings in the preamble so that the footer center of every page displays a page number in the format "Page N."
+
+::: {.answer}
+```latex
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{Page~\thepage}
+```
+
+`\fancyhf{}` clears all default content first. `\cfoot` is the shorthand command for setting the center footer. `\thepage` outputs the current page number, and `~` is a non-breaking space.
+:::
+:::
+
+:::
+
+## Chapter Summary
+
+This article covered some of the most fundamental and important settings in LaTeX typesetting. We first looked at the characteristics of different compilers and confirmed that XeLaTeX is the main choice for Chinese documents. We then learned how to load packages using `\usepackage` and how to find documentation on CTAN. After that, we went through font size, font families, font styles, and Chinese font configuration. Finally, we used three packages — `geometry`, `titlesec`, and `fancyhdr` — to control margins, section heading formats, and headers and footers.
+
+With these settings in place, you should now be able to produce a well-formatted and professional-looking LaTeX document in Chinese. The next article will move into mathematical typesetting, which is one of the most well-known strengths of LaTeX.
