@@ -6,6 +6,7 @@ date: 2026-07-16
 author: Anthony
 categories: [LeetCode, Array]
 description: "[題目連結](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/description/)"
+image: ../../cover/LeetCode_Logo_black_with_text.svg
 alternate-lang: "/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html"
 ---
 

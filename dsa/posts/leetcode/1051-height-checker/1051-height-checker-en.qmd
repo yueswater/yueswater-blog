@@ -6,6 +6,7 @@ date: 2026-07-16
 author: Anthony
 categories: [LeetCode, Array]
 description: "[Problem link](https://leetcode.com/problems/height-checker/description/)"
+image: ../../cover/LeetCode_Logo_black_with_text.svg
 alternate-lang: "/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html"
 ---
 
