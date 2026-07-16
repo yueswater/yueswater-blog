@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.claude-highlight {
+  position: relative;
+  display: inline-block;
+  color: #da7756;
+  font-weight: bold;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.7em;
+}
+
+.clawd-mascot {
+  position: absolute;
+  left: var(--clawd-left, 50%);
+  bottom: 50%;
+  width: 22px;
+  height: auto;
+  opacity: 0;
+  transform: translate(-50%, 55%) scale(0.35);
+  transform-origin: bottom center;
+  transition: opacity 0.25s ease, transform 0.25s ease, left 0.25s ease;
+  pointer-events: none;
+  z-index: 2;
+  shape-rendering: crispEdges;
+}
+
+.claude-highlight:hover .clawd-mascot {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}

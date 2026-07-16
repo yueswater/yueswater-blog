@@ -1,53 +1,53 @@
 ---
 title: "LeetCode 414. Third Maximum Number"
-subtitle: "第三大的數"
-lang: zh-TW
+subtitle: "The Third Largest Number"
+lang: en
 date: 2026-07-16
 author: Anthony
 categories: [LeetCode, Array]
-description: "[題目連結](https://leetcode.com/problems/third-maximum-number/description/)"
-alternate-lang: "/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number-en.html"
+description: "[Problem link](https://leetcode.com/problems/third-maximum-number/description/)"
+alternate-lang: "/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html"
 ---
 
-題目要求給定一個數字的陣列，回傳該陣列中第三大的數字；若不存在第三大的數字，則應回傳最大值，且時間複雜度必須為 $\mathcal{O}(n)$，資料限制為：
+Given an integer array, the task is to return the third distinct maximum number in that array. If no third maximum exists, the maximum number should be returned instead, and the solution must run in $\mathcal{O}(n)$ time. The constraints are:
 
 - $1 \le \texttt{nums.length} \le 10^4$
 - $-2^{31} \le \texttt{nums[i]} \le 2^{31} - 1$
 
-例如：
+For example, given
 
 ```
 [3,2,1]
 ```
 
-應回傳 `1`，因 `1` 為該陣列中第三大的數；又好比如
+the answer is `1`, since `1` is the third largest distinct value in the array. Similarly, for
 
 ```
 [2,2,3,1]
 ```
 
-也應該回傳 `1`。但若給定
+the answer is also `1`. However, given
 
 ```
 [1,2]
 ```
 
-該陣列僅有兩個元素，不可能存在第三大，因此需回傳最大值，故回傳值應為 `2`。
+the array only has two elements, so a third maximum cannot exist, and the maximum value should be returned instead — in this case, `2`.
 
-## 想法
+## Approach
 
-第一眼看到這題，直覺想用一個計數器邊走訪邊統計每個數字目前排第幾大。但這個做法有幾個問題：
+At first glance, this problem seems to call for a running counter that tracks each number's rank as we traverse the array. That approach, however, runs into a few issues:
 
-1. 元素的排名會隨著後續走訪到的資料而改變，走訪當下無法直接確定最終名次。
-2. 題目要求的是**不重複**的第三大值，遇到重複數字時不能重複計入排名。
-3. 若每個元素都要重新與其他元素比較，容易形成巢狀迴圈，時間複雜度退化成 $\mathcal{O}(n^2)$。
-4. 若不重複的數字不足三個，還得改回傳最大值。
+1. An element's rank can shift as later values are processed, so its final rank cannot be determined at the moment it is visited.
+2. The problem asks for the third **distinct** maximum, so a repeated value must not be counted twice.
+3. Comparing every element against every other element naturally leads to a nested loop, which degrades the time complexity to $\mathcal{O}(n^2)$.
+4. If fewer than three distinct values exist, the maximum must be returned instead.
 
-換個角度思考，題目只在乎**前三大**，其實只需要維護一個最多三個元素的候選陣列：每遇到新數字，先排除重複值，再加入陣列並降冪排序；若候選值超過 3 個就移除目前最小的元素。走訪結束後，依候選陣列的元素個數判斷回傳第三大或最大值即可。
+Reframing the problem helps: since only the **top three** values matter, it is enough to maintain a candidate array holding at most three elements. For each new number, duplicates are skipped, the value is inserted, and the array is kept in descending order; once the candidate list grows past three, the current smallest value is dropped. Once the traversal is complete, the number of elements remaining in the candidate array determines whether the third maximum or the maximum itself is returned.
 
-## 實作
+## Implementation
 
-三種語言的實作邏輯一致，即走訪時排除重複值，將新數字插入候選陣列並降冪排序，超過 3 個就捨棄最小值，最後依候選數量判斷回傳第三大或最大值。
+The logic is identical across all three languages: skip duplicates while traversing, insert each new number into the candidate array in descending order, discard the smallest value once there are more than three candidates, and finally return either the third maximum or the maximum based on how many candidates remain.
 
 ::: {.panel-tabset}
 ## C

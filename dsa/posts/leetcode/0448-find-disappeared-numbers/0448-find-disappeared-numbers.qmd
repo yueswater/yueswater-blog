@@ -1,0 +1,257 @@
+---
+title: "LeetCode 448. Find All Numbers Disappeared in an Array"
+subtitle: "找到所有消失的數字"
+lang: zh-TW
+date: 2026-07-16
+author: Anthony
+categories: [LeetCode, Array]
+description: "[題目連結](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/description/)"
+alternate-lang: "/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html"
+---
+
+給定一個長度為 $n$ 的整數陣列 `nums`，其中所有陣列元素的值皆介於 $1$ 到 $n$ 之間。部分數字可能在陣列中重複出現，而其他數字則可能完全缺席。請找出所有在 $[1, n]$ 區間內未出現在 `nums` 中的數字，並以陣列形式回傳，並要求時間複雜度為 $\mathcal{O}(n)$。
+
+例如輸入
+
+```
+nums = [4, 3, 2, 7, 8, 2, 3, 1]
+```
+
+長度為 $n = 8$，數字範圍為 $[1, 8]$。可以發現數字 $5$ 與 $6$ 均未出現在輸入陣列中，因此輸出為 `[5, 6]`。
+
+## 想法
+
+最直覺的做法是用一個容器記錄哪些數字出現過，走訪完 `nums` 後，再檢查 `1` 到 `n` 中哪些數字沒被記錄到，這些就是答案。用 hash map 統計次數即可達成，雖然時間複雜度 $\mathcal{O}(n)$，但需要額外的 $\mathcal{O}(n)$ 空間。
+
+由於數字範圍剛好落在 `1` 到 `n`，用布林陣列取代 hash map 也可以達到一樣效果，而且索引可以直接對應到 `nums` 的數字，省去 hash 運算的開銷。
+
+跟 Claude 討論過後，它給出了算是正確的答案：由於**範圍剛好是 `1` 到 `n`**，其實不需要額外容器：走訪 `nums` 時，把每個數字對應的索引位置（`abs(num) - 1`）標記成負數；走訪結束後，陣列中仍為正數的位置，其索引 `+1` 就是沒出現過的數字。如此便能把額外空間壓到 $\mathcal{O}(1)$。
+
+## 實作
+
+### 解法一：使用 Hash Map
+
+走訪 `nums` 統計每個數字出現次數，再檢查 `1` 到 `n` 中哪些數字沒被記錄到。
+
+::: {.panel-tabset}
+## C
+
+```c
+int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
+{
+    int *counter = (int *)calloc(numsSize + 1, sizeof(int));
+    int *res = (int *)malloc(numsSize * sizeof(int));
+    int count = 0;
+
+    for (int i = 0; i < numsSize; i++)
+    {
+        counter[nums[i]]++;
+    }
+
+    for (int i = 1; i <= numsSize; i++)
+    {
+        if (counter[i] == 0)
+        {
+            res[count++] = i;
+        }
+    }
+
+    free(counter);
+    *returnSize = count;
+    return res;
+}
+```
+
+## C++
+
+```cpp
+vector<int> findDisappearedNumbers(vector<int> &nums)
+{
+    vector<int> res;
+    unordered_map<int, int> counter;
+
+    for (size_t i = 0; i < nums.size(); i++)
+    {
+        counter[nums[i]]++;
+    }
+
+    for (int i = 1; i <= (int)nums.size(); i++)
+    {
+        if (counter.find(i) == counter.end())
+        {
+            res.push_back(i);
+        }
+    }
+
+    return res;
+}
+```
+
+## Python
+
+```python
+def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
+    res = []
+    counter = {}
+
+    for num in nums:
+        if num not in counter:
+            counter[num] = 1
+        else:
+            counter[num] += 1
+
+    for i in range(1, len(nums) + 1):
+        if i not in counter:
+            res.append(i)
+
+    return res
+```
+:::
+
+### 解法二：使用布林陣列標記
+
+同解法一，但用布林陣列取代 Hash Map，索引直接對應數字，省去 hash 開銷。
+
+::: {.panel-tabset}
+## C
+
+```c
+int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
+{
+    bool *seen = calloc(numsSize + 1, sizeof(bool));
+    int *res = (int *)malloc(numsSize * sizeof(int));
+    int count = 0;
+
+    for (int i = 0; i < numsSize; i++)
+    {
+        seen[nums[i]] = true;
+    }
+
+    for (int i = 1; i <= numsSize; i++)
+    {
+        if (!seen[i])
+        {
+            res[count++] = i;
+        }
+    }
+
+    free(seen);
+    *returnSize = count;
+    return res;
+}
+```
+
+## C++
+
+```cpp
+vector<int> findDisappearedNumbers(vector<int> &nums)
+{
+    vector<bool> seen(nums.size() + 1, false);
+    vector<int> res;
+
+    for (size_t i = 0; i < nums.size(); i++)
+    {
+        seen[nums[i]] = true;
+    }
+
+    for (int i = 1; i <= (int)nums.size(); i++)
+    {
+        if (!seen[i])
+        {
+            res.push_back(i);
+        }
+    }
+
+    return res;
+}
+```
+
+## Python
+
+```python
+def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
+    seen = [False] * (len(nums) + 1)
+    res = []
+
+    for num in nums:
+        seen[num] = True
+
+    for i in range(1, len(nums) + 1):
+        if not seen[i]:
+            res.append(i)
+
+    return res
+```
+:::
+
+### 解法三：就地修改
+
+數字範圍剛好是 $1$ 到 $n$，可直接拿數值當索引，把對應位置標記成負數，省去額外空間。
+
+::: {.panel-tabset}
+## C
+
+```c
+int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
+{
+    int *res = (int *)malloc(numsSize * sizeof(int));
+    int count = 0;
+
+    for (int i = 0; i < numsSize; i++)
+    {
+        int idx = abs(nums[i]) - 1;
+        nums[idx] = -abs(nums[idx]);
+    }
+
+    for (int i = 0; i < numsSize; i++)
+    {
+        if (nums[i] > 0)
+        {
+            res[count++] = i + 1;
+        }
+    }
+
+    *returnSize = count;
+    return res;
+}
+```
+
+## C++
+
+```cpp
+vector<int> findDisappearedNumbers(vector<int> &nums)
+{
+    vector<int> res;
+
+    for (size_t i = 0; i < nums.size(); i++)
+    {
+        int idx = abs(nums[i]) - 1;
+        nums[idx] = -abs(nums[idx]);
+    }
+
+    for (int i = 0; i < (int)nums.size(); i++)
+    {
+        if (nums[i] > 0)
+            res.push_back(i + 1);
+    }
+
+    return res;
+}
+```
+
+## Python
+
+```python
+def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
+    res = []
+    for num in nums:
+        idx = abs(num) - 1
+        nums[idx] = -abs(nums[idx])
+
+    for i in range(len(nums)):
+        if nums[i] > 0:
+            res.append(i + 1)
+
+    return res
+```
+:::

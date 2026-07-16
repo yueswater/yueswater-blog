@@ -1,0 +1,12 @@
+{
+  "hash": "050f492ce445cebd1a6de8b4431d58ce",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"LeetCode 414. Third Maximum Number\"\nsubtitle: \"第三大的數\"\nlang: zh-TW\ndate: 2026-04-14\nauthor: Anthony\ncategories: [LeetCode, Array]\ndescription: \"[題目連結](https://leetcode.com/problems/third-maximum-number/description/)\"\n---\n\n題目要求給定一個數字的陣列，回傳該陣列中第三大的數字；若不存在第三大的數字，則應回傳最大值，且時間複雜度必須為 $\\mathcal{O}(n)$。例如：\n\n```\n[3,2,1]\n```\n\n應回傳 `1`，因 `1` 為該陣列中第三大的數；又好比如\n\n```\n[2,2,3,1]\n```\n\n也應該回傳 `1`。但若給定\n\n```\n[1,2]\n```\n\n該陣列僅有兩個元素，不可能存在第三大，因此需回傳最大值，故回傳值應為 `2`。\n\n## 想法\n\n看到這題原本想直接用一個計數器與迴圈，每走一個就算一個該數字是第幾大。不過這會有幾個問題：\n\n1. 元素的名次會隨後續資料改變，走訪當下無法直接確定最終排名。\n2. 題目計算的是**不重複**的第三大值，遇到重複數字時不能增加名次。\n3. 若每個元素都重新與其他元素比較，容易形成巢狀迴圈，使時間複雜度變成 $\\mathcal{O}(n^2)$。\n4. 若不同數字不足三個，還必須改為回傳最大值。\n\n不過換個思路，題目已經要求是**第三大**，那麼似乎只要建構一個只有三個元素的空陣列——每遇到一個新數字時，先排除重複值，然後加入陣列尾部後降冪排序；若候選值超過 3 個則移除當前最小的元素。最後回傳則按照題目判斷即可。\n\n## 實作\n\n::: {.panel-tabset}\n## Python\n\n```python\ndef thirdMax(nums):\n    ...\n```\n\n## C++\n\n```{cpp}\nclass Solution\n{\npublic:\n    int thirdMax(vector<int> &nums)\n    {\n        vector<int> maxNumbers; // [1st max, 2nd max, 3rd max]\n\n        // Traverse all elements\n        for (size_t i = 0; i < nums.size(); i++)\n        {\n            // Check if current num exists in maxNumbers\n            // If it exits then skip\n            if (find(maxNumbers.begin(), maxNumbers.end(), nums[i]) != maxNumbers.end())\n                continue;\n\n            // Push and sort descending\n            maxNumbers.push_back(nums[i]);\n            sort(maxNumbers.rbegin(), maxNumbers.rend());\n\n            // Prune to be 3\n            if (maxNumbers.size() > 3)\n            {\n                maxNumbers.pop_back();\n            }\n        }\n        return maxNumbers.size() == 3 ? maxNumbers[2] : maxNumbers[0];\n    }\n};\n```\n:::\n\n",
+    "supporting": [
+      "0414-third-max-number_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

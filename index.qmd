@@ -50,6 +50,19 @@ listing:
     max-items: 3
     feed: false
 
+  - id: latest-dsa
+    contents:
+    - dsa/posts
+    - "!index.qmd"
+    - "!dsa/posts/**/*-en.qmd"
+    sort: "date desc"
+    type: grid
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    max-items: 3
+    feed: false
+
 toc: false
 alternate-lang: "/index-en.html"
 ---
@@ -99,6 +112,19 @@ Donald Knuth，《電腦程式設計藝術》
 </a>
 
 ::: {#latest-projects}
+:::
+
+:::
+:::
+
+::: {.content-container}
+::: {.listing-block}
+<a href="dsa/index.qmd">
+
+## DSA 筆記
+</a>
+
+::: {#latest-dsa}
 :::
 
 :::

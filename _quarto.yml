@@ -25,10 +25,10 @@ website:
         href: articles/index.qmd
       - text: "專案"
         href: projects/index.qmd
-      - text: "日記"
-        href: diary/index.qmd
       - text: "DSA 筆記"
         href: dsa/index.qmd
+      - text: "日記"
+        href: diary/index.qmd
       - text: "術語表"
         href: glossary/index.qmd
       - text: "關於"
@@ -65,6 +65,7 @@ format:
       - _includes/lang-switch.html
       - _includes/latex-runner.html
       - _includes/exercises.html
+      - _includes/claude-highlight.html
     grid:
       sidebar-width: 0px
       body-width: 1000px

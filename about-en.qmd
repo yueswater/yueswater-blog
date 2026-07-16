@@ -22,7 +22,7 @@ alternate-lang: "/about.html"
 
 My full name is **Pin Yue Sung**, but feel free to call me **Anthony**. I'm a student at [National Chengchi University (NCCU)](https://www.nccu.edu.tw/index.php?Lang=en), majoring in **International Business** — and yes, I somehow ended up deep in the world of software along the way.
 
-Alongside my studies, I work as a **software intern** at a tech company, where I get to turn caffeine and curiosity into actual products.
+Alongside my studies, I work as a **software intern** at [Aircraft Inc.](https://aircraft.tw/), where I get to turn caffeine and curiosity into actual products.
 
 ## What I Build
 

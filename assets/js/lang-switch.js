@@ -42,6 +42,18 @@
     // python/lambda-filter-map-reduce
     '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html':    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html',
     '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html': '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html',
+    // DSA listing
+    '/dsa/index.html': '/dsa/index-en.html',
+    '/dsa/index-en.html': '/dsa/index.html',
+    // dsa/leetcode/0414-third-max-number
+    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html':    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number-en.html',
+    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number-en.html': '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html',
+    // dsa/leetcode/0448-find-disappeared-numbers
+    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers.html':    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html',
+    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html': '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers.html',
+    // dsa/leetcode/1051-height-checker
+    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html':    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html',
+    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html': '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html',
   };
 
   // Navbar label translations: href substring → [zh, en]
