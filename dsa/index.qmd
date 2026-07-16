@@ -1,0 +1,22 @@
+---
+pagetitle: 資料結構與演算法 | Yueswater Blog
+lang: zh-TW
+description: "Anthony 的資料結構與演算法筆記。"
+title: 資料結構與演算法
+search: false
+repo-actions: false
+listing:
+  contents:
+  - posts
+  - "!index.qmd"
+  - "!index-en.qmd"
+  - "!posts/**/*-en.qmd"
+  sort: "date desc"
+  type: grid
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  page-size: 30
+  feed: true
+alternate-lang: "/dsa/index-en.html"
+---

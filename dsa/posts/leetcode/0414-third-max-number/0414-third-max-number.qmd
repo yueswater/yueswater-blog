@@ -1,0 +1,9 @@
+---
+title: "LeetCode 414. Third Maximum Number"
+subtitle: "第三大的數"
+lang: zh-TW
+date: 2026-04-14
+author: Anthony
+categories: [LeetCode, Array]
+description: ""
+---

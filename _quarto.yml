@@ -27,6 +27,8 @@ website:
         href: projects/index.qmd
       - text: "日記"
         href: diary/index.qmd
+      - text: "DSA 筆記"
+        href: dsa/index.qmd
       - text: "術語表"
         href: glossary/index.qmd
       - text: "關於"
