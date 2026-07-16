@@ -6,7 +6,7 @@ date: 2026-07-16
 author: Anthony
 categories: [LeetCode, Array]
 description: "[Problem link](https://leetcode.com/problems/third-maximum-number/description/)"
-image: ../../cover/LeetCode_Logo_black_with_text.svg
+image: ../../cover/Leetcode.svg
 alternate-lang: "/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html"
 ---
 

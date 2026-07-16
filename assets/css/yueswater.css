@@ -813,6 +813,11 @@ div.quarto-post .listing-description {
   height: 188px !important;
 }
 
+.quarto-grid-item img.thumbnail-image[src*="Leetcode.svg"] {
+  object-fit: contain;
+  padding: 1.5rem 3rem;
+}
+
 
 /*-- callout styles --*/
 .callout {
