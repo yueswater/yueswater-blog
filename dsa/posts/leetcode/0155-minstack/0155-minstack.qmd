@@ -1,0 +1,192 @@
+---
+title: "LeetCode 155. Min Stack"
+subtitle: "最小堆疊"
+lang: zh-TW
+date: 2026-07-16
+author: Anthony
+categories: [LeetCode, Array]
+description: "[題目連結](https://leetcode.com/problems/min-stack/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html"
+---
+
+這個題目要求設計一個除了基本的 `push`（入堆）、`pop`（出堆）與 `top`（查頂）外，還能在 $\mathcal{O}(1)$ 內取得堆疊中最小值的資料結構。
+
+## 想法
+
+一開始題目沒有看仔細，很開心地寫了以下的 code：
+
+```python
+class MinStack:
+
+    def __init__(self):
+        self._stack = []        
+
+    def push(self, value: int) -> None:
+        self._stack.append(value)
+
+    def pop(self) -> None:
+        self._stack.pop()
+
+    def top(self) -> int:
+        if not self._stack:
+            return 0
+        return self._stack[-1]
+
+    def getMin(self) -> int:
+        return min(self._stack)
+```
+
+並且開心地按下執行。接著：[**Time Limit Exceeded**]{style="color: red;"}。
+
+![](images/argh.gif){fig-align="center"}
+
+細看題目，它需要每個函數都能在常數時間運行。
+
+前幾個函數都不難，因為堆疊的入堆、出堆、查頂都是 $\mathcal{O}(1)$。比較複雜的是取得堆疊內的最小值。堆疊在查詢的操作上需要遍歷整個堆疊，才可以找到資料，到這邊似乎就卡住了。
+
+不過！既然這是一個堆疊，何不直接使用其特性，也就是入、出堆與查頂都是常數時間呢？只要每次將元素推入堆疊中時，比較該元素與目前已知最小值的大小，並將較小的那一個同步推入另一個輔助堆疊中，即可讓這個輔助堆疊的堆頂，永遠代表**目前主堆疊中的最小值**，因此可以取該堆疊名稱為 `minStack`！（題目的深意在此啊...）
+
+換句話說，輔助堆疊的每一層，都保存了入堆時的最小值。兩個堆疊的長度永遠保持一致且一一對應。如此一來，上述四個操作就全部達到常數時間，代價是多使用了一個與主堆疊等長的輔助空間，屬於典型的以空間換取時間。
+
+## 實作
+
+::: {.panel-tabset}
+## C
+
+```c
+typedef struct
+{
+    int *_stack;
+    int *_minStack; // shadow stack: running minimum at each depth
+    int count;
+} MinStack;
+
+MinStack *minStackCreate()
+{
+    MinStack *obj = (MinStack *)malloc(sizeof(MinStack));
+    obj->count = 0;
+    obj->_stack = (int *)malloc(30000 * sizeof(int));
+    obj->_minStack = (int *)malloc(30000 * sizeof(int));
+    return obj;
+}
+
+void minStackPush(MinStack *obj, int value)
+{
+    obj->_stack[obj->count] = value;
+
+    // Push the smaller of the new value and the current minimum
+    if (obj->count == 0)
+        obj->_minStack[obj->count] = value;
+    else
+        obj->_minStack[obj->count] = value < obj->_minStack[obj->count - 1] ? value : obj->_minStack[obj->count - 1];
+
+    obj->count++;
+}
+
+void minStackPop(MinStack *obj)
+{
+    // Both stacks shrink together
+    obj->count--;
+}
+
+int minStackTop(MinStack *obj)
+{
+    return obj->_stack[obj->count - 1];
+}
+
+int minStackGetMin(MinStack *obj)
+{
+    return obj->_minStack[obj->count - 1];
+}
+
+void minStackFree(MinStack *obj)
+{
+    free(obj->_stack);
+    free(obj->_minStack);
+    free(obj);
+}
+```
+
+## C++
+
+```cpp
+class MinStack
+{
+private:
+    vector<int> _stack;
+    vector<int> _minStack; // shadow stack: running minimum at each depth
+
+public:
+    MinStack()
+    {
+    }
+
+    void push(int value)
+    {
+        _stack.push_back(value);
+
+        // Push the smaller of the new value and the current minimum
+        if (_minStack.empty())
+            _minStack.push_back(value);
+        else
+        {
+            int minValue = min(value, _minStack.back());
+            _minStack.push_back(minValue);
+        }
+    }
+
+    void pop()
+    {
+        // Both stacks shrink together
+        _stack.pop_back();
+        _minStack.pop_back();
+    }
+
+    int top()
+    {
+        return _stack.back();
+    }
+
+    int getMin()
+    {
+        return _minStack.back();
+    }
+};
+```
+
+## Python
+
+```python
+class MinStack:
+
+    def __init__(self):
+        self._stack = []
+        self._minStack = []  # shadow stack: running minimum at each depth
+
+    def push(self, value: int) -> None:
+        self._stack.append(value)
+
+        # Push the smaller of the new value and the current minimum
+        if not self._minStack:
+            self._minStack.append(value)
+            return
+        min_value = min(value, self._minStack[-1])
+        self._minStack.append(min_value)
+        return
+
+    def pop(self) -> None:
+        # Both stacks shrink together
+        self._stack.pop()
+        self._minStack.pop()
+
+    def top(self) -> int:
+        if not self._stack:
+            return 0
+        return self._stack[-1]
+
+    def getMin(self) -> int:
+        return self._minStack[-1]
+```
+:::
+

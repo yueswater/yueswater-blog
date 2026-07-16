@@ -54,6 +54,9 @@
     // dsa/leetcode/1051-height-checker
     '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html':    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html',
     '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html': '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html',
+    // dsa/leetcode/0155-minstack
+    '/dsa/posts/leetcode/0155-minstack/0155-minstack.html':    '/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html',
+    '/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html': '/dsa/posts/leetcode/0155-minstack/0155-minstack.html',
   };
 
   // Navbar label translations: href substring → [zh, en]

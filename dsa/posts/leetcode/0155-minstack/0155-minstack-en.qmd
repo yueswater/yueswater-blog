@@ -1,0 +1,191 @@
+---
+title: "LeetCode 155. Min Stack"
+subtitle: "Min Stack"
+lang: en
+date: 2026-07-16
+author: Anthony
+categories: [LeetCode, Array]
+description: "[Problem link](https://leetcode.com/problems/min-stack/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/0155-minstack/0155-minstack.html"
+---
+
+Besides the basic `push`, `pop`, and `top`, this problem asks for a data structure that can also retrieve the minimum value in the stack in $\mathcal{O}(1)$ time.
+
+## Approach
+
+Without reading the problem carefully, I happily wrote the following code first:
+
+```python
+class MinStack:
+
+    def __init__(self):
+        self._stack = []
+
+    def push(self, value: int) -> None:
+        self._stack.append(value)
+
+    def pop(self) -> None:
+        self._stack.pop()
+
+    def top(self) -> int:
+        if not self._stack:
+            return 0
+        return self._stack[-1]
+
+    def getMin(self) -> int:
+        return min(self._stack)
+```
+
+Hit run feeling pretty good about it. Then: [**Time Limit Exceeded**]{style="color: red;"}.
+
+![](images/argh.gif){fig-align="center"}
+
+Looking more carefully at the problem, every function is required to run in constant time.
+
+The first few functions aren't a problem, since pushing, popping, and peeking a stack are all already $\mathcal{O}(1)$. The tricky one is getting the minimum value — scanning the whole stack to find it takes $\mathcal{O}(n)$, and that's where I got stuck.
+
+But wait — since this is a stack, why not just lean into what a stack is already good at: constant-time push, pop, and peek? Every time a value is pushed, compare it against the current known minimum, and push whichever is smaller onto a second, auxiliary stack. The top of that auxiliary stack then always holds **the current minimum of the main stack** — which is presumably why it's called `minStack` (the problem's naming was more of a hint than I gave it credit for).
+
+In other words, every level of the auxiliary stack stores the minimum value at the moment that level was pushed. The two stacks always stay the same length, one-to-one. With that, all four operations run in constant time, at the cost of an auxiliary stack as long as the main one — a textbook trade of space for time.
+
+## Implementation
+
+::: {.panel-tabset}
+## C
+
+```c
+typedef struct
+{
+    int *_stack;
+    int *_minStack; // shadow stack: running minimum at each depth
+    int count;
+} MinStack;
+
+MinStack *minStackCreate()
+{
+    MinStack *obj = (MinStack *)malloc(sizeof(MinStack));
+    obj->count = 0;
+    obj->_stack = (int *)malloc(30000 * sizeof(int));
+    obj->_minStack = (int *)malloc(30000 * sizeof(int));
+    return obj;
+}
+
+void minStackPush(MinStack *obj, int value)
+{
+    obj->_stack[obj->count] = value;
+
+    // Push the smaller of the new value and the current minimum
+    if (obj->count == 0)
+        obj->_minStack[obj->count] = value;
+    else
+        obj->_minStack[obj->count] = value < obj->_minStack[obj->count - 1] ? value : obj->_minStack[obj->count - 1];
+
+    obj->count++;
+}
+
+void minStackPop(MinStack *obj)
+{
+    // Both stacks shrink together
+    obj->count--;
+}
+
+int minStackTop(MinStack *obj)
+{
+    return obj->_stack[obj->count - 1];
+}
+
+int minStackGetMin(MinStack *obj)
+{
+    return obj->_minStack[obj->count - 1];
+}
+
+void minStackFree(MinStack *obj)
+{
+    free(obj->_stack);
+    free(obj->_minStack);
+    free(obj);
+}
+```
+
+## C++
+
+```cpp
+class MinStack
+{
+private:
+    vector<int> _stack;
+    vector<int> _minStack; // shadow stack: running minimum at each depth
+
+public:
+    MinStack()
+    {
+    }
+
+    void push(int value)
+    {
+        _stack.push_back(value);
+
+        // Push the smaller of the new value and the current minimum
+        if (_minStack.empty())
+            _minStack.push_back(value);
+        else
+        {
+            int minValue = min(value, _minStack.back());
+            _minStack.push_back(minValue);
+        }
+    }
+
+    void pop()
+    {
+        // Both stacks shrink together
+        _stack.pop_back();
+        _minStack.pop_back();
+    }
+
+    int top()
+    {
+        return _stack.back();
+    }
+
+    int getMin()
+    {
+        return _minStack.back();
+    }
+};
+```
+
+## Python
+
+```python
+class MinStack:
+
+    def __init__(self):
+        self._stack = []
+        self._minStack = []  # shadow stack: running minimum at each depth
+
+    def push(self, value: int) -> None:
+        self._stack.append(value)
+
+        # Push the smaller of the new value and the current minimum
+        if not self._minStack:
+            self._minStack.append(value)
+            return
+        min_value = min(value, self._minStack[-1])
+        self._minStack.append(min_value)
+        return
+
+    def pop(self) -> None:
+        # Both stacks shrink together
+        self._stack.pop()
+        self._minStack.pop()
+
+    def top(self) -> int:
+        if not self._stack:
+            return 0
+        return self._stack[-1]
+
+    def getMin(self) -> int:
+        return self._minStack[-1]
+```
+:::
