@@ -1,68 +1,29 @@
 (function () {
-  // Keys are full URL pathnames.
-  // Trailing-slash paths are included so directory URLs are handled too.
-  var PAGE_MAP = {
-    // Root
-    '/': '/index-en.html',
-    '/index.html': '/index-en.html',
-    '/index-en.html': '/index.html',
-    // About
-    '/about.html': '/about-en.html',
-    '/about-en.html': '/about.html',
-    // Articles listing
-    '/articles/': '/articles/index-en.html',
-    '/articles/index.html': '/articles/index-en.html',
-    '/articles/index-en.html': '/articles/index.html',
-    // Diary listing
-    '/diary/': '/diary/index-en.html',
-    '/diary/index.html': '/diary/index-en.html',
-    '/diary/index-en.html': '/diary/index.html',
-    // Projects listing
-    '/projects/': '/projects/index-en.html',
-    '/projects/index.html': '/projects/index-en.html',
-    '/projects/index-en.html': '/projects/index.html',
-    // Projects – econ-viz
-    '/projects/posts/econ-viz/econ-viz.html': '/projects/posts/econ-viz/econ-viz-en.html',
-    '/projects/posts/econ-viz/econ-viz-en.html': '/projects/posts/econ-viz/econ-viz.html',
-    // Articles — LaTeX series
-    '/articles/posts/latex/intro/latex-intro.html': '/articles/posts/latex/intro/latex-intro-en.html',
-    '/articles/posts/latex/intro/latex-intro-en.html': '/articles/posts/latex/intro/latex-intro.html',
-    '/articles/posts/latex/first-doc/latex-first-doc.html': '/articles/posts/latex/first-doc/latex-first-doc-en.html',
-    '/articles/posts/latex/first-doc/latex-first-doc-en.html': '/articles/posts/latex/first-doc/latex-first-doc.html',
-    '/articles/posts/latex/basic-setting/latex-basic-setting.html': '/articles/posts/latex/basic-setting/latex-basic-setting-en.html',
-    '/articles/posts/latex/basic-setting/latex-basic-setting-en.html': '/articles/posts/latex/basic-setting/latex-basic-setting.html',
-    // Articles — Python series
-    '/articles/posts/python/id-function/python-id-function.html': '/articles/posts/python/id-function/python-id-function-en.html',
-    '/articles/posts/python/id-function/python-id-function-en.html': '/articles/posts/python/id-function/python-id-function.html',
-    '/articles/posts/python/zip-enum/python-zip-enum.html': '/articles/posts/python/zip-enum/python-zip-enum-en.html',
-    '/articles/posts/python/zip-enum/python-zip-enum-en.html': '/articles/posts/python/zip-enum/python-zip-enum.html',
-    // latex/math
-    '/articles/posts/latex/math/math.html': '/articles/posts/latex/math/math-en.html',
-    '/articles/posts/latex/math/math-en.html': '/articles/posts/latex/math/math.html',
-    // python/lambda-filter-map-reduce
-    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html':    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html',
-    '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce-en.html': '/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce.html',
-    // DSA listing
-    '/dsa/index.html': '/dsa/index-en.html',
-    '/dsa/index-en.html': '/dsa/index.html',
-    // dsa/leetcode/0414-third-max-number
-    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html':    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number-en.html',
-    '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number-en.html': '/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number.html',
-    // dsa/leetcode/0448-find-disappeared-numbers
-    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers.html':    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html',
-    '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers-en.html': '/dsa/posts/leetcode/0448-find-disappeared-numbers/0448-find-disappeared-numbers.html',
-    // dsa/leetcode/1051-height-checker
-    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html':    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html',
-    '/dsa/posts/leetcode/1051-height-checker/1051-height-checker-en.html': '/dsa/posts/leetcode/1051-height-checker/1051-height-checker.html',
-    // dsa/leetcode/0155-minstack
-    '/dsa/posts/leetcode/0155-minstack/0155-minstack.html':    '/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html',
-    '/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html': '/dsa/posts/leetcode/0155-minstack/0155-minstack.html',
-  };
+  // Every bilingual page's alternate-URL lookup comes from its own
+  // <link rel="alternate" hreflang="..."> tags in <head> — emitted by
+  // _filters/seo.lua from each page's `alternate-lang` frontmatter.
+  // That's the single source of truth (also used for SEO), so there's
+  // no separate page map to keep in sync here: add a new bilingual post
+  // by setting `alternate-lang` in its frontmatter, and this just works.
+  function getAltHref(isEn) {
+    var wantedHreflang = isEn ? 'zh-TW' : 'en';
+    var link = document.querySelector(
+      'link[rel="alternate"][hreflang="' + wantedHreflang + '"]'
+    );
+    if (!link) return null;
+
+    try {
+      return new URL(link.href).pathname;
+    } catch (e) {
+      return link.getAttribute('href');
+    }
+  }
 
   // Navbar label translations: href substring → [zh, en]
   var NAV_LABELS = [
     { href: '/articles', zh: '文章', en: 'Articles' },
     { href: '/projects', zh: '專案', en: 'Projects' },
+    { href: '/dsa', zh: 'DSA 筆記', en: 'DSA Notes' },
     { href: '/diary', zh: '日記', en: 'Diary' },
     { href: '/about', zh: '關於', en: 'About' },
     { href: '/glossary', zh: '術語表', en: 'Glossary' },
@@ -86,15 +47,9 @@
     onScroll(); // apply immediately in case page is already scrolled
   })();
 
-  function getPath() {
-    var p = window.location.pathname;
-    return p === '' ? '/' : p;
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
-    var path = getPath();
-    var altHref = PAGE_MAP[path];
-    var isEn = path.endsWith('-en.html') || path.endsWith('-en/');
+    var isEn = document.documentElement.lang === 'en';
+    var altHref = getAltHref(isEn);
 
     // Translate navbar labels based on current language
     var allNavLinks = document.querySelectorAll('.navbar-nav .nav-link');

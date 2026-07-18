@@ -67,7 +67,7 @@ Donald Knuth, "*The Art of Computer Programming*"
 ::: {.header-text}
 ::: {.content-container}
 ::: {.header-block}
-A personal blog by **Anthony** — tutorials on **Python**, **R**, and **LaTeX**, things I've built, and notes from everyday life. Stay curious.
+A personal blog by **Anthony** — the projects I've built, and notes from everyday life. Always stay curious about the world.
 :::
 :::
 :::

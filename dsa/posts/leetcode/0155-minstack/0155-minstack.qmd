@@ -4,7 +4,7 @@ subtitle: "最小堆疊"
 lang: zh-TW
 date: 2026-07-16
 author: Anthony
-categories: [LeetCode, Array]
+categories: [LeetCode, Array, Stack]
 description: "[題目連結](https://leetcode.com/problems/min-stack/description/)"
 image: ../../cover/Leetcode.svg
 alternate-lang: "/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html"

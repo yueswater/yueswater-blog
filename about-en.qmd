@@ -15,6 +15,8 @@ about:
       href: https://instagram.com/yues_19_water
     - icon: threads-fill
       href: https://www.threads.com/@yues_19_water
+    - icon: envelope
+      href: mailto:contact@yueswater.com
 alternate-lang: "/about.html"
 ---
 
@@ -28,25 +30,19 @@ Alongside my studies, I work as a **software intern** at [Aircraft Inc.](https:/
 
 I work across the full stack — from backend APIs to mobile apps. Here's what I reach for most often:
 
-- **Backend:** Python with [FastAPI](https://fastapi.tiangolo.com/), [Django](https://www.djangoproject.com/), and [Flask](https://flask.palletsprojects.com/); also [Node.js](https://nodejs.org/)
+- **Backend:** [Python](https://www.python.org/) with [FastAPI](https://fastapi.tiangolo.com/), [Django](https://www.djangoproject.com/), and [Flask](https://flask.palletsprojects.com/); also [Node.js](https://nodejs.org/)
 - **Frontend:** [React](https://react.dev/) and [Next.js](https://nextjs.org/)
 - **Mobile:** [Flutter](https://flutter.dev/)
-- **Data & analysis:** **R** and Python
+- **Data & analysis:** [R](https://www.r-project.org/) and [Python](https://www.python.org/)
 
 ## What This Blog Is About
 
-This is a space for **tutorials and technical writing**, focused on topics I genuinely use and care about:
-
-- **Python** — from scripting to building full web applications
-- **R** — data analysis, visualization, and statistical thinking
-- **LaTeX** — because good typesetting matters
-
-The goal is simple: write the guides I wish I had when I was learning. If something here saves you a few hours of frustration, that's a win.
+This is where I write **tutorials** and **notes**, on topics revolving around programming languages and economics. The goal is simple: I hope to write the kind of tutorial I wish I'd found when I was learning — if something here saves you a few hours of frustration, that's a win.
 
 > *Stay curious.*
 
 ## Beyond the Screen
 
-When I'm not coding, I'm probably in the kitchen experimenting with **Chinese cuisine** — the kind of cooking that takes patience and rewards it. Food, to me, is its own kind of creative problem-solving.
+When I'm not coding, I'm probably in the kitchen experimenting with **Chinese cooking** — the kind that takes patience, but also rewards it! Food, to me, is just another form of problem-solving.
 
-Music-wise, I'm a dedicated **EDM** listener. My taste leans toward **Trance** and **House**, and [Avicii](https://avicii.com/) remains my all-time favorite — his music is proof that something digital can still feel deeply human.
+Music-wise, I'm a dedicated **EDM** listener. My taste leans toward **Trance** and **House**, and [Avicii](https://avicii.com/) is my all-time favorite.

@@ -1,0 +1,131 @@
+---
+title: "LeetCode 1475. Final Prices With a Special Discount in a Shop"
+subtitle: "商品折扣後的最終價格"
+lang: zh-TW
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, Array, Stack, Monotonic Stack]
+description: "[題目連結](https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/1475-final-prices/1475-final-prices-en.html"
+---
+
+給定一個整數陣列 `prices`，其中 `prices[i]` 代表商店中第 `i` 件商品的價格。商店中有一項特殊折扣：如果你購買第 `i` 件商品，你會獲得相當於 `prices[j]` 的折扣，其中 `j` 是滿足 `j > i` 且 `prices[j] <= prices[i]` 的最小索引。否則，你將不會獲得任何折扣。
+
+請回傳一個整數陣列 `answer`，其中 `answer[i]` 是考慮特殊折扣後，你購買第 `i` 件商品所需支付的最終價格。
+
+舉例來說，給定
+
+```
+prices = [8, 4, 6, 2, 3]
+```
+
+對每個索引套用同樣的規則：
+
+| 索引 | 當前價格 | 折扣依據 | 最終價格 |
+| :---: | :---: | :---: | :---: |
+| 0 | 8 | 4 | 8 − 4 = 4 |
+| 1 | 4 | 2 | 4 − 2 = 2 |
+| 2 | 6 | 2 | 6 − 2 = 4 |
+| 3 | 2 | 無 | 2 |
+| 4 | 3 | 無 | 3 |
+
+可以得到最終陣列 `answer = [4, 2, 4, 2, 3]`。
+
+## 想法
+
+這題的想法是用兩個結構：`answer` 存放每個商品目前的（暫定）最終價格，`stack` 存放還沒找到折扣的商品索引。
+
+逐一走訪 `prices`：
+
+1. 檢查堆疊：只要 `stack` 不為空，且堆頂索引對應的價格大於等於目前價格，就代表目前價格是堆頂商品的折扣依據。把堆頂索引彈出，並將該索引的 `answer` 更新為原價格減去目前價格，重複檢查直到不滿足條件為止。
+2. 把目前索引推入 `stack`，目前價格存入 `answer`，作為這個商品暫定的最終價格。
+
+## 實作
+
+::: {.panel-tabset}
+## C
+
+```c
+int *finalPrices(int *prices, int pricesSize, int *returnSize)
+{
+    int *stack = (int *)malloc(500 * sizeof(int)); // store index
+    int *answer = (int *)malloc(500 * sizeof(int));
+
+    int stackCount = 0;
+    int answerCount = 0;
+
+    *returnSize = pricesSize;
+
+    for (int i = 0; i < pricesSize; i++)
+    {
+        // Resolve the discount for every pending index whose price is not lower than the current one
+        while (stackCount != 0 && prices[stack[stackCount - 1]] >= prices[i])
+        {
+            int j = stack[--stackCount];
+            answer[j] = prices[j] - prices[i];
+        }
+
+        // No discount resolved yet — assume full price for now
+        stack[stackCount++] = i;
+        answer[answerCount++] = prices[i];
+    }
+
+    free(stack);
+
+    return answer;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    vector<int> finalPrices(vector<int> &prices)
+    {
+        vector<int> stack; // store index
+        vector<int> answer;
+
+        for (size_t i = 0; i < prices.size(); i++)
+        {
+            // Resolve the discount for every pending index whose price is not lower than the current one
+            while (!stack.empty() && prices[stack.back()] >= prices[i])
+            {
+                int j = stack.back();
+                stack.pop_back();
+                answer[j] = prices[j] - prices[i];
+            }
+
+            // No discount resolved yet — assume full price for now
+            stack.push_back(i);
+            answer.push_back(prices[i]);
+        }
+
+        return answer;
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def finalPrices(self, prices: list[int]) -> list[int]:
+        stack = []  # store index
+        answer = []
+
+        for i in range(len(prices)):
+            # Resolve the discount for every pending index whose price is not lower than the current one
+            while stack and prices[stack[-1]] >= prices[i]:
+                j = stack.pop()
+                answer[j] = prices[j] - prices[i]
+
+            # No discount resolved yet — assume full price for now
+            stack.append(i)
+            answer.append(prices[i])
+
+        return answer
+```
+:::

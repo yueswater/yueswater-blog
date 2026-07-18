@@ -1,0 +1,103 @@
+---
+title: "LeetCode 1047. Remove All Adjacent Duplicates In String"
+subtitle: "刪除字串中的所有相鄰重複項"
+lang: zh-TW
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, String, Stack]
+description: "[題目連結](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/1047-remove-adjacent-duplicates/1047-remove-adjacent-duplicates-en.html"
+---
+
+給定一個只包含小寫英文字母的字串 `s`。在 `s` 上不斷進行這種重複刪除[^1]，直到無法再刪除為止，並回傳所有重複刪除都完成後的最終字串——可以證明這個答案是唯一的。
+
+舉例來說，給定
+
+```
+s = "abbaca"
+```
+
+我們可以先刪除相鄰的一對 `"bb"`，剩下 `"aaca"`。這時又出現了新的相鄰對 `"aa"`，將它也刪除後剩下 `"ca"`——已經無法再繼續刪除，因此答案為 `"ca"`。
+
+## 想法
+
+這題與 [LeetCode 20. 有效的括號](../0020-valid-parentheses/0020-valid-parentheses.qmd)有異曲同工之妙：兩題都是一邊掃描字串，一邊拿目前的字元跟堆疊頂端比較，只要符合特定條件就把兩者一起消掉——有效括號那題是括號彼此配對後相消，而這題則是相鄰且相同的字母互相相消。條件不成立時，就把目前的字元推入堆疊，繼續往下掃描。
+
+掃描結束後，堆疊裡剩下的內容，就是所有重複刪除都做完之後的最終字串。
+
+## 實作
+
+::: {.panel-tabset}
+## C
+
+```c
+char *removeDuplicates(char *s)
+{
+    char *stack = (char *)malloc((strlen(s) + 1) * sizeof(char));
+    int count = 0;
+
+    for (size_t i = 0; i < strlen(s); i++)
+    {
+        if (count > 0 && stack[count - 1] == s[i])
+        {
+            // Cancels out with the top of the stack
+            count--;
+        }
+        else
+        {
+            // No match, push onto the stack
+            stack[count++] = s[i];
+        }
+    }
+
+    stack[count] = '\0';
+    return stack;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    string removeDuplicates(string s)
+    {
+        string stack;
+
+        for (auto ch : s)
+        {
+            if (!stack.empty() && ch == stack.back())
+                // Cancels out with the top of the stack
+                stack.pop_back();
+            else
+                // No match, push onto the stack
+                stack.push_back(ch);
+        }
+
+        return stack;
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        stack = []
+
+        for ch in s:
+            if stack and stack[-1] == ch:
+                # Cancels out with the top of the stack
+                stack.pop()
+            else:
+                # No match, push onto the stack
+                stack.append(ch)
+
+        return ''.join(stack)
+```
+:::
+
+[^1]: 所謂**重複刪除**，是指選擇兩個相鄰且相同的字母並將它們移除。

@@ -1,0 +1,96 @@
+---
+title: "Glossary"
+lang: en
+description: "Explanation for glossary"
+toc: false
+alternate-lang: "/glossary/index.html"
+---
+
+::: {.panel-tabset}
+
+## LaTeX
+
+**Document class**
+: The base configuration for a LaTeX document, declared with `\documentclass{}`. Common classes include `article` (short documents), `report`, `book`, and `beamer` (slides).
+
+**Preamble**
+: The region of a LaTeX document between `\documentclass{}` and `\begin{document}`, used to load packages and set global options.
+
+**Environment**
+: A block delimited by `\begin{name}` and `\end{name}` that controls a specific piece of typesetting behavior, e.g. `document`, `figure`, `table`, `align`.
+
+**Package**
+: An extension loaded with `\usepackage{}`, such as `geometry` (page layout), `fontspec` (fonts), or `amsmath` (math typesetting).
+
+**Compiler**
+: The program that turns `.tex` source into a PDF. Common compilers are `pdflatex`, `xelatex` (Unicode support), and `lualatex`.
+
+**Sectioning commands**
+: Commands LaTeX uses to structure a document, including `\chapter{}`, `\section{}`, `\subsection{}`, `\subsubsection{}`.
+
+**Footnote**
+: Inserted with `\footnote{}`; LaTeX numbers it automatically and places it at the bottom of the page.
+
+**Abstract**
+: Written inside the `abstract` environment, usually right after the title page, to summarize the document. Mainly used with the `article` and `report` classes.
+
+**Title page**
+: Generated with the `\maketitle` command, after `\title{}`, `\author{}`, and `\date{}` have been set in the preamble.
+
+## Python
+
+**Variable**
+: A name bound to an object in Python — not a box that directly holds a value. Reassigning a variable rebinds the name to a different object.
+
+**Object**
+: The actual runtime entity in Python, with a type, a value, and an identity. Integers, strings, lists, functions, classes, and modules are all objects.
+
+**Object identity**
+: The concept of whether two names refer to the same object. Comparable with `is`, and observable via `id()`.
+
+**`id()` function**
+: A built-in function that returns an integer that is unique and constant for an object during its lifetime. CPython commonly represents it as a memory address, but that's an implementation detail.
+
+**`is`**
+: The identity comparison operator, checking whether both sides refer to the same object. Recommended for checking against `None`, i.e. `x is None`.
+
+**`==`**
+: The value comparison operator, which typically calls an object's `__eq__` method. It answers "are the values equal", not "is this the same object".
+
+**CPython**
+: The most common implementation of Python, written in C. Many `id()`, caching, and memory behaviors are CPython implementation details.
+
+**Small integer cache**
+: A mechanism where CPython pre-creates and reuses common integer objects. Tutorials often cite the range `-5` to `256`, but the exact range shouldn't be treated as a language guarantee.
+
+**Constant pool**
+: A structure the compiler uses to store literal constants found in code. Identical literals sometimes share the same object, which can affect what `is` observes.
+
+**String interning**
+: Python's strategy of reusing identical string objects. Short strings that look like valid identifiers are more often interned automatically.
+
+**Mutable object**
+: An object whose contents can still be modified after creation, e.g. `list`, `dict`, `set`. Modifying it in place usually doesn't change its identity.
+
+**Immutable object**
+: An object whose contents cannot be modified after creation, e.g. `int`, `str`, `tuple`. What looks like a modification is usually creating a new object and rebinding the name to it.
+
+**Singleton**
+: An object or pattern where only one instance is kept throughout a program. Python's `None` is the classic example, hence checking with `is None`.
+
+**`weakref`**
+: A standard library module for holding weak references to objects, without preventing them from being garbage collected. More robust than holding onto an `id()` for long-term object tracking.
+
+**Iterable**
+: An object that supports being walked through element by element, e.g. `list`, `str`, `dict`, `range`. Anything that can go into a `for` loop is an iterable — technically, an object that implements `__iter__()`.
+
+**Iterator**
+: An object that tracks its position while walking through a sequence, returning the next element each time `next()` is called. Both `enumerate()` and `zip()` return iterators. An iterator is itself also an iterable.
+
+**Unpacking**
+: Syntax for assigning multiple elements of a sequence or tuple to multiple variables at once, e.g. `a, b = (1, 2)` or `for x, y in pairs:` in a loop.
+
+**Lazy evaluation**
+: A strategy where the next value is only computed when needed. Iterators returned by functions like `enumerate()` and `zip()` use this strategy — they don't precompute every result up front, so memory usage doesn't scale with the size of the input.
+
+:::

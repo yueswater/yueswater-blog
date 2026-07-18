@@ -1,0 +1,103 @@
+---
+title: "LeetCode 1047. Remove All Adjacent Duplicates In String"
+subtitle: "Remove All Adjacent Duplicates In String"
+lang: en
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, String, Stack]
+description: "[Problem link](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/1047-remove-adjacent-duplicates/1047-remove-adjacent-duplicates.html"
+---
+
+You are given a string `s` consisting of lowercase English letters. This kind of duplicate removal[^1] is carried out on `s` repeatedly, until it can no longer be done, and the final string after all duplicate removals is returned — it can be proven that the answer is unique.
+
+For example, given
+
+```
+s = "abbaca"
+```
+
+we can first remove the adjacent pair `"bb"`, leaving `"aaca"`. That leaves a new adjacent pair `"aa"`, which we remove as well, leaving `"ca"` — which can no longer be reduced, so the answer is `"ca"`.
+
+## Approach
+
+This problem has a lot in common with [LeetCode 20. Valid Parentheses](../0020-valid-parentheses/0020-valid-parentheses-en.qmd): both scan the string while comparing the current character against the top of a stack, and cancel the two out whenever a condition is met — in Valid Parentheses that's a matching bracket pair, here it's two equal adjacent letters. Whenever the condition doesn't hold, the current character is pushed onto the stack and scanning continues.
+
+By the end of the scan, whatever is left on the stack is exactly the final string after all duplicate removals.
+
+## Implementation
+
+::: {.panel-tabset}
+## C
+
+```c
+char *removeDuplicates(char *s)
+{
+    char *stack = (char *)malloc((strlen(s) + 1) * sizeof(char));
+    int count = 0;
+
+    for (size_t i = 0; i < strlen(s); i++)
+    {
+        if (count > 0 && stack[count - 1] == s[i])
+        {
+            // Cancels out with the top of the stack
+            count--;
+        }
+        else
+        {
+            // No match, push onto the stack
+            stack[count++] = s[i];
+        }
+    }
+
+    stack[count] = '\0';
+    return stack;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    string removeDuplicates(string s)
+    {
+        string stack;
+
+        for (auto ch : s)
+        {
+            if (!stack.empty() && ch == stack.back())
+                // Cancels out with the top of the stack
+                stack.pop_back();
+            else
+                // No match, push onto the stack
+                stack.push_back(ch);
+        }
+
+        return stack;
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        stack = []
+
+        for ch in s:
+            if stack and stack[-1] == ch:
+                # Cancels out with the top of the stack
+                stack.pop()
+            else:
+                # No match, push onto the stack
+                stack.append(ch)
+
+        return ''.join(stack)
+```
+:::
+
+[^1]: A **duplicate removal** means selecting two letters that are adjacent and identical, and removing both of them.

@@ -1,0 +1,160 @@
+---
+title: "LeetCode 20. Valid Parentheses"
+subtitle: "Valid Parentheses"
+lang: en
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, String, Stack]
+description: "[Problem link](https://leetcode.com/problems/valid-parentheses/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/0020-valid-parentheses/0020-valid-parentheses.html"
+---
+
+Given a string `s` containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid.
+
+An input string is valid if:
+
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+3. Every close bracket has a corresponding open bracket of the same type.
+
+For example, given
+
+```
+s = "()[]{}"
+```
+
+every bracket is closed by the same type, in the correct order, so the string is valid and the answer is `true`. But given
+
+```
+s = "([)]"
+```
+
+`(` opens, then `[` opens on top of it — but the next bracket to close is `)`, which doesn't match the most recently opened `[`. The brackets close out of order, so the string is invalid and the answer is `false`.
+
+## Approach
+
+The key structural feature of this problem is that a closing bracket must match the most recently opened bracket that hasn't been closed yet — a textbook last-in-first-out behavior, which is exactly what a stack gives us for free.
+
+Scanning the string left to right: every time we see an opening bracket, push it onto the stack. Every time we see a closing bracket, pop the top of the stack and check whether it's the matching opening bracket. If the stack is empty when we need to pop, or the popped bracket doesn't match, the string is invalid right away.
+
+Once the whole string has been scanned, the string is valid only if the stack is empty — any bracket left on the stack means it was opened but never closed.
+
+## Implementation
+
+::: {.panel-tabset}
+## C
+
+```c
+bool isValid(char *s)
+{
+    char *stack = (char *)malloc(10000 * sizeof(char));
+    int count = 0;
+
+    for (size_t i = 0; i < strlen(s); i++)
+    {
+        if (s[i] == '(' || s[i] == '[' || s[i] == '{')
+        {
+            // Push the opening bracket
+            stack[count++] = s[i];
+        }
+        else
+        {
+            // Closing bracket with nothing to match
+            if (count == 0)
+            {
+                return false;
+            }
+
+            char last = stack[count - 1];
+            if (
+                (s[i] == ')' && last == '(') ||
+                (s[i] == ']' && last == '[') ||
+                (s[i] == '}' && last == '{'))
+            {
+                // Matches the most recently opened bracket
+                count--;
+            }
+            else
+                return false;
+        }
+    }
+
+    return count == 0;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    bool isValid(string s)
+    {
+        vector<char> stack;
+
+        for (auto ch : s)
+        {
+            if (ch == '(' || ch == '[' || ch == '{')
+            {
+                // Push the opening bracket
+                stack.push_back(ch);
+            }
+            else
+            {
+                // Closing bracket with nothing to match
+                if (stack.empty())
+                {
+                    return false;
+                }
+
+                char last = stack.back();
+                if (
+                    (ch == ')' && last == '(') ||
+                    (ch == ']' && last == '[') ||
+                    (ch == '}' && last == '{'))
+                {
+                    // Matches the most recently opened bracket
+                    stack.pop_back();
+                }
+                else
+                    return false;
+            }
+        }
+
+        return stack.empty();
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+
+        for ch in s:
+            if ch == "(" or ch == "[" or ch == "{":
+                # Push the opening bracket
+                stack.append(ch)
+            else:
+                # Closing bracket with nothing to match
+                if not stack:
+                    return False
+
+                last = stack[-1]
+                if (
+                    (ch == ")" and last == "(")
+                    or (ch == "]" and last == "[")
+                    or (ch == "}" and last == "{")
+                ):
+                    # Matches the most recently opened bracket
+                    stack.pop()
+                else:
+                    return False
+
+        return not stack
+```
+:::

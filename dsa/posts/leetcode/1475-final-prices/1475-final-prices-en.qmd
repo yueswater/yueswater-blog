@@ -1,0 +1,133 @@
+---
+title: "LeetCode 1475. Final Prices With a Special Discount in a Shop"
+subtitle: "Final Prices With a Special Discount in a Shop"
+lang: en
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, Array, Stack, Monotonic Stack]
+description: "[Problem link](https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/1475-final-prices/1475-final-prices.html"
+---
+
+You are given an integer array `prices` where `prices[i]` is the price of the `i`-th item in a shop.
+
+There is a special discount for items in the shop: if you buy the `i`-th item, you receive a discount equivalent to `prices[j]`, where `j` is the minimum index such that `j > i` and `prices[j] <= prices[i]`. Otherwise, you receive no discount at all.
+
+Return an integer array `answer` where `answer[i]` is the final price you pay for the `i`-th item, considering the special discount.
+
+For example, given
+
+```
+prices = [8, 4, 6, 2, 3]
+```
+
+Applying the same rule to every index:
+
+| Index `i` | `prices[i]` | Discount from `prices[j]` | Final price `answer[i]` |
+| :---: | :---: | :---: | :---: |
+| 0 | 8 | 4 | 8 − 4 = 4 |
+| 1 | 4 | 2 | 4 − 2 = 2 |
+| 2 | 6 | 2 | 6 − 2 = 4 |
+| 3 | 2 | none | 2 |
+| 4 | 3 | none | 3 |
+
+which gives the final array `answer = [4, 2, 4, 2, 3]`.
+
+## Approach
+
+The idea is to keep two structures: `answer`, holding each item's current (tentative) final price, and `stack`, holding the indices of items that haven't found their discount yet.
+
+Walking through `prices` once:
+
+1. Check the stack: as long as `stack` isn't empty and the price at the top index is greater than or equal to the current price, the current price is the discount for that item on top. Pop the top index, update its entry in `answer` to the original price minus the current price, and keep checking until the condition no longer holds.
+2. Push the current index onto `stack`, and store the current price in `answer` as that item's tentative final price.
+
+## Implementation
+
+::: {.panel-tabset}
+## C
+
+```c
+int *finalPrices(int *prices, int pricesSize, int *returnSize)
+{
+    int *stack = (int *)malloc(500 * sizeof(int)); // store index
+    int *answer = (int *)malloc(500 * sizeof(int));
+
+    int stackCount = 0;
+    int answerCount = 0;
+
+    *returnSize = pricesSize;
+
+    for (int i = 0; i < pricesSize; i++)
+    {
+        // Resolve the discount for every pending index whose price is not lower than the current one
+        while (stackCount != 0 && prices[stack[stackCount - 1]] >= prices[i])
+        {
+            int j = stack[--stackCount];
+            answer[j] = prices[j] - prices[i];
+        }
+
+        // No discount resolved yet — assume full price for now
+        stack[stackCount++] = i;
+        answer[answerCount++] = prices[i];
+    }
+
+    free(stack);
+
+    return answer;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    vector<int> finalPrices(vector<int> &prices)
+    {
+        vector<int> stack; // store index
+        vector<int> answer;
+
+        for (size_t i = 0; i < prices.size(); i++)
+        {
+            // Resolve the discount for every pending index whose price is not lower than the current one
+            while (!stack.empty() && prices[stack.back()] >= prices[i])
+            {
+                int j = stack.back();
+                stack.pop_back();
+                answer[j] = prices[j] - prices[i];
+            }
+
+            // No discount resolved yet — assume full price for now
+            stack.push_back(i);
+            answer.push_back(prices[i]);
+        }
+
+        return answer;
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def finalPrices(self, prices: list[int]) -> list[int]:
+        stack = []  # store index
+        answer = []
+
+        for i in range(len(prices)):
+            # Resolve the discount for every pending index whose price is not lower than the current one
+            while stack and prices[stack[-1]] >= prices[i]:
+                j = stack.pop()
+                answer[j] = prices[j] - prices[i]
+
+            # No discount resolved yet — assume full price for now
+            stack.append(i)
+            answer.append(prices[i])
+
+        return answer
+```
+:::

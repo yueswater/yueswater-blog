@@ -1,0 +1,158 @@
+---
+title: "LeetCode 20. Valid Parentheses"
+subtitle: "有效的括號"
+lang: zh-TW
+date: 2026-07-18
+author: Anthony
+categories: [LeetCode, String, Stack]
+description: "[題目連結](https://leetcode.com/problems/valid-parentheses/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/0020-valid-parentheses/0020-valid-parentheses-en.html"
+---
+
+給定一個只包含 `(`、`)`、`{`、`}`、`[`、`]` 的字串 `s`，判斷這個字串是否為有效的。一個字串是**有效的**，必須滿足以下條件：
+
+1. 左括號必須用相同類型的右括號閉合；
+2. 左括號必須以正確的順序閉合；
+3. 每個右括號都必須有對應相同類型的左括號。
+
+例如給定
+
+```
+s = "()[]{}"
+```
+
+每個括號都由相同類型、且順序正確地閉合，因此這個字串有效，答案為 `true`。但若給定
+
+```
+s = "([)]"
+```
+
+`(` 先開，接著 `[` 也開啟；但下一個閉合的括號是 `)`，卻不是對應最近開啟的 `[`。括號閉合的順序錯誤，因此這個字串無效，答案為 `false`。
+
+## 想法
+
+本題的關鍵是**右括號必須對應到最近一個尚未閉合的左括號**，對應到的正式堆疊後進先出的特性。建立在此特性上，另一個更根本的問題是：如何確定對應？
+
+事實上，這個對應可以想像為**消消樂**——由左至右掃描字串：每當遇到左括號，就將它推入堆疊。每當遇到右括號，就取出堆疊頂端的元素並檢查它是否為對應的左括號，如果對應到了就將已經存放在堆疊中的左括號取出（移除）。如果需要取出時堆疊是空的，或取出的括號不匹配，字串就立即判定為無效。
+
+掃描完整個字串後，只有當堆疊為空時，字串才是有效的——堆疊中若還留有元素，代表有左括號被開啟卻從未被閉合。
+
+## 實作
+
+::: {.panel-tabset}
+## C
+
+```c
+bool isValid(char *s)
+{
+    char *stack = (char *)malloc(10000 * sizeof(char));
+    int count = 0;
+
+    for (size_t i = 0; i < strlen(s); i++)
+    {
+        if (s[i] == '(' || s[i] == '[' || s[i] == '{')
+        {
+            // Push the opening bracket
+            stack[count++] = s[i];
+        }
+        else
+        {
+            // Closing bracket with nothing to match
+            if (count == 0)
+            {
+                return false;
+            }
+
+            char last = stack[count - 1];
+            if (
+                (s[i] == ')' && last == '(') ||
+                (s[i] == ']' && last == '[') ||
+                (s[i] == '}' && last == '{'))
+            {
+                // Matches the most recently opened bracket
+                count--;
+            }
+            else
+                return false;
+        }
+    }
+
+    return count == 0;
+}
+```
+
+## C++
+
+```cpp
+class Solution
+{
+public:
+    bool isValid(string s)
+    {
+        vector<char> stack;
+
+        for (auto ch : s)
+        {
+            if (ch == '(' || ch == '[' || ch == '{')
+            {
+                // Push the opening bracket
+                stack.push_back(ch);
+            }
+            else
+            {
+                // Closing bracket with nothing to match
+                if (stack.empty())
+                {
+                    return false;
+                }
+
+                char last = stack.back();
+                if (
+                    (ch == ')' && last == '(') ||
+                    (ch == ']' && last == '[') ||
+                    (ch == '}' && last == '{'))
+                {
+                    // Matches the most recently opened bracket
+                    stack.pop_back();
+                }
+                else
+                    return false;
+            }
+        }
+
+        return stack.empty();
+    }
+};
+```
+
+## Python
+
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+
+        for ch in s:
+            if ch == "(" or ch == "[" or ch == "{":
+                # Push the opening bracket
+                stack.append(ch)
+            else:
+                # Closing bracket with nothing to match
+                if not stack:
+                    return False
+
+                last = stack[-1]
+                if (
+                    (ch == ")" and last == "(")
+                    or (ch == "]" and last == "[")
+                    or (ch == "}" and last == "{")
+                ):
+                    # Matches the most recently opened bracket
+                    stack.pop()
+                else:
+                    return False
+
+        return not stack
+```
+:::

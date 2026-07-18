@@ -86,7 +86,7 @@ Donald Knuth，《電腦程式設計藝術》
 ::: {.header-text}
 ::: {.content-container}
 ::: {.header-block}
-**Anthony** 的個人部落格──**Python**、**R**、**LaTeX** 教學，還有我做過的專案和日常生活的隻字片語。保持好奇。
+**Anthony** 的個人部落格，還有我做過的專案以及日常生活的隻字片語。對這個世界持續保持好奇。
 :::
 :::
 :::
