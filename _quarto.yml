@@ -66,6 +66,7 @@ format:
       - _includes/latex-runner.html
       - _includes/exercises.html
       - _includes/claude-highlight.html
+      - _includes/citation-hover.html
     grid:
       sidebar-width: 0px
       body-width: 1000px

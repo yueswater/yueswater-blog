@@ -274,12 +274,19 @@ figcaption {
   margin-bottom: 1rem;
 }
 
+.citation,
 .citation a,
 .footnote-ref {
   color: #939bc9;
   font-weight: 700;
 }
 
+.citation {
+  cursor: pointer;
+}
+
+.citation:hover,
+.citation:hover a,
 .citation a:hover {
   color: black
 }
