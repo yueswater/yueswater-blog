@@ -1,0 +1,35 @@
+---
+title: "LeetCode 225. Implement Stack using Queues"
+subtitle: "Implement Stack using Queues"
+lang: en
+date: 2026-07-16
+author: Anthony
+categories: [LeetCode, Stack, Queue, Design]
+description: "[Problem link](https://leetcode.com/problems/implement-stack-using-queues/description/)"
+image: ../../cover/Leetcode.svg
+alternate-lang: "/dsa/posts/leetcode/0225-implement-stack-using-queue/0225-implement-stack-using-queue.html"
+---
+
+Design a last-in-first-out (LIFO) stack using only **two queues**. The stack must support all operations of a normal stack:
+
+1. `push(x)`: Pushes `x` onto the top of the stack.
+2. `pop()`: Removes and returns the element at the top of the stack.
+3. `top()`: Returns the element at the top of the stack without removing it.
+4. `empty()`: Returns `true` when the stack has no elements; otherwise, returns `false`.
+
+Only standard queue operations may be used: adding an element to the back, peeking or removing an element from the front, reading the size, and checking whether the queue is empty. The problem guarantees that every call to `pop` and `top` is made when the stack is not empty.
+
+For example, the following operations are performed in order:
+
+```
+["MyStack", "push", "push", "top", "pop", "empty"]
+[[],        [1],    [2],    [],    [],    []]
+```
+
+The output is:
+
+```
+[null, null, null, 2, 2, false]
+```
+
+First, an empty `MyStack` is created. Then `1` and `2` are pushed in sequence. Since `2` was pushed last, it is at the top of the stack, so `top()` returns `2`; `pop()` also removes and returns `2`. The stack still contains `1`, so `empty()` returns `false`.

@@ -1,0 +1,636 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Python Tutorial Series: The Nature of Variables Through `id()`\"\n",
+        "lang: en\n",
+        "date: 2026-04-14\n",
+        "author: Anthony\n",
+        "categories: [Python, Programming Languages]\n",
+        "description: \"A simple built-in function that reveals how Python variables really work\"\n",
+        "image: ../../cover/Python_logo.png\n",
+        "glossary:\n",
+        "  path: ../../../../_glossary/python.yml\n",
+        "  popup: hover\n",
+        "alternate-lang: \"/articles/posts/python/id-function/python-id-function.html\"\n",
+        "---\n",
+        "\n",
+        "At first glance, `id()` looks like a tiny utility: it just returns an integer. But once you start using it to inspect real code, you quickly realize something deeper: many bugs and \"weird\" behaviors come from misunderstanding what a Python variable actually is.\n",
+        "\n",
+        "This article uses runnable examples to explain one core idea: in Python, variables are names, and objects are the real entities. Along the way, we will cover small integer caching, constant pooling, string interning, `is` vs `==`, and a few classic pitfalls that appear in production code.\n",
+        "\n",
+        "## A Counter-Intuitive Start\n",
+        "\n",
+        "Let us begin with a famous example:"
+      ],
+      "id": "3bad5b3e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = 256\n",
+        "b = 256\n",
+        "print(a is b)  # Expected: True\n",
+        "\n",
+        "x = 257\n",
+        "y = 257\n",
+        "print(x is y)  # Expected: may be True or False"
+      ],
+      "id": "3b1f621a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Many developers see this and think Python is inconsistent. It is not. The behavior is usually consistent *within a given implementation and execution context*, but the result can vary across contexts (script vs REPL) and across implementations.\n",
+        "\n",
+        "To understand why, we first need to be precise about what `id()` means.\n",
+        "\n",
+        "## What `id()` Actually Means\n",
+        "\n",
+        "According to the official Python docs, `id(object)` returns an integer that is unique and constant **during the object's lifetime**.\n",
+        "\n",
+        "That statement has two important parts:\n",
+        "\n",
+        "1. As long as an object is alive, its `id()` does not change.\n",
+        "2. Two different live objects cannot share the same `id()`.\n",
+        "\n",
+        "In CPython (the most widely used implementation), this value is often the memory address of the object."
+      ],
+      "id": "8787b8ec"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "s = \"python\"\n",
+        "print(id(s))             # Expected: an integer\n",
+        "print(id(s) == id(s))    # Expected: True"
+      ],
+      "id": "d86ea089",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "::: {.callout-warning}\n",
+        "In CPython, `id()` is often the memory address, but this is an implementation detail, not a language-level guarantee. PyPy, Jython, and other implementations may use different strategies.\n",
+        ":::\n",
+        "\n",
+        "So `id()` is useful for debugging and learning internals, but you should not rely on CPython-specific behavior as business logic.\n",
+        "\n",
+        "## Lifetime-Unique, Not Globally Unique\n",
+        "\n",
+        "A common misunderstanding is: \"If `id()` is unique, it should never repeat.\" That is incorrect.\n",
+        "\n",
+        "The docs say unique **during the object’s lifetime**. After an object is destroyed, its old `id()` may be reused."
+      ],
+      "id": "c5f73e96"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print(id(object()))\n",
+        "print(id(object()))\n",
+        "print(id(object()))  # May repeat previous values"
+      ],
+      "id": "a1275428",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "These temporary objects are created and discarded immediately, so CPython may reuse the same memory slot.\n",
+        "\n",
+        "If you want to compare identities safely, keep references alive:"
+      ],
+      "id": "587020a8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = object()\n",
+        "b = object()\n",
+        "print(id(a), id(b))  # Expected: two different integers\n",
+        "print(a is b)        # Expected: False"
+      ],
+      "id": "13c1ae55",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Small Integer Cache\n",
+        "\n",
+        "Now back to `256` vs `257`.\n",
+        "\n",
+        "CPython pre-allocates a range of small integer objects and reuses them. In many tutorials you will see `-5..256` as the typical range. In newer CPython branches, related constants are internal and version-dependent, so avoid treating one exact range as a language guarantee."
+      ],
+      "id": "5f52223d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = 256\n",
+        "b = 256\n",
+        "print(a is b)  # Expected: usually True in CPython\n",
+        "\n",
+        "c = -5\n",
+        "d = -5\n",
+        "print(c is d)  # Expected: usually True in CPython"
+      ],
+      "id": "d25b345d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "For values outside the commonly cached range:"
+      ],
+      "id": "fbba86e9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "x = 257\n",
+        "y = 257\n",
+        "print(x is y)  # Expected: may be True or False depending on context"
+      ],
+      "id": "724ef1eb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "The key message is not the exact boundary. The key message is that identity behavior for literals can be affected by implementation-level reuse.\n",
+        "\n",
+        "## Constant Pooling and Compilation Context\n",
+        "\n",
+        "If `257` is not always from the small-int cache, why is `x is y` sometimes `True` anyway?\n",
+        "\n",
+        "Because equal literals in the same code object may be loaded from the same constant slot."
+      ],
+      "id": "efa378db"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import dis\n",
+        "\n",
+        "def f():\n",
+        "    a = 257\n",
+        "    b = 257\n",
+        "    return a is b\n",
+        "\n",
+        "dis.dis(f)"
+      ],
+      "id": "8e904806",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "You may see both assignments load the same constant index (for example, `LOAD_CONST 1`). That means both names refer to the same constant object in that compiled unit.\n",
+        "\n",
+        "This is also why script files and REPL input can differ:\n",
+        "\n",
+        "- In a `.py` file, both lines are often compiled together.\n",
+        "- In REPL, each input is usually a separate compile unit.\n",
+        "\n",
+        "So \"same text\" does not always mean \"same compiled context.\"\n",
+        "\n",
+        "::: {.callout-note}\n",
+        "When `is` changes across contexts, it often reflects constant reuse strategy, not value semantics. For value comparison, use `==`.\n",
+        ":::\n",
+        "\n",
+        "## String Interning\n",
+        "\n",
+        "Strings can also be reused through **string interning**.\n",
+        "\n",
+        "A simple way to think about it: if two strings are identical, Python may keep one shared copy in memory."
+      ],
+      "id": "3a312ea7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = \"hello\"\n",
+        "b = \"hello\"\n",
+        "print(a is b)  # Expected: often True"
+      ],
+      "id": "50fdef54",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "For strings with spaces or symbols, identity is less predictable:"
+      ],
+      "id": "904438b3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "s1 = \"hello world\"\n",
+        "s2 = \"hello world\"\n",
+        "print(s1 is s2)  # Expected: may be True or False"
+      ],
+      "id": "3cd1894c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "You can force interning with `sys.intern()`:"
+      ],
+      "id": "6577bf89"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import sys\n",
+        "\n",
+        "raw1 = \"user_id\"\n",
+        "raw2 = \"user_\" + \"id\"\n",
+        "\n",
+        "i1 = sys.intern(raw1)\n",
+        "i2 = sys.intern(raw2)\n",
+        "\n",
+        "print(i1 is i2)  # Expected: True"
+      ],
+      "id": "873683aa",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Practical use case: repeated short strings (CSV field names, status labels, protocol tokens) can consume less memory when interned carefully."
+      ],
+      "id": "63edc875"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import sys\n",
+        "\n",
+        "rows = [\"OK\", \"OK\", \"FAIL\", \"OK\", \"FAIL\"]\n",
+        "rows = [sys.intern(x) for x in rows]\n",
+        "\n",
+        "print(rows[0] is rows[1])  # Expected: True\n",
+        "print(rows[2] is rows[4])  # Expected: True"
+      ],
+      "id": "bd8d0afc",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## `is` vs `==`: Practical Rules\n",
+        "\n",
+        "The difference is fundamental:\n",
+        "\n",
+        "- `is` compares identity (same object)\n",
+        "- `==` compares value (via `__eq__`)"
+      ],
+      "id": "1115d878"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "a = [1, 2]\n",
+        "b = [1, 2]\n",
+        "\n",
+        "print(a == b)  # Expected: True\n",
+        "print(a is b)  # Expected: False"
+      ],
+      "id": "f42e8103",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "One strong rule in real projects: use `is None`, not `== None`."
+      ],
+      "id": "fc81585c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "x = None\n",
+        "print(x is None)  # Expected: True\n",
+        "print(x == None)  # Expected: True, but not recommended"
+      ],
+      "id": "73b90fc1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Why is `is None` better?\n",
+        "\n",
+        "1. `None` is a singleton, so identity is the correct semantic check.\n",
+        "2. `==` calls `__eq__`, which may have custom behavior.\n",
+        "\n",
+        "For example, with NumPy arrays:"
+      ],
+      "id": "33259afb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "arr = np.array([1, 2, 3])\n",
+        "print(arr == None)  # Expected: array([False, False, False])\n",
+        "print(arr is None)  # Expected: False"
+      ],
+      "id": "4f052677",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "`is None` is both safer and clearer.\n",
+        "\n",
+        "## Mutable Objects and Identity Changes\n",
+        "\n",
+        "`id()` is also a great tool to understand in-place mutation vs rebinding.\n",
+        "\n",
+        "`append` mutates a list in place; `+` creates a new list:"
+      ],
+      "id": "267f69e0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "lst = [1, 2]\n",
+        "old_id = id(lst)\n",
+        "\n",
+        "lst.append(3)\n",
+        "print(id(lst) == old_id)  # Expected: True\n",
+        "\n",
+        "lst = lst + [4]\n",
+        "print(id(lst) == old_id)  # Expected: False"
+      ],
+      "id": "eb3f1d56",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "`+=` has type-specific behavior:"
+      ],
+      "id": "b645500c"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# list: usually in-place\n",
+        "l = [1, 2]\n",
+        "l_id = id(l)\n",
+        "l += [3]\n",
+        "print(id(l) == l_id)  # Expected: True\n",
+        "\n",
+        "# tuple: creates a new tuple and rebinds\n",
+        "t = (1, 2)\n",
+        "t_id = id(t)\n",
+        "t += (3,)\n",
+        "print(id(t) == t_id)  # Expected: False"
+      ],
+      "id": "652ab0cb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Classic trap:"
+      ],
+      "id": "0ffadea9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "t = ([1, 2], [3, 4])\n",
+        "\n",
+        "try:\n",
+        "    t[0] += [5]\n",
+        "except TypeError as e:\n",
+        "    print(type(e).__name__)  # Expected: TypeError\n",
+        "\n",
+        "print(t)  # Expected: ([1, 2, 5], [3, 4])"
+      ],
+      "id": "85674890",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Why does it mutate even though it errors?\n",
+        "\n",
+        "1. `t[0]` is a list, so in-place addition happens first.\n",
+        "2. Python then attempts to assign the result back.\n",
+        "3. Tuple item assignment is illegal, so a `TypeError` is raised.\n",
+        "\n",
+        "The mutation already happened before the exception.\n",
+        "\n",
+        "## Functions, Classes, and Modules Also Have `id()`\n",
+        "\n",
+        "Everything in Python is an object, including functions, classes, and modules."
+      ],
+      "id": "3bcc3bc4"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import sys\n",
+        "\n",
+        "def foo():\n",
+        "    pass\n",
+        "\n",
+        "class Bar:\n",
+        "    pass\n",
+        "\n",
+        "print(id(foo))\n",
+        "print(id(Bar))\n",
+        "print(id(sys))"
+      ],
+      "id": "26da2bc6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Modules often behave like singletons due to import caching in `sys.modules`:"
+      ],
+      "id": "05082837"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import math\n",
+        "import math as m2\n",
+        "\n",
+        "print(math is m2)  # Expected: True"
+      ],
+      "id": "fbd28a8e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Practical Use and Real Pitfalls\n",
+        "\n",
+        "Understanding identity is useful, but misuse is dangerous.\n",
+        "\n",
+        "A bad pattern is using `id()` as a long-term tracking key:"
+      ],
+      "id": "4bd1cae0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "obj = object()\n",
+        "tracking = {id(obj): \"alive\"}\n",
+        "\n",
+        "del obj\n",
+        "# Later, a new object may reuse the same id"
+      ],
+      "id": "2fd36d3e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "This can create false matches in long-running programs.\n",
+        "\n",
+        "A better approach is `weakref`:"
+      ],
+      "id": "ddce0ddb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import weakref\n",
+        "\n",
+        "class Node:\n",
+        "    pass\n",
+        "\n",
+        "n = Node()\n",
+        "meta = weakref.WeakKeyDictionary()\n",
+        "meta[n] = \"alive\"\n",
+        "\n",
+        "print(len(meta))  # Expected: 1\n",
+        "\n",
+        "del n\n",
+        "# After garbage collection, key-value can disappear automatically"
+      ],
+      "id": "7515749d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "This tracks object relationships safely without relying on reusable integer identities.\n",
+        "\n",
+        "## Conclusion\n",
+        "\n",
+        "`id()` helps you see Python’s object model in action: variables are names, objects hold state and behavior.\n",
+        "\n",
+        "Once you internalize that model, many confusing behaviors become predictable: `is` vs `==`, mutable vs immutable operations, interning, constant pooling, and identity reuse.\n",
+        "\n",
+        "At the same time, keep this boundary clear: many examples here are CPython implementation details. They are excellent for debugging and performance tuning, but they should not become hard assumptions in application logic.\n",
+        "\n",
+        "In the next article, we will go deeper into mutable vs immutable objects, especially how they affect function arguments, default values, and side effects.\n",
+        "\n",
+        "## References\n",
+        "\n",
+        "- Python Built-in Functions: `id()`\n",
+        "  <https://docs.python.org/3/library/functions.html#id>\n",
+        "- CPython source (`Objects/longobject.c`)\n",
+        "  <https://github.com/python/cpython/blob/main/Objects/longobject.c>\n",
+        "- CPython internal runtime constants\n",
+        "  <https://github.com/python/cpython/blob/main/Include/internal/pycore_runtime_structs.h>\n",
+        "- Python `sys.intern()`\n",
+        "  <https://docs.python.org/3/library/sys.html#sys.intern>\n",
+        "- Python `weakref`\n",
+        "  <https://docs.python.org/3/library/weakref.html>"
+      ],
+      "id": "81d9f643"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/anthonysung/yueswater-blog/.venv/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
