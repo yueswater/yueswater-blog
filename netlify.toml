@@ -9,19 +9,6 @@
 # Google still has these indexed; without redirects they 404 and the old
 # ranking/link equity is lost instead of transferred to the new pages.
 
-# Confirmed 1:1 content matches
-[[redirects]]
-  from   = "/posts/2024-06-23-latex-first-doc/"
-  to     = "/articles/posts/latex/first-doc/latex-first-doc.html"
-  status = 301
-  force  = true
-
-[[redirects]]
-  from   = "/posts/2024-06-24-latex-setting/"
-  to     = "/articles/posts/latex/basic-setting/latex-basic-setting.html"
-  status = 301
-  force  = true
-
 # Old Hexo hub/listing pages -> closest equivalent on the new site
 [[redirects]]
   from   = "/archives/"

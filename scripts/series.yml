@@ -1,9 +1,3 @@
-latex:
-  cover: LaTeX_logo.png
-  glossary: latex.yml
-  categories_zh: "[LaTeX]"
-  categories_en: "[LaTeX]"
-
 python:
   cover: Python_logo.png
   glossary: python.yml
