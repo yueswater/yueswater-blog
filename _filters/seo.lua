@@ -55,6 +55,23 @@ function Meta(meta)
 
   image = resolve_image(image, input_file)
 
+  -- ── canonical URL ────────────────────────────────────────────────────
+  -- Quarto doesn't emit <link rel="canonical"> natively; derive it from
+  -- the input file's path relative to the project root.
+  local canonical
+  do
+    local project_root = (quarto and quarto.project and quarto.project.directory) or ""
+    local rel
+    if project_root ~= "" then
+      local esc = project_root:gsub("([^%w/])", "%%%1")
+      rel = input_file:match("^" .. esc .. "/(.+)$")
+    end
+    if rel then
+      rel = rel:gsub("%.[qQ][mM][dD]$", ".html"):gsub("%.md$", ".html")
+      canonical = SITE_URL .. "/" .. rel
+    end
+  end
+
   local display_title = (pagetitle ~= "" and pagetitle) or title
   local schema_type   = (date_str ~= "") and "BlogPosting" or "WebPage"
 
@@ -77,6 +94,10 @@ function Meta(meta)
     '<script type="application/ld+json">\n{\n  '
     .. table.concat(fields, ',\n  ')
     .. '\n}\n</script>')
+
+  if canonical then
+    table.insert(injections, '<link rel="canonical" href="' .. canonical .. '">')
+  end
 
   -- ── hreflang ─────────────────────────────────────────────────────────
   -- Each bilingual page specifies its counterpart via `alternate-lang: /path.html`.
