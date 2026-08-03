@@ -29,6 +29,12 @@
   force  = true
 
 [[redirects]]
+  from   = "/tags/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+[[redirects]]
   from   = "/page/*"
   to     = "/articles/index.html"
   status = 301
@@ -39,6 +45,15 @@
 # in the migration rather than 1:1 ported)
 [[redirects]]
   from   = "/posts/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+# LaTeX series retired 2026-07-31; Google had these indexed under the
+# post-migration URL structure, so redirect them too (not just the old
+# Hexo dated paths above).
+[[redirects]]
+  from   = "/articles/posts/latex/*"
   to     = "/articles/index.html"
   status = 301
   force  = true
