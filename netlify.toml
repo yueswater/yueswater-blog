@@ -49,11 +49,30 @@
   status = 301
   force  = true
 
-# LaTeX series retired 2026-07-31; Google had these indexed under the
-# post-migration URL structure, so redirect them too (not just the old
-# Hexo dated paths above).
+# LaTeX series retired 2026-07-31; Google had these indexed under both the
+# post-migration URL structure and an even older dated-permalink structure.
 [[redirects]]
   from   = "/articles/posts/latex/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from   = "/articles/posts/2026/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+# Orphaned Hexo-era paths with no current equivalent (old auth/comment
+# plugin pages, not part of the current static site).
+[[redirects]]
+  from   = "/login"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from   = "/register"
   to     = "/articles/index.html"
   status = 301
   force  = true
