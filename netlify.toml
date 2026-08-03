@@ -76,3 +76,14 @@
   to     = "/articles/index.html"
   status = 301
   force  = true
+
+# Catch-all fallback: GSC surfaced ~25 more bare-slug Hexo permalinks
+# (/museum/, /flask-routing/, /dsa-stack/, etc.) plus misc noise
+# (/privacy, /forgot-password, /404.html, stray asset requests) that
+# don't fit a clean prefix pattern. Rather than enumerate each one,
+# send anything that doesn't match a real file or an earlier rule here.
+# No `force`, so real pages still take priority over this.
+[[redirects]]
+  from   = "/*"
+  to     = "/articles/index.html"
+  status = 301
