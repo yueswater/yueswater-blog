@@ -34,62 +34,6 @@ After discussing this with Claude, it arrived at a genuinely elegant answer: bec
 
 Traverse `nums` to count how many times each number appears, then check which numbers between `1` and `n` were never recorded.
 
-::: {.panel-tabset}
-## C
-
-```c
-int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
-{
-    int *counter = (int *)calloc(numsSize + 1, sizeof(int));
-    int *res = (int *)malloc(numsSize * sizeof(int));
-    int count = 0;
-
-    for (int i = 0; i < numsSize; i++)
-    {
-        counter[nums[i]]++;
-    }
-
-    for (int i = 1; i <= numsSize; i++)
-    {
-        if (counter[i] == 0)
-        {
-            res[count++] = i;
-        }
-    }
-
-    free(counter);
-    *returnSize = count;
-    return res;
-}
-```
-
-## C++
-
-```cpp
-vector<int> findDisappearedNumbers(vector<int> &nums)
-{
-    vector<int> res;
-    unordered_map<int, int> counter;
-
-    for (size_t i = 0; i < nums.size(); i++)
-    {
-        counter[nums[i]]++;
-    }
-
-    for (int i = 1; i <= (int)nums.size(); i++)
-    {
-        if (counter.find(i) == counter.end())
-        {
-            res.push_back(i);
-        }
-    }
-
-    return res;
-}
-```
-
-## Python
-
 ```python
 def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
     res = []
@@ -107,67 +51,10 @@ def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
 
     return res
 ```
-:::
 
 ### Approach 2: Boolean Array Marking
 
 Same idea as Approach 1, but a boolean array replaces the hash map, with each index mapping directly onto a number, which removes the hashing overhead.
-
-::: {.panel-tabset}
-## C
-
-```c
-int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
-{
-    bool *seen = calloc(numsSize + 1, sizeof(bool));
-    int *res = (int *)malloc(numsSize * sizeof(int));
-    int count = 0;
-
-    for (int i = 0; i < numsSize; i++)
-    {
-        seen[nums[i]] = true;
-    }
-
-    for (int i = 1; i <= numsSize; i++)
-    {
-        if (!seen[i])
-        {
-            res[count++] = i;
-        }
-    }
-
-    free(seen);
-    *returnSize = count;
-    return res;
-}
-```
-
-## C++
-
-```cpp
-vector<int> findDisappearedNumbers(vector<int> &nums)
-{
-    vector<bool> seen(nums.size() + 1, false);
-    vector<int> res;
-
-    for (size_t i = 0; i < nums.size(); i++)
-    {
-        seen[nums[i]] = true;
-    }
-
-    for (int i = 1; i <= (int)nums.size(); i++)
-    {
-        if (!seen[i])
-        {
-            res.push_back(i);
-        }
-    }
-
-    return res;
-}
-```
-
-## Python
 
 ```python
 def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
@@ -183,64 +70,10 @@ def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
 
     return res
 ```
-:::
 
 ### Approach 3: In-Place Marking
 
 Since every value falls exactly within `1` to `n`, the values themselves can serve as indices: the corresponding position is marked negative, eliminating the need for any extra space.
-
-::: {.panel-tabset}
-## C
-
-```c
-int *findDisappearedNumbers(int *nums, int numsSize, int *returnSize)
-{
-    int *res = (int *)malloc(numsSize * sizeof(int));
-    int count = 0;
-
-    for (int i = 0; i < numsSize; i++)
-    {
-        int idx = abs(nums[i]) - 1;
-        nums[idx] = -abs(nums[idx]);
-    }
-
-    for (int i = 0; i < numsSize; i++)
-    {
-        if (nums[i] > 0)
-        {
-            res[count++] = i + 1;
-        }
-    }
-
-    *returnSize = count;
-    return res;
-}
-```
-
-## C++
-
-```cpp
-vector<int> findDisappearedNumbers(vector<int> &nums)
-{
-    vector<int> res;
-
-    for (size_t i = 0; i < nums.size(); i++)
-    {
-        int idx = abs(nums[i]) - 1;
-        nums[idx] = -abs(nums[idx]);
-    }
-
-    for (int i = 0; i < (int)nums.size(); i++)
-    {
-        if (nums[i] > 0)
-            res.push_back(i + 1);
-    }
-
-    return res;
-}
-```
-
-## Python
 
 ```python
 def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
@@ -255,4 +88,3 @@ def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
 
     return res
 ```
-:::

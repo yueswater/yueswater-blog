@@ -28,61 +28,6 @@ By the end of the scan, whatever is left on the stack is exactly the final strin
 
 ## Implementation
 
-::: {.panel-tabset}
-## C
-
-```c
-char *removeDuplicates(char *s)
-{
-    char *stack = (char *)malloc((strlen(s) + 1) * sizeof(char));
-    int count = 0;
-
-    for (size_t i = 0; i < strlen(s); i++)
-    {
-        if (count > 0 && stack[count - 1] == s[i])
-        {
-            // Cancels out with the top of the stack
-            count--;
-        }
-        else
-        {
-            // No match, push onto the stack
-            stack[count++] = s[i];
-        }
-    }
-
-    stack[count] = '\0';
-    return stack;
-}
-```
-
-## C++
-
-```cpp
-class Solution
-{
-public:
-    string removeDuplicates(string s)
-    {
-        string stack;
-
-        for (auto ch : s)
-        {
-            if (!stack.empty() && ch == stack.back())
-                // Cancels out with the top of the stack
-                stack.pop_back();
-            else
-                // No match, push onto the stack
-                stack.push_back(ch);
-        }
-
-        return stack;
-    }
-};
-```
-
-## Python
-
 ```python
 class Solution:
     def removeDuplicates(self, s: str) -> str:
@@ -98,6 +43,5 @@ class Solution:
 
         return ''.join(stack)
 ```
-:::
 
 [^1]: A **duplicate removal** means selecting two letters that are adjacent and identical, and removing both of them.

@@ -42,94 +42,6 @@ Once the whole string has been scanned, the string is valid only if the stack is
 
 ## Implementation
 
-::: {.panel-tabset}
-## C
-
-```c
-bool isValid(char *s)
-{
-    char *stack = (char *)malloc(10000 * sizeof(char));
-    int count = 0;
-
-    for (size_t i = 0; i < strlen(s); i++)
-    {
-        if (s[i] == '(' || s[i] == '[' || s[i] == '{')
-        {
-            // Push the opening bracket
-            stack[count++] = s[i];
-        }
-        else
-        {
-            // Closing bracket with nothing to match
-            if (count == 0)
-            {
-                return false;
-            }
-
-            char last = stack[count - 1];
-            if (
-                (s[i] == ')' && last == '(') ||
-                (s[i] == ']' && last == '[') ||
-                (s[i] == '}' && last == '{'))
-            {
-                // Matches the most recently opened bracket
-                count--;
-            }
-            else
-                return false;
-        }
-    }
-
-    return count == 0;
-}
-```
-
-## C++
-
-```cpp
-class Solution
-{
-public:
-    bool isValid(string s)
-    {
-        vector<char> stack;
-
-        for (auto ch : s)
-        {
-            if (ch == '(' || ch == '[' || ch == '{')
-            {
-                // Push the opening bracket
-                stack.push_back(ch);
-            }
-            else
-            {
-                // Closing bracket with nothing to match
-                if (stack.empty())
-                {
-                    return false;
-                }
-
-                char last = stack.back();
-                if (
-                    (ch == ')' && last == '(') ||
-                    (ch == ']' && last == '[') ||
-                    (ch == '}' && last == '{'))
-                {
-                    // Matches the most recently opened bracket
-                    stack.pop_back();
-                }
-                else
-                    return false;
-            }
-        }
-
-        return stack.empty();
-    }
-};
-```
-
-## Python
-
 ```python
 class Solution:
     def isValid(self, s: str) -> bool:
@@ -157,4 +69,3 @@ class Solution:
 
         return not stack
 ```
-:::

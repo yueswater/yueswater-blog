@@ -12,7 +12,7 @@ alternate-lang: "/dsa/posts/leetcode/0155-minstack/0155-minstack-en.html"
 
 這個題目要求設計一個除了基本的 `push`（入堆）、`pop`（出堆）與 `top`（查頂）外，還能在 $\mathcal{O}(1)$ 內取得堆疊中最小值的資料結構。
 
-## 想法
+## 想法 {#idea}
 
 一開始題目沒有看仔細，很開心地寫了以下的 code：
 
@@ -49,113 +49,7 @@ class MinStack:
 
 換句話說，輔助堆疊的每一層，都保存了入堆時的最小值。兩個堆疊的長度永遠保持一致且一一對應。如此一來，上述四個操作就全部達到常數時間，代價是多使用了一個與主堆疊等長的輔助空間，屬於典型的以空間換取時間。
 
-## 實作
-
-::: {.panel-tabset}
-## C
-
-```c
-typedef struct
-{
-    int *_stack;
-    int *_minStack; // shadow stack: running minimum at each depth
-    int count;
-} MinStack;
-
-MinStack *minStackCreate()
-{
-    MinStack *obj = (MinStack *)malloc(sizeof(MinStack));
-    obj->count = 0;
-    obj->_stack = (int *)malloc(30000 * sizeof(int));
-    obj->_minStack = (int *)malloc(30000 * sizeof(int));
-    return obj;
-}
-
-void minStackPush(MinStack *obj, int value)
-{
-    obj->_stack[obj->count] = value;
-
-    // Push the smaller of the new value and the current minimum
-    if (obj->count == 0)
-        obj->_minStack[obj->count] = value;
-    else
-        obj->_minStack[obj->count] = value < obj->_minStack[obj->count - 1] ? value : obj->_minStack[obj->count - 1];
-
-    obj->count++;
-}
-
-void minStackPop(MinStack *obj)
-{
-    // Both stacks shrink together
-    obj->count--;
-}
-
-int minStackTop(MinStack *obj)
-{
-    return obj->_stack[obj->count - 1];
-}
-
-int minStackGetMin(MinStack *obj)
-{
-    return obj->_minStack[obj->count - 1];
-}
-
-void minStackFree(MinStack *obj)
-{
-    free(obj->_stack);
-    free(obj->_minStack);
-    free(obj);
-}
-```
-
-## C++
-
-```cpp
-class MinStack
-{
-private:
-    vector<int> _stack;
-    vector<int> _minStack; // shadow stack: running minimum at each depth
-
-public:
-    MinStack()
-    {
-    }
-
-    void push(int value)
-    {
-        _stack.push_back(value);
-
-        // Push the smaller of the new value and the current minimum
-        if (_minStack.empty())
-            _minStack.push_back(value);
-        else
-        {
-            int minValue = min(value, _minStack.back());
-            _minStack.push_back(minValue);
-        }
-    }
-
-    void pop()
-    {
-        // Both stacks shrink together
-        _stack.pop_back();
-        _minStack.pop_back();
-    }
-
-    int top()
-    {
-        return _stack.back();
-    }
-
-    int getMin()
-    {
-        return _minStack.back();
-    }
-};
-```
-
-## Python
+## 實作 {#implementation}
 
 ```python
 class MinStack:
@@ -188,5 +82,4 @@ class MinStack:
     def getMin(self) -> int:
         return self._minStack[-1]
 ```
-:::
 

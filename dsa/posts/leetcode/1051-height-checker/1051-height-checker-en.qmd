@@ -28,63 +28,6 @@ The most natural approach is to copy the original array, sort the copy to obtain
 
 ## Implementation
 
-::: {.panel-tabset}
-## C
-```c
-// Ascending comparator
-int cmp(const void *a, const void *b)
-{
-    return *(int *)a - *(int *)b;
-}
-
-int heightChecker(int *heights, int heightsSize)
-{
-    int counter = 0;
-
-    // Copy and sort to get expected order
-    int *tmp = (int *)malloc(heightsSize * sizeof(int));
-    memcpy(tmp, heights, heightsSize * sizeof(int));
-    qsort(tmp, heightsSize, sizeof(int), cmp);
-
-    // Compare with original
-    for (int i = 0; i < heightsSize; i++)
-    {
-        if (heights[i] != tmp[i])
-        {
-            counter++;
-        }
-    }
-
-    free(tmp);
-    return counter;
-}
-```
-
-## C++
-```cpp
-int heightChecker(std::vector<int> &heights)
-{
-    int counter = 0;
-
-    // Copy and sort to get expected order
-    vector<int> tmp = heights;
-    sort(tmp.begin(), tmp.end());
-
-    // Compare with original
-    for (size_t i = 0; i < heights.size(); i++)
-    {
-        if (heights[i] != tmp[i])
-        {
-            counter++;
-        }
-    }
-
-    return counter;
-}
-```
-
-## Python
-
 ```python
 def heightChecker(self, heights: list[int]) -> int:
     counter = 0
@@ -99,4 +42,3 @@ def heightChecker(self, heights: list[int]) -> int:
 
     return counter
 ```
-:::

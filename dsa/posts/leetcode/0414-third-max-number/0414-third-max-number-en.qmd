@@ -50,86 +50,6 @@ Reframing the problem helps: since only the **top three** values matter, it is e
 
 The logic is identical across all three languages: skip duplicates while traversing, insert each new number into the candidate array in descending order, discard the smallest value once there are more than three candidates, and finally return either the third maximum or the maximum based on how many candidates remain.
 
-::: {.panel-tabset}
-## C
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-int thirdMax(int *nums, int numsSize)
-{
-    int maxNumbers[4]; // [1st max, 2nd max, 3rd max, buffer]
-    int count = 0;
-
-    // Traverse all elements
-    for (int i = 0; i < numsSize; i++)
-    {
-        // Check if current num exists in maxNumbers
-        // If it exists then skip
-        int dup = 0;
-        for (int j = 0; j < count; j++)
-        {
-            if (nums[i] == maxNumbers[j])
-            {
-                dup = 1;
-                break;
-            }
-        }
-        if (dup)
-            continue;
-
-        // Push to the end
-        maxNumbers[count++] = nums[i];
-
-        // Insertion sort descending: bubble the new element into place
-        for (int j = count - 1; j > 0 && maxNumbers[j] > maxNumbers[j - 1]; j--)
-        {
-            int tmp = maxNumbers[j];
-            maxNumbers[j] = maxNumbers[j - 1];
-            maxNumbers[j - 1] = tmp;
-        }
-
-        // Prune to be 3
-        if (count > 3)
-            count--;
-    }
-
-    return count == 3 ? maxNumbers[2] : maxNumbers[0];
-}
-```
-
-## C++
-
-```cpp
-int thirdMax(vector<int> &nums)
-{
-    vector<int> maxNumbers; // [1st max, 2nd max, 3rd max]
-
-    // Traverse all elements
-    for (size_t i = 0; i < nums.size(); i++)
-    {
-        // Check if current num exists in maxNumbers
-        // If it exits then skip
-        if (find(maxNumbers.begin(), maxNumbers.end(), nums[i]) != maxNumbers.end())
-            continue;
-
-        // Push and sort descending
-        maxNumbers.push_back(nums[i]);
-        sort(maxNumbers.rbegin(), maxNumbers.rend());
-
-        // Prune to be 3
-        if (maxNumbers.size() > 3)
-        {
-            maxNumbers.pop_back();
-        }
-    }
-    return maxNumbers.size() == 3 ? maxNumbers[2] : maxNumbers[0];
-}
-```
-
-## Python
-
 ```python
 def thirdMax(self, nums: List[int]) -> int:
     maxNumbers = []  # [1st max, 2nd max, 3rd max]
@@ -151,4 +71,3 @@ def thirdMax(self, nums: List[int]) -> int:
 
     return maxNumbers[2] if len(maxNumbers) == 3 else maxNumbers[0]
 ```
-:::

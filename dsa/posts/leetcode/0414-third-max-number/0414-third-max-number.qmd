@@ -35,7 +35,7 @@ alternate-lang: "/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number
 
 該陣列僅有兩個元素，不可能存在第三大，因此需回傳最大值，故回傳值應為 `2`。
 
-## 想法
+## 想法 {#idea}
 
 第一眼看到這題，直覺想用一個計數器邊走訪邊統計每個數字目前排第幾大。但這個做法有幾個問題：
 
@@ -46,89 +46,9 @@ alternate-lang: "/dsa/posts/leetcode/0414-third-max-number/0414-third-max-number
 
 換個角度思考，題目只在乎**前三大**，其實只需要維護一個最多三個元素的候選陣列：每遇到新數字，先排除重複值，再加入陣列並降冪排序；若候選值超過 3 個就移除目前最小的元素。走訪結束後，依候選陣列的元素個數判斷回傳第三大或最大值即可。
 
-## 實作
+## 實作 {#implementation}
 
 三種語言的實作邏輯一致，即走訪時排除重複值，將新數字插入候選陣列並降冪排序，超過 3 個就捨棄最小值，最後依候選數量判斷回傳第三大或最大值。
-
-::: {.panel-tabset}
-## C
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-int thirdMax(int *nums, int numsSize)
-{
-    int maxNumbers[4]; // [1st max, 2nd max, 3rd max, buffer]
-    int count = 0;
-
-    // Traverse all elements
-    for (int i = 0; i < numsSize; i++)
-    {
-        // Check if current num exists in maxNumbers
-        // If it exists then skip
-        int dup = 0;
-        for (int j = 0; j < count; j++)
-        {
-            if (nums[i] == maxNumbers[j])
-            {
-                dup = 1;
-                break;
-            }
-        }
-        if (dup)
-            continue;
-
-        // Push to the end
-        maxNumbers[count++] = nums[i];
-
-        // Insertion sort descending: bubble the new element into place
-        for (int j = count - 1; j > 0 && maxNumbers[j] > maxNumbers[j - 1]; j--)
-        {
-            int tmp = maxNumbers[j];
-            maxNumbers[j] = maxNumbers[j - 1];
-            maxNumbers[j - 1] = tmp;
-        }
-
-        // Prune to be 3
-        if (count > 3)
-            count--;
-    }
-
-    return count == 3 ? maxNumbers[2] : maxNumbers[0];
-}
-```
-
-## C++
-
-```cpp
-int thirdMax(vector<int> &nums)
-{
-    vector<int> maxNumbers; // [1st max, 2nd max, 3rd max]
-
-    // Traverse all elements
-    for (size_t i = 0; i < nums.size(); i++)
-    {
-        // Check if current num exists in maxNumbers
-        // If it exits then skip
-        if (find(maxNumbers.begin(), maxNumbers.end(), nums[i]) != maxNumbers.end())
-            continue;
-
-        // Push and sort descending
-        maxNumbers.push_back(nums[i]);
-        sort(maxNumbers.rbegin(), maxNumbers.rend());
-
-        // Prune to be 3
-        if (maxNumbers.size() > 3)
-        {
-            maxNumbers.pop_back();
-        }
-    }
-    return maxNumbers.size() == 3 ? maxNumbers[2] : maxNumbers[0];
-}
-```
-
-## Python
 
 ```python
 def thirdMax(self, nums: List[int]) -> int:
@@ -151,4 +71,3 @@ def thirdMax(self, nums: List[int]) -> int:
 
     return maxNumbers[2] if len(maxNumbers) == 3 else maxNumbers[0]
 ```
-:::

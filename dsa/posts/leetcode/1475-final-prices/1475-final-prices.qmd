@@ -32,7 +32,7 @@ prices = [8, 4, 6, 2, 3]
 
 可以得到最終陣列 `answer = [4, 2, 4, 2, 3]`。
 
-## 想法
+## 想法 {#idea}
 
 這題的想法是用兩個結構：`answer` 存放每個商品目前的（暫定）最終價格，`stack` 存放還沒找到折扣的商品索引。
 
@@ -41,74 +41,7 @@ prices = [8, 4, 6, 2, 3]
 1. 檢查堆疊：只要 `stack` 不為空，且堆頂索引對應的價格大於等於目前價格，就代表目前價格是堆頂商品的折扣依據。把堆頂索引彈出，並將該索引的 `answer` 更新為原價格減去目前價格，重複檢查直到不滿足條件為止。
 2. 把目前索引推入 `stack`，目前價格存入 `answer`，作為這個商品暫定的最終價格。
 
-## 實作
-
-::: {.panel-tabset}
-## C
-
-```c
-int *finalPrices(int *prices, int pricesSize, int *returnSize)
-{
-    int *stack = (int *)malloc(500 * sizeof(int)); // store index
-    int *answer = (int *)malloc(500 * sizeof(int));
-
-    int stackCount = 0;
-    int answerCount = 0;
-
-    *returnSize = pricesSize;
-
-    for (int i = 0; i < pricesSize; i++)
-    {
-        // Resolve the discount for every pending index whose price is not lower than the current one
-        while (stackCount != 0 && prices[stack[stackCount - 1]] >= prices[i])
-        {
-            int j = stack[--stackCount];
-            answer[j] = prices[j] - prices[i];
-        }
-
-        // No discount resolved yet — assume full price for now
-        stack[stackCount++] = i;
-        answer[answerCount++] = prices[i];
-    }
-
-    free(stack);
-
-    return answer;
-}
-```
-
-## C++
-
-```cpp
-class Solution
-{
-public:
-    vector<int> finalPrices(vector<int> &prices)
-    {
-        vector<int> stack; // store index
-        vector<int> answer;
-
-        for (size_t i = 0; i < prices.size(); i++)
-        {
-            // Resolve the discount for every pending index whose price is not lower than the current one
-            while (!stack.empty() && prices[stack.back()] >= prices[i])
-            {
-                int j = stack.back();
-                stack.pop_back();
-                answer[j] = prices[j] - prices[i];
-            }
-
-            // No discount resolved yet — assume full price for now
-            stack.push_back(i);
-            answer.push_back(prices[i]);
-        }
-
-        return answer;
-    }
-};
-```
-
-## Python
+## 實作 {#implementation}
 
 ```python
 class Solution:
@@ -128,4 +61,3 @@ class Solution:
 
         return answer
 ```
-:::
