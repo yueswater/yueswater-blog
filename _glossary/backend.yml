@@ -1,0 +1,14 @@
+"path operation": |
+  FastAPI 中用 `@app.get()`、`@app.post()` 等裝飾器綁定的函式，對應一個 HTTP method + 路徑的處理邏輯。
+
+"dependency injection": |
+  FastAPI 用 `Depends()` 宣告函式所需的外部資源(例如 DB session、目前使用者),由框架在呼叫前自動解析並注入。
+
+"Pydantic model": |
+  繼承 `BaseModel` 的類別,用來定義請求/回應的資料結構與型別驗證,FastAPI 會自動用它做 request body 解析與 OpenAPI schema 產生。
+
+ASGI: |
+  Asynchronous Server Gateway Interface,取代 WSGI 的非同步應用程式介面標準。FastAPI 建立在 ASGI 之上(常見實作為 Uvicorn),因此原生支援 async/await。
+
+middleware: |
+  在請求進入 path operation 之前、回應送出之前執行的攔截層,常見用途有 CORS、記錄 log、加 header。
