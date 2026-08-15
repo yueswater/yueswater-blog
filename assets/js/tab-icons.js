@@ -7,6 +7,9 @@
     nodejs: 'devicons-nodejs-icon',
     'c++': 'devicons-c-plusplus',
     c: 'devicons-c',
+    macos: 'devicons-apple',
+    linux: 'devicons-linux-tux',
+    windows: 'devicons-microsoft-windows-icon',
   };
 
   function makeIcon(cls) {

@@ -50,7 +50,9 @@ In short: Word is easy to pick up but layout is hard to control, LaTeX has the s
 
 How you install Typst depends on your operating system. The official project provides native binaries, and it can also be installed through the common package managers on each platform, with short commands either way. Once it's installed, it's worth also installing the VS Code extension for syntax highlighting and live preview, which makes for a much better development experience. Below are the installation steps for macOS, Linux, and Windows in turn, followed by how to install and set up the extension.
 
-### macOS
+::: {.panel-tabset}
+
+#### macOS
 
 The easiest way on macOS is via [Homebrew](https://brew.sh/):
 
@@ -70,7 +72,7 @@ If everything went well, the terminal will print version information similar to:
 typst 0.15.1 (a1b2c3d)
 ```
 
-### Linux
+#### Linux
 
 Linux doesn't have a single unified official package source, so the installation method varies by distribution. You can first check [Repology](https://repology.org/project/typst/versions) to see whether your distribution's package repository already includes Typst, then install it with the corresponding package manager (for example, `pacman -S typst` on Arch).
 
@@ -88,7 +90,7 @@ typst --version
 
 Seeing output similar to `typst 0.15.1 (a1b2c3d)` means the installation succeeded.
 
-### Windows
+#### Windows
 
 Windows users can install it via the built-in [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/):
 
@@ -103,6 +105,8 @@ typst --version
 ```
 
 Seeing a version number printed, such as `typst 0.15.1 (a1b2c3d)`, means the installation succeeded and the command has been correctly added to `PATH`.
+
+:::
 
 ### VS Code Extension
 

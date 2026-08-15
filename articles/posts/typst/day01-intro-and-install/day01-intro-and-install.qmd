@@ -50,7 +50,9 @@ Typst 由 Laurenz Mädje 與 Martin Haug 於 2019 年開始開發，背後是他
 
 Typst 的安裝方式因作業系統而異，官方提供原生執行檔，也可透過各平台常見的套件管理工具安裝，指令都很簡短。裝好後，建議再裝 VS Code 插件，取得語法高亮與即時預覽，開發體驗會好上不少。以下依序介紹 macOS、Linux、Windows 的安裝方式，最後說明插件安裝與設定。
 
-### macOS
+::: {.panel-tabset}
+
+#### macOS
 
 macOS 上最簡單的方式是透過 [Homebrew](https://brew.sh/)：
 
@@ -70,7 +72,7 @@ typst --version
 typst 0.15.1 (a1b2c3d)
 ```
 
-### Linux
+#### Linux
 
 Linux 沒有統一的官方套件來源，安裝方式會因發行版而異，可以先到 [Repology](https://repology.org/project/typst/versions) 查詢自己的發行版是否已收錄 Typst 套件，再用對應的套件管理器安裝（例如 Arch 的 `pacman -S typst`）。
 
@@ -88,7 +90,7 @@ typst --version
 
 看到類似 `typst 0.15.1 (a1b2c3d)` 的輸出，就代表安裝成功。
 
-### Windows
+#### Windows
 
 Windows 使用者可以透過內建的 [winget](https://learn.microsoft.com/zh-tw/windows/package-manager/winget/) 安裝：
 
@@ -103,6 +105,8 @@ typst --version
 ```
 
 看到版本號輸出如 `typst 0.15.1 (a1b2c3d)`，就代表安裝成功、且指令已正確加入 `PATH`。
+
+:::
 
 ### VS Code 插件
 
