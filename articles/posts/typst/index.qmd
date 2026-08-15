@@ -1,0 +1,20 @@
+---
+pagetitle: 30 天從零學會 Typst | Yueswater Blog
+lang: zh-TW
+description: "從 LaTeX 出發，用 30 天認識 Typst 這個新一代排版系統，涵蓋語法設計、與 LaTeX 的差異、常見排版情境與踩雷心得。"
+title: 30 天從零學會 Typst
+subtitle: iThome 鐵人賽 2026
+search: false
+repo-actions: false
+listing:
+  contents:
+  - "."
+  - "!index.qmd"
+  - "!index-en.qmd"
+  - "!**/*-en.qmd"
+  sort: "date asc"
+  type: grid
+  page-size: 30
+  feed: true
+alternate-lang: "/articles/posts/typst/index-en.html"
+---
