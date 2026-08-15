@@ -9,7 +9,7 @@ image: images/cover.svg
 alternate-lang: "/projects/posts/econ-viz/econ-viz-en.html"
 ---
 
-## 專案簡介
+## 專案簡介 {#overview}
 
 **econ-viz** 是我自己開發的 Python 套件，專門用來繪製個體經濟學的教學圖形。只要告訴它效用函數、價格和所得，它就會自動求解均衡點，畫出完整的無異曲線地圖、預算線與均衡圖，並可匯出為 PNG、PDF 或 SVG。
 
@@ -19,7 +19,7 @@ alternate-lang: "/projects/posts/econ-viz/econ-viz-en.html"
 目前版本：**v1.4.0** ・ 測試覆蓋率：**99%** ・ 測試數量：**235**
 :::
 
-## 主要功能
+## 主要功能 {#key-features}
 
 **八種內建效用模型**
 
@@ -66,7 +66,7 @@ alternate-lang: "/projects/posts/econ-viz/econ-viz-en.html"
 
 在 Jupyter Notebook 中使用 `WidgetViewer`，可即時拖動參數滑桿或直接輸入數值，觀察均衡點如何變化。
 
-## 安裝方式
+## 安裝方式 {#installation}
 
 ```bash
 pip install econ-viz
@@ -74,9 +74,9 @@ pip install econ-viz
 
 需要 Python 3.10 以上。依賴套件：`numpy`、`matplotlib`、`scipy`、`sympy`。
 
-## 快速開始
+## 快速開始 {#quickstart}
 
-### 最小範例
+### 最小範例 {#minimal-example}
 
 ```python
 from econ_viz import Canvas, levels, solve
@@ -112,7 +112,7 @@ Canvas(x_max=20, y_max=15) \
     .save("figure.png")
 ```
 
-### 需求曲線圖
+### 需求曲線圖 {#demand-curve}
 
 ```python
 from econ_viz import DemandDiagram, LinearBudget, PricePath
@@ -183,7 +183,7 @@ econ-viz plot --model cobb-douglas --alpha 0.5 --beta 0.5 \
 econ-viz solve-tex --model cobb-douglas --symbolic-params
 ```
 
-## 連結
+## 連結 {#links}
 
 - [官方文件](https://econ-viz.org)
 - [GitHub](https://github.com/EconViz/econ-viz)

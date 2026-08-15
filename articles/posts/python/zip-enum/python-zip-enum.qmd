@@ -79,7 +79,7 @@ enumerate(iterable, start=0)
 
 可以看到 `enumerate()` 接受一個可迭代物件，並透過 `start` 參數指定計數器的起始值（預設為 0）。每次迭代時，它會將當前的索引與對應的元素打包成一個 `(index, value)` 元組回傳。
 
-### 在迴圈中使用
+### 在迴圈中使用 {#enumerate-in-loop}
 
 聽起來很拗口對吧，直接寫程式碼一步步來剖析。首先先將 `names` 用 `enumerate()` 包起來，結果會是一個 `enumerate` 物件：
 
@@ -102,7 +102,7 @@ for i, name in enumerate(names):
 
 比起 `range(len(names))`，這種寫法清楚表達了「要索引與值」的意圖，不再需要再透過索引去取值，可讀性大幅提升！
 
-### 調整起始編號
+### 調整起始編號 {#custom-start-index}
 
 預設情況下，`enumerate()` 的計數器從 0 開始。若希望從 1 開始編號（更符合日常習慣），只需透過 `start` 參數指定：
 
@@ -111,7 +111,7 @@ for i, name in enumerate(names, start=1):
     print(f"第 {i} 位：{name}")
 ```
 
-### 等價寫法
+### 等價寫法 {#enumerate-equivalent}
 
 如果你曾好奇 `enumerate()` 內部到底在做什麼，Python 官方文件其實直接給出了它的等價實作——用純 Python 就能重現同樣的行為：
 
@@ -135,7 +135,7 @@ zip(*iterables, strict=False)
 
 `*iterables` 代表可傳入任意數量的可迭代物件，`strict` 則是用來控制長度不一致時的行為。
 
-### 在迴圈中使用
+### 在迴圈中使用 {#zip-in-loop}
 
 與研究 `enumerate()` 的行為相似，先把 `names` 與 `grades` 一起丟進 `zip()`，會得到一個 `zip` 物件：
 
@@ -158,7 +158,7 @@ for name, grade in zip(names, grades):
 
 回頭看看文章開頭的 `range(len())` 寫法，兩者的差距一目了然——`zip()` 的版本幾乎就像在讀中文，意圖清晰[^zip]。
 
-### 長度不一致時
+### 長度不一致時 {#unequal-length}
 
 `zip()` 預設的策略是「以**最短**的序列為準」，只要其中一個序列先跑完，迭代就停止，剩下的元素直接捨棄：
 
@@ -176,7 +176,7 @@ for name, grade in zip(names_extra, grades, strict=True):
 # ValueError: zip() argument 2 is shorter than argument 1
 ```
 
-### 等價寫法
+### 等價寫法 {#zip-equivalent}
 
 `zip()` 的等價實作比 `enumerate()` 稍微複雜一點，但拆開來看其實不難：
 
@@ -195,7 +195,7 @@ def zip(*iterables):
 
 每一輪都對所有迭代器呼叫一次 `next()`，只要有任何一個先喊停（進入到 `StopIteration`），整個函數就會直接 `return`——「最短序列為準」的行為就是 `try/except` 所共同決定的。
 
-## 進階應用
+## 進階應用 {#advanced-usage}
 
 掌握了 `enumerate()` 與 `zip()` 的基本用法後，來看幾個更實用的組合技。
 
@@ -209,12 +209,12 @@ for i, (name, grade) in enumerate(zip(names, grades), start=1):
 ```
 
 ::: {.callout-tip}
-## 解包的括號不能省
+## 解包的括號不能省 {#unpacking-parentheses}
 
 注意到在 `for i, (name, grade) in ...` 中，`(name, grade)` 的括號不是裝飾，而是告訴 Python 這個位置是一個需要再拆開的元組。若寫成 `for i, name, grade in ...`，Python 則會嘗試將每個元素解包成三個變數，但 `enumerate()` 回傳的是 `(i, (name, grade))`，僅有兩層，會直接拋出 `ValueError`。
 :::
 
-### 解壓縮：用 `zip(*...)` 反轉
+### 解壓縮：用 `zip(*...)` 反轉 {#unzip-with-star}
 
 `zip()` 可以將多個序列「壓縮」成配對，反過來也能拿來「解壓縮」，搭配 `*` 解包運算子，就能把一個配對列表拆回兩條獨立的序列：
 
@@ -227,12 +227,12 @@ print(grades_unzipped)
 ```
 
 ::: {.callout-note}
-## 回傳的是元組，不是列表
+## 回傳的是元組，不是列表 {#returns-tuple-not-list}
 
 `zip(*pairs)` 解壓縮後，得到的 `names_unzipped` 與 `grades_unzipped` 是**元組**，不是列表。若需要列表，再包一層 `list()` 即可。
 :::
 
-### 一行建立字典
+### 一行建立字典 {#one-line-dict}
 
 `zip()` 搭配 `dict()` 是非常常見的慣用寫法，可以直接從兩個序列建立鍵值對應：
 
@@ -243,12 +243,12 @@ print(scores_dict)
 
 這比手動迭代建字典簡潔許多，也是閱讀他人 Python 程式碼時很常遇到的模式。
 
-## 練習
+## 練習 {#exercises}
 
 ::: {.exercises}
 
 ::: {.exercise data-answer="C"}
-### 問題 1
+### 問題 1 {#problem-1}
 
 `zip(["a", "b", "c"], [1, 2])` 的結果會是什麼？
 
@@ -267,7 +267,7 @@ print(scores_dict)
 :::
 
 ::: {.exercise data-answer="B"}
-### 問題 2
+### 問題 2 {#problem-2}
 
 以下哪段程式碼能正確地同時印出索引（從 1 開始）、姓名與成績？
 
@@ -286,7 +286,7 @@ print(scores_dict)
 :::
 
 ::: {.exercise data-answer="C"}
-### 問題 3
+### 問題 3 {#problem-3}
 
 `dict(zip(keys, values))` 的作用相當於下列哪段程式碼？
 
@@ -305,7 +305,7 @@ print(scores_dict)
 :::
 
 ::: {.exercise}
-### 問題 4
+### 問題 4 {#problem-4}
 
 給定以下配對列表，請用 `zip(*...)` 將其解壓縮為兩個獨立的列表，分別存入 `cities` 與 `populations`：
 
@@ -328,7 +328,7 @@ print(list(populations))
 
 :::
 
-## 本章小結
+## 本章小結 {#summary}
 
 這篇文章從 `range(len())` 的痛點出發，介紹了兩個讓迴圈更 Pythonic 的內建函式：
 
@@ -345,12 +345,12 @@ print(list(populations))
 - 搭配 `*` 解包可反向操作，將配對列表拆回多個序列
 - 搭配 `dict()` 可一行建立字典
 
-### 組合使用
+### 組合使用 {#combined-usage}
 
 兩者可以搭配使用：`enumerate(zip(...))` 讓你在同時走訪多個序列的同時也追蹤索引。解包時記得多加一層括號 `for i, (a, b) in ...`，避免 `ValueError`。
 
 ::: {.callout-tip}
-## 什麼時候該用哪個？
+## 什麼時候該用哪個？ {#when-to-use-which}
 
 | 情境 | 推薦寫法 |
 |------|---------|

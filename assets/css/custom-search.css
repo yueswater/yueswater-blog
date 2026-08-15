@@ -1,0 +1,163 @@
+/*-- custom listing filter box --*/
+
+.quarto-listing-filter {
+  border: 1px solid #000;
+  border-radius: 0.375rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.quarto-listing-filter .input-group-text {
+  background: #fff;
+  border: none;
+  color: #000;
+}
+
+.quarto-listing-filter input.search.form-control {
+  border: none;
+  font-family: 'Oswald';
+  font-size: 0.9em;
+  box-shadow: none !important;
+}
+
+.quarto-listing-filter input.search.form-control:focus {
+  box-shadow: none !important;
+}
+
+/*-- custom global search (Algolia autocomplete) --*/
+
+.aa-DetachedOverlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+  padding-top: 10vh;
+}
+
+.aa-DetachedContainer {
+  max-width: 42rem;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+.aa-DetachedFormContainer {
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid #000;
+}
+
+.aa-Form {
+  border: 1px solid #000 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: none !important;
+  background: #fff;
+  width: auto !important;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.aa-Form:focus-within {
+  border-color: #939bc9 !important;
+}
+
+.aa-Input {
+  font-family: 'Oswald';
+  font-size: 1em !important;
+  color: #000;
+}
+
+.aa-SubmitButton svg,
+.aa-ClearButton svg {
+  color: #000;
+}
+
+.aa-DetachedCancelButton {
+  font-family: 'Oswald';
+  color: #000;
+  background: none;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.aa-DetachedCancelButton:hover,
+.aa-DetachedCancelButton:focus,
+.aa-DetachedCancelButton:focus-visible,
+.aa-DetachedCancelButton:active {
+  color: #939bc9;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.aa-Panel {
+  border-radius: 0 0 0.75rem 0.75rem !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.aa-PanelLayout {
+  background: #fff;
+}
+
+.aa-SourceHeader .search-result-header {
+  font-family: 'Oswald';
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #666;
+  padding: 0.5rem 1rem 0;
+}
+
+.aa-Item {
+  border-radius: 0.375rem;
+  margin: 0.15rem 0.5rem;
+}
+
+/* Quarto's own CSS paints every `.search-item` descendant (title/text
+   containers, section label, "more" row) #1a1a1a + white text when the
+   parent <li> is aria-selected=true. Override each of those exact targets
+   (not just the <li>) or the dark boxes bleed through underneath. */
+li.aa-Item[aria-selected="true"] .search-item,
+li.aa-Item[aria-selected="true"] .search-item.search-result-more,
+li.aa-Item[aria-selected="true"] .search-item .search-result-section,
+li.aa-Item[aria-selected="true"] .search-item .search-result-text,
+li.aa-Item[aria-selected="true"] .search-item .search-result-title-container,
+li.aa-Item[aria-selected="true"] .search-item .search-result-text-container {
+  background-color: #f0eeeb !important;
+  color: #000 !important;
+}
+
+li.aa-Item[aria-selected="true"] .search-item mark.search-match,
+li.aa-Item[aria-selected="true"] .search-item .search-match.mark {
+  background-color: #939bc9 !important;
+  color: #fff !important;
+}
+
+.aa-Item:hover .search-item,
+.aa-Item:hover .search-item.search-result-more,
+.aa-Item:hover .search-item .search-result-section,
+.aa-Item:hover .search-item .search-result-text,
+.aa-Item:hover .search-item .search-result-title-container,
+.aa-Item:hover .search-item .search-result-text-container {
+  background-color: #f0eeeb !important;
+  color: #000 !important;
+}
+
+.search-result-doc,
+.search-result-doc-section {
+  border-radius: 0.375rem;
+}
+
+.search-result-link,
+.search-result-doc-section .search-result-title {
+  font-family: 'Oswald';
+}
+
+mark.search-match,
+.search-match.mark {
+  background: #939bc9 !important;
+  color: #fff !important;
+}

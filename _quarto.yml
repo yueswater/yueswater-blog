@@ -67,6 +67,10 @@ format:
       - _includes/exercises.html
       - _includes/claude-highlight.html
       - _includes/citation-hover.html
+      - _includes/tab-icons.html
+      - _includes/custom-sort.html
+      - _includes/custom-search.html
+      - _includes/custom-pagination.html
     grid:
       sidebar-width: 0px
       body-width: 1000px

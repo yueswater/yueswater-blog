@@ -285,6 +285,15 @@ figcaption {
   cursor: pointer;
 }
 
+/* 相鄰的腳註標記（例如 [^a][^b]）預設會黏在一起變成 "12"，
+   容易誤讀成同一個數字，緊鄰時插入逗號分隔成 "1,2" */
+a.footnote-ref + a.footnote-ref::before {
+  content: ",";
+  color: #939bc9;
+  font-size: 0.7em;
+  vertical-align: super;
+}
+
 .citation:hover,
 .citation:hover a,
 .citation a:hover {

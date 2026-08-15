@@ -364,7 +364,7 @@ safe_total = reduce(lambda acc, x: acc + x, nums, 0)
 print(safe_total)  # 0
 ```
 
-### 串接範例：`filter + map + reduce`
+### 串接範例：`filter + map + reduce` {#chaining-example}
 
 既然已有如此多利器，那麼就來一次大彙總。假設有以下的列表：
 
@@ -434,12 +434,12 @@ print(total_revenue)  # 3150
 
 上述流程其實可以對應到 [ETL](https://zh.wikipedia.org/zh-tw/ETL) 的思路：先過濾無效資料，再做欄位轉換，最後聚合產出指標。換句話說，`filter + map + reduce` 不是一場語法秀，而是一個可放進實際分析管線的骨架。
 
-## 練習題
+## 練習題 {#exercises}
 
 ::: {.exercises}
 
 ::: {.exercise data-answer="B"}
-### 問題 1
+### 問題 1 {#problem-1}
 
 下列哪一個敘述**最正確**？
 
@@ -458,7 +458,7 @@ print(total_revenue)  # 3150
 :::
 
 ::: {.exercise data-answer="C"}
-### 問題 2
+### 問題 2 {#problem-2}
 
 給定 `a = [1, 2, 3]` 與 `b = [10, 20]`，執行 `list(map(lambda x, y: x + y, a, b))` 的結果為何？
 
@@ -477,7 +477,7 @@ print(total_revenue)  # 3150
 :::
 
 ::: {.exercise data-answer="A"}
-### 問題 3
+### 問題 3 {#problem-3}
 
 下列哪個寫法最適合「空列表也要安全加總」的情境？
 
@@ -496,7 +496,7 @@ print(total_revenue)  # 3150
 :::
 
 ::: {.exercise}
-### 問題 4
+### 問題 4 {#problem-4}
 
 請完成下列任務：  
 給定 `orders`，先保留 `status == "paid"` 且 `is_test == False` 的資料，再計算總營收 `price * qty` 加總。
@@ -528,7 +528,7 @@ print(total)  # 520
 :::
 
 ::: {.exercise}
-### 問題 5
+### 問題 5 {#problem-5}
 
 請將以下 `for` 迴圈改寫為 `map + filter`（可搭配 `lambda` 或 `def`）：
 
@@ -554,7 +554,7 @@ print(result)  # [1, 4, 9]
 
 :::
 
-## 本篇小結
+## 本篇小結 {#summary}
 
 本篇從 `lambda` 出發，延伸到 `map`、`filter` 與 `reduce`，核心目標並不是追求短程式，而是希望建立一個可維護的資料處理思維。`lambda` 讓短邏輯可內嵌，`map` 負責一致轉換，`filter` 負責條件篩選，`reduce` 負責最終收斂。當這四者組合得當，就能把凌亂的資料處理程式改寫成語意清楚的管線！
 

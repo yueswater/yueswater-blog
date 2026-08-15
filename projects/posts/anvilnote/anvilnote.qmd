@@ -20,7 +20,7 @@ alternate-lang: "/projects/posts/anvilnote/anvilnote-en.html"
 
 <!-- TODO: 放置示範影片 -->
 
-## 不只寫筆記，也要完成文件
+## 不只寫筆記，也要完成文件 {#beyond-notes}
 
 AnvilNote 是一款跨平台的寫作與筆記工具，適合整理：
 
@@ -36,7 +36,7 @@ AnvilNote 是一款跨平台的寫作與筆記工具，適合整理：
 
 對我來說，AnvilNote 與一般筆記工具最大的差別，在於它不只處理**內容如何撰寫**，更在意**最後呈現的文件長什麼樣子**。
 
-## 從編輯器直接產出 PDF
+## 從編輯器直接產出 PDF {#pdf-export}
 
 AnvilNote 的 PDF 排版由 [Typst](https://typst.app/) 負責。使用者仍然可以透過一般編輯器加入標題、段落、圖片、表格、公式與程式碼，不需要接觸底層排版語法。匯出時，AnvilNote 會將內容轉換成完整的 Typst 文件，再產生 PDF。
 
@@ -103,7 +103,7 @@ AnvilNote 的 PDF 排版由 [Typst](https://typst.app/) 負責。使用者仍然
 </div>
 ```
 
-## 公式、程式碼與表格
+## 公式、程式碼與表格 {#formulas-code-tables}
 
 許多筆記工具雖然支援公式、程式碼與表格，但匯出後的排版效果往往不夠穩定，甚至會失去原本的格式。
 
@@ -116,7 +116,7 @@ AnvilNote 將這些內容視為文件的一部分，而不是單純附加在文�
 匯出成 DOCX 時，數學式會轉換成 Word 中可繼續編輯的公式物件，而不是直接貼成圖片。表格也會保留原有的結構與版面設定，方便後續在 Word 中修改。這對需要交付 Word 檔、與他人共同編輯，或配合學校與單位既有格式的人特別實用。
 
 
-## 註腳、邊注與圖說
+## 註腳、邊注與圖說 {#footnotes-margin-notes-captions}
 
 AnvilNote 支援一般頁尾註腳 (footnote)，也支援 Tufte 風格的側邊註記 (sidenote)。
 
@@ -126,7 +126,7 @@ AnvilNote 支援一般頁尾註腳 (footnote)，也支援 Tufte 風格的側邊�
 
 多張圖片也可以並排顯示，並使用共同的圖說編號，例如「圖 1(a)」與「圖 1(b)」。這類排版在報告與學術文件中很常見，但在一般區塊式筆記工具裡通常不容易處理。
 
-## 製作圖表
+## 製作圖表 {#diagrams}
 
 除了圖片與表格，AnvilNote 也支援 Mermaid 圖表與統計圖表。
 
@@ -136,7 +136,7 @@ Mermaid 可以用來製作流程圖、循序圖與系統架構圖；統計圖表
 
 ![流程圖與統計圖表](images/editor-code-table-chart.png)
 
-## 毋需網路
+## 毋需網路 {#offline-first}
 
 AnvilNote 採用離線優先設計，文件預設儲存在自己的裝置中。
 
@@ -144,7 +144,7 @@ AnvilNote 採用離線優先設計，文件預設儲存在自己的裝置中。
 
 這不代表 AnvilNote 永遠不會提供同步或備份功能，而是希望即使沒有帳號、沒有網路，核心的寫作與匯出功能仍然可以正常使用。
 
-## 目前仍在開發中的功能
+## 目前仍在開發中的功能 {#in-progress-features}
 
 AnvilNote 還在持續開發，接下來預計加入：
 
@@ -156,7 +156,7 @@ AnvilNote 還在持續開發，接下來預計加入：
 
 這些功能目前仍在設計或開發階段，實際內容可能會隨著測試結果調整。
 
-## 下載與原始碼
+## 下載與原始碼 {#download-and-source}
 
 ::: {.callout-note}
 桌面版目前為 `v0.1.16` 版，其餘子專案陸續準備公開中。

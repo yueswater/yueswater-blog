@@ -11,13 +11,13 @@ alternate-lang: "/projects/posts/ntun3si/ntun3si-en.html"
 
 [![](https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://ntun3si.space) [![](https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/ntun3si)
 
-## 關於這個專案
+## 關於這個專案 {#about-the-project}
 
 創立於 2023 年的[臺大國安社](https://ntun3si.space/)，過去的社務管理相當分散：報名仰賴 Google 表單、公告透過 LINE 群發布、出席紀錄則以 Excel 維護。受現任社長邀請，我開始協助整合社團的行政流程與數位工具。
 
-## 功能
+## 功能 {#features}
 
-### 活動與報名
+### 活動與報名 {#events-and-registration}
 
 建立活動時可以設定：
 
@@ -32,7 +32,7 @@ alternate-lang: "/projects/posts/ntun3si/ntun3si-en.html"
 - 社員要修改已送出的報名得走 `ChangeRequest` 流程，幹部審過才寫入，審核期間原始資料不動
 - 現場簽到用 QR Code check-in，每個報名者有專屬碼，掃了馬上更新出席狀態，不用人工對名單
 
-### 帳號與登入
+### 帳號與登入 {#accounts-and-login}
 
 - **本地帳密**：密碼用 bcryptjs 雜湊，不存明文
 - **第三方 OAuth**：Google 登入，Passport.js 處理授權
@@ -42,7 +42,7 @@ alternate-lang: "/projects/posts/ntun3si/ntun3si-en.html"
 - 所有報名紀錄及目前審核狀態
 - 歷史出席紀錄
 
-### 內容管理
+### 內容管理 {#content-management}
 
 **文章**
 
@@ -55,7 +55,7 @@ alternate-lang: "/projects/posts/ntun3si/ntun3si-en.html"
 
 幹部的基本資料（姓名、職稱、任期、照片）在後台管，前台幹部介紹頁直接拉這份資料。照片傳到 AWS S3，HEIC 會自動轉，iPhone 拍的不用另外處理。
 
-## 網站一覽
+## 網站一覽 {#site-overview}
 
 ![首頁](images/home.png){#fig-home width="75%" fig-align="center"}
 
@@ -69,7 +69,7 @@ alternate-lang: "/projects/posts/ntun3si/ntun3si-en.html"
 
 所有發布的文章和公告都在這裡，按時間排，最新的在上面，每篇有標題、摘要跟日期預覽。內文吃 Markdown，標題、粗體、引用、code block 都沒問題，適合放活動後記、政策短評或社內公告。
 
-## 技術架構
+## 技術架構 {#tech-stack}
 
 ::: {style="width: fit-content; margin: auto;"}
 | 層級 | 技術 |

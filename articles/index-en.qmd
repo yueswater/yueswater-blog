@@ -14,7 +14,7 @@ listing:
   categories: true
   sort-ui: true
   filter-ui: true
-  page-size: 10
+  page-size: 9
   feed: true
 alternate-lang: "/articles/index.html"
 ---
