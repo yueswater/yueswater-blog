@@ -1,7 +1,7 @@
 ---
 title: "30 Days of Typst | Day 01: Why Typst?"
 lang: en
-date: 2026-08-15
+date: 2026-08-14
 author: Anthony
 categories: [Typst, Typesetting]
 description: "Starting from LaTeX's pain points, meet Typst, a new Rust-powered typesetting system, and get it installed on macOS, Linux, and Windows, plus the online editor."
@@ -20,7 +20,7 @@ In this series, I want to work from my own hands-on experience with Typst to doc
 
 ## Introducing Typst
 
-Typst was started by Laurenz Mädje and Martin Haug in 2019, backed by their company Typst GmbH, and was officially released as open source in March 2023, with its core written in Rust. The official GitHub project description puts it plainly[¹](#note1):
+Typst was started by Laurenz Mädje and Martin Haug in 2019, backed by their company Typst GmbH, and was officially released as open source in March 2023, with its core written in Rust. The official GitHub project description puts it plainly[^1]:
 
 > [...] designed to be as powerful as LaTeX while being much easier to learn and use [...]
 
@@ -132,6 +132,4 @@ For anyone still on the fence about setting up a local environment, this is the 
 
 This post is essentially the starting point of the whole series: starting from LaTeX's pain points, we met Typst, a new Rust-built option focused on fast compilation and concise syntax, and got the environment ready — whether that means installing the CLI plus the VS Code extension on macOS, Linux, or Windows, or skipping local setup entirely and writing directly in typst.app. The next post will move into Typst's actual syntax, starting from the most basic markup and comparing it step by step with LaTeX!
 
----
-
-<a id="note1"></a>¹ See the [official repo](https://github.com/typst/typst) for details.
+[^1]: See the [official repo](https://github.com/typst/typst) for details.

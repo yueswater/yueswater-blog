@@ -1,7 +1,7 @@
 ---
 title: "30 天從零學會 Typst | Day 01：為什麼是 Typst？"
 lang: zh-TW
-date: 2026-08-15
+date: 2026-08-14
 author: Anthony
 categories: [Typst, 排版系統]
 description: "從 LaTeX 的痛點出發，認識 Typst 這個以 Rust 打造的新一代排版系統，並完成 macOS / Linux / Windows 安裝與線上編輯器設定。"
@@ -20,7 +20,7 @@ alternate-lang: "/articles/posts/typst/day01-intro-and-install/day01-intro-and-i
 
 ## Typst 介紹
 
-Typst 由 Laurenz Mädje 與 Martin Haug 於 2019 年開始開發，背後是他們創立的 Typst GmbH，2023 年 3 月正式以開源形式發布，核心用 Rust 撰寫。官方 GitHub 專案簡介寫得很直白[¹](#note1)：
+Typst 由 Laurenz Mädje 與 Martin Haug 於 2019 年開始開發，背後是他們創立的 Typst GmbH，2023 年 3 月正式以開源形式發布，核心用 Rust 撰寫。官方 GitHub 專案簡介寫得很直白[^1]：
 
 > [...] *designed to be as powerful as LaTeX while being much easier to learn and use* [...]
 
@@ -132,6 +132,4 @@ typst --version
 
 這篇算是整個系列的起點：從 LaTeX 的痛點出發，認識了 Typst 這個以 Rust 打造、主打快速編譯與簡潔語法的新選擇，也把環境準備好了——不管是 macOS、Linux、Windows 裝 CLI 搭配 VS Code 插件，或是懶得裝東西直接用 typst.app 線上編輯，都能開始寫。接下來的文章會正式進入 Typst 的語法本體，從最基本的標記語法開始，一步步比對它跟 LaTeX 的差異！
 
----
-
-<a id="note1"></a>¹ 請參考[官方 Repo](https://github.com/typst/typst) 說明。
+[^1]: 請參考[官方 Repo](https://github.com/typst/typst) 說明。
