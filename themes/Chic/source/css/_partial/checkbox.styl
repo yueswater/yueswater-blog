@@ -20,14 +20,22 @@
 
 .switch_default + label .toggle-icon-sun
   display inline-block
-  color #f5a623
+  color $light-font-color
+  transition color 0.15s ease
 
 .switch_default + label .toggle-icon-moon
   display none
   color $dark-font-color
+  transition color 0.15s ease
 
 .switch_default:checked + label .toggle-icon-sun
   display none
 
 .switch_default:checked + label .toggle-icon-moon
   display inline-block
+
+.switch_default + label:hover .toggle-icon-sun
+  color $light-post-link-color
+
+.switch_default + label:hover .toggle-icon-moon
+  color $dark-accent-color
