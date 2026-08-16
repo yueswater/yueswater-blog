@@ -82,6 +82,10 @@ ignore:
 # Extensions
 theme: Chic
 
+# Local server (hexo server / make preview)
+server:
+  port: 6868
+
 # Deployment
 deploy:
   type: ""
