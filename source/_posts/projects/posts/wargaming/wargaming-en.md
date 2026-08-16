@@ -11,6 +11,7 @@ tags: *id001
 excerpt: A multi-player real-time wargame platform built for NTU National Security
   Society's 2026 Youth Forum, simulating crisis negotiations across four stakeholder
   roles.
+thumbnail: cover.svg
 mathjax: true
 ---
 

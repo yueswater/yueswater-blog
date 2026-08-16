@@ -7,6 +7,7 @@ categories: &id001
 - Programming Languages
 tags: *id001
 excerpt: Two built-in functions that make loops more readable and more Pythonic
+thumbnail: /images/covers/Python_logo.png
 ---
 
 Loops are central to almost every Python project. The syntax is straightforward, and for simple cases, a plain `for` loop does the job cleanly. Problems arise when you need to track the current index while iterating, or when you need to process two related sequences at the same time. Many beginners reach for `range(len())` in both situations — it works, but it introduces unnecessary complexity.

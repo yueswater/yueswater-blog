@@ -9,6 +9,7 @@ categories: &id001
 tags: *id001
 excerpt: A Python toolkit for publication-quality microeconomics diagrams — indifference
   maps, demand curves, and equilibrium analysis in a few lines of code.
+thumbnail: cover.svg
 mathjax: true
 ---
 

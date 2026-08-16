@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 實作 API
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 到目前為止，模型與 Schema 都齊全了，這篇要把它們串起來，寫出能動的 API。

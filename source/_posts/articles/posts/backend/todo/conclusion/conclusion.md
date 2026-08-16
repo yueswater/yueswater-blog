@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 回顧整個 Todo App 系列，整理學到的東西與後續方向。
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 從[介紹](../intro/intro.qmd)開始，這個系列用 Python/FastAPI 實作了一次 Todo API，走過初始化、Model、Schema、API 功能實作，最後在[分檔與解耦](../decoupling/decoupling.qmd)收尾。整個系列其實在做同一件事：把一個簡單的 CRUD 服務，逐步蓋成職責清楚、好維護的專案。

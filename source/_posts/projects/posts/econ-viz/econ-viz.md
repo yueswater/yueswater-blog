@@ -8,6 +8,7 @@ categories: &id001
 - 經濟學
 tags: *id001
 excerpt: 一個專為個體經濟學設計的 Python 套件，幾行程式碼就能產出出版等級的無異曲線圖、需求圖與均衡分析圖。
+thumbnail: cover.svg
 mathjax: true
 ---
 

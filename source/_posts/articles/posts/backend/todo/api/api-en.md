@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Implement the API.
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 By this point, the model and the schemas are both in place. This article is about wiring them together to produce a working API.

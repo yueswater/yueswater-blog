@@ -9,6 +9,7 @@ categories: &id001
 - 全端開發
 tags: *id001
 excerpt: 為臺大國安社打造的全端社團管理平台，涵蓋活動報名、幹部管理、文章發布與電子報系統。
+thumbnail: cover.svg
 ---
 
 [<img src="https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://ntun3si.space) [<img src="https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/ntun3si)

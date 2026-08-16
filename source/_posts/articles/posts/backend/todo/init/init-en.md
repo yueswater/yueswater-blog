@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Set up the project skeleton and an empty entry file
+thumbnail: /images/covers/Backend_logo.png
 mathjax: true
 ---
 

@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Todo App 練習專案介紹
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 Todo App 應該是滿多人第一次在學習後端時接觸到的類型，這個系列文章是用來記錄自己練習後端知識的筆記，也希望能夠幫助到許多同樣在學習的人！

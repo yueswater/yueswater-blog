@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Define the data model and connect to the database.
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 The [previous article](../init/init-en.qmd) initialized the project, so now we can start building the model.

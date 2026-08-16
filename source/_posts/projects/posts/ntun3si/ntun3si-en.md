@@ -10,6 +10,7 @@ categories: &id001
 tags: *id001
 excerpt: A full-stack club management platform built for NTU National Security Society,
   covering event registration, officer management, and article publishing.
+thumbnail: cover.svg
 ---
 
 [<img src="https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://ntun3si.space) [<img src="https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/ntun3si)

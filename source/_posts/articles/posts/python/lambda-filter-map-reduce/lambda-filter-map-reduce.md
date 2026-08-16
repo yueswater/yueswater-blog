@@ -7,6 +7,7 @@ categories: &id001
 - 程式語言
 tags: *id001
 excerpt: 搞懂 lambda、map、filter、reduce：少寫迴圈，讓 Python 資料處理更快更乾淨。
+thumbnail: /images/covers/Python_logo.png
 mathjax: true
 ---
 
