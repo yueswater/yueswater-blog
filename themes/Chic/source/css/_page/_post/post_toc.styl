@@ -61,11 +61,13 @@ $font-size-32= 2rem
     background-color white
   .is-active-link::before
     background-color $light-post-link-color
+    .dark-theme &
+      background-color $dark-accent-color
   .is-active-link
     color $light-post-link-color
     font-family Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
     .dark-theme &
-      color $light-post-link-color
+      color $dark-accent-color
   .tocbot-list-menu
     margin $padding-16 $padding-12
     font-size $font-size-12
