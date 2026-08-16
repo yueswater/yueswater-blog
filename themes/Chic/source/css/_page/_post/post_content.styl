@@ -157,6 +157,34 @@
       border-left 2px solid $dark-post-blockquote-border-color
     &.pullquote
       background-color transparent
+
+  // kramed renders footnote definitions ([^1]: ...) as <blockquote
+  // id="fn_N">, which otherwise inherits the quote-box styling above --
+  // wrong for a footnote. Reset to compact, unobtrusive footnote text.
+  blockquote[id^="fn_"]
+    display block
+    margin 0.6em 0 0
+    padding 0
+    background-color transparent
+    border-left none
+    font-size 0.85em
+    line-height 1.6
+    color rgba(85, 85, 85, 0.75)
+    .dark-theme &
+      color $dark-font-secondary-color
+    sup
+      margin-right 0.3em
+      font-weight 600
+    a
+      margin-left 0.3em
+      text-decoration none
+
+  blockquote#fn_1
+    margin-top 2em
+    padding-top 1em
+    border-top 1px solid $light-border-color
+    .dark-theme &
+      border-top-color $dark-border-color
       max-width 45%
       border 0
       &.left
