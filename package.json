@@ -39,5 +39,8 @@
     "hexo-renderer-kramed": "^0.1.4",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0"
+  },
+  "devDependencies": {
+    "hexo-browsersync": "^0.3.0"
   }
 }
