@@ -24,7 +24,7 @@ thumbnail: /images/covers/Backend_logo.png
 
 本專案僅需一張表，也就是任務表，如下所示：
 
-<figure><img src="./images/table-design-diagram.svg" alt="任務資料表結構圖"><figcaption>任務資料表結構圖</figcaption></figure>
+<figure><img src="images/table-design-diagram.svg" alt="任務資料表結構圖"><figcaption>任務資料表結構圖</figcaption></figure>
 
 其中 `NN` 代表 `not null`（非空），對應的 SQL 指令為：
 

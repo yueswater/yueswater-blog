@@ -1,0 +1,58 @@
+.permalink-item .permalink-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0;
+  color: #888;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  vertical-align: -4px;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.permalink-item:hover .permalink-copy-btn {
+  opacity: 1;
+}
+
+.permalink-item .permalink-copy-btn:hover {
+  color: #333;
+}
+
+.permalink-item .permalink-copy-btn .permalink-copy-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.permalink-item .permalink-copy-btn .permalink-copy-icon-check {
+  display: none;
+}
+
+.permalink-item .permalink-copy-btn.copied {
+  color: #2e9e6f;
+  opacity: 1;
+}
+
+.permalink-item .permalink-copy-btn.copied .permalink-copy-icon-link {
+  display: none;
+}
+
+.permalink-item .permalink-copy-btn.copied .permalink-copy-icon-check {
+  display: block;
+}
+
+.dark-theme .permalink-item .permalink-copy-btn {
+  color: #aaa;
+}
+
+.dark-theme .permalink-item .permalink-copy-btn:hover {
+  color: #eee;
+}
+
+.dark-theme .permalink-item .permalink-copy-btn.copied {
+  color: #4ecb99;
+}

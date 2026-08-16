@@ -1,6 +1,7 @@
 ---
 title: 關於
 date: 2026-08-16 12:13:22
+lang: zh-TW
 ---
 
 ## 嗨，我是 Anthony 👋

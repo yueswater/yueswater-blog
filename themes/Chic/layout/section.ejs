@@ -1,19 +1,21 @@
 <div class="container">
     <div class="post-wrap section-list">
         <h2 class="post-title"><%- page.title %></h2>
+        <% if (page.posts.length === 0) { %>
+            <p class="section-empty"><%= __('no_posts_yet') %></p>
+        <% } %>
         <div class="section-posts">
             <% page.posts.forEach(function (post) { %>
                 <a class="section-post-item" href="<%- url_for(post.path) %>">
-                    <% if (post.thumbnail) { %>
-                        <div class="section-post-thumb">
-                            <img src="<%- url_for(post.thumbnail) %>" alt="">
-                        </div>
-                    <% } %>
                     <div class="section-post-body">
                         <h3 class="section-post-title"><%= post.title %></h3>
                         <% if (post.excerpt) { %>
                             <p class="section-post-excerpt"><%= post.excerpt %></p>
                         <% } %>
+                        <div class="section-post-info">
+                            <span class="section-post-reading-time"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg><%= __('reading_time_label') %> <%= reading_time(post) %> <%= __('min_unit') %></span>
+                            <span class="section-post-views"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6-46.8 43.5-78.1 95.4-93 131.1-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64-11.5 0-22.3-3-31.7-8.4-1 10.9-.1 22.1 2.9 33.2 13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-12.2-45.7-55.5-74.8-101.1-70.8 5.3 9.3 8.4 20.1 8.4 31.7z"/></svg><%= __('views_label') %> <span class="goatcounter-views" data-path="<%- url_for(post.path) %>">–</span> <%= __('times_unit') %></span>
+                        </div>
                     </div>
                 </a>
             <% }) %>

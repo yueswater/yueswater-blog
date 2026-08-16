@@ -2,17 +2,28 @@
 navname: 岳氏礦泉水
 
 # navigatior items
+## keys are i18n string ids (see languages/*.yml, nav_<id>), not display text.
+## sections marked lang_split get "-en" appended to their href on English pages.
 nav:
-  文章: /articles
-  專案: /projects
-  資結筆記: /dsa
-  日記: /diary
-  分類: /category
-  標籤: /tag
-  關於: /about
+  articles: /articles
+  projects: /projects
+  dsa: /dsa
+  diary: /diary
+  category: /category
+  tag: /tag
+  about: /about
+nav_lang_split:
+  - articles
+  - projects
+  - dsa
+  - diary
+  - about
 
 # favicon
 favicon: /favicon.svg
+
+# GoatCounter analytics (also powers per-page view counts)
+goatcounter: https://yueswater.goatcounter.com
 
 # Profile
 nickname: 岳氏礦泉水
@@ -94,6 +105,7 @@ stylesheets:
   - /css/admonition-override.css
   - /css/code-copy.css
   - /css/caption.css
+  - /css/permalink-copy.css
 
 # scripts loaded in the end of the body
 scripts:
@@ -103,6 +115,8 @@ scripts:
     # https://github.com/tscanlin/tocbot
   - /js/clipboard.min.js
   - /js/code-copy.js
+  - /js/permalink-copy.js
+  - /js/goatcounter-views.js
 
 # plugin functions
 ## Mathjax: Math Formula Support

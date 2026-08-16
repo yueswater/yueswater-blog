@@ -107,11 +107,11 @@ typst compile hello.typ
 
 指令跑完，資料夾底下就會多一個 `hello.pdf`，內容就是排好版的結果，用任何 PDF 閱讀器打開即可；沒有特別指定輸出檔名的話，Typst 會用來源檔案的名稱，輸出到同一層資料夾。打開來就會看到前面整合出的那份筆記，標題、粗體斜體、清單都照剛剛寫的樣子排好了：
 
-<figure><img src="hello-pdf-output.png" alt="hello.pdf 編譯結果"><figcaption>hello.pdf 編譯結果</figcaption></figure>
+<figure><img src="images/hello-pdf-output.png" alt="hello.pdf 編譯結果"><figcaption>hello.pdf 編譯結果</figcaption></figure>
 
 如果是用 VS Code 搭配 Tinymist 插件，甚至不用切到終端機下指令：開啟 `.typ` 檔案後，編輯器上方會自動多出一排工具列，內建 Preview、Export 等功能，點個兩下就能直接匯出 PDF：
 
-<figure><img src="tinymist-toolbar.png" alt="Tinymist 編輯器工具列"><figcaption>Tinymist 編輯器工具列</figcaption></figure>
+<figure><img src="images/tinymist-toolbar.png" alt="Tinymist 編輯器工具列"><figcaption>Tinymist 編輯器工具列</figcaption></figure>
 
 #### 監看模式
 
