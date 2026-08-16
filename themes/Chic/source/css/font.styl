@@ -9,3 +9,11 @@
   font-display swap
 
 $font-family = 'lanting', Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
+
+// lanting only ships as a single static weight; synthetic-bolding it
+// per range gives inconsistent glyph coverage (some characters bold,
+// some not). Bold text skips it and uses the system CJK fonts, which
+// have real bold weights.
+strong, b
+  font-family Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
+  font-weight bold
