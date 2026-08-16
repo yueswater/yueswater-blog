@@ -8,7 +8,7 @@ categories: &id001
 - 經濟學
 tags: *id001
 excerpt: 一個專為個體經濟學設計的 Python 套件，幾行程式碼就能產出出版等級的無異曲線圖、需求圖與均衡分析圖。
-thumbnail: cover.svg
+thumbnail: images/cover.svg
 mathjax: true
 ---
 
@@ -97,7 +97,7 @@ cvs.add_equilibrium(eq, show_ray=True)
 cvs.save("cobb_douglas.png")
 ```
 
-<figure><img src="cobb_douglas.png" alt="Cobb-Douglas 均衡圖" width="50%"><figcaption>Cobb-Douglas 均衡圖</figcaption></figure>
+<figure><img src="images/cobb_douglas.png" alt="Cobb-Douglas 均衡圖" width="50%"><figcaption>Cobb-Douglas 均衡圖</figcaption></figure>
 
 ### LaTeX 解析
 
@@ -131,7 +131,7 @@ fig.add_marshallian_panel(price_markers=[1.5, 4.0])
 fig.save("demand.png")
 ```
 
-<figure><img src="demand_cobb_douglas.png" alt="需求曲線教學圖" width="50%"><figcaption>需求曲線教學圖</figcaption></figure>
+<figure><img src="images/demand_cobb_douglas.png" alt="需求曲線教學圖" width="50%"><figcaption>需求曲線教學圖</figcaption></figure>
 
 ### Slutsky 矩陣
 
@@ -168,7 +168,7 @@ box = EdgeworthBox(
 )
 ```
 
-<figure><img src="edgeworth_cobb_symmetric.png" alt="Edgeworth Box（Cobb-Douglas × Cobb-Douglas）" width="50%"><figcaption>Edgeworth Box（Cobb-Douglas × Cobb-Douglas）</figcaption></figure>
+<figure><img src="images/edgeworth_cobb_symmetric.png" alt="Edgeworth Box（Cobb-Douglas × Cobb-Douglas）" width="50%"><figcaption>Edgeworth Box（Cobb-Douglas × Cobb-Douglas）</figcaption></figure>
 
 ## CLI
 

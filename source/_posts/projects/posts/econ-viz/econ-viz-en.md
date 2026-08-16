@@ -9,7 +9,7 @@ categories: &id001
 tags: *id001
 excerpt: A Python toolkit for publication-quality microeconomics diagrams — indifference
   maps, demand curves, and equilibrium analysis in a few lines of code.
-thumbnail: cover.svg
+thumbnail: images/cover.svg
 mathjax: true
 ---
 
@@ -98,7 +98,7 @@ cvs.add_equilibrium(eq, show_ray=True)
 cvs.save("cobb_douglas.png")
 ```
 
-<figure><img src="cobb_douglas.png" alt="Cobb-Douglas equilibrium diagram" width="50%"><figcaption>Cobb-Douglas equilibrium diagram</figcaption></figure>
+<figure><img src="images/cobb_douglas.png" alt="Cobb-Douglas equilibrium diagram" width="50%"><figcaption>Cobb-Douglas equilibrium diagram</figcaption></figure>
 
 ### LaTeX parser
 
@@ -132,7 +132,7 @@ fig.add_marshallian_panel(price_markers=[1.5, 4.0])
 fig.save("demand.png")
 ```
 
-<figure><img src="demand_cobb_douglas.png" alt="Demand diagram" width="50%"><figcaption>Demand diagram</figcaption></figure>
+<figure><img src="images/demand_cobb_douglas.png" alt="Demand diagram" width="50%"><figcaption>Demand diagram</figcaption></figure>
 
 ### Slutsky matrix
 
@@ -169,7 +169,7 @@ box = EdgeworthBox(
 )
 ```
 
-<figure><img src="edgeworth_cobb_symmetric.png" alt="Edgeworth Box (Cobb-Douglas × Cobb-Douglas)" width="50%"><figcaption>Edgeworth Box (Cobb-Douglas × Cobb-Douglas)</figcaption></figure>
+<figure><img src="images/edgeworth_cobb_symmetric.png" alt="Edgeworth Box (Cobb-Douglas × Cobb-Douglas)" width="50%"><figcaption>Edgeworth Box (Cobb-Douglas × Cobb-Douglas)</figcaption></figure>
 
 ## CLI
 

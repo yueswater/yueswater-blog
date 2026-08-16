@@ -10,32 +10,26 @@
             <h1 class="post-title"><%= page.title %></h1>
             <% if(theme.post_meta_enable){ %>
                 <div class="post-meta">
-                    <% if(theme.post_author_enable && config.author){ %>
-                        <%= __('author') %>: <a itemprop="author" rel="author" href="/"><%- config.author %></a>
-                    <% } %>
+                    <div class="post-meta-primary">
+                        <% if(theme.post_author_enable && config.author){ %>
+                            <span class="post-author"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg><%= __('author') %>: <a itemprop="author" rel="author" href="/"><%- config.author %></a></span>
+                        <% } %>
 
-                    <% if(page.date && theme.post_date_enable){ %>
-                        <span class="post-time">
-                        <%= __('date') %>: <a href="#"><%- date(page.date, theme.date_format)  %>&nbsp;&nbsp;<%- time(page.date, theme.time_format)%></a>
-                        </span>
-                    <% } %>
-                    <% if(page.categories.length!==0 && theme.post_category_enable){ %>
-                        <span class="post-category">
-                    <%= __('category') %>:
-                            <% page.categories.forEach(item=>{ %>
-                                <a href="<%- url_for(item.path) %>"><%- item.name %></a>
-                            <% }) %>
-                        </span>
-                    <% } %>
-                    <%
-                        var altPost = alt_lang_post(page);
-                        var altLang = page.lang === 'en' ? 'zh-TW' : 'en';
-                    %>
-                    <% if (altPost) { %>
-                        <span class="post-lang-switch">
-                            <a href="<%- url_for(altPost.path) %>"><%= altLang === 'en' ? __('view_in_english') : __('view_in_chinese') %></a>
-                        </span>
-                    <% } %>
+                        <% if(page.date && theme.post_date_enable){ %>
+                            <span class="post-time"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zM64 240l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 368l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0z"/></svg><%= __('date') %>: <a href="#"><%- date(page.date, theme.date_format) %></a></span>
+                        <% } %>
+                        <% if(page.categories.length!==0 && theme.post_category_enable){ %>
+                            <span class="post-category"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M64 448l384 0c35.3 0 64-28.7 64-64l0-240c0-35.3-28.7-64-64-64L298.7 80c-6.9 0-13.7-2.2-19.2-6.4L241.1 44.8C230 36.5 216.5 32 202.7 32L64 32C28.7 32 0 60.7 0 96L0 384c0 35.3 28.7 64 64 64z"/></svg><%= __('category') %>:
+                                <% page.categories.forEach(item=>{ %>
+                                    <a href="<%- url_for(item.path) %>"><%- item.name %></a>
+                                <% }) %>
+                            </span>
+                        <% } %>
+                    </div>
+                    <div class="post-meta-secondary">
+                        <span class="post-reading-time"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/></svg><%= __('reading_time_label') %> <%= reading_time(page) %> <%= __('min_unit') %></span>
+                        <span class="post-views"><svg class="meta-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6-46.8 43.5-78.1 95.4-93 131.1-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64-11.5 0-22.3-3-31.7-8.4-1 10.9-.1 22.1 2.9 33.2 13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-12.2-45.7-55.5-74.8-101.1-70.8 5.3 9.3 8.4 20.1 8.4 31.7z"/></svg><%= __('views_label') %> <span class="goatcounter-views" data-path="<%- url_for(page.path) %>">–</span> <%= __('times_unit') %></span>
+                    </div>
                 </div>
             <% } %>
         </header>
@@ -53,9 +47,9 @@
                     </p>
                 <% } %>
                 <% if(theme.post_copyright_permalink_enable){ %>
-                    <p class="copyright-item">
+                    <p class="copyright-item permalink-item">
                         <span><%= __('permalink') %>:</span>
-                        <span><a href="<%- page.permalink %>"><%- page.permalink %></a></span>
+                        <span><a href="<%- page.permalink %>"><%- page.permalink %></a><button type="button" class="permalink-copy-btn" data-clipboard-text="<%- page.permalink %>" aria-label="<%= __('copy_permalink') %>"></button></span>
                     </p>
                 <% } %>
                 <% if(theme.post_copyright_license_enable){ %>
@@ -79,7 +73,7 @@
                 <span class="tag">
                     <% if(page.tags.length!==0){%>
                     <% page.tags.forEach(item=>{ %>
-                        <a href="<%- url_for(item.path) %>"># <%- item.name %></a>
+                        <a class="tag-badge" href="<%- url_for(item.path) %>"># <%- item.name %></a>
                     <% }) %>
                         <% } %>
                 </span>
@@ -90,12 +84,15 @@
                 <a href="<%- config.root %>"><%= __('home') %></a>
             </div>
         </section>
+        <%
+            var langNav = lang_post_nav(page);
+        %>
         <section class="post-nav">
-            <% if(post.prev){ %>
-                <a class="prev" rel="prev" href="<%- url_for(post.prev.path)%>"><%- post.prev.title%></a>
+            <% if(langNav.prev){ %>
+                <a class="prev" rel="prev" href="<%- url_for(langNav.prev.path)%>"><%- langNav.prev.title%></a>
             <% } %>
-            <% if(post.next){ %>
-            <a class="next" rel="next" href="<%- url_for(post.next.path)%>"><%- post.next.title%></a>
+            <% if(langNav.next){ %>
+            <a class="next" rel="next" href="<%- url_for(langNav.next.path)%>"><%- langNav.next.title%></a>
             <% } %>
         </section>
 

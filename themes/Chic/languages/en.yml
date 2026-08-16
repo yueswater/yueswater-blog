@@ -33,3 +33,16 @@ more: More
 view_in_english: English
 view_in_chinese: 中文版
 no_lang_alt: No translation available for this page
+nav_articles: Articles
+nav_projects: Projects
+nav_dsa: DSA Notes
+nav_diary: Diary
+nav_category: Category
+nav_tag: Tag
+nav_about: About
+reading_time_label: "Reading:"
+min_unit: min
+views_label: "Views:"
+times_unit: times
+no_posts_yet: No posts here yet.
+copy_permalink: Copy link

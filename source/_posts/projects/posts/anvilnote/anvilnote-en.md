@@ -11,7 +11,7 @@ tags: *id001
 excerpt: AnvilNote is an offline-first writing and note-taking tool that pairs a clean
   editing experience with Typst typesetting, built for long-form notes, lecture handouts,
   reports, and academic documents, e
-thumbnail: cover.svg
+thumbnail: images/cover.svg
 ---
 
 Anyone who has used Notion to put together lecture notes or a report has probably run into the same problem: the content is done, but the moment you try to export it to PDF, you realize the font, page layout, and document format are barely adjustable. The exported PDF might be readable, but it rarely turns into something you'd actually want to print, submit, or share.
@@ -36,7 +36,7 @@ AnvilNote is a cross-platform writing and note-taking tool built for:
 
 The editing experience is Notion-like — no need to write Typst or LaTeX syntax directly. Once a document is done, you pick a template, font, and layout, then export to PDF or DOCX.
 
-<figure><img src="editor-intro-math.png" alt="The editor"><figcaption>The editor</figcaption></figure>
+<figure><img src="images/editor-intro-math.png" alt="The editor"><figcaption>The editor</figcaption></figure>
 
 To me, the biggest difference between AnvilNote and a typical note-taking app is that it doesn't just care about **what you write** — it also cares about **what the final document looks like**.
 
@@ -73,27 +73,27 @@ Templates currently come mainly from [Typst's open-source ecosystem](https://typ
 <div id="template-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-wrap="true">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="templates/plain-note.png" class="d-block mx-auto" alt="plain-note">
+      <img src="images/templates/plain-note.png" class="d-block mx-auto" alt="plain-note">
       <p class="text-center text-muted mt-2">plain-note</p>
     </div>
     <div class="carousel-item">
-      <img src="templates/toffee-tufte.png" class="d-block mx-auto" alt="toffee-tufte">
+      <img src="images/templates/toffee-tufte.png" class="d-block mx-auto" alt="toffee-tufte">
       <p class="text-center text-muted mt-2">toffee-tufte</p>
     </div>
     <div class="carousel-item">
-      <img src="templates/metropole-report.png" class="d-block mx-auto" alt="metropole-report">
+      <img src="images/templates/metropole-report.png" class="d-block mx-auto" alt="metropole-report">
       <p class="text-center text-muted mt-2">metropole-report</p>
     </div>
     <div class="carousel-item">
-      <img src="templates/jastylest-zh.png" class="d-block mx-auto" alt="jastylest-zh">
+      <img src="images/templates/jastylest-zh.png" class="d-block mx-auto" alt="jastylest-zh">
       <p class="text-center text-muted mt-2">jastylest-zh</p>
     </div>
     <div class="carousel-item">
-      <img src="templates/bubble.png" class="d-block mx-auto" alt="bubble">
+      <img src="images/templates/bubble.png" class="d-block mx-auto" alt="bubble">
       <p class="text-center text-muted mt-2">bubble</p>
     </div>
     <div class="carousel-item">
-      <img src="templates/mousse-notes.png" class="d-block mx-auto" alt="mousse-notes">
+      <img src="images/templates/mousse-notes.png" class="d-block mx-auto" alt="mousse-notes">
       <p class="text-center text-muted mt-2">mousse-notes</p>
     </div>
   </div>
@@ -115,7 +115,7 @@ AnvilNote treats these as part of the document itself, not something bolted on n
 
 Math renders live in the editor and gets re-typeset by Typst on export. Code blocks can be set to a specific language with matching syntax highlighting. Tables support merged cells and adjustable row/column sizing, laid out however the content needs, and export picks up the active template's styling automatically.
 
-<figure><img src="editor-code-table-chart.png" alt="Formulas, code, and tables"><figcaption>Formulas, code, and tables</figcaption></figure>
+<figure><img src="images/editor-code-table-chart.png" alt="Formulas, code, and tables"><figcaption>Formulas, code, and tables</figcaption></figure>
 
 On DOCX export, math converts into a formula object that's still editable in Word, instead of being pasted in as an image. Tables keep their structure and layout too, ready for further editing in Word — useful if you need to hand off a `.docx`, collaborate with someone else, or match a school or organization's existing format.
 
@@ -137,7 +137,7 @@ Mermaid covers flowcharts, sequence diagrams, and system architecture diagrams. 
 
 These charts are embedded as vector SVG, so lines and text stay crisp at any zoom level or in print.
 
-<figure><img src="editor-code-table-chart.png" alt="Flowchart and stats chart"><figcaption>Flowchart and stats chart</figcaption></figure>
+<figure><img src="images/editor-code-table-chart.png" alt="Flowchart and stats chart"><figcaption>Flowchart and stats chart</figcaption></figure>
 
 ## Works without an internet connection
 
