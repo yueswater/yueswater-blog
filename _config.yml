@@ -90,6 +90,10 @@ theme: Chic
 server:
   port: 6868
 
+# Browsersync (dev-only live reload, see hexo-browsersync)
+browsersync:
+  notify: false
+
 # Deployment
 deploy:
   type: ""
