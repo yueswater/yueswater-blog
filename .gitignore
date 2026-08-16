@@ -1,3 +1,11 @@
+# Hexo build output
+public/
+.deploy*/
+db.json
+
+# Node
+node_modules/
+
 # Quarto build output
 _site/
 .quarto/
