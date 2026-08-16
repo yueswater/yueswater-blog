@@ -30,16 +30,11 @@
         position relative
 
 
-        .mobile-actions
-          display: flex
-          align-items: center
-
         .menu-toggle
           display: flex;
           cursor: pointer
           line-height: 5.5em
           user-select none
-          margin-left: 1em
 
           .menu-icon
             display: block
@@ -96,9 +91,9 @@
         flex-direction: column
         align-items: center
         text-align: center
-        background: rgba($light-background-color, 0.85)
-        backdrop-filter: blur(12px)
-        -webkit-backdrop-filter: blur(12px)
+        background: rgba($light-background-color, 0.75)
+        backdrop-filter: blur(24px) saturate(150%)
+        -webkit-backdrop-filter: blur(24px) saturate(150%)
         border-top: 1px solid $light-border-color
         padding-top: 0.5em
         padding-bottom: 1em
@@ -112,14 +107,27 @@
           display: block
           width: 100%
           margin: 0
-          line-height: 2.6em
+          font-size: 1.15em
+          line-height: 2.8em
+        .theme-toggle
+          margin: 0.5em 0 0
+          padding-top: 0.8em
+          border-top: 1px solid $light-border-color
+          .dark-theme &
+            border-top-color: $dark-border-color
+          label
+            width: 32px
+            height: 32px
+          .toggle-icon
+            width: 22px
+            height: 22px
         &.active
           opacity: 1
           pointer-events: auto
           transform: translateY(0)
 
         .dark-theme &
-          background: rgba($dark-background-color, 0.85)
+          background: rgba($dark-background-color, 0.75)
           border-top: 1px solid $dark-border-color
 
       .dark-theme & 
