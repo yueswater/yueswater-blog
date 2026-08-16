@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npx hexo clean && npx hexo generate",
+  "outputDirectory": "public",
+  "redirects": [
+    { "source": "/posts/:path*", "destination": "/articles/index.html", "statusCode": 301 },
+    { "source": "/articles/posts/latex/:path*", "destination": "/articles/index.html", "statusCode": 301 },
+    { "source": "/articles/posts/2026/:path*", "destination": "/articles/index.html", "statusCode": 301 },
+    { "source": "/login", "destination": "/articles/index.html", "statusCode": 301 },
+    { "source": "/register", "destination": "/articles/index.html", "statusCode": 301 }
+  ]
+}
