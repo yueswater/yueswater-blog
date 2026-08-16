@@ -274,6 +274,10 @@ figcaption {
   margin-bottom: 1rem;
 }
 
+.quarto-figure-center figcaption {
+  text-align: center;
+}
+
 .citation,
 .citation a,
 .footnote-ref {
