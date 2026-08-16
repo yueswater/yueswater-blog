@@ -2,3 +2,14 @@
 .admonition {
   --admonition-border-radius: 0;
 }
+
+/* No icons, and make sure the title actually renders bold (skip the
+   lanting webfont, same as strong/b/h1-h6) */
+.admonition-icon {
+  display: none;
+}
+
+.admonition-title {
+  font-family: Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial;
+  font-weight: 700;
+}
