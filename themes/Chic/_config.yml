@@ -3,10 +3,10 @@ navname: Yueswater Blog
 
 # navigatior items
 nav:
-  Posts: /archives
-  Categories: /category
-  Tags: /tag
-  About: /about
+  文章: /archives
+  分類: /category
+  標籤: /tag
+  關於: /about
 
 # favicon
 favicon: /favicon.svg
@@ -81,8 +81,8 @@ page_title_enable: true
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: MMMM D, YYYY
-time_format: H:mm:ss
+date_format: YYYY-MM-DD
+time_format: HH:mm
 
 # stylesheets loaded in the <head>
 stylesheets:
