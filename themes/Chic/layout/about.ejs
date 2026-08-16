@@ -1,0 +1,26 @@
+<div class="container about-container">
+    <aside class="about-sidebar">
+        <div class="about-avatar">
+            <img src="<%- url_for(theme.about_avatar || theme.avatar) %>" alt="<%- theme.nickname %>">
+        </div>
+        <h2 class="about-title"><%= __('about_title') %></h2>
+        <p class="about-desc"><%- markdown(theme.about_description || theme.description) %></p>
+        <div class="about-links">
+            <% if (theme.links !== undefined) { %>
+                <% for (var key in theme.links){ %>
+                    <a class="link-item" title="<%- key %>" href="<%= theme.links[key] %>">
+                        <% if(theme.links_text_enable) { %>
+                            <%= key %>
+                        <%}%>
+                        <%if(theme.links_icon_enable){ %>
+                            <i class="iconfont icon-<%- key.toLowerCase() %>"></i>
+                        <%}%>
+                    </a>
+                <% } %>
+            <% } %>
+        </div>
+    </aside>
+    <article class="about-content post-content">
+        <%- page.content %>
+    </article>
+</div>
