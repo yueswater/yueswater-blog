@@ -1,0 +1,57 @@
+[build]
+  command   = "npx hexo clean && npx hexo generate"
+  publish   = "public"
+
+# Redirects for legacy URLs Google still has indexed from before the
+# Hexo migration. Some rules from the pre-migration file were dropped
+# here because the paths they targeted are now REAL pages on the current
+# site (/archives/, /categories/*, /tags/*, /page/*) -- force-redirecting
+# those would break live content instead of just catching orphans.
+
+# Remaining old dated posts with no current equivalent content -> articles hub
+# (better than a bare 404 for retained link equity; content itself was retired
+# in the migration rather than 1:1 ported)
+[[redirects]]
+  from   = "/posts/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+# LaTeX series retired 2026-07-31; Google had these indexed under both the
+# post-migration URL structure and an even older dated-permalink structure.
+[[redirects]]
+  from   = "/articles/posts/latex/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from   = "/articles/posts/2026/*"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+# Orphaned Hexo-era paths with no current equivalent (old auth/comment
+# plugin pages, not part of the current static site).
+[[redirects]]
+  from   = "/login"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from   = "/register"
+  to     = "/articles/index.html"
+  status = 301
+  force  = true
+
+# Catch-all fallback: GSC surfaced ~25 more bare-slug Hexo permalinks
+# (/museum/, /flask-routing/, /dsa-stack/, etc.) plus misc noise
+# (/privacy, /forgot-password, /404.html, stray asset requests) that
+# don't fit a clean prefix pattern. Rather than enumerate each one,
+# send anything that doesn't match a real file or an earlier rule here.
+# No `force`, so real pages still take priority over this.
+[[redirects]]
+  from   = "/*"
+  to     = "/articles/index.html"
+  status = 301

@@ -74,6 +74,10 @@ updated_option: "mtime"
 per_page: 10
 pagination_dir: page
 
+# Sitemap
+sitemap:
+  path: sitemap.xml
+
 # Include / Exclude file(s)
 include:
 exclude:
