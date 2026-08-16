@@ -95,8 +95,8 @@
         background: rgba($light-background-color, 0.75)
         backdrop-filter: blur(24px) saturate(150%)
         -webkit-backdrop-filter: blur(24px) saturate(150%)
-        padding-top: 6.5em
-        padding-bottom: 2em
+        padding-top: 5.5em
+        padding-bottom: 1.5em
         user-select none
         opacity: 0
         pointer-events: none
@@ -117,20 +117,20 @@
           display: block
           width: 100%
           margin: 0
-          padding: 0.4em 0
-          font-size: 1.6em
+          padding: 0.25em 0
+          font-size: 1.35em
         .theme-toggle
-          margin: 1em 0 0
-          padding-top: 1.2em
+          margin: 0.6em 0 0
+          padding-top: 0.6em
           border-top: 1px solid $light-border-color
           .dark-theme &
             border-top-color: $dark-border-color
           label
-            width: 36px
-            height: 36px
+            width: 32px
+            height: 32px
           .toggle-icon
-            width: 26px
-            height: 26px
+            width: 22px
+            height: 22px
         &.active
           opacity: 1
           pointer-events: auto
@@ -156,12 +156,18 @@
   #dynamic-to-top 
     display: none !important
   
-  .footer 
-    height: 3rem
+  .footer
+    height: auto
     width: 100%
     text-align: center
     line-height: 1.5rem
     padding-top: 2em
+    padding-bottom: 1em
+    .copyright
+      .footer-sep
+        display: none
+      .powered-by
+        display: block
 
   .post-warp
     padding-top: 6em
