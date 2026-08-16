@@ -38,7 +38,7 @@ AnvilNote 是一款跨平台的寫作與筆記工具，適合整理：
 
 編輯方式接近 Notion，不需要直接撰寫 Typst 或 LaTeX 語法。文件完成後，可以選擇範本、字型與版面配置，再匯出成 PDF 或 DOCX。
 
-![編輯器畫面](anvilnote/editor-intro-math.png)
+![編輯器畫面](editor-intro-math.png)
 
 對我來說，AnvilNote 與一般筆記工具最大的差別，在於它不只處理**內容如何撰寫**，更在意**最後呈現的文件長什麼樣子**。
 
@@ -74,27 +74,27 @@ AnvilNote 的 PDF 排版由 [Typst](https://typst.app/) 負責。使用者仍然
 <div id="template-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-wrap="true">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="anvilnote/templates/plain-note.png" class="d-block mx-auto" alt="plain-note">
+      <img src="templates/plain-note.png" class="d-block mx-auto" alt="plain-note">
       <p class="text-center text-muted mt-2">plain-note</p>
     </div>
     <div class="carousel-item">
-      <img src="anvilnote/templates/toffee-tufte.png" class="d-block mx-auto" alt="toffee-tufte">
+      <img src="templates/toffee-tufte.png" class="d-block mx-auto" alt="toffee-tufte">
       <p class="text-center text-muted mt-2">toffee-tufte</p>
     </div>
     <div class="carousel-item">
-      <img src="anvilnote/templates/metropole-report.png" class="d-block mx-auto" alt="metropole-report">
+      <img src="templates/metropole-report.png" class="d-block mx-auto" alt="metropole-report">
       <p class="text-center text-muted mt-2">metropole-report</p>
     </div>
     <div class="carousel-item">
-      <img src="anvilnote/templates/jastylest-zh.png" class="d-block mx-auto" alt="jastylest-zh">
+      <img src="templates/jastylest-zh.png" class="d-block mx-auto" alt="jastylest-zh">
       <p class="text-center text-muted mt-2">jastylest-zh</p>
     </div>
     <div class="carousel-item">
-      <img src="anvilnote/templates/bubble.png" class="d-block mx-auto" alt="bubble">
+      <img src="templates/bubble.png" class="d-block mx-auto" alt="bubble">
       <p class="text-center text-muted mt-2">bubble</p>
     </div>
     <div class="carousel-item">
-      <img src="anvilnote/templates/mousse-notes.png" class="d-block mx-auto" alt="mousse-notes">
+      <img src="templates/mousse-notes.png" class="d-block mx-auto" alt="mousse-notes">
       <p class="text-center text-muted mt-2">mousse-notes</p>
     </div>
   </div>
@@ -117,7 +117,7 @@ AnvilNote 將這些內容視為文件的一部分，而不是單純附加在文�
 
 數學公式可以在編輯器內即時預覽，輸出 PDF 時再交由 Typst 重新排版；程式碼區塊可以指定程式語言，並套用對應的語法標示。表格則支援合併儲存格、調整列高與欄寬，讓使用者能依照內容安排版面，匯出時也會配合所選範本套用一致的樣式。
 
-![公式、程式碼與表格](anvilnote/editor-code-table-chart.png)
+![公式、程式碼與表格](editor-code-table-chart.png)
 
 匯出成 DOCX 時，數學式會轉換成 Word 中可繼續編輯的公式物件，而不是直接貼成圖片。表格也會保留原有的結構與版面設定，方便後續在 Word 中修改。這對需要交付 Word 檔、與他人共同編輯，或配合學校與單位既有格式的人特別實用。
 
@@ -140,7 +140,7 @@ Mermaid 可以用來製作流程圖、循序圖與系統架構圖；統計圖表
 
 這些圖表會以向量 SVG 放入文件中，因此即使放大或列印，也能維持清楚的線條與文字。
 
-![流程圖與統計圖表](anvilnote/editor-code-table-chart.png)
+![流程圖與統計圖表](editor-code-table-chart.png)
 
 ## 毋需網路 
 

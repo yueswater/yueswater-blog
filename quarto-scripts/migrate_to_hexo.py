@@ -105,7 +105,7 @@ def migrate_file(src: Path, dry_run=False):
     new_body = convert_body(body)
 
     if images_dir.is_dir():
-        new_body = new_body.replace("images/", f"{slug}/")
+        new_body = new_body.replace("images/", "")
 
     dst_md = POSTS_DIR / f"{slug}.md"
     fm_yaml = yaml.safe_dump(new_fm, allow_unicode=True, sort_keys=False, default_flow_style=False)
