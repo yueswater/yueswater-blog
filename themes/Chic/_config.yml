@@ -47,6 +47,9 @@ links:
   Threads:
     url: https://www.threads.com/@yues_19_water
     icon: threads
+  Email:
+    url: mailto:contact@yueswater.com
+    icon: envelope
   GitHub:
     url: https://github.com/yueswater
     icon: github
