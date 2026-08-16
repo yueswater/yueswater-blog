@@ -3,12 +3,12 @@
 
 # Site
 title: Yueswater Blog
-subtitle: ''
-description: 'Anthony 的個人部落格——教學文章、專案與生活筆記。'
+subtitle: ""
+description: "Anthony 的個人部落格——教學文章、專案與生活筆記。"
 keywords:
 author: Anthony
 language: zh-TW
-timezone: 'Asia/Taipei'
+timezone: "Asia/Taipei"
 
 # URL
 url: https://yueswater.com
@@ -35,7 +35,7 @@ titlecase: false
 external_link:
   enable: true
   field: site
-  exclude: ''
+  exclude: ""
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
@@ -45,7 +45,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace: ''
+  tab_replace: ""
   wrap: true
   hljs: false
 prismjs:
@@ -53,7 +53,7 @@ prismjs:
 
 # Home page setting
 index_generator:
-  path: ''
+  path: ""
   per_page: 10
   order_by: -date
 
@@ -68,7 +68,7 @@ meta_generator: true
 # Date / Time format
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
-updated_option: 'mtime'
+updated_option: "mtime"
 
 # Pagination
 per_page: 10
@@ -84,4 +84,4 @@ theme: Chic
 
 # Deployment
 deploy:
-  type: ''
+  type: ""

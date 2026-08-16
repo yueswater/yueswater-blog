@@ -2,13 +2,15 @@
     <div class="tocbot-list">
     </div>
     <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
+        <a class="tocbot-toc-expand" onclick="expand_toc()"><%= __('expand_all') %></a>
+        <a onclick="go_top()"><%= __('back_to_top') %></a>
+        <a onclick="go_bottom()"><%= __('go_to_bottom') %></a>
     </div>
 </div>
 
 <script>
+    var TOC_EXPAND_ALL_TEXT = '<%- __('expand_all') %>';
+    var TOC_COLLAPSE_ALL_TEXT = '<%- __('collapse_all') %>';
     var tocbot_timer;
     var DEPTH_MAX = 6; // 为 6 时展开所有
     var tocbot_default_config = {
@@ -42,7 +44,7 @@
         tocbot.refresh(obj_merge(tocbot_default_config, {
             collapseDepth: expanded ? 1 : DEPTH_MAX
         }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+        b.innerText = expanded ? TOC_EXPAND_ALL_TEXT : TOC_COLLAPSE_ALL_TEXT;
     }
 
     function go_top() {
