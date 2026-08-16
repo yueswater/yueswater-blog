@@ -11,7 +11,7 @@ tags: *id001
 excerpt: 為臺大國安社打造的全端社團管理平台，涵蓋活動報名、幹部管理、文章發布與電子報系統。
 ---
 
-[![](https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://ntun3si.space) [![](https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/ntun3si)
+[<img src="https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://ntun3si.space) [<img src="https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/ntun3si)
 
 ## 關於這個專案 
 
@@ -59,15 +59,15 @@ excerpt: 為臺大國安社打造的全端社團管理平台，涵蓋活動報�
 
 ## 網站一覽 
 
-<img src="images/home.png" alt="首頁" width="75%">
+<figure><img src="home.png" alt="首頁" width="75%"><figcaption>首頁</figcaption></figure>
 
 深色系為主，進頁面先看到社團名稱跟一句話介紹，往下滑會依序出現近期活動、最新文章、社團簡介。上方導覽列固定不動，不用每次都滑回頂端。整體偏素，沒放什麼多餘的東西。
 
-<img src="images/events.png" alt="活動列表頁" width="75%">
+<figure><img src="events.png" alt="活動列表頁" width="75%"><figcaption>活動列表頁</figcaption></figure>
 
 卡片排列，每張顯示活動名稱、時間、地點跟截止日，報名中、額滿、已截止都有各自的標示，不用點進去才知道狀態。進活動頁面後可以看完整說明和表單欄位，幹部在後台更新資料，前台馬上反映。
 
-<img src="images/articles.png" alt="文章列表頁" width="75%">
+<figure><img src="articles.png" alt="文章列表頁" width="75%"><figcaption>文章列表頁</figcaption></figure>
 
 所有發布的文章和公告都在這裡，按時間排，最新的在上面，每篇有標題、摘要跟日期預覽。內文吃 Markdown，標題、粗體、引用、code block 都沒問題，適合放活動後記、政策短評或社內公告。
 

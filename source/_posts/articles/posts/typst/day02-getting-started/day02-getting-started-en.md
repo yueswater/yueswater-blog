@@ -107,11 +107,11 @@ typst compile hello.typ
 
 Once the command finishes, you'll find a new `hello.pdf` in the folder, containing the typeset result — open it with any PDF reader. If you don't specify an output filename, Typst uses the source file's name and writes the output to the same folder. Opening it, you'll see the note we put together earlier, with the heading, bold/italic text, and list all laid out as written:
 
-![hello.pdf compile output](images/hello-pdf-output.png)
+<figure><img src="hello-pdf-output.png" alt="hello.pdf compile output"><figcaption>hello.pdf compile output</figcaption></figure>
 
 If you're using VS Code with the Tinymist extension, you don't even need to switch to the terminal to run a command: once you open a `.typ` file, a toolbar automatically appears above the editor with built-in Preview, Export, and other features — a couple of clicks and you can export straight to PDF:
 
-![Tinymist editor toolbar](images/tinymist-toolbar.png)
+<figure><img src="tinymist-toolbar.png" alt="Tinymist editor toolbar"><figcaption>Tinymist editor toolbar</figcaption></figure>
 
 #### Watch Mode
 

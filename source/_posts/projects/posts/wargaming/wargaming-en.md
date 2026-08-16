@@ -14,7 +14,7 @@ excerpt: A multi-player real-time wargame platform built for NTU National Securi
 mathjax: true
 ---
 
-[![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)
+[<img src="https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://wargaming.ntun3si.space) [<img src="https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/wargaming-web)
 
 ## About This Project
 

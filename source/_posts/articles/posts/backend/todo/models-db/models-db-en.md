@@ -23,7 +23,7 @@ To see clearly what each field is defined as and what its type is, it is common 
 
 This project only needs one table, the tasks table, shown below:
 
-![Task table schema diagram](./images/table-design-diagram.svg)
+<figure><img src="./images/table-design-diagram.svg" alt="Task table schema diagram"><figcaption>Task table schema diagram</figcaption></figure>
 
 Here, `NN` stands for `not null`. The corresponding SQL statement is:
 

@@ -3,7 +3,10 @@ navname: 岳氏礦泉水
 
 # navigatior items
 nav:
-  文章: /archives
+  文章: /articles
+  專案: /projects
+  DSA 筆記: /dsa
+  日記: /diary
   分類: /category
   標籤: /tag
   關於: /about

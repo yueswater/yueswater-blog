@@ -112,15 +112,15 @@ After installing the CLI, it's worth installing the [Tinymist Typst](https://mar
 
 If you'd rather not install anything locally, [typst.app](https://typst.app/) is the official online editor — you can start writing directly in your browser, with an experience quite close to Overleaf, which LaTeX users are already familiar with.
 
-![typst.app homepage](images/typst-app-home.png)
+<figure><img src="typst-app-home.png" alt="typst.app homepage"><figcaption>typst.app homepage</figcaption></figure>
 
 After landing on the homepage, click [Sign up](https://typst.app/signup/) and complete registration; the free plan already gives you basic storage space and collaboration features.
 
-![typst.app sign-up page](images/typst-app-signup.png)
+<figure><img src="typst-app-signup.png" alt="typst.app sign-up page"><figcaption>typst.app sign-up page</figcaption></figure>
 
 After logging in, you can go straight into the official Playground to practice. The editing view is split left and right: you write Typst syntax on the left, and the right side renders the typeset page in real time — change a single character and the right side updates almost instantly. The toolbar at the top has built-in buttons for bold, italic, underline, headings, lists, math symbols, code blocks, mentions, comments, and other common features, so you can get started without memorizing commands first. The top right also lets you Share a link directly or export the file.
 
-![Typst Playground editing view](images/typst-playground.png)
+<figure><img src="typst-playground.png" alt="Typst Playground editing view"><figcaption>Typst Playground editing view</figcaption></figure>
 
 For anyone still on the fence about setting up a local environment, this is the lowest-friction way to get started. Once you're comfortable with the syntax, it's never too late to switch to the CLI + VS Code local workflow described earlier — the `.typ` files written in either place are fully interchangeable.
 
