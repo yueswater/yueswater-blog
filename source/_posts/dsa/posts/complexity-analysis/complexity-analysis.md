@@ -1,12 +1,13 @@
 ---
-title: "複雜度分析"
+title: 複雜度分析
+date: '2026-08-15'
 lang: zh-TW
-date: 2026-08-15
-author: Anthony
-categories: [DSA, 複雜度分析]
-description: "時間複雜度與空間複雜度入門：各種記號、常見複雜度，以及如何粗略判斷一段程式碼的複雜度。"
-image: ../cover/DSA_cover.png
-alternate-lang: "/dsa/posts/complexity-analysis/complexity-analysis-en.html"
+categories: &id001
+- DSA
+- 複雜度分析
+tags: *id001
+excerpt: 時間複雜度與空間複雜度入門：各種記號、常見複雜度，以及如何粗略判斷一段程式碼的複雜度。
+mathjax: true
 ---
 
 寫演算法題目時，能跑出正確答案只是及格線而已，能不能在合理時間內跑完，才是真正的關卡。
@@ -23,37 +24,33 @@ alternate-lang: "/dsa/posts/complexity-analysis/complexity-analysis-en.html"
 
 **Big-$O$** 描述的是漸進**上界**，也就是函數 $f(n)$ 的成長速度，最多不會超過某個 $g(n)$ 的常數倍。比如全程都開在平面道路上，速限 50，$n$ 小時內的里程數不會超過 $50n$：
 
-![平面道路速限 50 公里／小時](images/r5-50.svg){width="20%"}
+<img src="images/r5-50.svg" alt="平面道路速限 50 公里／小時" width="20%">
 
-::: {.callout-note}
-## 定義：Big-$O$
+!!! info "定義：Big-$O$"
+    存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) \le c \cdot g(n)$：
 
-存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) \le c \cdot g(n)$：
+    <script type="math/tex; mode=display">
+    O(g(n)) = \{\, f(n) : \exists\, c > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le f(n) \le c \cdot g(n) \,\}
+    </script>
 
-$$
-O(g(n)) = \{\, f(n) : \exists\, c > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le f(n) \le c \cdot g(n) \,\}
-$$
-:::
 
 這個上界只要求**找得到一組常數 $c$、$n_0$ 讓不等式成立**，不要求貼得多緊。就算換成速限 80 的快速道路，$80n$ 一樣是合法的上界，只是比 $50n$ 更寬鬆而已：
 
-![快速道路速限 80 公里／小時](images/r5-80.svg){width="20%"}
+<img src="images/r5-80.svg" alt="快速道路速限 80 公里／小時" width="20%">
 
 這正是 O-notation 允許的彈性：像 $n = O(n^2)$ 這種寫法依然成立，即使 $n$ 實際上比 $n^2$ 慢得多。
 
-如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如​@fig-freeway-jam ​所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略。這種**慢得越來越徹底**，才是 small-$o$ 想表達的。
+如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如下圖所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略。這種**慢得越來越徹底**，才是 small-$o$ 想表達的。
 
-![國道回堵，電子看板顯示車速降到 40 以下（[Lobester00](https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg) via Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）](images/freeway-congestion.jpg){#fig-freeway-jam width="60%"}
+<img src="images/freeway-congestion.jpg" alt="國道回堵，電子看板顯示車速降到 40 以下（[Lobester00](https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg) via Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）" width="60%">
 
-::: {.callout-note}
-## 定義：small-$o$
+!!! info "定義：small-$o$"
+    對**任意**正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) < c \cdot g(n)$：
 
-對**任意**正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) < c \cdot g(n)$：
+    <script type="math/tex; mode=display">
+    f(n) = o(g(n)) \iff \forall\, c > 0,\ \exists\, n_0 > 0,\ \forall n \ge n_0,\ 0 \le f(n) < c \cdot g(n)
+    </script>
 
-$$
-f(n) = o(g(n)) \iff \forall\, c > 0,\ \exists\, n_0 > 0,\ \forall n \ge n_0,\ 0 \le f(n) < c \cdot g(n)
-$$
-:::
 
 直覺上，small-$o$ 代表 $f(n)$ 相對 $g(n)$ 會被壓縮到趨近於 0，也就是：
 
@@ -67,29 +64,25 @@ $$
 
 **Big-$\omega$** 是 Big-$O$ 的鏡像，描述漸進**下界**。國道禁行機車、慢速車輛，還設有最低速限 90：只要合法上國道開，$n$ 小時內的里程數至少會有 $90n$：
 
-![國道最低速限 90 公里／小時](images/r6-90.svg){width="20%"}
+<img src="images/r6-90.svg" alt="國道最低速限 90 公里／小時" width="20%">
 
-::: {.callout-note}
-## 定義：Big-$\Omega$
+!!! info "定義：Big-$\Omega$"
+    存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) \le f(n)$：
 
-存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) \le f(n)$：
+    <script type="math/tex; mode=display">
+    \Omega(g(n)) = \{\, f(n) : \exists\, c > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le c \cdot g(n) \le f(n) \,\}
+    </script>
 
-$$
-\Omega(g(n)) = \{\, f(n) : \exists\, c > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le c \cdot g(n) \le f(n) \,\}
-$$
-:::
 
 也就是 $f(n)$ 的成長速度，至少不會比某個 $g(n)$ 的常數倍慢。同樣地，如果要表達**下界也貼得夠鬆、成長速度真的更快**，就要用 **small-$\omega$**：想像一路狂飆、完全不甩速限的開法，隨著開車時間拉長，實際里程跟**乖乖維持在最低速限 90**之間的差距會被拉得越來越大，快得不成比例。
 
-::: {.callout-note}
-## 定義：small-$\omega$
+!!! info "定義：small-$\omega$"
+    對任意正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) < f(n)$：
 
-對任意正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) < f(n)$：
+    <script type="math/tex; mode=display">
+    f(n) = \omega(g(n)) \iff \forall\, c > 0,\ \exists\, n_0 > 0,\ \forall n \ge n_0,\ 0 \le c \cdot g(n) < f(n)
+    </script>
 
-$$
-f(n) = \omega(g(n)) \iff \forall\, c > 0,\ \exists\, n_0 > 0,\ \forall n \ge n_0,\ 0 \le c \cdot g(n) < f(n)
-$$
-:::
 
 直覺上，small-$\omega$ 代表 $f(n)$ 相對 $g(n)$ 會被放大到趨近於無限大，也就是：
 
@@ -101,29 +94,23 @@ $$
 
 **Big-$\Theta$** 同時提供上界與下界，是最常用來精確描述複雜度的記法。國道正好是個現成的例子：上限 110、下限 90 同時存在，只要乖乖開在這個範圍內，$n$ 小時的里程數會被牢牢夾在 $90n$ 到 $110n$ 之間：
 
-::: {layout-ncol=2}
-![上限 110](images/r5-110.svg){width="40%"}
-
-![下限 90](images/r6-90.svg){width="40%"}
-:::
-
+<div style="display:flex; gap:16px; align-items:center;">
+<img src="images/r5-110.svg" alt="上限 110">
+<img src="images/r6-90.svg" alt="下限 90">
+</div>
 快速道路也是同樣的例子，只是換一組數字：上限 80、下限 60，里程數一樣會被牢牢夾在 $60n$ 到 $80n$ 之間：
 
-::: {layout-ncol=2}
-![上限 80](images/r5-80.svg){width="40%"}
+<div style="display:flex; gap:16px; align-items:center;">
+<img src="images/r5-80.svg" alt="上限 80">
+<img src="images/r6-60.svg" alt="下限 60">
+</div>
+!!! info "定義：Big-$\Theta$"
+    存在正常數 $c_1$、$c_2$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c_1 g(n) \le f(n) \le c_2 g(n)$：
 
-![下限 60](images/r6-60.svg){width="40%"}
-:::
+    <script type="math/tex; mode=display">
+    \Theta(g(n)) = \{\, f(n) : \exists\, c_1, c_2 > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le c_1 g(n) \le f(n) \le c_2 g(n) \,\}
+    </script>
 
-::: {.callout-note}
-## 定義：Big-$\Theta$
-
-存在正常數 $c_1$、$c_2$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c_1 g(n) \le f(n) \le c_2 g(n)$：
-
-$$
-\Theta(g(n)) = \{\, f(n) : \exists\, c_1, c_2 > 0,\ n_0 > 0,\ \forall n \ge n_0,\ 0 \le c_1 g(n) \le f(n) \le c_2 g(n) \,\}
-$$
-:::
 
 換句話說，$f(n) = \Theta(g(n))$ 若且唯若 $f(n) = O(g(n))$ 且 $f(n) = \Omega(g(n))$ 同時成立：上界與下界都貼著同一個 $g(n)$，成長速度被夾在中間，這才是真正精確描述複雜度的記號。$\Theta$ 沒有對應的嚴格版本，因為它本身已經是雙邊夾擠，沒有**更鬆**或**更緊**的空間可以再細分。
 
@@ -137,7 +124,7 @@ $$
 | $f(n) = o(g(n))$ | $f$ 嚴格慢於 $g$ | $a < b$ |
 | $f(n) = \omega(g(n))$ | $f$ 嚴格快於 $g$ | $a > b$ |
 
-: 常見複雜度記號 {#tbl-asymptotic-notation-analogy tbl-colwidths="[25,45,30]"}
+<p class="caption">常見複雜度記號</p>
 
 不過複雜度到底要如何計算呢？在分析複雜度時，有一個大家心照不宣的假設：把加減乘除、取餘數、位元運算、記憶體存取、比較、賦值…這些基本操作，都當成花費同樣一單位時間。分析的做法就是把一段程式總共會執行幾次這些操作後全部加總，再看看這個總數的量級——這個量級就是複雜度。
 
@@ -154,7 +141,7 @@ $$
 | 1,000 | 1 微秒 | 10 微秒 | 1 毫秒 | 1 秒 | 3.4 × 10²⁸⁴ 年 |
 | 1,000,000 | 1 毫秒 | 20 毫秒 | 16.7 分鐘 | 31.7 年 | 已經不用算了 |
 
-: 不同複雜度在各種輸入規模下的實際耗時 {#tbl-growth-illustration tbl-colwidths="[10,18,18,18,18,18]"}
+<p class="caption">不同複雜度在各種輸入規模下的實際耗時</p>
 
 $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同樣的範圍卻從 1 微秒暴增到 31.7 年；$O(2^n)$ 在 $n=100$ 就已經超出宇宙年齡好幾個數量級。這張表大概是複雜度分析最有說服力的理由：同一段程式碼，選錯演算法的量級，差距不是快一點慢一點，而是**能不能在有生之年跑完**的問題。
 
@@ -167,7 +154,7 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 - **操作不一定是 $O(1)$**：次方逐一相乘其實是 $O(n)$，快速冪才是 $O(\log n)$。
 - **遞迴數不了迴圈**：得寫成遞迴關係式來解。費氏數列的樸素遞迴每次分裂成兩支呼叫，規模只減 1，複雜度直接炸成 $O(2^n)$：
 
-![費氏數列樸素遞迴的呼叫樹，越往下分支越多](images/fib-recursion-tree.svg){width="70%"}
+<img src="images/fib-recursion-tree.svg" alt="費氏數列樸素遞迴的呼叫樹，越往下分支越多" width="70%">
 
 - **均攤複雜度容易被高估**：堆疊的 `pop(k)` 單次最壞 $O(n)$，但每個元素最多被 pop 一次，$n$ 次操作攤下來還是 $O(n)$，不是 $O(n^2)$，這就是**均攤分析（amortized analysis）**。
 
@@ -179,12 +166,12 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 
 容易被忽略：遞迴呼叫本身要佔用呼叫堆疊（call stack），每呼叫一次多推一層，遞迴深度直接等於額外空間：
 
-![每次遞迴呼叫都在呼叫堆疊上多推一層](images/call-stack.svg){width="45%"}
+<img src="images/call-stack.svg" alt="每次遞迴呼叫都在呼叫堆疊上多推一層" width="45%">
 
 時間空間可以互換：費氏數列加上記憶化，時間從 $O(2^n)$ 壓到 $O(n)$，代價是多花 $O(n)$ 空間存結果。
 
 ## 如何判斷複雜度
 
-```{python}
+```python
 import numpy as np
 ```

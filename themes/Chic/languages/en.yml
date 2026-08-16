@@ -1,0 +1,34 @@
+categories: Categories
+search: Search
+tags: Tags
+tagcloud: Tag Cloud
+tweets: Tweets
+prev: Prev
+next: Next
+comment: Comments
+archive_a: Archives
+archive_b: "Archives: %s"
+page: Page %d
+recent_posts: Recent Posts
+newer: Newer
+older: Older
+share: Share
+powered_by: Powered by
+rss_feed: RSS Feed
+category: Category
+tag: Tag
+author: Author
+date: Date
+expand_all: Expand all
+collapse_all: Collapse all
+back_to_top: Back to top
+go_to_bottom: Go to bottom
+permalink: Permalink
+license: License
+slogan: Slogan
+tag_s: Tag(s)
+back: back
+home: home
+more: More
+view_in_english: English
+view_in_chinese: 中文版

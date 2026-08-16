@@ -7,12 +7,12 @@ subtitle: ""
 description: "Anthony 的個人部落格——教學文章、專案與生活筆記。"
 keywords:
 author: Anthony
-language: zh-TW
+language: [zh-TW, en]
 timezone: "Asia/Taipei"
 
 # URL
 url: https://yueswater.com
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true

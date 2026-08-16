@@ -27,6 +27,18 @@
                             <% }) %>
                         </span>
                     <% } %>
+                    <%
+                        var baseSlug = page.slug ? page.slug.replace(/-en$/, '') : null;
+                        var altLang = page.lang === 'en' ? 'zh-TW' : 'en';
+                        var altPost = baseSlug ? site.posts.data.find(function (p) {
+                            return p.lang && p.lang !== page.lang && p.slug.replace(/-en$/, '') === baseSlug;
+                        }) : null;
+                    %>
+                    <% if (altPost) { %>
+                        <span class="post-lang-switch">
+                            <a href="<%- url_for(altPost.path) %>"><%= altLang === 'en' ? __('view_in_english') : __('view_in_chinese') %></a>
+                        </span>
+                    <% } %>
                 </div>
             <% } %>
         </header>
