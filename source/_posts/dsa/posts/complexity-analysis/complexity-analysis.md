@@ -17,13 +17,13 @@ mathjax: true
 
 ## 各種記號
 
-最常用來描述複雜度的記號是 Big-$O$，但事實上**漸進 (asymptotic)** 記號其實是一整個家族，依照界線大致可以分成三組：上界、下界，以及同時夾住上下界的緊界。每一組又各自有**寬鬆**與**嚴格**兩種版本，差別在於允不允許成長速度剛好相等。
+最常用來描述複雜度的記號是 Big-$O$，但事實上**漸進 (asymptotic)** 記號是一整個家族，依照界線大致可以分成三組：上界、下界，以及同時夾住上下界的緊界。每一組又各自有**寬鬆**與**嚴格**兩種版本，差別在於允不允許成長速度剛好相等。
 
-假設 $n$ 是開車的時數（小時），$f(n)$ 是這段時間內累積的里程數（公里）。因為里程等於速度乘上時間，只要車速被限制在某個範圍內，里程數的成長就會被那個範圍乘上 $n$ 卡住——台灣的道路速限剛好可以拿來對應這幾種界線。
+拿實際生活中的開車為例。假設 $n$ 是開車的時數（小時），$f(n)$ 是這段時間內累積的里程數（公里）。因為里程等於速度乘上時間，只要車速被限制在某個範圍內，里程數的成長就會被那個範圍乘上 $n$ 壓住——臺灣的道路速限剛好可以拿來對應這幾種界線。
 
 ### 上界：Big-$O$、Small-$o$
 
-**Big-$O$** 描述的是漸進**上界**，也就是函數 $f(n)$ 的成長速度，最多不會超過某個 $g(n)$ 的常數倍。比如全程都開在平面道路上，速限 50，$n$ 小時內的里程數不會超過 $50n$：
+**Big-$O$** 描述的是漸進**上界**，意即函數 $f(n)$ 的成長速度，最多不會超過另一個函數 $g(n)$ 的常數倍。比如全程都開在平面道路上，速限 50，$n$ 小時內的里程數不會超過 $50n$：
 
 <figure><img src="images/r5-50.svg" alt="平面道路速限 50 公里／小時" width="90"><figcaption>平面道路速限 50 公里／小時</figcaption></figure>
 
@@ -39,16 +39,16 @@ mathjax: true
 
 <figure><img src="images/r5-80.svg" alt="快速道路速限 80 公里／小時" width="90"><figcaption>快速道路速限 80 公里／小時</figcaption></figure>
 
-這正是 O-notation 允許的彈性：像 $n = O(n^2)$ 這種寫法依然成立，即使 $n$ 實際上比 $n^2$ 慢得多。
+這正是 $O$-notation 允許的彈性：像 $n = O(n^2)$ 這種寫法依然成立，即使 $n$ 實際上比 $n^2$ 慢得多。
 
-如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如下圖所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略。這種**慢得越來越徹底**，才是 small-$o$ 想表達的。
+如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如下圖所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略——這種**慢得越來越徹底**的概念正是 small-$o$ 想表達的。
 
 <figure><img src="images/freeway-congestion.jpg" alt="國道回堵，電子看板顯示車速降到 40 以下" width="500"><figcaption>國道回堵，電子看板顯示車速降到 40 以下</figcaption></figure>
 
 <p class="caption">照片來源：<a href="https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg" target="_blank" rel="noopener">Lobester00</a> via Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>
 
 !!! info "定義：small-$o$"
-    對**任意**正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) < c \cdot g(n)$：
+    對任意正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) < c \cdot g(n)$：
 
     <script type="math/tex; mode=display">
     f(n) = o(g(n)) \iff \forall\, c > 0,\ \exists\, n_0 > 0,\ \forall n \ge n_0,\ 0 \le f(n) < c \cdot g(n)
@@ -77,7 +77,7 @@ $$
     </script>
 
 
-也就是 $f(n)$ 的成長速度，至少不會比某個 $g(n)$ 的常數倍慢。同樣地，如果要表達**下界也貼得夠鬆、成長速度真的更快**，就要用 **small-$\omega$**：想像一路狂飆、完全不甩速限的開法，隨著開車時間拉長，實際里程跟**乖乖維持在最低速限 90**之間的差距會被拉得越來越大，快得不成比例。
+也就是 $f(n)$ 的成長速度，至少不會比某個 $g(n)$ 的常數倍慢。同樣地，如果要表達**下界也貼得夠鬆、成長速度真的更快**，就要用 **small-$\omega$**：想像一路狂飆、完全不甩速限的開法，隨著開車時間拉長，實際里程跟**乖乖維持在最低速限 90** 之間的差距會被拉得越來越大，快得不成比例。
 
 !!! info "定義：small-$\omega$"
     對任意正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) < f(n)$：
@@ -152,6 +152,10 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 
 實務上寫題目時，複雜度算出來大概落在哪個量級，也直接決定了這個寫法可不可行。假設時限抓 1 秒，量級落在 $10^7$ 以下通常穩過，$10^9$ 以上通常會超時；$10^8$ 左右算是灰色地帶，能不能過要看常數與實作細節。這也代表一件事：只要複雜度的量級沒有逼近 $10^8$，同一個複雜度等級底下的常數差異其實不重要，挑寫起來最順手、最不容易出錯的寫法就好，不用刻意為了省一點常數把程式碼弄得難以維護。
 
+## 如何判斷複雜度
+
+拿到一段程式碼，實際上要怎麼判斷複雜度？答案要拆成兩塊看：**時間複雜度**看的是操作次數怎麼隨 $n$ 成長，**空間複雜度**看的是額外記憶體用量怎麼隨 $n$ 成長——分析手法相似，但盯的目標不同，混在一起看反而容易漏算。
+
 ### 時間複雜度
 
 最快的估法是**數迴圈層數**：沒有迴圈 $O(1)$，一層 $O(n)$，兩層 $O(n^2)$。但這招有三個地雷：
@@ -161,22 +165,68 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 
 <figure><img src="images/fib-recursion-tree.svg" alt="費氏數列樸素遞迴的呼叫樹，越往下分支越多" width="480"><figcaption>費氏數列樸素遞迴的呼叫樹，越往下分支越多</figcaption></figure>
 
-- **均攤複雜度容易被高估**：堆疊的 `pop(k)` 單次最壞 $O(n)$，但每個元素最多被 pop 一次，$n$ 次操作攤下來還是 $O(n)$，不是 $O(n^2)$，這就是**均攤分析（amortized analysis）**。
+- **均攤複雜度容易被高估**：舉例來說，堆疊的 `pop(k)` 單次最壞 $O(n)$，但每個元素最多被 `pop` 一次，$n$ 次操作攤下來還是 $O(n)$，不是 $O(n^2)$，這就是**均攤分析 (amortized analysis)** 的精髓。
 
-保險做法：操作次數全部加總、留最大量級、丟常數。沒特別說明時，時間複雜度預設是**最壞情況**。
+因此較為保險的做法是，將操作次數全部加總、留最大量級、丟常數。若沒特別說明，時間複雜度預設是**最壞情況 (the worst case)**。
 
 ### 空間複雜度
 
-空間複雜度看額外用掉多少記憶體，同樣用 $O$/$\Omega$/$\Theta$ 描述。只用幾個變數、沒配置額外資料結構的演算法是 $O(1)$，稱為**原地（in-place）**。
+空間複雜度顧名思義，即是看額外用掉多少記憶體，同樣用上述的記號描述。只用幾個變數、沒配置額外資料結構的演算法是 $O(1)$，稱為**原地 (in-place)**。
 
-容易被忽略：遞迴呼叫本身要佔用呼叫堆疊（call stack），每呼叫一次多推一層，遞迴深度直接等於額外空間：
+容易被忽略的地方是，遞迴呼叫本身要佔用**呼叫堆疊 (call stack)**，每呼叫一次多推一層，遞迴深度直接等於額外空間：
 
 <figure><img src="images/call-stack.svg" alt="每次遞迴呼叫都在呼叫堆疊上多推一層" width="220"><figcaption>每次遞迴呼叫都在呼叫堆疊上多推一層</figcaption></figure>
 
-時間空間可以互換：費氏數列加上記憶化，時間從 $O(2^n)$ 壓到 $O(n)$，代價是多花 $O(n)$ 空間存結果。
+注意到時間與空間是可以互換的！例如費氏數列加上記憶化，時間從 $O(2^n)$ 壓到 $O(n)$，代價是多花 $O(n)$ 空間存結果。
 
-## 如何判斷複雜度
+### 有趣的套件
+
+如果不想每次都手動分析，Python 有個小套件 [`big_O`](https://github.com/pberkes/big_O) 可以幫你**實驗性估計**複雜度：餵它一個函式跟一個隨 $n$ 遞增的輸入產生器，它會實際跑多組不同的 $n$、量測 runtime，再用最小平方法 fit 出最像的複雜度曲線。
+
+<div class="tabset">
+<div class="tabset-nav">
+<button class="tabset-btn active" data-tab="pip"><img class="tabset-icon" src="images/pip.svg" alt="">pip</button>
+<button class="tabset-btn" data-tab="poetry"><img class="tabset-icon" src="images/poetry.svg" alt="">poetry</button>
+<button class="tabset-btn" data-tab="uv"><img class="tabset-icon" src="images/uv.svg" alt="">uv</button>
+</div>
+<div class="tabset-panel active" data-tab="pip">
+
+```bash
+pip install big-o
+```
+
+</div>
+<div class="tabset-panel" data-tab="poetry">
+
+```bash
+poetry add big-o
+```
+
+</div>
+<div class="tabset-panel" data-tab="uv">
+
+```bash
+uv add big-o
+```
+
+</div>
+</div>
+
+裝好之後 `import big_o`（注意底線，跟安裝指令的套件名稱寫法不同），丟一個函式跟資料產生器進去就能跑：
 
 ```python
-import numpy as np
+import big_o
+
+def linear_search(arr):
+    return max(arr)
+
+best, others = big_o.big_o(
+    linear_search,
+    lambda n: big_o.datagen.integers(n, 0, 10000),
+    n_repeats=100,
+)
+print(best)
+# Linear: time = -0.00035 + 2.7E-06*n (sec)
 ```
+
+跟前面提過的一樣，這終究是**實驗估計**，範圍抓太窄、log 因子量不出來的話一樣會誤判，拿來抓個大概量級就好，別當成正式證明。

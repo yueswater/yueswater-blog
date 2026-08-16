@@ -1,14 +1,16 @@
 /* mobile phone and smart portable devices */
-@media screen and (max-width: 479px) 
+@media screen and (max-width: 1023px)
   .main
     padding-top 40pt
   .navbar
     display: none
 
 
-  .navbar-mobile 
+  .navbar-mobile
     display: block !important
     position: fixed
+    top: 0
+    left: 0
     width: 100%
     z-index: 100
     transition: all 0.6s ease 0s
@@ -187,12 +189,6 @@
         min-height 0
         .categories
           overflow: hidden
-
-
-/* iPads (portrait and landscape) ----------- */
-@media screen and (max-width: 1023px)
-  .navbar-mobile
-    display none
 
 
 /* Desktops and laptops ----------- */

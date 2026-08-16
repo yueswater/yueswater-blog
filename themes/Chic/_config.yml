@@ -95,6 +95,7 @@ stylesheets:
   - /css/code-copy.css
   - /css/caption.css
   - /css/permalink-copy.css
+  - /css/tabset.css
 
 # scripts loaded in the end of the body
 scripts:
@@ -106,6 +107,7 @@ scripts:
   - /js/code-copy.js
   - /js/permalink-copy.js
   - /js/goatcounter-views.js
+  - /js/tabset.js
 
 # plugin functions
 ## Mathjax: Math Formula Support

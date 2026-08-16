@@ -1,0 +1,63 @@
+.tabset {
+  margin: 1.5em 0;
+  border: 1px solid #e8e8e8;
+}
+
+.dark-theme .tabset {
+  border-color: #909196;
+}
+
+.tabset-nav {
+  display: flex;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.dark-theme .tabset-nav {
+  border-bottom-color: #909196;
+}
+
+.tabset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 1.2em;
+  font-size: 0.95em;
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.tabset-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.tabset-btn:hover {
+  opacity: 1;
+}
+
+.tabset-btn.active {
+  opacity: 1;
+  border-bottom-color: #2d96bd;
+}
+
+.dark-theme .tabset-btn.active {
+  border-bottom-color: #4699a5;
+}
+
+.tabset-panel {
+  display: none;
+  padding: 0 1em;
+}
+
+.tabset-panel.active {
+  display: block;
+}
+
+.tabset-panel figure.highlight {
+  margin: 1em 0;
+}
