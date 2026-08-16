@@ -25,7 +25,7 @@ mathjax: true
 
 **Big-$O$** 描述的是漸進**上界**，也就是函數 $f(n)$ 的成長速度，最多不會超過某個 $g(n)$ 的常數倍。比如全程都開在平面道路上，速限 50，$n$ 小時內的里程數不會超過 $50n$：
 
-<img src="r5-50.svg" alt="平面道路速限 50 公里／小時" width="90">
+<figure><img src="r5-50.svg" alt="平面道路速限 50 公里／小時" width="90"><figcaption>平面道路速限 50 公里／小時</figcaption></figure>
 
 !!! info "定義：Big-$O$"
     存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) \le c \cdot g(n)$：
@@ -37,15 +37,15 @@ mathjax: true
 
 這個上界只要求**找得到一組常數 $c$、$n_0$ 讓不等式成立**，不要求貼得多緊。就算換成速限 80 的快速道路，$80n$ 一樣是合法的上界，只是比 $50n$ 更寬鬆而已：
 
-<img src="r5-80.svg" alt="快速道路速限 80 公里／小時" width="90">
+<figure><img src="r5-80.svg" alt="快速道路速限 80 公里／小時" width="90"><figcaption>快速道路速限 80 公里／小時</figcaption></figure>
 
 這正是 O-notation 允許的彈性：像 $n = O(n^2)$ 這種寫法依然成立，即使 $n$ 實際上比 $n^2$ 慢得多。
 
 如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如下圖所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略。這種**慢得越來越徹底**，才是 small-$o$ 想表達的。
 
-<img src="freeway-congestion.jpg" alt="國道回堵，電子看板顯示車速降到 40 以下" width="500">
+<figure><img src="freeway-congestion.jpg" alt="國道回堵，電子看板顯示車速降到 40 以下" width="500"><figcaption>國道回堵，電子看板顯示車速降到 40 以下</figcaption></figure>
 
-國道回堵照片：[Lobester00](https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg) via Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+<p class="caption">照片來源：<a href="https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg" target="_blank" rel="noopener">Lobester00</a> via Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></p>
 
 !!! info "定義：small-$o$"
     對**任意**正常數 $c$，都存在 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le f(n) < c \cdot g(n)$：
@@ -67,7 +67,7 @@ $$
 
 **Big-$\omega$** 是 Big-$O$ 的鏡像，描述漸進**下界**。國道禁行機車、慢速車輛，還設有最低速限 90：只要合法上國道開，$n$ 小時內的里程數至少會有 $90n$：
 
-<img src="r6-90.svg" alt="國道最低速限 90 公里／小時" width="90">
+<figure><img src="r6-90.svg" alt="國道最低速限 90 公里／小時" width="90"><figcaption>國道最低速限 90 公里／小時</figcaption></figure>
 
 !!! info "定義：Big-$\Omega$"
     存在正常數 $c$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c \cdot g(n) \le f(n)$：
@@ -101,6 +101,7 @@ $$
 <img src="r5-110.svg" alt="上限 110" width="90">
 <img src="r6-90.svg" alt="下限 90" width="90">
 </div>
+<p class="caption">國道：上限 110、下限 90</p>
 
 快速道路也是同樣的例子，只是換一組數字：上限 80、下限 60，里程數一樣會被牢牢夾在 $60n$ 到 $80n$ 之間：
 
@@ -108,6 +109,7 @@ $$
 <img src="r5-80.svg" alt="上限 80" width="90">
 <img src="r6-60.svg" alt="下限 60" width="90">
 </div>
+<p class="caption">快速道路：上限 80、下限 60</p>
 
 !!! info "定義：Big-$\Theta$"
     存在正常數 $c_1$、$c_2$ 與 $n_0$，使得對所有 $n \ge n_0$，恆有 $0 \le c_1 g(n) \le f(n) \le c_2 g(n)$：
@@ -129,7 +131,7 @@ $$
 | $f(n) = o(g(n))$ | $f$ 嚴格慢於 $g$ | $a < b$ |
 | $f(n) = \omega(g(n))$ | $f$ 嚴格快於 $g$ | $a > b$ |
 
-: 常見複雜度記號 
+<p class="caption">常見複雜度記號</p>
 
 不過複雜度到底要如何計算呢？在分析複雜度時，有一個大家心照不宣的假設：把加減乘除、取餘數、位元運算、記憶體存取、比較、賦值…這些基本操作，都當成花費同樣一單位時間。分析的做法就是把一段程式總共會執行幾次這些操作後全部加總，再看看這個總數的量級——這個量級就是複雜度。
 
@@ -146,7 +148,7 @@ $$
 | 1,000 | 1 微秒 | 10 微秒 | 1 毫秒 | 1 秒 | 3.4 × 10²⁸⁴ 年 |
 | 1,000,000 | 1 毫秒 | 20 毫秒 | 16.7 分鐘 | 31.7 年 | 已經不用算了 |
 
-: 不同複雜度在各種輸入規模下的實際耗時 
+<p class="caption">不同複雜度在各種輸入規模下的實際耗時</p>
 
 $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同樣的範圍卻從 1 微秒暴增到 31.7 年；$O(2^n)$ 在 $n=100$ 就已經超出宇宙年齡好幾個數量級。這張表大概是複雜度分析最有說服力的理由：同一段程式碼，選錯演算法的量級，差距不是快一點慢一點，而是**能不能在有生之年跑完**的問題。
 
@@ -159,7 +161,7 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 - **操作不一定是 $O(1)$**：次方逐一相乘其實是 $O(n)$，快速冪才是 $O(\log n)$。
 - **遞迴數不了迴圈**：得寫成遞迴關係式來解。費氏數列的樸素遞迴每次分裂成兩支呼叫，規模只減 1，複雜度直接炸成 $O(2^n)$：
 
-<img src="fib-recursion-tree.svg" alt="費氏數列樸素遞迴的呼叫樹，越往下分支越多" width="480">
+<figure><img src="fib-recursion-tree.svg" alt="費氏數列樸素遞迴的呼叫樹，越往下分支越多" width="480"><figcaption>費氏數列樸素遞迴的呼叫樹，越往下分支越多</figcaption></figure>
 
 - **均攤複雜度容易被高估**：堆疊的 `pop(k)` 單次最壞 $O(n)$，但每個元素最多被 pop 一次，$n$ 次操作攤下來還是 $O(n)$，不是 $O(n^2)$，這就是**均攤分析（amortized analysis）**。
 
@@ -171,7 +173,7 @@ $O(n)$ 從 $n=10$ 到 $n=10^6$，只從 10 奈秒變成 1 毫秒；$O(n^3)$ 同�
 
 容易被忽略：遞迴呼叫本身要佔用呼叫堆疊（call stack），每呼叫一次多推一層，遞迴深度直接等於額外空間：
 
-<img src="call-stack.svg" alt="每次遞迴呼叫都在呼叫堆疊上多推一層" width="220">
+<figure><img src="call-stack.svg" alt="每次遞迴呼叫都在呼叫堆疊上多推一層" width="220"><figcaption>每次遞迴呼叫都在呼叫堆疊上多推一層</figcaption></figure>
 
 時間空間可以互換：費氏數列加上記憶化，時間從 $O(2^n)$ 壓到 $O(n)$，代價是多花 $O(n)$ 空間存結果。
 
