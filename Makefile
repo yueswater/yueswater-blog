@@ -1,46 +1,30 @@
-PYTHON     := .venv/bin/python3
-QUARTO_ENV := QUARTO_PYTHON=$(PYTHON)
+HEXO := node_modules/.bin/hexo
 
-.PHONY: help install preview build clean new
+.PHONY: help install preview build clean new deploy
 
 help:
 	@echo "Usage:"
-	@echo "  make install                        Set up Python venv and install dependencies"
-	@echo "  make preview                        Start Quarto dev server"
-	@echo "  make build                          Build the site"
-	@echo "  make clean                          Remove build output"
-	@echo "  make new series=<s> slug=<slug>     Create a new article scaffold"
-	@echo ""
-	@echo "  new options:"
-	@echo "    series=latex|python               (required) Article series"
-	@echo "    slug=my-article                   (required) URL slug / folder name"
-	@echo "    title=\"中文標題\"                 (optional) Chinese title"
-	@echo "    title_en=\"English Title\"         (optional) English title"
-	@echo "    date=2026-05-10                   (optional) Defaults to today"
+	@echo "  make install              Install Node dependencies"
+	@echo "  make preview              Start Hexo dev server (http://localhost:4000)"
+	@echo "  make build                Generate the static site into public/"
+	@echo "  make clean                Remove generated site and database"
+	@echo "  make new title=\"...\"      Create a new post scaffold"
 	@echo ""
 	@echo "  Example:"
-	@echo "    make new series=latex slug=math-equations title=\"數學公式排版\""
+	@echo "    make new title=\"新文章標題\""
 
 install:
-	python3 -m venv .venv
-	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install jupyter pyyaml numpy
+	npm install
 
-preview:
-	$(QUARTO_ENV) quarto preview
+preview: clean
+	$(HEXO) server
 
-build:
-	$(QUARTO_ENV) quarto render
+build: clean
+	$(HEXO) generate
 
 clean:
-	rm -rf _site .quarto
+	$(HEXO) clean
 
 new:
-	@[ -n "$(series)" ] || { echo "Error: series is required (e.g. series=latex)"; exit 1; }
-	@[ -n "$(slug)" ]   || { echo "Error: slug is required (e.g. slug=math-equations)"; exit 1; }
-	@$(PYTHON) scripts/new_article.py \
-		--series "$(series)" \
-		--slug   "$(slug)" \
-		$(if $(title),    --title    "$(title)") \
-		$(if $(title_en), --title-en "$(title_en)") \
-		$(if $(date),     --date     "$(date)")
+	@[ -n "$(title)" ] || { echo "Error: title is required (e.g. title=\"我的新文章\")"; exit 1; }
+	@$(HEXO) new post "$(title)"
