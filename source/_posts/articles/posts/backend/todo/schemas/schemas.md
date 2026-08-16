@@ -1,0 +1,151 @@
+---
+title: Todo App | Schema
+date: '2026-08-05 15:00:00'
+lang: zh-TW
+categories: &id001
+- 後端開發
+- Todo App
+tags: *id001
+excerpt: 定義請求與回應的資料驗證結構。
+---
+
+在[上一篇](../models-db/models-db.qmd)中，我們已經將資料表轉為程式碼了，接著就要來定義資料的驗證結構 (schemas)。
+
+所謂 schema，建立在資料庫實際存的形式上，需要定義 API 請求/回應允許的格式，通常是模型的子集或變形。舉例而言，一項建立任務的請求不應該允許使用者輸入 `id` 與時間戳記。
+
+!!! info "筆記"
+    **Model**：資料庫實際存的形狀
+
+    **Schema**：API 請求/回應允許的形狀，通常是 Model 的子集或變形
+
+
+通常來說，一個模型不會只有一個 schema，而是根據會有哪些商業邏輯並拆分為好幾個 schemas。
+
+**FastAPI** 內建搭配 [Pydantic](https://docs.pydantic.dev/) 的 `BaseModel`，此為 FastAPI 的核心機制，並會自動生成 API 文件。
+
+## Schema 分析
+
+在分析 Schema 應該有些什麼時，應該要從[API 端點表](../intro/intro.qmd#tbl-api-endpoints)反推。
+
+### 輸入 Schema 
+
+以任務資料為例，前面已經提過，`id`、時間戳記等東西不應該由使用者輸入，而是由服務自行計算、給定，永遠不該出現在 Schema。因此在本專案中
+
+- **建立用**：只需填寫 `title` 與 `description`，而 `completed` 也不該讓使用者填寫，因為商業規則明確寫明**新任務預設為未完成**，。
+
+- **修改用**：`title`、`description` 與 `completed` 都選填，因為允許只修改部分欄位，但同樣不能允許使用者填寫 `id`。
+
+### 輸出 Schema 
+
+回應給前端的東西，以本專案為例，任務資料基本上都應該顯示。不過本專案的要求較爲特別，需要符合以下範例結構：
+
+```json
+{
+  "page": 1,
+  "page_size": 20,
+  "total": 42,
+  "data": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "買牛奶",
+      "description": "去超市買一瓶鮮奶",
+      "completed": false,
+      "created_at": "2026-08-05T09:00:00Z",
+      "updated_at": "2026-08-05T09:00:00Z"
+    }
+  ]
+}
+```
+
+### 查詢 Schema 
+
+值得注意的是，本專案有個需求，在獲取任務時可以以關鍵字搜尋，例如：
+
+```plaintext
+網址/tasks?page=1&page_size=20&completed=true&search=牛奶
+```
+
+也就是所謂的**查詢字串** (query string)，具有以下特性：
+
+1. **型別都是字串**：網址列傳過來的東西，`page=1` 實際收到的 `1` 是字串而非數字。因此驗證時要記得**轉型** (coerce)，不能直接視為是整數。
+2. **全部都需選填**：給定預設值，允許 `GET /tasks` 操作毋需帶任何參數即可查詢。
+
+## 程式碼實作 
+
+建立 `schemas.py`：
+
+```bash
+touch schemas.py
+```
+
+然後開始實作：
+
+```python
+from datetime import datetime
+from uuid import UUID
+from zoneinfo import ZoneInfo
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator, field_serializer
+
+
+# 建立任務 Schema
+class TaskCreate(BaseModel):
+    title: str = Field(..., max_length=100)
+    description: str | None = Field(None, max_length=500)
+
+    @field_validator("title", mode="before")
+    @classmethod
+    def trim_title(cls, v):
+        if isinstance(v, str):
+            v = v.strip()
+        if not v:
+            raise ValueError("title must not be empty")
+        return v
+
+
+# 更新任務 Schema
+class TaskUpdate(BaseModel):
+    title: str | None = Field(None, max_length=100)
+    description: str | None = Field(None, max_length=500)
+    completed: bool | None = None
+
+    @field_validator("title", mode="before")
+    @classmethod
+    def trim_title(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, str):
+            v = v.strip()
+        if not v:
+            raise ValueError("title must not be empty")
+        return v
+
+
+# 回傳任務 Schema
+class TaskResponse(BaseModel):
+    id: UUID
+    title: str
+    description: str | None
+    completed: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+    # 轉換時間為台北時間
+    @field_validator("created_at", "updated_at", mode="before")
+    @classmethod
+    def convert_to_taipei_timezone(cls, v):
+        if isinstance(v, datetime):
+            if v.tzinfo is None:
+                v = v.replace(tzinfo=ZoneInfo("UTC"))
+            return v.astimezone(ZoneInfo("Asia/Taipei"))
+        return v
+
+    # 格式化時間
+    @field_serializer("created_at", "updated_at")
+    def format_datetime(self, v: datetime) -> str:
+        return v.strftime("%Y/%m/%d %H:%M:%S")
+```
+
+實測時發現，`title: str` 這個型別本身不會限制長度、也不會擋空白字串，全空白跟超過 100 字元都能通過驗證。注意到長度限制要另外用 `Field(max_length=...)` 補上；而 `"   "` 這種全空白字串長度不是 0，`Field` 也擋不掉，要靠 `mode="before"` 的 `field_validator` 先 trim 再判斷是否為空，兩者缺一都會漏掉。

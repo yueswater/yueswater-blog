@@ -12,7 +12,7 @@ nav:
 favicon: /favicon.svg
 
 # Profile
-nickname: Anthony
+nickname: 岳氏礦泉水
 
 ### this variable is MarkDown form.
 description: 個人部落格——教學文章、專案與生活筆記。
@@ -70,7 +70,7 @@ post_copyright_permalink_enable: true
 post_copyright_license_enable: true
 post_copyright_license_text: 本文採用 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> 授權
 post_copyright_slogan_enable: false
-post_copyright_slogan_text: ''
+post_copyright_slogan_text: ""
 ## toc
 post_toc_enable: true
 
@@ -100,7 +100,6 @@ scripts:
     # https://github.com/tscanlin/tocbot
   - /js/clipboard.min.js
   - /js/code-copy.js
-
 
 # plugin functions
 ## Mathjax: Math Formula Support

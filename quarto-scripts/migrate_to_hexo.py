@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
-"""One-shot migration: Quarto .qmd (zh-TW only) -> Hexo source/_posts/*.md."""
+"""
+Quarto (.qmd) -> Hexo (source/_posts/*.md) migration, v2.
+
+Preserves the legacy Quarto/Netlify URL structure as the Hexo slug by
+placing each post at source/_posts/<original-relative-path-without-ext>.md
+so Hexo's filename-derived slug reproduces the exact old path (permalink
+in _config.yml is `:title/`, no date/lang prefix). English posts keep
+their `-en` filename suffix in the same folder as the zh version.
+
+Also converts Quarto/Pandoc-specific markup that Hexo/kramed doesn't
+understand:
+  - ```{python} chunks -> plain ```python fences
+  - ::: {.callout-*} -> hexo-admonition-new !!! blocks (with $$ math
+    inside pre-converted to <script type="math/tex"> since kramed's
+    $$-autoconversion doesn't run inside the admonition's raw HTML div)
+  - ::: {layout-ncol=N} image pairs -> flex <div> of <img> tags
+  - remaining ::: fenced divs (tabsets, columns) -> stripped, content
+    kept flat
+  - pandoc image/table attrs {width=...} {#fig-x} etc. -> stripped or
+    translated to plain <img width="...">
+  - table caption lines (": caption {#tbl-x}") -> <p class="caption">
+  - Quarto crossrefs (@fig-x) -> "下圖"/figure text
+"""
 
 import re
 import shutil
@@ -11,63 +33,156 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = ROOT / "source" / "_posts"
 
-SECTIONS = {
-    "articles/posts/python": ("Python",),
-    "articles/posts/backend": ("後端開發",),
-    "articles/posts/typst": ("Typst",),
-    "diary/posts": ("日記",),
-    "dsa/posts": ("DSA",),
-    "projects/posts": ("專案",),
+SOURCE_BASES = ["articles/posts", "diary/posts", "dsa/posts", "projects/posts"]
+
+CALLOUT_TITLES = {
+    "zh-TW": {"note": "筆記", "tip": "提示", "warning": "警告", "caution": "注意", "important": "重要"},
+    "en": {"note": "Note", "tip": "Tip", "warning": "Warning", "caution": "Caution", "important": "Important"},
+}
+CALLOUT_TYPE_MAP = {
+    "note": "info", "tip": "tip", "warning": "warning",
+    "caution": "caution", "important": "warning",
 }
 
 
-def section_for(path: Path) -> str:
-    rel = path.relative_to(ROOT).as_posix()
-    for prefix, _ in SECTIONS.items():
-        if rel.startswith(prefix):
-            return SECTIONS[prefix][0]
-    return "其他"
-
-
-def strip_pandoc_attrs(text: str) -> str:
-    # drop trailing {...} attribute lists on their own after ), ], or heading text
-    text = re.sub(r"\{#[^}]*\}", "", text)
-    text = re.sub(r"\{\.[^}]*\}", "", text)
-    text = re.sub(r"\{width=\"[^\"]*\"[^}]*\}", "", text)
-    text = re.sub(r"\{layout-ncol=\d+\}", "", text)
-    return text
-
-
-def strip_fenced_divs(text: str) -> str:
-    lines = text.split("\n")
-    out = []
-    depth = 0
-    for line in lines:
-        stripped = line.strip()
-        if re.match(r"^:::+\s*\{", stripped) or re.match(r"^:::+\s*$", stripped):
-            # opening or closing fence
-            if re.match(r"^:::+\s*\{", stripped):
-                depth += 1
-                continue
-            else:
-                if depth > 0:
-                    depth -= 1
-                    continue
-        out.append(line)
-    return "\n".join(out)
+def fix_code_chunks(text: str) -> str:
+    return re.sub(r"^```\{(\w+)[^}]*\}", r"```\1", text, flags=re.MULTILINE)
 
 
 def fix_crossrefs(text: str) -> str:
     return re.sub(r"如\s*​?@fig-[\w-]+\s*​?所示", "如下圖所示", text)
 
 
-def convert_body(text: str) -> str:
-    text = strip_fenced_divs(text)
+def convert_table_captions(text: str) -> str:
+    def repl(m):
+        rest = m.group(1).strip()
+        if re.match(r"^\{[^}]*\}$", rest):
+            return ""
+        caption = re.sub(r"\s*\{[^}]*\}\s*$", "", rest).strip()
+        if not caption:
+            return ""
+        return f'<p class="caption">{caption}</p>'
+    return re.sub(r"^: (.+)$", repl, text, flags=re.MULTILINE)
+
+
+def img_tag(alt: str, src: str, attrs: str) -> str:
+    width_m = re.search(r'width="([^"]*)"', attrs)
+    width = width_m.group(1) if width_m else None
+    width_attr = f' width="{width}"' if width else ""
+    return f'<img src="{src}" alt="{alt}"{width_attr}>'
+
+
+def convert_layout_ncol(text: str) -> str:
+    pattern = re.compile(
+        r"^::: \{layout-ncol=\d+\}\n(.*?)\n:::\s*$",
+        re.MULTILINE | re.DOTALL,
+    )
+
+    def repl(m):
+        body = m.group(1)
+        imgs = re.findall(r"!\[(.*?)\]\(([^)\s]+)(?:\{([^}]*)\})?\)", body)
+        tags = [img_tag(alt, src, attrs or "") for alt, src, attrs in imgs]
+        joined = "\n".join(tags)
+        return f'<div style="display:flex; gap:16px; align-items:center;">\n{joined}\n</div>'
+
+    return pattern.sub(repl, text)
+
+
+def convert_callouts(text: str, lang: str) -> str:
+    lines = text.split("\n")
+    out = []
+    i = 0
+    titles = CALLOUT_TITLES.get(lang, CALLOUT_TITLES["zh-TW"])
+
+    while i < len(lines):
+        m = re.match(r"^(:{3,4}) \{\.callout-(\w+)\}\s*$", lines[i])
+        if not m:
+            out.append(lines[i])
+            i += 1
+            continue
+
+        fence, ctype = m.group(1), m.group(2)
+        i += 1
+        body_lines = []
+        while i < len(lines) and lines[i].rstrip() != fence:
+            body_lines.append(lines[i])
+            i += 1
+        i += 1  # skip closing fence
+
+        title = titles.get(ctype, ctype.capitalize())
+        if body_lines and re.match(r"^#{1,6}\s+", body_lines[0]):
+            heading_text = re.sub(r"^#{1,6}\s+", "", body_lines[0])
+            heading_text = re.sub(r"\s*\{#[^}]*\}\s*$", "", heading_text)
+            title = heading_text.strip()
+            body_lines = body_lines[1:]
+            if body_lines and body_lines[0].strip() == "":
+                body_lines = body_lines[1:]
+
+        body = "\n".join(body_lines)
+        body = re.sub(
+            r"^\$\$\n(.*?)\n\$\$",
+            lambda mm: '<script type="math/tex; mode=display">\n' + mm.group(1) + "\n</script>",
+            body,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+
+        admon_type = CALLOUT_TYPE_MAP.get(ctype, "info")
+        indented = "\n".join(("    " + ln) if ln.strip() else "" for ln in body.split("\n"))
+        out.append(f'!!! {admon_type} "{title}"')
+        out.append(indented)
+        out.append("")
+
+    return "\n".join(out)
+
+
+def strip_remaining_fenced_divs(text: str) -> str:
+    lines = text.split("\n")
+    out = []
+    depth = 0
+    for line in lines:
+        stripped = line.strip()
+        if re.match(r"^:{3,4}\s*\{", stripped):
+            depth += 1
+            continue
+        if re.match(r"^:{3,4}\s*$", stripped):
+            if depth > 0:
+                depth -= 1
+                continue
+        out.append(line)
+    return "\n".join(out)
+
+
+def strip_pandoc_attrs(text: str) -> str:
+    text = re.sub(r"\{#[^}]*\}", "", text)
+    text = re.sub(r"\{\.[^}]*\}", "", text)
+    return text
+
+
+def convert_images_with_attrs(text: str) -> str:
+    def repl(m):
+        alt, src, attrs = m.group(1), m.group(2), m.group(3) or ""
+        if not attrs.strip():
+            return m.group(0)
+        return img_tag(alt, src, attrs)
+
+    return re.sub(r"!\[(.*?)\]\(([^)\s]+)\)\{([^}]*)\}", repl, text)
+
+
+def convert_body(text: str, lang: str) -> str:
+    text = fix_code_chunks(text)
+    text = convert_layout_ncol(text)
+    text = convert_callouts(text, lang)
+    text = strip_remaining_fenced_divs(text)
+    text = convert_images_with_attrs(text)
     text = strip_pandoc_attrs(text)
+    text = convert_table_captions(text)
     text = fix_crossrefs(text)
-    # drop "## 定義：..." mini-headers that were callout titles, keep as bold line
-    text = re.sub(r"^## 定義：(.+)$", r"**定義：\1**", text, flags=re.MULTILINE)
     return text.strip() + "\n"
+
+
+def target_rel_path(qmd_path: Path) -> Path:
+    rel = qmd_path.relative_to(ROOT).with_suffix(".md")
+    return rel
 
 
 def migrate_file(src: Path, dry_run=False):
@@ -79,66 +194,76 @@ def migrate_file(src: Path, dry_run=False):
     fm_text, body = m.groups()
     fm = yaml.safe_load(fm_text) or {}
 
+    if not body.strip():
+        print(f"  SKIP (empty body): {src}")
+        return
+
     title = fm.get("title", src.stem)
+    lang = fm.get("lang", "zh-TW")
     date = fm.get("date", "")
     categories = fm.get("categories", [])
     if isinstance(categories, str):
         categories = [categories]
     description = fm.get("description", "")
-    section = section_for(src)
-
-    slug = src.stem
-    post_dir = src.parent
-    images_dir = post_dir / "images"
 
     new_fm = {
         "title": title,
         "date": str(date),
-        "categories": [section] + [c for c in categories if c and c != section],
+        "lang": lang,
+        "categories": categories,
         "tags": categories,
     }
     if description:
         new_fm["excerpt"] = re.sub(r"<[^>]+>", "", str(description))[:200]
-    if "$" in body:
+
+    new_body = convert_body(body, lang)
+    if "$" in new_body:
         new_fm["mathjax"] = True
 
-    new_body = convert_body(body)
+    rel_target = target_rel_path(src)
+    dst_md = POSTS_DIR / rel_target
+    images_dir = src.parent / "images"
 
-    if images_dir.is_dir():
-        new_body = new_body.replace("images/", "")
-
-    dst_md = POSTS_DIR / f"{slug}.md"
     fm_yaml = yaml.safe_dump(new_fm, allow_unicode=True, sort_keys=False, default_flow_style=False)
     dst_content = f"---\n{fm_yaml}---\n\n{new_body}"
 
     if dry_run:
-        print(f"  would write: {dst_md} ({len(dst_content)} bytes)")
+        print(f"  would write: {dst_md}")
         return
 
+    dst_md.parent.mkdir(parents=True, exist_ok=True)
     dst_md.write_text(dst_content, encoding="utf-8")
 
     if images_dir.is_dir():
-        asset_dir = POSTS_DIR / slug
+        asset_dir = dst_md.with_suffix("")
         if asset_dir.exists():
             shutil.rmtree(asset_dir)
-        shutil.copytree(images_dir, asset_dir)
+        asset_dir.mkdir(parents=True, exist_ok=True)
+        for item in images_dir.iterdir():
+            dest_item = asset_dir / item.name
+            if item.is_dir():
+                shutil.copytree(item, dest_item, dirs_exist_ok=True)
+            else:
+                shutil.copy2(item, dest_item)
 
-    # cover image at series level (../../cover/xxx.png) copy alongside if used
-    print(f"  OK: {src.relative_to(ROOT)} -> source/_posts/{slug}.md")
+    print(f"  OK: {src.relative_to(ROOT)} -> {dst_md.relative_to(ROOT)}")
 
 
 def main():
     dry_run = "--dry-run" in sys.argv
-    POSTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    if POSTS_DIR.exists():
+        shutil.rmtree(POSTS_DIR)
+    POSTS_DIR.mkdir(parents=True)
 
     targets = []
-    for base in ["articles/posts", "diary/posts", "dsa/posts", "projects/posts"]:
+    for base in SOURCE_BASES:
         for p in sorted((ROOT / base).rglob("*.qmd")):
-            if p.name.endswith("-en.qmd") or p.name in ("index.qmd", "index-en.qmd"):
+            if p.name in ("index.qmd", "index-en.qmd"):
                 continue
             targets.append(p)
 
-    print(f"Found {len(targets)} zh-TW posts to migrate.\n")
+    print(f"Found {len(targets)} posts to migrate (zh + en).\n")
     for p in targets:
         migrate_file(p, dry_run=dry_run)
 
