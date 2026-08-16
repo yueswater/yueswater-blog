@@ -27,43 +27,29 @@ goatcounter: https://yueswater.goatcounter.com
 
 # Profile
 nickname: 岳氏礦泉水
+nickname_en: Anthony
 
 ### this variable is MarkDown form.
 description: 個人部落格——教學文章、專案與生活筆記。
+description_en: Personal blog — tutorials, projects, and life notes.
 avatar: /image/avatar.png
 
 # main menu navigation
-## links key words should not be changed.
-## Complete url after key words.
-## Unused key can be commented out.
+## each entry is {url, icon}; icon must match a key in the linkIcons
+## map in layout/_page/profile.ejs.
 links:
-  Blog: /archives
-  # Category:
-  # Tags:
-  # Link:
-  # Resume:
-  # Publish:
-  # Trophy:
-  # Gallery:
-  RSS: /atom.xml
-  # AliPay:
-  # ZhiHu:
-  # LinkedIn:
-  FaceBook: https://www.facebook.com/yueswater/
-  # Twitter:
-  # Skype:
-  # CodeSandBox:
-  # CodePen:
-  # Sketch:
-  # Gitlab:
-  # Dribbble:
-  Instagram: https://instagram.com/yues_19_water
-  # Reddit:
-  # YouTube:
-  # QQ:
-  # Weibo:
-  # WeChat:
-  Github: https://github.com/yueswater
+  FB:
+    url: https://www.facebook.com/yueswater/
+    icon: facebook
+  IG:
+    url: https://instagram.com/yues_19_water
+    icon: instagram
+  Threads:
+    url: https://www.threads.com/@yues_19_water
+    icon: threads
+  GitHub:
+    url: https://github.com/yueswater
+    icon: github
 
 # how links show: you have 2 choice--text or icon.
 links_text_enable: false
