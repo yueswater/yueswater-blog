@@ -38,30 +38,26 @@ document.ready(
         const default_theme = 'light' // 'dark'
 
         function setTheme(status = 'light') {
+            const checkboxes = document.getElementsByClassName('switch_default')
             if (status === 'dark') {
                 window.sessionStorage.theme = 'dark'
                 pagebody.classList.add('dark-theme');
-                document.getElementById("switch_default").checked = true
-                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+                for (let i = 0; i < checkboxes.length; i++) checkboxes[i].checked = true
             } else {
                 window.sessionStorage.theme = 'light'
                 pagebody.classList.remove('dark-theme');
-                document.getElementById("switch_default").checked = false
-                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+                for (let i = 0; i < checkboxes.length; i++) checkboxes[i].checked = false
             }
         };
 
         setTheme(window.sessionStorage.theme ?? default_theme)
 
-        document.getElementsByClassName('toggleBtn')[0].addEventListener('click', () => {
-            window.sessionStorage.theme = window.sessionStorage.theme === 'dark' ? 'light' : 'dark'
-            setTheme(window.sessionStorage.theme)
-            document.getElementById("switch_default").checked = window.sessionStorage.theme === 'light'
-        })
-        document.getElementById('mobile-toggle-theme').addEventListener('click', () => {
-            window.sessionStorage.theme = window.sessionStorage.theme === 'dark' ? 'light' : 'dark'
-            setTheme(window.sessionStorage.theme)
-            document.getElementById("mobile-toggle-theme").innerText = window.sessionStorage.theme === 'light' ? "· Light" : "· Dark"
-        })
+        const toggleBtns = document.getElementsByClassName('toggleBtn')
+        for (let i = 0; i < toggleBtns.length; i++) {
+            toggleBtns[i].addEventListener('click', () => {
+                window.sessionStorage.theme = window.sessionStorage.theme === 'dark' ? 'light' : 'dark'
+                setTheme(window.sessionStorage.theme)
+            })
+        }
     }
 );
