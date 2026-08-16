@@ -28,11 +28,8 @@
                         </span>
                     <% } %>
                     <%
-                        var baseSlug = page.slug ? page.slug.replace(/-en$/, '') : null;
+                        var altPost = alt_lang_post(page);
                         var altLang = page.lang === 'en' ? 'zh-TW' : 'en';
-                        var altPost = baseSlug ? site.posts.data.find(function (p) {
-                            return p.lang && p.lang !== page.lang && p.slug.replace(/-en$/, '') === baseSlug;
-                        }) : null;
                     %>
                     <% if (altPost) { %>
                         <span class="post-lang-switch">
