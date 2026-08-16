@@ -9,14 +9,14 @@ nav:
   About: /about
 
 # favicon
-favicon: /favicon.ico
+favicon: /favicon.svg
 
 # Profile
 nickname: Anthony
 
 ### this variable is MarkDown form.
 description: 個人部落格——教學文章、專案與生活筆記。
-avatar: /image/avatar.jpeg
+avatar: /image/avatar.png
 
 # main menu navigation
 ## links key words should not be changed.
