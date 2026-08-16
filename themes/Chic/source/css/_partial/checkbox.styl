@@ -1,3 +1,30 @@
+.lang-switch
+  display inline-flex
+  align-items center
+  justify-content center
+  width 20px
+  height 20px
+  margin-left 15px
+  cursor pointer
+  color $light-font-color
+  transition color 0.15s ease
+  .dark-theme &
+    color $dark-font-color
+  .lang-switch-icon
+    width 16px
+    height 16px
+  &:hover
+    color $light-post-link-color
+    .dark-theme &
+      color $dark-accent-color
+  &.lang-switch-inactive
+    cursor default
+    opacity 0.3
+    &:hover
+      color $light-font-color
+      .dark-theme &
+        color $dark-font-color
+
 .theme-toggle
   display inline-flex
   align-items center
