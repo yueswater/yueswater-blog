@@ -1,5 +1,5 @@
 # Header
-navname: Yueswater Blog
+navname: 岳氏礦泉水
 
 # navigatior items
 nav:
@@ -17,10 +17,6 @@ nickname: Anthony
 ### this variable is MarkDown form.
 description: 個人部落格——教學文章、專案與生活筆記。
 avatar: /image/avatar.png
-
-# About page (source/about, layout: about)
-about_avatar: /image/about-avatar.jpg
-about_description: 我是宋品岳（Anthony），政大國貿所學生，同時擔任軟體實習生。這裡記錄我在 Python、R、LaTeX 與全端開發上的學習與實作。
 
 # main menu navigation
 ## links key words should not be changed.
@@ -94,7 +90,6 @@ stylesheets:
   - /css/admonition.css
   - /css/admonition-override.css
   - /css/code-copy.css
-  - /css/about.css
   - /css/caption.css
 
 # scripts loaded in the end of the body
