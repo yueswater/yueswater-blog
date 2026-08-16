@@ -1,0 +1,23 @@
+.post-content .caption,
+.post-content figcaption {
+  margin-top: 0.4em;
+  margin-bottom: 1em;
+  font-size: 0.85em;
+  color: #888;
+  text-align: center;
+}
+
+.post-content figure {
+  margin: 1em 0;
+  text-align: center;
+}
+
+.post-content figure img {
+  display: block;
+  margin: 0 auto;
+}
+
+.dark-theme .post-content .caption,
+.dark-theme .post-content figcaption {
+  color: #999;
+}

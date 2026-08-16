@@ -95,6 +95,7 @@ stylesheets:
   - /css/admonition-override.css
   - /css/code-copy.css
   - /css/about.css
+  - /css/caption.css
 
 # scripts loaded in the end of the body
 scripts:
