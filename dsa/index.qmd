@@ -1,7 +1,7 @@
 ---
 pagetitle: 資料結構與演算法 | Yueswater Blog
 lang: zh-TW
-description: "Anthony 的資料結構與演算法筆記。"
+description: "資料結構與演算法筆記。"
 title: 資料結構與演算法
 search: false
 repo-actions: false
