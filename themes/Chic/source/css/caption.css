@@ -7,7 +7,7 @@
   text-align: center;
 }
 
-.post-content figure {
+.post-content figure:not(.highlight) {
   margin: 1em 0;
   text-align: center;
 }
