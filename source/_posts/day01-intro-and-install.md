@@ -112,15 +112,15 @@ typst --version
 
 如果不想在本機裝任何東西，[typst.app](https://typst.app/) 是官方提供的線上編輯器，開瀏覽器就能直接寫，體驗很接近 LaTeX 使用者熟悉的 Overleaf。
 
-![typst.app 首頁](day01-intro-and-install/typst-app-home.png)
+![typst.app 首頁](typst-app-home.png)
 
 進入首頁後，點選 [Sign up](https://typst.app/signup/) 並完成註冊後，使用免費方案就有基本的儲存空間與協作功能可用。
 
-![typst.app 註冊頁面](day01-intro-and-install/typst-app-signup.png)
+![typst.app 註冊頁面](typst-app-signup.png)
 
 登入後可以直接進到官方提供的 Playground 練習。編輯畫面是左右分割：左邊寫 Typst 語法，右邊即時渲染成排好版的頁面，改一個字右邊幾乎立刻跟著更新；上方工具列內建粗體、斜體、底線、標題、清單、數學符號、程式碼區塊、提及（mention）、留言等常用功能按鈕，不用先背指令也能上手，右上角則可以直接 Share 分享連結或匯出檔案。
 
-![Typst Playground 編輯畫面](day01-intro-and-install/typst-playground.png)
+![Typst Playground 編輯畫面](typst-playground.png)
 
 對還在猶豫要不要安裝本機環境的人，這是門檻最低的入門方式；等熟悉語法後，再切換到前面介紹的 CLI + VS Code 本機工作流也不遲，兩邊寫的 `.typ` 檔案是互通的。
 

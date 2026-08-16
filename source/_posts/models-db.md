@@ -24,7 +24,7 @@ excerpt: 定義資料模型並串接資料庫連線。
 
 本專案僅需一張表，也就是任務表，如下所示：
 
-![任務資料表結構圖](./models-db/table-design-diagram.svg)
+![任務資料表結構圖](./table-design-diagram.svg)
 
 其中 `NN` 代表 `not null`（非空），對應的 SQL 指令為：
 
