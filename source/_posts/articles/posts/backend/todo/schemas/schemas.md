@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 定義請求與回應的資料驗證結構。
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 在[上一篇](../models-db/models-db.qmd)中，我們已經將資料表轉為程式碼了，接著就要來定義資料的驗證結構 (schemas)。

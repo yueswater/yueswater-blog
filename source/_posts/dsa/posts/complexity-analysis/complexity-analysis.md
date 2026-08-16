@@ -7,6 +7,7 @@ categories: &id001
 - 複雜度分析
 tags: *id001
 excerpt: 時間複雜度與空間複雜度入門：各種記號、常見複雜度，以及如何粗略判斷一段程式碼的複雜度。
+thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---
 

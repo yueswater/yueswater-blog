@@ -11,6 +11,7 @@ tags: *id001
 excerpt: AnvilNote is an offline-first writing and note-taking tool that pairs a clean
   editing experience with Typst typesetting, built for long-form notes, lecture handouts,
   reports, and academic documents, e
+thumbnail: cover.svg
 ---
 
 Anyone who has used Notion to put together lecture notes or a report has probably run into the same problem: the content is done, but the moment you try to export it to PDF, you realize the font, page layout, and document format are barely adjustable. The exported PDF might be readable, but it rarely turns into something you'd actually want to print, submit, or share.

@@ -8,6 +8,7 @@ categories: &id001
 tags: *id001
 excerpt: Starting from LaTeX's pain points, meet Typst, a new Rust-powered typesetting
   system, and get it installed on macOS, Linux, and Windows, plus the online editor.
+thumbnail: /images/covers/Typst_logo.png
 ---
 
 For university students and researchers who frequently typeset mathematical notation and care about output quality, LaTeX is nearly unavoidable — it has a long history (over 40 years since 1984), a stable community, a complete package ecosystem, and it's the dominant format for academic paper templates and submission systems. But anyone who has actually used it tends to have a love-hate relationship with it: long compile times, error messages that can fill an entire screen, digging through package documentation just to place a single figure, package conflicts that eat up an entire afternoon. These are hurdles for beginners and everyday annoyances for veterans, since its syntax ultimately traces back to design thinking from the 1980s — inevitably clunky and hard to debug to anyone used to the concise syntax of modern languages.

@@ -7,6 +7,7 @@ categories: &id001
 - Programming Languages
 tags: *id001
 excerpt: A simple built-in function that reveals how Python variables really work
+thumbnail: /images/covers/Python_logo.png
 ---
 
 At first glance, `id()` looks like a tiny utility: it just returns an integer. But once you start using it to inspect real code, you quickly realize something deeper: many bugs and "weird" behaviors come from misunderstanding what a Python variable actually is.

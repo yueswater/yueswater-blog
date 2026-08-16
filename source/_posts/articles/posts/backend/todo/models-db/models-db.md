@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 定義資料模型並串接資料庫連線。
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 [上一篇](../init/init.qmd)已經初始化了專案，接下來就要開始建構模型。

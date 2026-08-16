@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 將程式碼拆分，降低單一檔案的複雜度。
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 雖然在前面的文章已經完成 Todo App 所需要的內容了，但是有個問題：隨著功能越寫越多，`main.py` 裡的每一支路由，做的事情也越來越多——收請求、驗證資料、判斷任務存不存在、直接呼叫資料庫、組出回應，全部擠在同一個函式裡。

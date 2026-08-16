@@ -7,6 +7,7 @@ categories: &id001
 - 程式語言
 tags: *id001
 excerpt: 一個看似簡單的內建函數，卻藏著理解 Python 變數行為的關鍵
+thumbnail: /images/covers/Python_logo.png
 ---
 
 先來看一段會讓很多人愣住的程式碼：

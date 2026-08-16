@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Introduction to the Todo App practice project
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 A Todo App is often one of the first projects that people build when they start learning backend development. This series is a collection of notes from my own practice, and I hope it will also be useful to others who are learning the same thing.

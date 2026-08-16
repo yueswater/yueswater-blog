@@ -8,6 +8,7 @@ categories: &id001
 tags: *id001
 excerpt: Write your first .typ document, learn the basic syntax for headings, bold/italic
   text, and lists, and get to know the compile and watch modes.
+thumbnail: /images/covers/Typst_logo.png
 ---
 
 In the [previous post](../day01-intro-and-install/day01-intro-and-install-en.html), we got the environment ready — whether that meant installing the CLI locally with the VS Code extension, or writing directly in typst.app. This post is where we actually write our first Typst document.

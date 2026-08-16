@@ -7,6 +7,7 @@ categories: &id001
 - 排版系統
 tags: *id001
 excerpt: 動手寫出第一份 .typ 文件，學會標題、粗體斜體、清單等基本語法，並認識編譯與監看兩種編譯模式。
+thumbnail: /images/covers/Typst_logo.png
 ---
 
 [上一篇](../day01-intro-and-install/day01-intro-and-install.html)我們把環境準備好了，無論是本機安裝 CLI 搭配 VS Code 插件，還是直接用 typst.app 線上編輯，這篇要正式動手寫出第一份 Typst 文件。

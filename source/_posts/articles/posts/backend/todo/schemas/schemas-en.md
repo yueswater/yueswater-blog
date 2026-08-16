@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Define request and response validation schemas.
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 In the [previous article](../models-db/models-db-en.qmd), we turned the table into code. Next, we need to define the validation structures for the data — the schemas.

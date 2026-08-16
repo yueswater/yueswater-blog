@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: 建立專案骨架與空殼入口檔
+thumbnail: /images/covers/Backend_logo.png
 mathjax: true
 ---
 

@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: A look back at the whole Todo App series, and what comes next.
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 Starting from the [introduction](../intro/intro-en.qmd), this series built a Todo API with Python and FastAPI, working through project setup, the Model, the Schema, the full API implementation, and finally wrapping up with [decoupling](../decoupling/decoupling-en.qmd). The whole series was really about one thing: turning a simple CRUD service into a project with clear responsibilities that is actually easy to maintain.

@@ -7,6 +7,7 @@ categories: &id001
 - Todo App
 tags: *id001
 excerpt: Split the code apart to reduce the complexity of any single file.
+thumbnail: /images/covers/Backend_logo.png
 ---
 
 The previous articles already cover everything the Todo App needs. However, there is a problem: as more features are added, each route in `main.py` starts to do more and more — receiving the request, validating the data, checking whether the task exists, calling the database directly, and building the response, all inside the same function.

@@ -9,6 +9,7 @@ categories: &id001
 - 全端開發
 tags: *id001
 excerpt: 為臺大國安社 2026 青年國安論壇打造的多人即時兵推平台，四個角色同時上線，模擬台海危機下的決策談判。
+thumbnail: cover.svg
 mathjax: true
 ---
 
