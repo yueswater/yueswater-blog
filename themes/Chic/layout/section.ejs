@@ -1,0 +1,23 @@
+<%
+    var prefix = page.section_prefix;
+    var posts = site.posts.data
+        .filter(function (p) { return p.path.indexOf(prefix) === 0; })
+        .sort(function (a, b) { return b.date - a.date; });
+    var lastYear = '';
+%>
+<div class="container">
+    <div class="post-wrap archive">
+        <h2 class="post-title"><%- page.title %></h2>
+        <% posts.forEach(function (post) { %>
+            <% var curYear = post.date.year(); %>
+            <% if (lastYear !== curYear) { %>
+                <h3><%- curYear %></h3>
+                <% lastYear = curYear; %>
+            <% } %>
+            <article class="archive-item">
+                <a class="archive-item-link" href="<%- url_for(post.path) %>"><%= post.title %></a>
+                <span class="archive-item-date"><%- date(post.date, theme.date_format) %></span>
+            </article>
+        <% }) %>
+    </div>
+</div>

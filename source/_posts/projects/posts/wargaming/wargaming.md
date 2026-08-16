@@ -12,7 +12,7 @@ excerpt: 為臺大國安社 2026 青年國安論壇打造的多人即時兵推�
 mathjax: true
 ---
 
-[![](https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://wargaming.ntun3si.space) [![](https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/wargaming-web)
+[<img src="https://img.shields.io/badge/website-wargaming.ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://wargaming.ntun3si.space) [<img src="https://img.shields.io/badge/commits-15-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/wargaming-web)
 
 ## 關於這個專案 
 

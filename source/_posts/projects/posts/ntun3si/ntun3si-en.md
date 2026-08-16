@@ -12,7 +12,7 @@ excerpt: A full-stack club management platform built for NTU National Security S
   covering event registration, officer management, and article publishing.
 ---
 
-[![](https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818)](https://ntun3si.space) [![](https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818)](https://github.com/yueswater/ntun3si)
+[<img src="https://img.shields.io/badge/website-ntun3si.space-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://ntun3si.space) [<img src="https://img.shields.io/badge/commits-116-f2f2f2?style=flat-square&labelColor=181818" alt="">](https://github.com/yueswater/ntun3si)
 
 ## About This Project
 
@@ -62,15 +62,15 @@ Each officer's profile — name, title, term, and photo — is managed in the ba
 
 ## Screenshots
 
-<img src="images/home.png" alt="Home page" width="75%">
+<figure><img src="home.png" alt="Home page" width="75%"><figcaption>Home page</figcaption></figure>
 
 The site uses a dark color scheme throughout. The top section introduces the society with a short tagline, and scrolling down reveals upcoming events, recent articles, and a brief club introduction. The navigation bar stays fixed at the top, so users do not need to scroll back up to switch pages.
 
-<img src="images/events.png" alt="Events page" width="75%">
+<figure><img src="events.png" alt="Events page" width="75%"><figcaption>Events page</figcaption></figure>
 
 Events are displayed as cards, each showing the event name, date, location, and registration deadline. Status labels — open, full, closed — are visible without clicking into the event. The full description and registration form are available on the event detail page. Any updates made in the back end are reflected on the front end right away.
 
-<img src="images/articles.png" alt="Articles page" width="75%">
+<figure><img src="articles.png" alt="Articles page" width="75%"><figcaption>Articles page</figcaption></figure>
 
 All published articles and announcements are listed here in reverse chronological order, with a title, short preview, and date shown for each entry. Article content supports Markdown rendering, including headings, bold text, blockquotes, and code blocks — suitable for event write-ups, short policy commentary, or internal notices.
 

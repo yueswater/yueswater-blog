@@ -43,7 +43,9 @@ $$
 
 如果想表達**上界貼得夠鬆、兩者成長速度真的不同量級**，就要用 **small-$o$**：想像同樣開了 $n$ 小時，卻遇上國道回堵，如​@fig-freeway-jam ​所示，電子看板顯示車速降到 40 以下——不管塞多久，它的里程數跟**照速限一路開**比起來，佔比會被壓縮到幾乎可以忽略。這種**慢得越來越徹底**，才是 small-$o$ 想表達的。
 
-![國道回堵，電子看板顯示車速降到 40 以下（[Lobester00](https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg) via Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）](images/freeway-congestion.jpg){#fig-freeway-jam width="60%"}
+![國道回堵，電子看板顯示車速降到 40 以下](images/freeway-congestion.jpg){#fig-freeway-jam width="60%"}
+
+: 照片來源：[Lobester00](https://commons.wikimedia.org/wiki/File:2022-01-30_cars_on_the_Freeway_1_in_middle_west_Taiwan_01.jpg) via Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ::: {.callout-note}
 ## 定義：small-$o$

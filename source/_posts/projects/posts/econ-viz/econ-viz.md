@@ -96,7 +96,7 @@ cvs.add_equilibrium(eq, show_ray=True)
 cvs.save("cobb_douglas.png")
 ```
 
-<img src="images/cobb_douglas.png" alt="Cobb-Douglas 均衡圖" width="50%">
+<figure><img src="cobb_douglas.png" alt="Cobb-Douglas 均衡圖" width="50%"><figcaption>Cobb-Douglas 均衡圖</figcaption></figure>
 
 ### LaTeX 解析
 
@@ -130,7 +130,7 @@ fig.add_marshallian_panel(price_markers=[1.5, 4.0])
 fig.save("demand.png")
 ```
 
-<img src="images/demand_cobb_douglas.png" alt="需求曲線教學圖" width="50%">
+<figure><img src="demand_cobb_douglas.png" alt="需求曲線教學圖" width="50%"><figcaption>需求曲線教學圖</figcaption></figure>
 
 ### Slutsky 矩陣
 
@@ -167,7 +167,7 @@ box = EdgeworthBox(
 )
 ```
 
-<img src="images/edgeworth_cobb_symmetric.png" alt="Edgeworth Box（Cobb-Douglas × Cobb-Douglas）" width="50%">
+<figure><img src="edgeworth_cobb_symmetric.png" alt="Edgeworth Box（Cobb-Douglas × Cobb-Douglas）" width="50%"><figcaption>Edgeworth Box（Cobb-Douglas × Cobb-Douglas）</figcaption></figure>
 
 ## CLI
 

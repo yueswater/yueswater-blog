@@ -10,6 +10,8 @@ their `-en` filename suffix in the same folder as the zh version.
 
 Also converts Quarto/Pandoc-specific markup that Hexo/kramed doesn't
 understand:
+  - ```{=html} raw blocks -> unwrapped literal HTML (kramed would
+    otherwise syntax-highlight it as a code block instead of running it)
   - ```{python} chunks -> plain ```python fences
   - ::: {.callout-*} -> hexo-admonition-new !!! blocks (with $$ math
     inside pre-converted to <script type="math/tex"> since kramed's
@@ -49,8 +51,29 @@ def fix_code_chunks(text: str) -> str:
     return re.sub(r"^```\{(\w+)[^}]*\}", r"```\1", text, flags=re.MULTILINE)
 
 
+def fix_raw_html_blocks(text: str) -> str:
+    return re.sub(
+        r"^```\{=html\}\n(.*?)\n```[ \t]*$",
+        lambda m: m.group(1),
+        text,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+
+
 def fix_crossrefs(text: str) -> str:
     return re.sub(r"如\s*​?@fig-[\w-]+\s*​?所示", "如下圖所示", text)
+
+
+def md_links_to_html(text: str) -> str:
+    # single-line raw HTML (e.g. <p class="caption">...</p>) isn't run back
+    # through kramed's markdown pass, so [text](url) has to become a real
+    # <a> tag by hand or it shows up as literal bracket/paren text.
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    return re.sub(
+        r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
+        r'<a href="\2" target="_blank" rel="noopener">\1</a>',
+        text,
+    )
 
 
 def convert_table_captions(text: str) -> str:
@@ -61,27 +84,35 @@ def convert_table_captions(text: str) -> str:
         caption = re.sub(r"\s*\{[^}]*\}\s*$", "", rest).strip()
         if not caption:
             return ""
-        return f'<p class="caption">{caption}</p>'
+        return f'<p class="caption">{md_links_to_html(caption)}</p>'
     return re.sub(r"^: (.+)$", repl, text, flags=re.MULTILINE)
 
 
-def img_tag(alt: str, src: str, attrs: str) -> str:
+def strip_images_prefix(src: str) -> str:
+    return re.sub(r"^images/", "", src)
+
+
+def img_tag(alt: str, src: str, attrs: str, figure: bool = True) -> str:
+    src = strip_images_prefix(src)
     width_m = re.search(r'width="([^"]*)"', attrs)
     width = width_m.group(1) if width_m else None
     width_attr = f' width="{width}"' if width else ""
-    return f'<img src="{src}" alt="{alt}"{width_attr}>'
+    tag = f'<img src="{src}" alt="{alt}"{width_attr}>'
+    if figure and alt.strip():
+        return f"<figure>{tag}<figcaption>{alt}</figcaption></figure>"
+    return tag
 
 
 def convert_layout_ncol(text: str) -> str:
     pattern = re.compile(
-        r"^::: \{layout-ncol=\d+\}\n(.*?)\n:::\s*$",
+        r"^::: \{layout-ncol=\d+\}\n(.*?)\n:::[ \t]*$",
         re.MULTILINE | re.DOTALL,
     )
 
     def repl(m):
         body = m.group(1)
-        imgs = re.findall(r"!\[(.*?)\]\(([^)\s]+)(?:\{([^}]*)\})?\)", body)
-        tags = [img_tag(alt, src, attrs or "") for alt, src, attrs in imgs]
+        imgs = re.findall(r"!\[(.*?)\]\(([^)\s]+)\)(?:\{([^}]*)\})?", body)
+        tags = [img_tag(alt, src, attrs or "", figure=False) for alt, src, attrs in imgs]
         joined = "\n".join(tags)
         return f'<div style="display:flex; gap:16px; align-items:center;">\n{joined}\n</div>'
 
@@ -159,20 +190,30 @@ def strip_pandoc_attrs(text: str) -> str:
 
 
 def convert_images_with_attrs(text: str) -> str:
-    def repl(m):
-        alt, src, attrs = m.group(1), m.group(2), m.group(3) or ""
-        if not attrs.strip():
-            return m.group(0)
+    def repl_with_attrs(m):
+        alt, src, attrs = m.group(1), m.group(2), m.group(3)
         return img_tag(alt, src, attrs)
 
-    return re.sub(r"!\[(.*?)\]\(([^)\s]+)\)\{([^}]*)\}", repl, text)
+    text = re.sub(r"!\[(.*?)\]\(([^)\s]+)\)\{([^}]*)\}", repl_with_attrs, text)
+
+    def repl_bare(m):
+        alt, src = m.group(1), m.group(2)
+        return img_tag(alt, src, "")
+
+    return re.sub(r"!\[(.*?)\]\(([^)\s]+)\)", repl_bare, text)
+
+
+def fix_raw_html_img_src(text: str) -> str:
+    return re.sub(r'(<img[^>]*\bsrc=")images/', r"\1", text)
 
 
 def convert_body(text: str, lang: str) -> str:
+    text = fix_raw_html_blocks(text)
     text = fix_code_chunks(text)
     text = convert_layout_ncol(text)
     text = convert_callouts(text, lang)
     text = strip_remaining_fenced_divs(text)
+    text = fix_raw_html_img_src(text)
     text = convert_images_with_attrs(text)
     text = strip_pandoc_attrs(text)
     text = convert_table_captions(text)
