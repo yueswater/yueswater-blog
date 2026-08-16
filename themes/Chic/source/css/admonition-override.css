@@ -1,0 +1,4 @@
+/* Square corners for hexo-admonition-new (site preference) */
+.admonition {
+  --admonition-border-radius: 0;
+}
