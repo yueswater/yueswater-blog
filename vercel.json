@@ -2,10 +2,140 @@
   "buildCommand": "npx hexo clean && npx hexo generate",
   "outputDirectory": "public",
   "redirects": [
-    { "source": "/posts/:path*", "destination": "/articles/index.html", "statusCode": 301 },
-    { "source": "/articles/posts/latex/:path*", "destination": "/articles/index.html", "statusCode": 301 },
-    { "source": "/articles/posts/2026/:path*", "destination": "/articles/index.html", "statusCode": 301 },
-    { "source": "/login", "destination": "/articles/index.html", "statusCode": 301 },
-    { "source": "/register", "destination": "/articles/index.html", "statusCode": 301 }
+    {
+      "source": "/posts/:path*",
+      "destination": "/articles/index.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/latex/:path*",
+      "destination": "/articles/index.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/2026/:path*",
+      "destination": "/articles/index.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/login",
+      "destination": "/articles/index.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/register",
+      "destination": "/articles/index.html",
+      "statusCode": 301
+    },
+    {
+      "source": "/dsa/posts/array/array/",
+      "destination": "/dsa/array/",
+      "statusCode": 301
+    },
+    {
+      "source": "/dsa/posts/complexity-analysis/complexity-analysis/",
+      "destination": "/dsa/complexity-analysis/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/anvilnote/anvilnote/",
+      "destination": "/projects/anvilnote/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/anvilnote/anvilnote-en/",
+      "destination": "/projects/anvilnote-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/econ-viz/econ-viz/",
+      "destination": "/projects/econ-viz/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/econ-viz/econ-viz-en/",
+      "destination": "/projects/econ-viz-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/ntun3si/ntun3si/",
+      "destination": "/projects/ntun3si/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/ntun3si/ntun3si-en/",
+      "destination": "/projects/ntun3si-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/wargaming/wargaming/",
+      "destination": "/projects/wargaming/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/wargaming/wargaming-en/",
+      "destination": "/projects/wargaming-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day01-intro-and-install/day01-intro-and-install/",
+      "destination": "/articles/typst/day01-intro-and-install/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day01-intro-and-install/day01-intro-and-install-en/",
+      "destination": "/articles/typst/day01-intro-and-install-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day02-getting-started/day02-getting-started/",
+      "destination": "/articles/typst/day02-getting-started/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day02-getting-started/day02-getting-started-en/",
+      "destination": "/articles/typst/day02-getting-started-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day03-text-formatting/day03-text-formatting/",
+      "destination": "/articles/typst/day03-text-formatting/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/day03-text-formatting/day03-text-formatting-en/",
+      "destination": "/articles/typst/day03-text-formatting-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/python/id-function/python-id-function/",
+      "destination": "/articles/python/python-id-function/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/python/id-function/python-id-function-en/",
+      "destination": "/articles/python/python-id-function-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/python/zip-enum/python-zip-enum/",
+      "destination": "/articles/python/python-zip-enum/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/python/zip-enum/python-zip-enum-en/",
+      "destination": "/articles/python/python-zip-enum-en/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/python/lambda-filter-map-reduce/lambda-filter-map-reduce/",
+      "destination": "/articles/python/lambda-filter-map-reduce/",
+      "statusCode": 301
+    },
+    {
+      "source": "/diary/posts/afraid-of-being-left-behind/",
+      "destination": "/diary/afraid-of-being-left-behind/",
+      "statusCode": 301
+    }
   ]
 }

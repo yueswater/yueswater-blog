@@ -6,6 +6,12 @@ db.json
 # Node
 node_modules/
 
+# Book
+book/
+
+# Notes
+notes/
+
 # Claude Code
 .claude/
 

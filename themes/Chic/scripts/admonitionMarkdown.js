@@ -9,7 +9,7 @@
  */
 hexo.extend.filter.register('before_post_render', function (data) {
   data.content = data.content.replace(
-    /(<div class="(?:admonition-content|tabset-panel)"[^>]*>\n\n)([\s\S]*?)(\n\n<\/div>)/g,
+    /(<div class="[^"]*\b(?:admonition-content|tabset-panel)\b[^"]*"[^>]*>\n\n)([\s\S]*?)(\n\n<\/div>)/g,
     function (match, open, markdown, close) {
       var html = hexo.render.renderSync({ text: markdown, engine: 'markdown' });
       return open + html.trim() + close;

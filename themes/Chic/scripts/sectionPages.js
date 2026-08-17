@@ -10,10 +10,10 @@
 var pagination = require('hexo-pagination');
 
 var SECTIONS = [
-  { path: 'articles', prefix: 'articles/posts/', title: { 'zh-TW': '文章', en: 'Articles' } },
-  { path: 'projects', prefix: 'projects/posts/', title: { 'zh-TW': '專案', en: 'Projects' } },
-  { path: 'dsa', prefix: 'dsa/posts/', title: { 'zh-TW': '資結筆記', en: 'DSA Notes' } },
-  { path: 'diary', prefix: 'diary/posts/', title: { 'zh-TW': '日記', en: 'Diary' } }
+  { path: 'articles', prefix: 'articles/', title: { 'zh-TW': '文章', en: 'Articles' } },
+  { path: 'projects', prefix: 'projects/', title: { 'zh-TW': '專案', en: 'Projects' } },
+  { path: 'dsa', prefix: 'dsa/', title: { 'zh-TW': '資結筆記', en: 'DSA Notes' } },
+  { path: 'diary', prefix: 'diary/', title: { 'zh-TW': '日記', en: 'Diary' } }
 ];
 
 hexo.extend.generator.register('section_pages', function (locals) {
@@ -21,7 +21,10 @@ hexo.extend.generator.register('section_pages', function (locals) {
 
   SECTIONS.forEach(function (section) {
     var sectionPosts = locals.posts.filter(function (post) {
-      return post.path.indexOf(section.prefix) === 0;
+      // posts with an explicit frontmatter `permalink:` (e.g. dsa/*/index.md)
+      // get a leading "/" on post.path that :title-derived posts don't --
+      // strip it before the prefix check.
+      return post.path.replace(/^\//, '').indexOf(section.prefix) === 0;
     });
 
     ['zh-TW', 'en'].forEach(function (lang) {
