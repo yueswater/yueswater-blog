@@ -33,6 +33,35 @@ if (is_archive()){
 %>
 <title><% if (title){ %><%= title %> | <% } %><%= __('site_title') %></title>
 
+<%# Open Graph / Twitter Card -- per-post thumbnail + description when
+    available, falling back to the site description/avatar otherwise %>
+<%
+    var ogTitle = (title ? title + ' | ' : '') + __('site_title');
+    var ogDescription = page.excerpt || page.description || config.description;
+    var ogImage = full_url_for(page.thumbnail || theme.avatar);
+    var ogType = page.__post ? 'article' : 'website';
+    var ogLocale = page.lang === 'en' ? 'en_US' : 'zh_TW';
+    // pages/the homepage keep their raw "index.html" source path instead
+    // of a pretty trailing-slash one (posts already have that); strip it
+    // so og:url matches the actual canonical address.
+    var ogPath = page.path.replace(/index\.html$/, '');
+%>
+<meta property="og:site_name" content="<%= __('site_title') %>">
+<meta property="og:title" content="<%= ogTitle %>">
+<% if (ogDescription) { %>
+<meta property="og:description" content="<%= ogDescription %>">
+<% } %>
+<meta property="og:type" content="<%= ogType %>">
+<meta property="og:url" content="<%- full_url_for(ogPath) %>">
+<meta property="og:image" content="<%- ogImage %>">
+<meta property="og:locale" content="<%= ogLocale %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= ogTitle %>">
+<% if (ogDescription) { %>
+<meta name="twitter:description" content="<%= ogDescription %>">
+<% } %>
+<meta name="twitter:image" content="<%- ogImage %>">
+
 <%# favicon %>
 <% if (theme.favicon){ %>
     <link rel="icon" href="<%- url_for(theme.favicon) %>">

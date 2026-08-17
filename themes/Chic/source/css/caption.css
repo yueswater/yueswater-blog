@@ -21,3 +21,17 @@
 .dark-theme .post-content figcaption {
   color: #999;
 }
+
+.post-content figcaption .caption-credit {
+  font-size: 0.9em;
+}
+
+@media screen and (max-width: 1023px) {
+  .post-content figcaption .caption-credit {
+    display: block;
+    margin-top: 0.2em;
+  }
+  .post-content figcaption .caption-paren {
+    display: none;
+  }
+}
