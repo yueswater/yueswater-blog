@@ -126,12 +126,25 @@
           padding: 0.7em 0
           font-size: 1.35em
           line-height: 1.4
-        .theme-toggle
-          margin: 0.6em 0 0
+        .lang-switch
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 32px
+          height: 32px
+          margin: 0.6em auto 0
           padding-top: 0.6em
+          padding-bottom: 0
+          font-size: inherit
+          line-height: normal
           border-top: 1px solid $light-border-color
           .dark-theme &
             border-top-color: $dark-border-color
+          .lang-switch-icon
+            width: 22px
+            height: 22px
+        .theme-toggle
+          margin: 0.4em 0 0
           label
             width: 32px
             height: 32px

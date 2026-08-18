@@ -70,6 +70,11 @@
                 <% for (var i in theme.nav){ %>
                 <a class="menu-item" href="<%- url_for(theme.nav[i] + (navSplitSet[i] ? navSuffix : '')) %>"><%= (i === 'dsa' && page.lang !== 'en') ? __('nav_dsa_short') : __('nav_' + i) %></a>
                 <% } %>
+                <% if (altHref) { %>
+                    <a class="lang-switch" href="<%- url_for(altHref) %>" title="<%= altLang === 'en' ? 'English' : '中文版' %>"><%- langIcon %></a>
+                <% } else { %>
+                    <span class="lang-switch lang-switch-inactive" title="<%= __('no_lang_alt') %>"><%- langIcon %></span>
+                <% } %>
                 <div class="theme-toggle">
                     <input id="switch_default_mobile" type="checkbox" class="switch_default">
                     <label for="switch_default_mobile" class="toggleBtn">
