@@ -103,7 +103,7 @@ nums: list[int] = [1, 2, 3, 4, 0]
 Say we want to insert the value `5` at index `2`, and the array's tail deliberately has a spare slot available. Starting from the tail, each element is shifted one slot to the right in turn, until the slot at index `2` opens up, and then `5` is written in (technically overwriting whatever value was there):
 
 ::: {#fig-array-insert}
-![Steps for inserting an element into an array](images/array-insert.png){width=600}
+![Steps for inserting an element into an array](images/array-insert-en.png){width=600}
 :::
 
 Here's how we can implement the steps above:
@@ -150,7 +150,7 @@ Deletion is the mirror image of insertion: we knock out the slot we want to dele
 Continuing the insertion example, given the array after inserting `5`, say we want to remove it. The steps are shown below:
 
 ::: {#fig-array-delete}
-![Steps for deleting an element from an array](images/array-delete.png){width=600}
+![Steps for deleting an element from an array](images/array-delete-en.png){width=600}
 :::
 
 Implemented in Python the same way:
