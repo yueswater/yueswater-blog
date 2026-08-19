@@ -1,0 +1,39 @@
+.post-content .problem-statement {
+  position: relative;
+  background: #ebebeb;
+  border-radius: 0;
+  padding: 1em 1.2em;
+  margin: 1.6em 0 1em;
+}
+
+.dark-theme .post-content .problem-statement {
+  background: #ebebeb;
+  color: #181818;
+}
+
+.post-content .problem-label {
+  position: absolute;
+  top: -1em;
+  left: 0.8em;
+  background: #bababa;
+  color: #f3f3f3;
+  border-radius: 0;
+  padding: 0.4em 0.9em;
+  font-size: 0.9em;
+  font-weight: 700;
+  line-height: 1.4;
+  /* lanting (this theme's default CJK font) only ships one static
+     weight; synthetic-bolding it gives inconsistent glyph coverage
+     per character (some come out bold, some don't) -- same issue
+     documented in font.styl for strong/b/h1-h6, fixed the same way
+     by switching to a system CJK font that has a real bold weight. */
+  font-family: Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial;
+}
+
+.post-content .problem-statement > :first-child {
+  margin-top: 0;
+}
+
+.post-content .problem-statement > :last-child {
+  margin-bottom: 0;
+}

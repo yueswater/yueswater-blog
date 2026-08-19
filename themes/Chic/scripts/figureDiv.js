@@ -16,23 +16,38 @@
  * a markdown link to that figure showing its number, e.g. "[圖 1](#fig-elephant)"
  * -- mirroring the @label reference syntax Typst uses (see the Typst
  * series' day04 post).
+ *
+ * The outer `::: {...} ... :::` fence is parsed by the shared lib/fencedDiv
+ * helper (also used by problemDiv.js); this file only parses what goes
+ * inside a figure block specifically.
  */
+var fencedDiv = require('./lib/fencedDiv');
+
+var FIG_ATTRS_PATTERN = '#fig-[\\w-]+';
+var IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)\)(?:\{([^}]*)\})?\n?([\s\S]*)$/;
+
 hexo.extend.filter.register('before_post_render', function (data) {
   var word = data.lang === 'en' ? 'Fig' : '圖';
   var sep = data.lang === 'en' ? ': ' : '：';
 
-  var figureRe = /^::: *\{#(fig-[\w-]+)\}\n!\[([^\]]*)\]\(([^)\s]+)\)(?:\{([^}]*)\})?\n([\s\S]*?)\n?:::[ \t]*$/gm;
-
   var numbers = {};
   var count = 0;
-  var scanRe = new RegExp(figureRe.source, figureRe.flags);
-  var match;
-  while ((match = scanRe.exec(data.content)) !== null) {
+  fencedDiv.findFencedDivs(data.content, FIG_ATTRS_PATTERN).forEach(function (block) {
+    var id = block.attrs.replace(/^#/, '');
     count += 1;
-    numbers[match[1]] = count;
-  }
+    numbers[id] = count;
+  });
 
-  data.content = data.content.replace(figureRe, function (match, id, alt, src, attrs, extraCaption) {
+  data.content = fencedDiv.replaceFencedDivs(data.content, FIG_ATTRS_PATTERN, function (rawAttrs, body) {
+    var id = rawAttrs.replace(/^#/, '');
+    var imageMatch = body.match(IMAGE_RE);
+    if (!imageMatch) return body;
+
+    var alt = imageMatch[1];
+    var src = imageMatch[2];
+    var attrs = imageMatch[3];
+    var extraCaption = imageMatch[4] || '';
+
     var extra = '';
     if (attrs) {
       var widthMatch = attrs.match(/width\s*=\s*"?([\w.%]+)"?/);
