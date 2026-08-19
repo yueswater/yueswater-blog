@@ -12,7 +12,7 @@ excerpt: Write your first .typ document, learn the basic syntax for headings, bo
 thumbnail: /images/covers/Typst_logo.png
 ---
 
-In the [previous post](day01-intro-and-install-en.html), we got the environment ready — whether that meant installing the CLI locally with the VS Code extension, or writing directly in typst.app. This post is where we actually write our first Typst document.
+In the [previous post](/articles/typst/day01-intro-and-install-en/), we got the environment ready — whether that meant installing the CLI locally with the VS Code extension, or writing directly in typst.app. This post is where we actually write our first Typst document.
 
 Besides walking through the first compile, this post also covers the difference between the compile and watch modes and when to use each; finally, we'll quickly go over the most commonly used basic syntax — headings, bold/italic text, and lists — so the first document isn't just plain text, but something with a bit of actual formatting. These syntax elements will each get a deeper dive in later posts; the goal here is simply to build the habit of **write, compile, check the result**!
 
@@ -109,7 +109,7 @@ typst compile hello.typ
 
 Once the command finishes, you'll find a new `hello.pdf` in the folder, containing the typeset result — open it with any PDF reader. If you don't specify an output filename, Typst uses the source file's name and writes the output to the same folder. Opening it, you'll see the note we put together earlier, with the heading, bold/italic text, and list all laid out as written:
 
-<figure><img src="images/hello-pdf-output.png" alt="hello.pdf compile output"><figcaption>hello.pdf compile output</figcaption></figure>
+<figure><img src="images/hello-pdf-output-en.png" alt="hello.pdf compile output"><figcaption>hello.pdf compile output</figcaption></figure>
 
 If you're using VS Code with the Tinymist extension, you don't even need to switch to the terminal to run a command: once you open a `.typ` file, a toolbar automatically appears above the editor with built-in Preview, Export, and other features — a couple of clicks and you can export straight to PDF:
 

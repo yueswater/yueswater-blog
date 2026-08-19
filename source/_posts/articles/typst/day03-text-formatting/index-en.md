@@ -13,7 +13,7 @@ excerpt: Learn text decoration syntax like underline, strikethrough, and highlig
 thumbnail: /images/covers/Typst_logo.png
 ---
 
-In the [previous post](day02-getting-started-en.html), we wrote our first Typst document and practiced a handful of the most basic syntax — headings, bold/italic text, and lists. This post keeps going and digs into the text formatting tools you'll reach for all the time: decoration syntax like underline, strikethrough, and highlight; finer touches like superscript, subscript, and small caps; and customizing font, size, color, and weight with the `text` function.
+In the [previous post](/articles/typst/day02-getting-started-en/), we wrote our first Typst document and practiced a handful of the most basic syntax — headings, bold/italic text, and lists. This post keeps going and digs into the text formatting tools you'll reach for all the time: decoration syntax like underline, strikethrough, and highlight; finer touches like superscript, subscript, and small caps; and customizing font, size, color, and weight with the `text` function.
 
 None of these are hard on their own, but combining them is what actually gives your writing a sense of layout — it takes some **muscle memory** to get comfortable with. This post walks through three sections in order — text decoration, custom text styles, and alignment and line breaks — so your Typst document gets more than just a skeleton; it starts having a consistent visual identity.
 
@@ -75,7 +75,7 @@ Here we additionally use `#set text(font: (...))` to specify a font list: Latin 
 
 After compiling with `typst compile`, here's the result:
 
-<figure><img src="images/text-decoration-output.png" alt="Text decoration example output"><figcaption>Text decoration example output</figcaption></figure>
+<figure><img src="images/text-decoration-output-en.png" alt="Text decoration example output"><figcaption>Text decoration example output</figcaption></figure>
 
 ## Custom Text Styles
 
@@ -219,7 +219,7 @@ Default font: this sentence is set in Libertinus Serif.
 
 After compiling with `typst compile`, here's the result:
 
-<figure><img src="images/text-styling-output.png" alt="Custom text style example output"><figcaption>Custom text style example output</figcaption></figure>
+<figure><img src="images/text-styling-output-en.png" alt="Custom text style example output"><figcaption>Custom text style example output</figcaption></figure>
 
 ## Alignment and Line Breaks
 
@@ -295,7 +295,7 @@ A blank line, on the other hand, starts a new paragraph.
 
 After compiling with `typst compile`, here's the result:
 
-<figure><img src="images/text-alignment-output.png" alt="Alignment and line break example output"><figcaption>Alignment and line break example output</figcaption></figure>
+<figure><img src="images/text-alignment-output-en.png" alt="Alignment and line break example output"><figcaption>Alignment and line break example output</figcaption></figure>
 
 ## Summary
 
