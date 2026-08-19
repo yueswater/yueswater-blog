@@ -23,12 +23,43 @@
         onClick: extend_click,
     };
 
+    // Post-process every TOC entry tocbot just built, matched back to its
+    // source heading via the entry's #id link:
+    //   - a heading with class="no-toc" (headings inside a
+    //     ::: {.problem} ... ::: block, e.g. "#### Example 1" -- see
+    //     problemDiv.js) gets its whole <li> removed from the sidebar.
+    //     tocbot's own ignoreSelector option is meant to do this via its
+    //     heading query, but we don't rely on it -- excluding tocbot.min.js's
+    //     minified internals from the trust boundary and enforcing this
+    //     ourselves is simpler to reason about and verify.
+    //   - a heading tagged data-toc="..." (see tocShortTitle.js) shows that
+    //     short label instead of its own full text -- LaTeX's
+    //     \section[short]{long}, since tocbot otherwise always copies a
+    //     heading's own text verbatim.
+    // Re-applied after every tocbot.init/refresh, since each rebuilds the
+    // sidebar from scratch.
+    function apply_toc_overrides() {
+        document.querySelectorAll('.tocbot-list a').forEach(function(a) {
+            var href = a.getAttribute('href') || '';
+            if (href.charAt(0) !== '#') return;
+            var heading = document.getElementById(decodeURIComponent(href.slice(1)));
+            if (!heading) return;
+            if (heading.classList.contains('no-toc')) {
+                var li = a.closest('li');
+                if (li) li.remove();
+            } else if (heading.dataset.toc) {
+                a.textContent = heading.dataset.toc;
+            }
+        });
+    }
+
     function extend_click() {
         clearTimeout(tocbot_timer);
         tocbot_timer = setTimeout(function() {
             tocbot.refresh(obj_merge(tocbot_default_config, {
                 hasInnerContainers: true
             }));
+            requestAnimationFrame(apply_toc_overrides);
         }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
     }
 
@@ -36,6 +67,7 @@
         tocbot.init(obj_merge(tocbot_default_config, {
             collapseDepth: 1
         }));
+        requestAnimationFrame(apply_toc_overrides);
     });
 
     function expand_toc() {
@@ -45,6 +77,7 @@
         tocbot.refresh(obj_merge(tocbot_default_config, {
             collapseDepth: expanded ? 1 : DEPTH_MAX
         }));
+        requestAnimationFrame(apply_toc_overrides);
         b.innerText = expanded ? TOC_EXPAND_ALL_TEXT : TOC_COLLAPSE_ALL_TEXT;
     }
 
