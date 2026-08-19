@@ -49,11 +49,15 @@
   display inline-block
   color $light-font-color
   transition color 0.15s ease
+  .dark-theme &
+    color #f3f3f3
 
 .switch_default + label .toggle-icon-moon
   display none
   color $dark-font-color
   transition color 0.15s ease
+  .dark-theme &
+    color #f3f3f3
 
 .switch_default:checked + label .toggle-icon-sun
   display none
