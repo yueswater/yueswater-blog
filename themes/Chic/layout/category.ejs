@@ -43,7 +43,7 @@ how to add a category page:
                                 <% if(++index <= 5){ %>
                                     <article class="archive-item">
                                         <a class="archive-item-link"
-                                           href="<%- url_for(post_item.path) %>"><%- post_item.title %></a>
+                                           href="<%- url_for(post_item.path) %>"><%- title_html(post_item.title) %></a>
                                     </article>
                                 <% } %>
                             <% }) %>

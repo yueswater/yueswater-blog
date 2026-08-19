@@ -22,8 +22,10 @@ nav_lang_split:
 # favicon
 favicon: /favicon.svg
 
-# GoatCounter analytics (also powers per-page view counts)
-goatcounter: https://yueswater.goatcounter.com
+# Supabase (powers per-page view counts; anon key is meant to be public,
+# it's restricted to SELECT on page_views + EXECUTE on increment_page_view)
+supabase_url: https://oiebjktmnefstbzgyhdg.supabase.co
+supabase_anon_key: sb_publishable_tsZ5iEV8MB6ue78FLQpTUw_0zJv_r35
 
 # Profile
 nickname: 岳氏礦泉水
@@ -106,7 +108,7 @@ scripts:
   - /js/clipboard.min.js
   - /js/code-copy.js
   - /js/permalink-copy.js
-  - /js/goatcounter-views.js
+  - /js/supabase-views.js
   - /js/tabset.js
 
 # plugin functions

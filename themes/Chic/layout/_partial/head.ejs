@@ -81,10 +81,12 @@ if (is_archive()){
     <script src="<%- url_for(url) %>?v=<%- build_version() %>"></script>
     <% }); %>
 <% } %>
-<%# goatcounter analytics + per-page view counts %>
-<% if(theme.goatcounter){ %>
-    <script>window.GOATCOUNTER_BASE = "<%- theme.goatcounter %>";</script>
-    <script data-goatcounter="<%- theme.goatcounter %>/count" async src="//gc.zgo.at/count.js"></script>
+<%# supabase: powers per-page view counts %>
+<% if(theme.supabase_url && theme.supabase_anon_key){ %>
+    <script>
+        window.SUPABASE_URL = "<%- theme.supabase_url %>";
+        window.SUPABASE_ANON_KEY = "<%- theme.supabase_anon_key %>";
+    </script>
 <% } %>
 <%# mathjax support %>
 <% if(theme.mathjax.enable!==null&&theme.mathjax.enable===true){ %>

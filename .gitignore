@@ -19,6 +19,9 @@ notes/
 .venv/
 .env
 
+# Supabase migrations (contain schema/SQL, kept out of version control per request)
+supabase/migrations/
+
 # OS
 .DS_Store
 Thumbs.db
