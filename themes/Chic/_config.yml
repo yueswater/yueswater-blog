@@ -98,6 +98,8 @@ stylesheets:
   - /css/caption.css
   - /css/permalink-copy.css
   - /css/tabset.css
+  - /css/citations.css
+  - /css/problem-statement.css
 
 # scripts loaded in the end of the body
 scripts:

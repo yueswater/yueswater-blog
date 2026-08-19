@@ -1,0 +1,27 @@
+.post-content .citation-link {
+  color: #939bc9;
+  text-decoration: none;
+}
+
+.post-content .citation-link:hover {
+  text-decoration: none;
+}
+
+.dark-theme .post-content .citation-link {
+  color: #4699a5;
+}
+
+.post-content .references {
+  margin-top: 0.5em;
+}
+
+.post-content .reference-entry {
+  text-align: left;
+  padding-left: 2em;
+  text-indent: -2em;
+  margin: 0 0 0.6em;
+  font-weight: 500;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
