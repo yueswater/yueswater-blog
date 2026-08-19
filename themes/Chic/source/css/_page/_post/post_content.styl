@@ -34,14 +34,21 @@
 
   a
     color $light-post-link-color
+    background-image linear-gradient(to right, $light-post-link-color 50%, transparent 50%)
+    background-size 200% 100%
+    background-position right bottom
+    background-repeat no-repeat
+    transition background-position 0.25s ease, color 0.25s ease
     .dark-theme &
       color $dark-post-link-color
+      background-image linear-gradient(to right, $dark-accent-color 50%, transparent 50%)
 
   a:hover
-    color $light-post-link-hover-color
-    .dark-theme &:hover
-      color $dark-post-link-hover-color
-      text-decoration underline
+    background-position left bottom
+    color #f3f3f3
+    border-radius 0
+    .dark-theme &
+      color #f3f3f3
 
   code, pre
     padding 7px
