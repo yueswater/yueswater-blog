@@ -42,7 +42,7 @@ class Node:
 而一個串列好比攤開的珍珠向量，必定有頭尾，頭部稱為**頭節點 (head)**，尾部則稱為**尾節點 (tail)**。因此我們可以嘗試建立一個串列如下：
 
 ::: {#fig-linked-list-basic}
-![鏈結串列](images/linked-list-basic.png){width=350}
+![鏈結串列](images/linked-list-basic.png){width=550}
 :::
 
 用 Python 實作則是：
@@ -160,11 +160,16 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
         i += 1
     if curr is None:
         raise ValueError("k 超出串列長度")
+
     p = Node(data)
     p.next = curr.next
     curr.next = p
     return head
 ```
+
+::: {#fig-linked-list-insert-at-k}
+![插入至某節點後的步驟](images/insert-at-k.png)
+:::
 
 `k = 0` 要另外處理，因為索引 `0`（也就是新的頭節點）沒有前一個節點可以走訪，直接交給 `insert_at_head` 處理；`k >= 1` 才用走訪找前驅的方式插入。
 
@@ -374,6 +379,7 @@ class LinkedList:
             i += 1
         if curr is None:
             raise ValueError("k 超出串列長度")
+
         p = Node(data)
         p.next = curr.next
         curr.next = p

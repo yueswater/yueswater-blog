@@ -168,6 +168,10 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
     return head
 ```
 
+::: {#fig-linked-list-insert-at-k}
+![Steps to insert after a given node](images/insert-at-k-en.png)
+:::
+
 `k = 0` needs to be handled separately, because index `0` (the new head) has no previous node to traverse to — that case is handed straight off to `insert_at_head`. Only for `k >= 1` do we traverse to find the predecessor and insert that way.
 
 Say we want node `4` to become index `1` (starting from `1 -> 2 -> 3`, `4` is inserted after `1`):

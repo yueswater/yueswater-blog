@@ -47,7 +47,7 @@ The idea behind **two pointers** is this: since both arrays are already sorted, 
 
 Two pointers isn't a specific algorithm on its own, though — it's a general idea that works well for certain kinds of problems, commonly showing up with **sorted arrays**, **prefix-sum arrays of positive numbers**, and **variable-size sliding windows**. Each pointer moves at most $O(n)$ steps across the structure, so the total number of operations is $O(n)$.
 
-As the name suggests, two pointers means exactly that — two pointers. Based on how they behave on the underlying structure, they split into **left/right pointers** and **fast/slow pointers**.
+As the name suggests, two pointers means exactly that — two pointers. Based on how they behave on the underlying structure, they split into **left/right pointers**, **fast/slow pointers**, and **parallel pointers**.
 
 ### Left/Right Pointers
 
@@ -66,6 +66,10 @@ Algorithm 1 Two Pointers (Left/Right)
         end while
 end procedure
 ```
+
+::: {#fig-left-right-pointers}
+![Left/right pointers diagram](images/left-right-pointers.png)
+:::
 
 | Use Case | LeetCode |
 | --- | --- |
@@ -99,11 +103,38 @@ Algorithm 2 Two Pointers (Fast/Slow)
 end procedure
 ```
 
+::: {#fig-fast-slow-pointers}
+![Fast/slow pointers diagram](images/fast-slow-pointers.png)
+:::
+
 | Use Case | LeetCode |
 | --- | --- |
 | Find the midpoint in a single traversal | [876](https://leetcode.com/problems/middle-of-the-linked-list/) |
 | Detect whether a cycle exists | [141](https://leetcode.com/problems/linked-list-cycle/), [142](https://leetcode.com/problems/linked-list-cycle-ii/), [202](https://leetcode.com/problems/happy-number/) |
 | In-place filtering and deduplication on an array | [26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/), [283](https://leetcode.com/problems/move-zeroes/) |
+
+### Parallel Pointers
+
+Given two pointers — `i` and `j` — each traversing a **different** structure (say, two arrays, or two linked lists), both starting from the front and advancing in the same direction. At each step, depending on whatever condition the problem requires, you compare the two values the pointers currently point to and decide which pointer to move — or move both at once.
+
+The difference from left/right pointers: left/right pointers are two pointers on the *same* structure closing in on each other; parallel pointers are pointers on *two separate* structures, each advancing independently — there's no "closing in" or "meeting" involved.
+
+```plaintext
+Algorithm 3 Two Pointers (Parallel)
+    procedure TwoPointerParallel(A, B)
+        i = 1
+        j = 1
+        while i ≤ A.length and j ≤ B.length do
+            ▷ Do the actual work
+            ▷ Decide whether to move i, j, or both, based on the condition
+        end while
+end procedure
+```
+
+| Use Case | LeetCode |
+| --- | --- |
+| Merge two already-sorted sources moving in the same direction | [21](https://leetcode.com/problems/merge-two-sorted-lists/), [88](https://leetcode.com/problems/merge-sorted-array/) |
+| Find the intersection of two sets | [350](https://leetcode.com/problems/intersection-of-two-arrays-ii/), [986](https://leetcode.com/problems/interval-list-intersections/) |
 
 ## Solutions
 
@@ -244,7 +275,7 @@ Output: [0]
 
 As mentioned earlier, we need to make use of the condition the problem gives us: the lists are already **sorted**. Even though this problem uses linked lists, the same underlying logic still applies.
 
-This problem does use two pointers, but they're neither left/right nor fast/slow — instead, the two pointers just compare values against each other. We compare the two lists from the front: whichever node has the smaller value gets attached to the back of the result list, and that pointer moves forward.
+This problem uses **parallel pointers** — we compare the two lists from the front: whichever node has the smaller value gets attached to the back of the result list, and that pointer moves forward.
 
 The loop should stop once either list runs out. Written as a `while` condition, that means flipping it around (via De Morgan's Law) into: **both lists still have nodes left**.
 

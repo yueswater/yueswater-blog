@@ -1,11 +1,12 @@
 <%
     var siteName = page.lang === 'en' ? theme.navname_en : theme.navname;
+    var homeHref = page.lang === 'en' ? '/en/' : config.root;
 %>
 <header>
     <nav class="navbar">
         <div class="container">
             <div class="navbar-header header-logo">
-                <a href="<%- config.root %>" class="site-logo-link">
+                <a href="<%- url_for(homeHref) %>" class="site-logo-link">
                     <span class="site-logo-badge">
                         <img class="site-logo-icon site-logo-icon-light" src="<%- url_for(theme.logo_light) %>" alt="">
                         <img class="site-logo-icon site-logo-icon-dark" src="<%- url_for(theme.logo_dark) %>" alt="">
@@ -67,7 +68,7 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="<%- config.root %>" class="site-logo-link">
+                    <a href="<%- url_for(homeHref) %>" class="site-logo-link">
                         <span class="site-logo-badge">
                             <img class="site-logo-icon site-logo-icon-light" src="<%- url_for(theme.logo_light) %>" alt="">
                             <img class="site-logo-icon site-logo-icon-dark" src="<%- url_for(theme.logo_dark) %>" alt="">

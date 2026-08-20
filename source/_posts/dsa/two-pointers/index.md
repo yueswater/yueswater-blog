@@ -45,7 +45,7 @@ def merge(list1: list[int], list2: list[int]) -> list[int]:
 
 不過雙指標本身並不是一個特定的演算法，而是一種解決特定問題上很有效的通用想法，常見於**已排序陣列**、**正數的前綴和陣列**，以及**長度可變的滑動視窗**這類題型；每個指標各自最多在資料結構上移動 $O(n)$ 步，所以整體操作次數是 $O(n)$。
 
-雙指標顧名思義，需要有兩個指標，而根據兩個指標在資料結構上的行為，又可以分為**左右指標 (left/right pointer)** 與**快慢指標 (fast/slow pointer)**。
+雙指標顧名思義，需要有兩個指標，而根據兩個指標在資料結構上的行為，又可以分為**左右指標 (left/right pointer)**、**快慢指標 (fast/slow pointer)**，以及**平行指標 (parallel pointer)**。
 
 ### 左右指標
 
@@ -64,6 +64,12 @@ Algorithm 1 Two Pointers (Left/Right)
         end while
 end procedure
 ```
+
+::: {#fig-left-right-pointers}
+![左右指標示意圖](images/left-right-pointers.png)
+:::
+
+常見使用情境與搭配的 LeetCode 題目所示：
 
 | 使用情境 | LeetCode |
 | --- | --- |
@@ -97,11 +103,42 @@ Algorithm 2 Two Pointers (Fast/Slow)
 end procedure
 ```
 
+::: {#fig-fast-slow-pointers}
+![快慢指標示意圖](images/fast-slow-pointers.png)
+:::
+
+常見使用情境與搭配的 LeetCode 題目所示：
+
 | 使用情境 | LeetCode |
 | --- | --- |
 | 一次走訪找出中點 | [876](https://leetcode.com/problems/middle-of-the-linked-list/) |
 | 偵測是否存在循環 | [141](https://leetcode.com/problems/linked-list-cycle/)、[142](https://leetcode.com/problems/linked-list-cycle-ii/)、[202](https://leetcode.com/problems/happy-number/) |
 | 陣列上原地篩選去重 | [26](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)、[283](https://leetcode.com/problems/move-zeroes/) |
+
+### 平行指標
+
+給定兩個指標 `i`、`j`，分別走訪**兩個不同**的資料結構（例如兩個陣列、兩條鏈結串列），兩者皆從最前面出發、同方向前進，每一步依照題目所需條件，比較兩邊目前指到的值，決定該移動哪一個指標，或是兩者同時移動。
+
+跟左右指標不同的地方在於：左右指標是同一個結構上的兩個指標互相靠攏；平行指標則是**兩個結構各自的指標，彼此獨立前進**。
+
+```plaintext
+Algorithm 3 Two Pointers (Parallel)
+    procedure TwoPointerParallel(A, B)
+        i = 1
+        j = 1
+        while i ≤ A.length and j ≤ B.length do
+            ▷ 執行任務
+            ▷ 依條件決定移動 i、j，或兩者皆移動
+        end while
+end procedure
+```
+
+常見使用情境與搭配的 LeetCode 題目所示：
+
+| 使用情境 | LeetCode |
+| --- | --- |
+| 兩個已排序來源同向合併 | [21](https://leetcode.com/problems/merge-two-sorted-lists/)、[88](https://leetcode.com/problems/merge-sorted-array/) |
+| 找出兩個集合的交集 | [350](https://leetcode.com/problems/intersection-of-two-arrays-ii/)、[986](https://leetcode.com/problems/interval-list-intersections/) |
 
 ## 實作
 
@@ -242,7 +279,7 @@ class Solution:
 
 如同前述所提的，我們必須使用題目給定的條件：**已排序**。雖然這題是鏈結串列，但邏輯仍可借鑑前述的概念。
 
-雖然這題可以用到雙指標，但是並非左右或是快慢指標，而是兩個指標互相比大小——兩個串列從頭開始比較，若其中一個節點的值較小，則將其加入下一個節點，然後往前移動。
+這題用的是**平行指標**——兩個串列從頭開始比較，若其中一個節點的值較小，則將其接到結果串列後面，然後往前移動。
 
 迴圈停止的條件是兩個串列其中之一走到底了，`while` 則需要將其反過來（利用 De Morgan's Law），也就是兩者都還沒到底。
 
