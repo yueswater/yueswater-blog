@@ -30,9 +30,9 @@ One way to write this:
 ```python
 def findMaxThree(nums: list[int], k: int) -> int:
     sum: int = 0
-    N = len(nums)
+    n = len(nums)
 
-    for i in range(N - k + 1):
+    for i in range(n - k + 1):
         tmp_sum = 0
         for j in range(i, i + k):
             tmp_sum += nums[j]
@@ -146,10 +146,10 @@ The brute-force solution, matching the style shown earlier in this post:
 ```python
 class Solution:
     def findMaxAverage(self, nums: list[int], k: int) -> float:
-        N = len(nums)
+        n = len(nums)
         max_sum = float('-inf')
 
-        for i in range(N - k + 1):
+        for i in range(n - k + 1):
             tmp_sum = 0
             for j in range(i, i + k):
                 tmp_sum += nums[j]
@@ -163,11 +163,11 @@ Same overlap, same $O(n \times k)$ -- optimize it with a fixed-size window inste
 ```python
 class Solution:
     def findMaxAverage(self, nums: list[int], k: int) -> float:
-        N = len(nums)
+        n = len(nums)
         window_sum = sum(nums[:k])
         max_sum = window_sum
 
-        for i in range(k, N):
+        for i in range(k, n):
             window_sum = window_sum - nums[i - k] + nums[i]
             max_sum = max(max_sum, window_sum)
 
@@ -206,19 +206,19 @@ The window size here isn't given -- it's the answer we're looking for, so this i
 ```python
 class Solution:
     def minSubArrayLen(self, target: int, nums: list[int]) -> int:
-        N = len(nums)
-        min_length = N + 1
+        n = len(nums)
+        min_length = n + 1
 
-        for i in range(N):
+        for i in range(n):
             k = 0
             tmp_sum = 0
-            while tmp_sum < target and i + k < N:
+            while tmp_sum < target and i + k < n:
                 tmp_sum += nums[i + k]
                 k += 1
             if tmp_sum >= target:
                 min_length = min(min_length, k)
 
-        return min_length if min_length <= N else 0
+        return min_length if min_length <= n else 0
 ```
 
 The problem is that every starting point re-scans to the right from scratch, giving $O(n^{2})$. Switch to the two handles instead -- `right` only ever expands, `left` only ever shrinks, each moving at most `n` steps total:
@@ -226,12 +226,12 @@ The problem is that every starting point re-scans to the right from scratch, giv
 ```python
 class Solution:
     def minSubArrayLen(self, target: int, nums: list[int]) -> int:
-        N = len(nums)
+        n = len(nums)
         left, right = 0, 0
-        min_length = N + 1
+        min_length = n + 1
         window_sum = 0
 
-        while right < N:
+        while right < n:
             window_sum += nums[right]
             right += 1
 
@@ -240,7 +240,7 @@ class Solution:
                 window_sum -= nums[left]
                 left += 1
 
-        return min_length if min_length <= N else 0
+        return min_length if min_length <= n else 0
 ```
 
 ### [LeetCode 1343: Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold](https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/)
@@ -268,11 +268,11 @@ This is really just a variant of [LeetCode 643](https://leetcode.com/problems/ma
 ```python
 class Solution:
     def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
-        N = len(arr)
+        n = len(arr)
         window_sum = sum(arr[:k])
         count = 1 if (window_sum // k) >= threshold else 0
 
-        for i in range(k, N):
+        for i in range(k, n):
             window_sum = window_sum - arr[i - k] + arr[i]
             if window_sum // k >= threshold:
                 count += 1
@@ -307,12 +307,12 @@ This problem is really asking for the longest contiguous subarray -- even though
 ```python
 class Solution:
     def longestOnes(self, nums: List[int], k: int) -> int:
-        N = len(nums)
+        n = len(nums)
         left, right = 0, 0
         zero_count = 0
         max_length = 0
 
-        while right < N:
+        while right < n:
             if nums[right] == 0:
                 zero_count += 1
             right += 1

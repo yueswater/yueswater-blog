@@ -27,9 +27,9 @@ nums = [2, 1, 5, 1, 3, 2], k = 3
 ```python
 def findMaxThree(nums: list[int], k: int) -> int:
     sum: int = 0
-    N = len(nums)
+    n = len(nums)
 
-    for i in range(N - k + 1):
+    for i in range(n - k + 1):
         tmp_sum = 0
         for j in range(i, i + k):
             tmp_sum += nums[j]
@@ -143,10 +143,10 @@ end procedure
 ```python
 class Solution:
     def findMaxAverage(self, nums: list[int], k: int) -> float:
-        N = len(nums)
+        n = len(nums)
         max_sum = float('-inf')
 
-        for i in range(N - k + 1):
+        for i in range(n - k + 1):
             tmp_sum = 0
             for j in range(i, i + k):
                 tmp_sum += nums[j]
@@ -160,11 +160,11 @@ class Solution:
 ```python
 class Solution:
     def findMaxAverage(self, nums: list[int], k: int) -> float:
-        N = len(nums)
+        n = len(nums)
         window_sum = sum(nums[:k])
         max_sum = window_sum
 
-        for i in range(k, N):
+        for i in range(k, n):
             window_sum = window_sum - nums[i - k] + nums[i]
             max_sum = max(max_sum, window_sum)
 
@@ -203,19 +203,19 @@ class Solution:
 ```python
 class Solution:
     def minSubArrayLen(self, target: int, nums: list[int]) -> int:
-        N = len(nums)
-        min_length = N + 1
+        n = len(nums)
+        min_length = n + 1
 
-        for i in range(N):
+        for i in range(n):
             k = 0
             tmp_sum = 0
-            while tmp_sum < target and i + k < N:
+            while tmp_sum < target and i + k < n:
                 tmp_sum += nums[i + k]
                 k += 1
             if tmp_sum >= target:
                 min_length = min(min_length, k)
 
-        return min_length if min_length <= N else 0
+        return min_length if min_length <= n else 0
 ```
 
 問題出在每個起點都要重新掃一次右邊，複雜度是 $O(n^{2})$。改用左右把手，`right` 只往右擴張、`left` 只往右收縮，全程各自最多走 `n` 步：
@@ -223,12 +223,12 @@ class Solution:
 ```python
 class Solution:
     def minSubArrayLen(self, target: int, nums: list[int]) -> int:
-        N = len(nums)
+        n = len(nums)
         left, right = 0, 0
-        min_length = N + 1
+        min_length = n + 1
         window_sum = 0
 
-        while right < N:
+        while right < n:
             window_sum += nums[right]
             right += 1
 
@@ -237,7 +237,7 @@ class Solution:
                 window_sum -= nums[left]
                 left += 1
 
-        return min_length if min_length <= N else 0
+        return min_length if min_length <= n else 0
 ```
 
 ### [LeetCode 1343：大小為 K 且平均值大於等於閾值的子陣列數目](https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/)
@@ -265,11 +265,11 @@ class Solution:
 ```python
 class Solution:
     def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
-        N = len(arr)
+        n = len(arr)
         window_sum = sum(arr[:k])
         count = 1 if (window_sum // k) >= threshold else 0
 
-        for i in range(k, N):
+        for i in range(k, n):
             window_sum = window_sum - arr[i - k] + arr[i]
             if window_sum // k >= threshold:
                 count += 1
@@ -304,12 +304,12 @@ class Solution:
 ```python
 class Solution:
     def longestOnes(self, nums: List[int], k: int) -> int:
-        N = len(nums)
+        n = len(nums)
         left, right = 0, 0
         zero_count = 0
         max_length = 0
         
-        while right < N:
+        while right < n:
             if nums[right] == 0:
                 zero_count += 1    
             right += 1
