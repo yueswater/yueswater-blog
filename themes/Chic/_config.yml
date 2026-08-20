@@ -81,6 +81,7 @@ post_copyright_author_enable: true
 post_copyright_permalink_enable: true
 post_copyright_license_enable: true
 post_copyright_license_text: 本文採用 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> 授權
+post_copyright_license_text_en: This work is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>
 post_copyright_slogan_enable: false
 post_copyright_slogan_text: ""
 ## toc

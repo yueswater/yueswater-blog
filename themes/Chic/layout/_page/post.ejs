@@ -56,7 +56,7 @@
                 <% if(theme.post_copyright_license_enable){ %>
                     <p class="copyright-item">
                         <span><%= __('license') %>:</span>
-                        <span><%- theme.post_copyright_license_text %></span>
+                        <span><%- page.lang === 'en' ? theme.post_copyright_license_text_en : theme.post_copyright_license_text %></span>
                     </p>
                 <% } %>
                 <% if(theme.post_copyright_slogan_enable){ %>

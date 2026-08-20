@@ -124,6 +124,13 @@
     margin 0 auto
     overflow hidden
 
+  // shields.io-style badges (e.g. project website/commits links) are meant
+  // to sit inline in a row, not stack as full-width block images
+  img[src*="shields.io"]
+    display inline-block
+    margin 0
+    vertical-align middle
+
   img[data-action="zoom"]
     cursor zoom-in
   // this element is rendered by hexo.extend.tag.register()
