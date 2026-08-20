@@ -7,7 +7,7 @@ categories: &id001
 - 資料結構與演算法
 - 鏈結串列
 tags: *id001
-excerpt: 重新認識鏈結串列：節點結構、走訪、插入、刪除與查詢，涵蓋單向、雙向與環狀三種變形，並介紹 Dummy Node 與反轉鏈結串列的技巧。
+excerpt: 鏈結串列的節點結構、走訪與基本操作。
 thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---
