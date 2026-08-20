@@ -7,7 +7,7 @@ categories: &id001
 - 資料結構與演算法
 - 陣列
 tags: *id001
-excerpt: ''
+excerpt: 從記憶體配置的角度重新認識陣列：位址公式、隨機存取、四種基本操作、Row-major 與 Column-major 儲存方式、動態陣列，以及原地操作。
 thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---

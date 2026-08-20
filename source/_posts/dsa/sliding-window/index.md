@@ -7,7 +7,7 @@ categories: &id001
 - 資料結構與演算法
 - 滑動視窗
 tags: *id001
-excerpt: ''
+excerpt: 介紹滑動視窗技巧——固定大小與可變大小視窗——並實作對應的 LeetCode 題目，涵蓋最大平均子陣列、最短子陣列和、門檻值計數，以及翻轉後最長子陣列。
 thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---

@@ -8,8 +8,9 @@ categories: &id001
 - Two Pointers
 tags: *id001
 excerpt: An introduction to the two-pointer technique — left/right pointers,
-  fast/slow pointers, and worked LeetCode solutions covering sorted-array
-  search, cycle detection, and merging sorted linked lists.
+  fast/slow pointers, and parallel pointers — with worked LeetCode solutions
+  covering sorted-array search, cycle detection, and merging sorted linked
+  lists.
 thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---

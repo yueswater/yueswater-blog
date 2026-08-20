@@ -7,7 +7,7 @@ categories: &id001
 - 資料結構與演算法
 - 雙指標
 tags: *id001
-excerpt: ''
+excerpt: 介紹雙指標技巧——左右指標、快慢指標與平行指標——並實作對應的 LeetCode 題目，涵蓋已排序陣列搜尋、環偵測，以及合併已排序鏈結串列。
 thumbnail: /images/covers/DSA_cover.png
 mathjax: true
 ---
