@@ -7,7 +7,7 @@ categories: &id001
 - Typst
 - 排版系統
 tags: *id001
-excerpt: 正式梳理前面幾篇陸續用過的 #set 語法：語法與運作方式、哪些參數可以設定、作用範圍的三種情境、多個 #set 疊加的行為，以及怎麼把常用設定打包成函式重複使用。
+excerpt: 梳理前面陸續用過的 `#set` 語法：運作方式、作用範圍、多個 `#set` 疊加的行為，以及打包成函式重複使用。
 thumbnail: /images/covers/Typst_logo.png
 ---
 

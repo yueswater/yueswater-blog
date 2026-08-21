@@ -37,7 +37,9 @@ if (is_archive()){
     available, falling back to the site description/avatar otherwise %>
 <%
     var ogTitle = (title ? title + ' | ' : '') + __('site_title');
-    var ogDescription = page.excerpt || page.description || config.description;
+    // page.excerpt is rendered HTML (see scripts/excerptMarkdown.js) -- meta
+    // description content must be plain text, so strip any tags out of it.
+    var ogDescription = (page.excerpt || page.description || config.description || '').replace(/<[^>]+>/g, '');
     var ogImage = full_url_for(page.thumbnail || theme.avatar);
     var ogType = page.__post ? 'article' : 'website';
     var ogLocale = page.lang === 'en' ? 'en_US' : 'zh_TW';

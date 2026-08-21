@@ -7,11 +7,8 @@ categories: &id001
 - Typst
 - Typesetting
 tags: *id001
-excerpt: A proper look at the `#set` rule that's been used all along -- its
-  syntax and which parameters can actually be set, how its scope works
-  across a file, a block, or a conditional branch, how multiple `#set`
-  rules stack on the same function versus different functions, and how
-  to package a group of `#set` rules into a reusable function.
+excerpt: A proper look at the `#set` rule -- its syntax, scope, how multiple
+  rules stack, and packaging common settings into a reusable function.
 thumbnail: /images/covers/Typst_logo.png
 ---
 
