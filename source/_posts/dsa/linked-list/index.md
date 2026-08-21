@@ -33,10 +33,10 @@ mathjax: true
 初始化鏈結串列前，首先需要定義節點：
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.next: Node | None = None
+        self.next: ListNode | None = None
 ```
 
 而一個串列好比攤開的珍珠向量，必定有頭尾，頭部稱為**頭節點 (head)**，尾部則稱為**尾節點 (tail)**。因此我們可以嘗試建立一個串列如下：
@@ -48,9 +48,9 @@ class Node:
 用 Python 實作則是：
 
 ```python
-head = Node(1)
-head.next = Node(2)
-head.next.next = Node(3)
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
 ```
 
 注意到因為 `3` 是串列最尾端，因此下一個節點為 `None`。
@@ -68,7 +68,7 @@ head.next.next = Node(3)
 程式碼實作如下：
 
 ```python
-def traverse(head: Node | None) -> None:
+def traverse(head: ListNode | None) -> None:
     curr = head     # 起始節點為頭節點
     while curr is not None:
         print(curr.data)
@@ -83,7 +83,7 @@ traverse(head)
 不過需要注意的是，迴圈條件**不可寫成** `curr.next is not None`——若這樣寫會在尾節點時停下（因其下一個為 `None`）。不過這樣印出來有點難以閱讀，所以我們可以將 `traverse` 函式修改一下
 
 ```python
-def traverse(head: Node | None) -> str:
+def traverse(head: ListNode | None) -> str:
     if head is None:
         return ''
 
@@ -104,7 +104,7 @@ def traverse(head: Node | None) -> str:
 另外，如果想要計算串列的長度，可以在走訪時透過 `count` 計數：
 
 ```python
-def length(head: Node | None) -> int:
+def length(head: ListNode | None) -> int:
     count: int = 0
     curr = head
     while curr is not None:
@@ -129,8 +129,8 @@ print(length(head))     # 3
 以前面的串列為例，假設要在最前面加入節點 `0`，我們可以先定義函數：
 
 ```python
-def insert_at_head(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_head(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     p.next = head
     return p
 ```
@@ -149,7 +149,7 @@ traverse(head)
 跟 `delete_at`（下面會教）採同一套 `k` 的定義：插入後，新節點自己要變成索引 `k`。因此得先走訪到**索引 $k-1$ 的節點**，把新節點接在它後面：
 
 ```python
-def insert_at(head: Node | None, k: int, data: int) -> Node:
+def insert_at(head: ListNode | None, k: int, data: int) -> ListNode:
     if k == 0:
         return insert_at_head(head, data)
 
@@ -161,7 +161,7 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
     if curr is None:
         raise ValueError("k 超出串列長度")
 
-    p = Node(data)
+    p = ListNode(data)
     p.next = curr.next
     curr.next = p
     return head
@@ -187,8 +187,8 @@ traverse(head)
 跟插入頭部是相反的情況。由於尾節點沒有下一個指標，因此僅能靠走訪把 `curr` 移到最後一個節點——判斷**這是最後一個**的依據是 `curr.next` 是 `None`。
 
 ```python
-def insert_at_tail(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_tail(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     
     if head is None:
         return p
@@ -215,7 +215,7 @@ traverse(head)
 最簡單的情況，因為頭節點沒有前一個節點，因此僅需將 `head` 變成當前第二個節點即可：
 
 ```python
-def delete_at_head(head: Node | None) -> Node | None:
+def delete_at_head(head: ListNode | None) -> ListNode | None:
     if head is None:
         return None
     return head.next
@@ -233,7 +233,7 @@ traverse(head)
 若要刪除第 $k$ 個節點，則需要先走訪到 $k - 1$ 個節點並停在該處（因此記為 `curr`），再讓 `curr.next` 跳過欲刪除節點，直接連到原本的 `x.next`。
 
 ```python
-def delete_at(head: Node | None, k: int) -> Node | None:
+def delete_at(head: ListNode | None, k: int) -> ListNode | None:
     if k == 0:
         return delete_at_head(head)
 
@@ -264,7 +264,7 @@ traverse(head)
 刪除尾節點與刪除中間節點是相同邏輯，只是走訪目標換成倒數第二個節點（尾節點前一個），再將該節點的 `next` 換成 `None` 而已。
 
 ```python
-def delete_at_tail(head: Node | None) -> Node | None:
+def delete_at_tail(head: ListNode | None) -> ListNode | None:
     if head is None or head.next is None:
         return head
 
@@ -290,7 +290,7 @@ traverse(head)
 跟走訪的邏輯幾乎一樣，只是額外用一個索引 `i` 記錄走了幾步，走到第 $k$ 步就停下，回傳當下的節點：
 
 ```python
-def query_at(head: Node | None, k: int) -> Node | None:
+def query_at(head: ListNode | None, k: int) -> ListNode | None:
     curr = head
     i = 0
     while curr and i < k:
@@ -315,7 +315,7 @@ print(node.data)
 若不知道節點的位置，只知道要找的資料值，則需要逐一比對每個節點的 `data`，直到找到相符的節點，或走到串列尾端仍未找到為止：
 
 ```python
-def query_by(head: Node | None, data: int) -> Node | None:
+def query_by(head: ListNode | None, data: int) -> ListNode | None:
     curr = head
     while curr and curr.data != data:
         curr = curr.next
@@ -338,14 +338,14 @@ print(node.data)
 前面每個操作都是獨立的函式，各自接收 `head` 當參數；這裡把它們整理成一個 `LinkedList` 類別，`head` 變成物件內部管理的狀態，每個操作也改寫成方法：
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.next: Node | None = None
+        self.next: ListNode | None = None
 
 class LinkedList:
-    def __init__(self, head: Node | None = None):
-        self.head: Node | None = head
+    def __init__(self, head: ListNode | None = None):
+        self.head: ListNode | None = head
 
     def traverse(self) -> str:
         result: list[str] = []
@@ -364,7 +364,7 @@ class LinkedList:
         return count
 
     def insert_at_head(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         p.next = self.head
         self.head = p
 
@@ -380,12 +380,12 @@ class LinkedList:
         if curr is None:
             raise ValueError("k 超出串列長度")
 
-        p = Node(data)
+        p = ListNode(data)
         p.next = curr.next
         curr.next = p
 
     def insert_at_tail(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         if self.head is None:
             self.head = p
             return
@@ -421,7 +421,7 @@ class LinkedList:
             curr = curr.next
         curr.next = None
 
-    def query_at(self, k: int) -> Node | None:
+    def query_at(self, k: int) -> ListNode | None:
         curr = self.head
         i = 0
         while curr and i < k:
@@ -429,7 +429,7 @@ class LinkedList:
             i += 1
         return curr
 
-    def query_by(self, data: int) -> Node | None:
+    def query_by(self, data: int) -> ListNode | None:
         curr = self.head
         while curr and curr.data != data:
             curr = curr.next
@@ -441,9 +441,9 @@ class LinkedList:
 實際串起來操作一次：
 
 ```python
-ll = LinkedList(Node(1))
-ll.head.next = Node(2)
-ll.head.next.next = Node(3)
+ll = LinkedList(ListNode(1))
+ll.head.next = ListNode(2)
+ll.head.next.next = ListNode(3)
 print(ll.traverse())   # 1 -> 2 -> 3
 
 ll.insert_at_head(0)
@@ -487,19 +487,19 @@ print(ll.query_by(3).data)   # 3
 首先可以定義雙向鏈結串列的節點：
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.prev: Node | None = None
-        self.next: Node | None = None
+        self.prev: ListNode | None = None
+        self.next: ListNode | None = None
 ```
 
 跟單向鏈結串列一樣，把各項操作整理成一個 `DoublyLinkedList` 類別，差別在插入、刪除時，`prev` 跟 `next` 兩條指標都要顧到：
 
 ```python
 class DoublyLinkedList:
-    def __init__(self, head: Node | None = None):
-        self.head: Node | None = head
+    def __init__(self, head: ListNode | None = None):
+        self.head: ListNode | None = head
 
     def traverse(self) -> str:
         result: list[str] = []
@@ -518,7 +518,7 @@ class DoublyLinkedList:
         return count
 
     def insert_at_head(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         p.next = self.head          # 接住舊 head
         if self.head is not None:
             self.head.prev = p      # 舊 head 回指 p
@@ -537,7 +537,7 @@ class DoublyLinkedList:
         if curr is None:
             raise ValueError("k 超出串列長度")
 
-        p = Node(data)
+        p = ListNode(data)
         p.next = curr.next           # 接住 curr 原本的下一個
         p.prev = curr                # p 回指 curr
         if curr.next is not None:
@@ -545,7 +545,7 @@ class DoublyLinkedList:
         curr.next = p                # curr 改指向 p
 
     def insert_at_tail(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         if self.head is None:
             self.head = p
             return
@@ -595,7 +595,7 @@ class DoublyLinkedList:
 
         curr.prev.next = None            # 斷開前一個節點的 next
 
-    def query_at(self, k: int) -> Node | None:
+    def query_at(self, k: int) -> ListNode | None:
         curr = self.head
         i = 0
         while curr and i < k:
@@ -603,7 +603,7 @@ class DoublyLinkedList:
             i += 1
         return curr
 
-    def query_by(self, data: int) -> Node | None:
+    def query_by(self, data: int) -> ListNode | None:
         curr = self.head
         while curr and curr.data != data:
             curr = curr.next
@@ -617,9 +617,9 @@ class DoublyLinkedList:
 前面提到的單向、雙向鏈結串列的尾節點都是指向 `None`，然後，環狀鏈結串列則否——尾節點會重新指向頭節點——從而將串列變成一個環（把攤平的項鍊接回）。以上面的串列為例，如果將其轉換為環狀鏈結串列，則會變成 `1 -> 2 -> 3 -> 1`，實作上即為
 
 ```python
-head = Node(1)
-head.next = Node(2)
-head.next.next = Node(3)
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
 head.next.next.next = head
 ```
 
@@ -630,7 +630,7 @@ head.next.next.next = head
 為了解決陷入無限迴圈的問題，我們可以換個思路：既然尾節點現在會重新指回頭節點，那麼迴圈結束的條件就變成重新碰到頭節點。
 
 ```python
-def traverse(head: Node | None) -> str:
+def traverse(head: ListNode | None) -> str:
     if head is None:
         return ''
     result: list[int] = [str(head.data)]
@@ -646,7 +646,7 @@ def traverse(head: Node | None) -> str:
 若要計算環狀鏈結串列長度，一樣也需要特別處理：
 
 ```python
-def length(head: Node | None) -> int:
+def length(head: ListNode | None) -> int:
     if head is None:
         return 0
     
@@ -663,8 +663,8 @@ def length(head: Node | None) -> int:
 插入至頭部要另外處理：因為循環串列的尾節點會指回頭節點，新節點變成頭節點後，尾節點也得改指向它，但尾節點是誰沒有現成指標，只能走一圈找到它：
 
 ```python
-def insert_at_head(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_head(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     if head is None:
         p.next = p      # 串列只有自己一個，自己指向自己
         return p
@@ -680,7 +680,7 @@ def insert_at_head(head: Node | None, data: int) -> Node:
 其餘位置的插入，環狀鏈結串列並無**超出範圍**這回事——因為結構本身是一個閉環——索引本來就會重複循環，因此插入用 `length` 計算出總長度，把 $k$ 利用取餘正規化到 $[0, n)$ 範圍內：
 
 ```python
-def insert_at(head: Node | None, k: int, data: int) -> Node:
+def insert_at(head: ListNode | None, k: int, data: int) -> ListNode:
     if head is None:
         return insert_at_head(head, data)
 
@@ -694,7 +694,7 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
     for _ in range(k - 1):
         curr = curr.next
 
-    p = Node(data)
+    p = ListNode(data)
     p.next = curr.next
     curr.next = p
     return head
@@ -707,7 +707,7 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
 刪除頭節點的邏輯跟插入至頭部對稱，一樣得走一圈找到尾節點，改指向新的頭節點；只剩一個節點時刪除，串列就變空了：
 
 ```python
-def delete_at_head(head: Node | None) -> Node | None:
+def delete_at_head(head: ListNode | None) -> ListNode | None:
     if head is None:
         return None
     if head.next is head:          # 只剩一個節點
@@ -722,7 +722,7 @@ def delete_at_head(head: Node | None) -> Node | None:
 其餘位置的刪除，邏輯也是類似，一樣先用 `length` 正規化 `k`：
 
 ```python
-def delete_at(head: Node | None, k: int) -> Node | None:
+def delete_at(head: ListNode | None, k: int) -> ListNode | None:
     if head is None:
         return None
 
@@ -744,7 +744,7 @@ def delete_at(head: Node | None, k: int) -> Node | None:
 查詢節點也是類似。以下為程式碼實作：
 
 ```python
-def query_at(head: Node | None, k: int) -> Node | None:
+def query_at(head: ListNode | None, k: int) -> ListNode | None:
     if head is None:
         return None
 
@@ -760,7 +760,7 @@ def query_at(head: Node | None, k: int) -> Node | None:
 如果是根據資料進行查詢，需要限制迴圈僅走一圈（利用 `length` 控制）：
 
 ```python
-def query_by(head: Node | None, data: int) -> Node | None:
+def query_by(head: ListNode | None, data: int) -> ListNode | None:
     if head is None:
         return None
         
@@ -781,14 +781,14 @@ def query_by(head: Node | None, data: int) -> Node | None:
 而 Dummy 節點真正的想法是：既然頭節點缺一個前節點，那就憑空造一個接在它前面，不過該節點不會存真正的資料，只是佔位罷了：
 
 ```python
-dummy = Node(0)     # 可隨意填寫
+dummy = ListNode(0)     # 可隨意填寫
 dummy.next = head
 ```
 
 現在串列變成從 `dummy` 這個節點開始算，真正第一筆資料為 `dummy.next`。此時插入、刪除就可以統一用一套邏輯處理，以刪除為例：
 
 ```python
-def delete_at(dummy: Node, k: int) -> None:
+def delete_at(dummy: ListNode, k: int) -> None:
     curr = dummy
     for _ in range(k):
         curr = curr.next
@@ -812,7 +812,7 @@ def delete_at(dummy: Node, k: int) -> None:
 程式碼實作如下：
 
 ```python
-def reverse(head: Node | None) -> Node | None:
+def reverse(head: ListNode | None) -> ListNode | None:
     prev = None
     curr = head
     while curr is not None:

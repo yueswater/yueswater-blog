@@ -35,10 +35,10 @@ This section covers the singly linked list; the doubly linked list comes later �
 Before initializing a linked list, we first need to define a node:
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.next: Node | None = None
+        self.next: ListNode | None = None
 ```
 
 A list is like an unfolded string of beads — it always has a front and a back. The front is called the **head**, and the back is called the **tail**. So we can try building a list like this:
@@ -50,9 +50,9 @@ A list is like an unfolded string of beads — it always has a front and a back.
 Implemented in Python, that looks like:
 
 ```python
-head = Node(1)
-head.next = Node(2)
-head.next.next = Node(3)
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
 ```
 
 Notice that since `3` is the very end of the list, its next node is `None`.
@@ -70,7 +70,7 @@ When traversing, we typically use `curr` to keep track of where we currently are
 The implementation looks like this:
 
 ```python
-def traverse(head: Node | None) -> None:
+def traverse(head: ListNode | None) -> None:
     curr = head     # start from the head node
     while curr is not None:
         print(curr.data)
@@ -85,7 +85,7 @@ traverse(head)
 One thing to watch out for: the loop condition **must not be written as** `curr.next is not None` — that would stop right at the tail node (since its next is `None`). Printing one value per line isn't very readable either, though, so let's rewrite the `traverse` function a bit:
 
 ```python
-def traverse(head: Node | None) -> str:
+def traverse(head: ListNode | None) -> str:
     if head is None:
         return ''
 
@@ -106,7 +106,7 @@ Printed, this gives:
 Separately, if you want to work out the length of a list, you can use a `count` variable while traversing:
 
 ```python
-def length(head: Node | None) -> int:
+def length(head: ListNode | None) -> int:
     count: int = 0
     curr = head
     while curr is not None:
@@ -117,7 +117,7 @@ def length(head: Node | None) -> int:
 print(length(head))     # 3
 ```
 
-### Inserting a Node
+### Inserting a ListNode
 
 Inserting a node breaks down into three cases: **inserting at the head**, **inserting after a given node**, and **inserting at the tail**.
 
@@ -131,8 +131,8 @@ The new node needs to become the new head, so the order should be:
 Using the list from before as an example, say we want to add node `0` at the very front. We can first define a function:
 
 ```python
-def insert_at_head(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_head(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     p.next = head
     return p
 ```
@@ -146,12 +146,12 @@ traverse(head)
 # 0 -> 1 -> 2 -> 3
 ```
 
-#### Inserting After a Given Node
+#### Inserting After a Given ListNode
 
 This uses the same definition of `k` as `delete_at` (covered below): after insertion, the new node itself becomes index `k`. So we first need to traverse to **the node at index $k-1$**, and attach the new node right after it:
 
 ```python
-def insert_at(head: Node | None, k: int, data: int) -> Node:
+def insert_at(head: ListNode | None, k: int, data: int) -> ListNode:
     if k == 0:
         return insert_at_head(head, data)
 
@@ -162,7 +162,7 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
         i += 1
     if curr is None:
         raise ValueError("k is out of range")
-    p = Node(data)
+    p = ListNode(data)
     p.next = curr.next
     curr.next = p
     return head
@@ -188,8 +188,8 @@ traverse(head)
 This is the opposite case from inserting at the head. Since the tail node has no meaningful next pointer, the only way to move `curr` to the last node is by traversing — and the way we know **this is the last one** is that `curr.next` is `None`.
 
 ```python
-def insert_at_tail(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_tail(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     
     if head is None:
         return p
@@ -207,7 +207,7 @@ traverse(head)
 # '1 -> 2 -> 3 -> 5'
 ```
 
-### Deleting a Node
+### Deleting a ListNode
 
 To delete a node from the list, you first need to find that node's predecessor, then skip straight over the target node to whatever came after it. Just like insertion, this splits into three cases: **deleting the head**, **deleting a specific node**, and **deleting the tail**.
 
@@ -216,7 +216,7 @@ To delete a node from the list, you first need to find that node's predecessor, 
 The simplest case. Since the head has no predecessor, all we need to do is make `head` point to what's currently the second node:
 
 ```python
-def delete_at_head(head: Node | None) -> Node | None:
+def delete_at_head(head: ListNode | None) -> ListNode | None:
     if head is None:
         return None
     return head.next
@@ -229,12 +229,12 @@ traverse(head)
 
 Nothing points to the original node `1` anymore, so Python automatically reclaims that memory — no manual deallocation needed.
 
-#### Deleting a Specific Node
+#### Deleting a Specific ListNode
 
 To delete the $k$-th node, we first need to traverse to node $k-1$ and stop there (call it `curr`), then have `curr.next` skip over the node to be deleted and connect directly to what was `x.next`.
 
 ```python
-def delete_at(head: Node | None, k: int) -> Node | None:
+def delete_at(head: ListNode | None, k: int) -> ListNode | None:
     if k == 0:
         return delete_at_head(head)
 
@@ -265,7 +265,7 @@ traverse(head)
 Deleting the tail follows the same logic as deleting a middle node — the only difference is that the traversal target becomes the second-to-last node (the one right before the tail), and we set that node's `next` to `None`.
 
 ```python
-def delete_at_tail(head: Node | None) -> Node | None:
+def delete_at_tail(head: ListNode | None) -> ListNode | None:
     if head is None or head.next is None:
         return head
 
@@ -282,16 +282,16 @@ traverse(head)
 # '1 -> 2'
 ```
 
-### Querying a Node
+### Querying a ListNode
 
 Querying a node is considerably simpler than inserting or deleting one. It splits into two cases: **querying the $k$-th node** and **querying by data value**.
 
-#### Querying the $k$-th Node
+#### Querying the $k$-th ListNode
 
 This is almost identical to traversal — the only addition is an index `i` that tracks how many steps we've taken, stopping once we reach step $k$ and returning the current node:
 
 ```python
-def query_at(head: Node | None, k: int) -> Node | None:
+def query_at(head: ListNode | None, k: int) -> ListNode | None:
     curr = head
     i = 0
     while curr and i < k:
@@ -316,7 +316,7 @@ If `k` exceeds the length of the list, `curr` will reach `None`, which makes the
 If you don't know a node's position and only know the data value you're looking for, you need to compare each node's `data` one by one, until you find a match or reach the end of the list without finding one:
 
 ```python
-def query_by(head: Node | None, data: int) -> Node | None:
+def query_by(head: ListNode | None, data: int) -> ListNode | None:
     curr = head
     while curr and curr.data != data:
         curr = curr.next
@@ -339,14 +339,14 @@ If that value doesn't exist in the list, `curr` will keep going all the way to `
 Every operation so far has been a standalone function that takes `head` as a parameter. Here, we'll organize them into a single `LinkedList` class, where `head` becomes state managed internally by the object, and each operation is rewritten as a method:
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.next: Node | None = None
+        self.next: ListNode | None = None
 
 class LinkedList:
-    def __init__(self, head: Node | None = None):
-        self.head: Node | None = head
+    def __init__(self, head: ListNode | None = None):
+        self.head: ListNode | None = head
 
     def traverse(self) -> str:
         result: list[str] = []
@@ -365,7 +365,7 @@ class LinkedList:
         return count
 
     def insert_at_head(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         p.next = self.head
         self.head = p
 
@@ -380,12 +380,12 @@ class LinkedList:
             i += 1
         if curr is None:
             raise ValueError("k is out of range")
-        p = Node(data)
+        p = ListNode(data)
         p.next = curr.next
         curr.next = p
 
     def insert_at_tail(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         if self.head is None:
             self.head = p
             return
@@ -421,7 +421,7 @@ class LinkedList:
             curr = curr.next
         curr.next = None
 
-    def query_at(self, k: int) -> Node | None:
+    def query_at(self, k: int) -> ListNode | None:
         curr = self.head
         i = 0
         while curr and i < k:
@@ -429,7 +429,7 @@ class LinkedList:
             i += 1
         return curr
 
-    def query_by(self, data: int) -> Node | None:
+    def query_by(self, data: int) -> ListNode | None:
         curr = self.head
         while curr and curr.data != data:
             curr = curr.next
@@ -441,9 +441,9 @@ Compared to the standalone-function version, the content is essentially identica
 Let's chain a few operations together and see it in action:
 
 ```python
-ll = LinkedList(Node(1))
-ll.head.next = Node(2)
-ll.head.next.next = Node(3)
+ll = LinkedList(ListNode(1))
+ll.head.next = ListNode(2)
+ll.head.next.next = ListNode(3)
 print(ll.traverse())   # 1 -> 2 -> 3
 
 ll.insert_at_head(0)
@@ -487,19 +487,19 @@ Unlike a singly linked list, a doubly linked list adds two pointers to each node
 First, we can define the node for a doubly linked list:
 
 ```python
-class Node:
+class ListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.prev: Node | None = None
-        self.next: Node | None = None
+        self.prev: ListNode | None = None
+        self.next: ListNode | None = None
 ```
 
 Just like the singly linked list, we organize the operations into a `DoublyLinkedList` class. The difference is that both the `prev` and `next` pointers need to be kept in sync whenever we insert or delete:
 
 ```python
 class DoublyLinkedList:
-    def __init__(self, head: Node | None = None):
-        self.head: Node | None = head
+    def __init__(self, head: ListNode | None = None):
+        self.head: ListNode | None = head
 
     def traverse(self) -> str:
         result: list[str] = []
@@ -518,7 +518,7 @@ class DoublyLinkedList:
         return count
 
     def insert_at_head(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         p.next = self.head          # grab the old head
         if self.head is not None:
             self.head.prev = p      # old head points back to p
@@ -537,7 +537,7 @@ class DoublyLinkedList:
         if curr is None:
             raise ValueError("k is out of range")
 
-        p = Node(data)
+        p = ListNode(data)
         p.next = curr.next           # grab curr's original next
         p.prev = curr                # p points back to curr
         if curr.next is not None:
@@ -545,7 +545,7 @@ class DoublyLinkedList:
         curr.next = p                # curr now points to p
 
     def insert_at_tail(self, data: int) -> None:
-        p = Node(data)
+        p = ListNode(data)
         if self.head is None:
             self.head = p
             return
@@ -595,7 +595,7 @@ class DoublyLinkedList:
 
         curr.prev.next = None            # disconnect the predecessor's next
 
-    def query_at(self, k: int) -> Node | None:
+    def query_at(self, k: int) -> ListNode | None:
         curr = self.head
         i = 0
         while curr and i < k:
@@ -603,7 +603,7 @@ class DoublyLinkedList:
             i += 1
         return curr
 
-    def query_by(self, data: int) -> Node | None:
+    def query_by(self, data: int) -> ListNode | None:
         curr = self.head
         while curr and curr.data != data:
             curr = curr.next
@@ -617,9 +617,9 @@ Notice that `delete_at` here differs from the singly linked version: the singly 
 In both the singly and doubly linked lists covered above, the tail node points to `None`. A circular linked list doesn't — its tail points back to the head instead, turning the list into a loop (think of it as joining the two ends of an unfolded necklace back together). Using the list from before as an example, converting it into a circular linked list gives `1 -> 2 -> 3 -> 1`, implemented like this:
 
 ```python
-head = Node(1)
-head.next = Node(2)
-head.next.next = Node(3)
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
 head.next.next.next = head
 ```
 
@@ -630,7 +630,7 @@ From here you can already tell that the original `traverse` function will fall i
 To fix the infinite-loop problem, we need a different stopping condition: since the tail now points back to the head, the loop should end once we hit the head again.
 
 ```python
-def traverse(head: Node | None) -> str:
+def traverse(head: ListNode | None) -> str:
     if head is None:
         return ''
     result: list[int] = [str(head.data)]
@@ -646,7 +646,7 @@ The result is still `1 -> 2 -> 3`.
 Computing the length of a circular linked list also needs special handling:
 
 ```python
-def length(head: Node | None) -> int:
+def length(head: ListNode | None) -> int:
     if head is None:
         return 0
     
@@ -658,13 +658,13 @@ def length(head: Node | None) -> int:
     return count
 ```
 
-### Inserting a Node
+### Inserting a ListNode
 
 Inserting at the head needs separate handling: because a circular list's tail points back to the head, once the new node becomes the head, the tail also has to be updated to point to it — but there's no ready-made pointer to the tail, so we have to walk all the way around to find it:
 
 ```python
-def insert_at_head(head: Node | None, data: int) -> Node:
-    p = Node(data)
+def insert_at_head(head: ListNode | None, data: int) -> ListNode:
+    p = ListNode(data)
     if head is None:
         p.next = p      # only one node in the list, so it points to itself
         return p
@@ -680,7 +680,7 @@ def insert_at_head(head: Node | None, data: int) -> Node:
 For insertion anywhere else, a circular linked list has no such thing as being **out of range** — because the structure itself is a closed loop, indices naturally repeat as you go around. So we use `length` to work out the total length, and normalize $k$ into the range $[0, n)$ with the modulo operator:
 
 ```python
-def insert_at(head: Node | None, k: int, data: int) -> Node:
+def insert_at(head: ListNode | None, k: int, data: int) -> ListNode:
     if head is None:
         return insert_at_head(head, data)
 
@@ -694,7 +694,7 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
     for _ in range(k - 1):
         curr = curr.next
 
-    p = Node(data)
+    p = ListNode(data)
     p.next = curr.next
     curr.next = p
     return head
@@ -702,12 +702,12 @@ def insert_at(head: Node | None, k: int, data: int) -> Node:
 
 Using the earlier list as an example: say $k = 100$. Since there are only three nodes, $100 \bmod 3 = 1$, which lands right back on the same node as $k = 1$.
 
-### Deleting a Node
+### Deleting a ListNode
 
 Deleting the head mirrors inserting at the head: we still need to walk around to find the tail and update it to point to the new head. If only one node is left, deleting it empties the list:
 
 ```python
-def delete_at_head(head: Node | None) -> Node | None:
+def delete_at_head(head: ListNode | None) -> ListNode | None:
     if head is None:
         return None
     if head.next is head:          # only one node left
@@ -722,7 +722,7 @@ def delete_at_head(head: Node | None) -> Node | None:
 Deleting anywhere else follows similar logic — again, normalize `k` first using `length`:
 
 ```python
-def delete_at(head: Node | None, k: int) -> Node | None:
+def delete_at(head: ListNode | None, k: int) -> ListNode | None:
     if head is None:
         return None
 
@@ -739,12 +739,12 @@ def delete_at(head: Node | None, k: int) -> Node | None:
     return head
 ```
 
-### Querying a Node
+### Querying a ListNode
 
 Querying a node follows the same pattern. Here's the implementation:
 
 ```python
-def query_at(head: Node | None, k: int) -> Node | None:
+def query_at(head: ListNode | None, k: int) -> ListNode | None:
     if head is None:
         return None
 
@@ -760,7 +760,7 @@ def query_at(head: Node | None, k: int) -> Node | None:
 If you're querying by data value instead, you need to cap the loop at exactly one full circuit (controlled via `length`):
 
 ```python
-def query_by(head: Node | None, data: int) -> Node | None:
+def query_by(head: ListNode | None, data: int) -> ListNode | None:
     if head is None:
         return None
         
@@ -774,21 +774,21 @@ def query_by(head: Node | None, data: int) -> Node | None:
 
 ## Related Topics
 
-### Dummy Node
+### Dummy ListNode
 
 Every time we've inserted or deleted a node so far, we've needed an extra check for the head node — the reason is that the head has no predecessor, which is exactly why we've needed `if k == 0` and `if head is None` checks.
 
 The real idea behind a dummy node is this: since the head is missing a predecessor, just conjure one up out of thin air and attach it in front. This node doesn't hold any real data — it's purely a placeholder:
 
 ```python
-dummy = Node(0)     # the value here doesn't matter
+dummy = ListNode(0)     # the value here doesn't matter
 dummy.next = head
 ```
 
 Now the list is considered to start from `dummy`, and the actual first piece of data is `dummy.next`. Insertion and deletion can now be handled with one unified piece of logic — take deletion as an example:
 
 ```python
-def delete_at(dummy: Node, k: int) -> None:
+def delete_at(dummy: ListNode, k: int) -> None:
     curr = dummy
     for _ in range(k):
         curr = curr.next
@@ -812,7 +812,7 @@ The core idea is actually simple: to reverse the list, the original `head` becom
 The implementation looks like this:
 
 ```python
-def reverse(head: Node | None) -> Node | None:
+def reverse(head: ListNode | None) -> ListNode | None:
     prev = None
     curr = head
     while curr is not None:
