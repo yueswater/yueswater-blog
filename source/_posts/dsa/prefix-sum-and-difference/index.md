@@ -327,6 +327,25 @@ prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1]
                - prefix[i - 1][j - 1] + matrix[i - 1][j - 1]
 ```
 
+為了更加簡化與解釋，考慮以下二維陣列/矩陣：
+
+<div style="display:flex; justify-content:center; align-items:center; gap:2.5em; flex-wrap:wrap;">
+```python
+matrix = [
+    [1, 2], [3, 4]
+]
+```
+
+或寫成矩陣的形式：
+<span>$\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$</span>
+</div>
+
+我們可以透過下圖得知二維前綴表是如何得來的。事實上，無論是上述公式或是下圖，背後的邏輯就是**排容原理 (inclusion–exclusion principle)**。
+
+::: {#fig-2d-prefix-build}
+![二維前綴和建表示意圖](images/2d-prefix-build.png)
+:::
+
 !!!- quote "證明"
     設矩陣為 $A$，二維前綴和為 $P$，定義：
 
