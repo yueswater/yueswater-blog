@@ -44,13 +44,19 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 如果標準尺寸都不符合需求（例如要做名片、海報），可以用 `width`、`height` 直接指定尺寸：
 
 ```
-#set page(width: 9cm, height: 5.5cm)
+#set page(
+    width: 9cm,
+    height: 5.5cm
+)
 ```
 
 想要橫向版面，不用自己把寬高數字對調，直接加上 `flipped: true`，Typst 就會把指定的紙張尺寸轉成橫向：
 
 ```
-#set page(paper: "a4", flipped: true)
+#set page(
+    paper: "a4",
+    flipped: true
+)
 ```
 
 ### 實際範例
@@ -58,7 +64,10 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 用 `page` 函式在同一份文件裡放兩種不同的頁面設定：第一頁是預設方向的 A4，第二頁換成橫向的 B5：
 
 ```
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 12pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 12pt
+)
 
 #page(paper: "a4")[
   = A4 直式頁面
@@ -123,7 +132,10 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 底下的範例用一個貼齊內文區域的紅框，實際畫出 `inside`、`outside` 邊界在奇偶頁之間怎麼對稱翻轉：
 
 ```
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 11pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 11pt
+)
 #set page(
   paper: "a5",
   binding: left,
@@ -175,8 +187,14 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 寫一份濃縮在一頁 A4 裡的範例：上半部是單欄的標題跟摘要，下半部的內文則用 `columns` 分成兩欄，很接近常見的論文排版：
 
 ```
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
-#set page(paper: "a4", margin: 2.2cm)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 10.5pt
+)
+#set page(
+    paper: "a4",
+    margin: 2.2cm
+)
 #set par(justify: true)
 
 #align(center)[
@@ -268,7 +286,10 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 沿用**分欄**那節寫的 Typst 介紹範例，加上頁碼，格式改成中文的**第 x 頁，共 x 頁**，位置放在頁尾右下角：
 
 ```
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 10.5pt
+)
 #set page(
   paper: "a4",
   margin: 2.2cm,
@@ -322,7 +343,10 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 繼續沿用 Typst 介紹那份範例，這次加上奇偶頁交替的頁首，內文也補多兩節（與其他工具的比較、延伸閱讀），份量增加後自然溢到第二頁，正好可以看出奇偶頁的頁首差異：
 
 ```
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 10.5pt
+)
 #set page(
   paper: "a4",
   margin: 2.2cm,

@@ -112,8 +112,14 @@ def hello():
 把行內程式碼、語法高亮、字型、背景色、行號[^3]、客製化主題全部兜在一起，寫一份「用動態規劃求費氏數列」的 Python 範例，主題配色仿照 LaTeX `minted` 套件的預設樣式（淺灰底、綠色關鍵字、藍色函式名稱）：
 
 ````typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 11pt)
-#show raw: set text(font: "JetBrains Mono", size: 9.5pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 11pt
+)
+#show raw: set text(
+    font: "JetBrains Mono",
+    size: 9.5pt
+)
 #set raw(theme: "minted-default.tmTheme")
 #show raw.where(block: true): it => {
   show raw.line: line => {
@@ -227,7 +233,10 @@ $ pi approx 3.14, quad sum_(i=1)^n i = (n(n+1)) / 2 $
 把行內公式、獨立公式、變數規則、常見符號兜在一起，寫一份換元積分法（變數變換）的範例：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 12pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 12pt
+)
 
 = 積分變數變換
 

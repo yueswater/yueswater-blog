@@ -56,7 +56,10 @@ thumbnail: /images/covers/Typst_logo.png
 把上面四種語法整合起來，寫成一份 `text-decoration.typ`：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 
 = 文字裝飾範例
 
@@ -202,7 +205,10 @@ Zapfino
 把字型、顏色、粗細與樣式整合成一份 `text-styling.typ`：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 
 = 客製化文字樣式範例
 
@@ -277,7 +283,10 @@ Typst 原始碼裡的換行方式，跟畫面上實際呈現的結果不一定�
 把對齊跟換行整合成一份 `text-alignment.typ`：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 
 = 對齊與換行範例
 

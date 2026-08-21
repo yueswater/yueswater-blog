@@ -101,7 +101,10 @@ Typst 內建的中文數字符號只有中文數字的小寫**一**跟大寫**�
 有了上述工具後，我們可以把巢狀清單、定義清單、客製化編號與符號寫在文件上試試看：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 #set list(marker: [→])
 
 = 清單進階範例
@@ -183,7 +186,10 @@ Typst 預設的連結跟一般文字長得一模一樣，不會自動變色或�
 ### 完整範例
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 #show link: it => underline(text(fill: blue, it))
 
 = 連結語法範例
@@ -242,7 +248,10 @@ Typst 預設的連結跟一般文字長得一模一樣，不會自動變色或�
 以下是實際的文件範例：
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 #set heading(numbering: "1.")
 
 = 介紹 <intro>
@@ -306,7 +315,10 @@ Typst 語法裡不少字元帶著特殊意義，像 `*`、`_`、`#`、`$`，如�
 ### 完整範例
 
 ```typst
-#set text(font: ("Libertinus Serif", "PingFang TC"), size: 14pt)
+#set text(
+    font: ("Libertinus Serif", "PingFang TC"),
+    size: 14pt
+)
 
 = 常用標記語法範例
 
