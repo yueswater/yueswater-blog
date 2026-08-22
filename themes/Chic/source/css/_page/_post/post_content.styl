@@ -50,6 +50,11 @@
     .dark-theme &
       color #f3f3f3
 
+  // links that only wrap an image (e.g. inline logos) shouldn't get the
+  // text-underline sweep -- there's no text for it to highlight
+  a:has(img)
+    background-image none
+
   code, pre
     padding 7px
     font-size 13px

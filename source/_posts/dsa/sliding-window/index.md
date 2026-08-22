@@ -59,19 +59,17 @@ def findMaxThree(nums: list[int], k: int) -> int:
 換句話說，只要知道上一個窗口的總和，新窗口的總和就能直接用**上一個總和減去移出的元素、加上新加入的元素**算出來，完全不需要把窗口內容重新加總一遍。這也是為什麼固定視窗能把每一步的複雜度從 $O(k)$ 壓到 $O(1)$——外層依然要走過 $n$ 個位置，但每個位置只做常數次運算，整體就是 $O(n)$。
 
 ```plaintext
-Algorithm 1 Fixed-size Sliding Window
-    procedure FixedWindow(A, k)
-        for i = 1 to k do
-            ▷ 將 A[i] 加入窗口
-        end for
-        ▷ 處理第一個窗口
+FixedWindow(A, k)
+    for i = 1 to k do
+        ▷ 將 A[i] 加入窗口
+    end for
+    ▷ 處理第一個窗口
 
-        for i = k + 1 to A.length do
-            ▷ 將 A[i - k] 移出窗口
-            ▷ 將 A[i] 加入窗口
-            ▷ 處理目前窗口
-        end for
-end procedure
+    for i = k + 1 to A.length do
+        ▷ 將 A[i - k] 移出窗口
+        ▷ 將 A[i] 加入窗口
+        ▷ 處理目前窗口
+    end for
 ```
 
 為了方便解釋，@fig-window-slide-mechanics 將陣列設定為索引從 1 開始：
@@ -91,21 +89,19 @@ end procedure
 兩支把手都只會往同一個方向（右邊）移動，不會往回拉，差別只在於什麼時候該拉哪一支：右邊把手一路往右擴張，直到視窗內容符合條件為止；一旦符合條件，換左邊把手開始往右收縮，收縮的同時檢查、更新答案，直到視窗不再符合條件為止；接著再換回右邊把手繼續擴張，如此往復，直到右邊把手走到陣列尾端為止。
 
 ```plaintext
-Algorithm 2 Variable-size Sliding Window
-    procedure VariableWindow(A)
-        left = 1
-        right = 1
-        while right ≤ A.length do
-            ▷ 將 A[right] 加入窗口
-            right = right + 1
+VariableWindow(A)
+    left = 1
+    right = 1
+    while right ≤ A.length do
+        ▷ 將 A[right] 加入窗口
+        right = right + 1
 
-            while ▷ 窗口內容符合收縮條件 do
-                ▷ 處理目前窗口
-                ▷ 將 A[left] 移出窗口
-                left = left + 1
-            end while
+        while ▷ 窗口內容符合收縮條件 do
+            ▷ 處理目前窗口
+            ▷ 將 A[left] 移出窗口
+            left = left + 1
         end while
-end procedure
+    end while
 ```
 
 如下方動畫所示：右邊把手先往右擴張視窗，直到視窗內容符合條件；接著換左邊把手往右收縮，直到視窗不再符合條件為止；如此反覆進行，直到右邊把手走到陣列尾端。

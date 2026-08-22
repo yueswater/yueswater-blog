@@ -54,15 +54,13 @@ def merge(list1: list[int], list2: list[int]) -> list[int]:
 而在過程（通常是迴圈）中，會需要依照題目所需條件，決定要如何移動指標，可以單移動左或是右指標，或是兩者均移動。
 
 ```plaintext
-Algorithm 1 Two Pointers (Left/Right)
-    procedure TwoPointerLeftRight(A)
-        left = 1
-        right = A.length
-        while left < right do
-            ▷ 執行任務
-            ▷ 依條件決定如何移動指標
-        end while
-end procedure
+TwoPointerLeftRight(A)
+    left = 1
+    right = A.length
+    while left < right do
+        ▷ 執行任務
+        ▷ 依條件決定如何移動指標
+    end while
 ```
 
 ::: {#fig-left-right-pointers}
@@ -91,16 +89,14 @@ $$
 而 $k^{*}$ 正好是慢指標走的距離，也就是走到 $1 / n$ 處。
 
 ```plaintext
-Algorithm 2 Two Pointers (Fast/Slow)
-    procedure TwoPointerFastSlow(head)
-        slow = head
-        fast = head
-        while fast ≠ NIL and fast.next ≠ NIL do
-            ▷ 執行任務
-            slow = slow.next
-            fast = fast.next.next
-        end while
-end procedure
+TwoPointerFastSlow(head)
+    slow = head
+    fast = head
+    while fast ≠ NIL and fast.next ≠ NIL do
+        ▷ 執行任務
+        slow = slow.next
+        fast = fast.next.next
+    end while
 ```
 
 ::: {#fig-fast-slow-pointers}
@@ -122,15 +118,13 @@ end procedure
 跟左右指標不同的地方在於：左右指標是同一個結構上的兩個指標互相靠攏；平行指標則是**兩個結構各自的指標，彼此獨立前進**。
 
 ```plaintext
-Algorithm 3 Two Pointers (Parallel)
-    procedure TwoPointerParallel(A, B)
-        i = 1
-        j = 1
-        while i ≤ A.length and j ≤ B.length do
-            ▷ 執行任務
-            ▷ 依條件決定移動 i、j，或兩者皆移動
-        end while
-end procedure
+TwoPointerParallel(A, B)
+    i = 1
+    j = 1
+    while i ≤ A.length and j ≤ B.length do
+        ▷ 執行任務
+        ▷ 依條件決定移動 i、j，或兩者皆移動
+    end while
 ```
 
 常見使用情境與搭配的 LeetCode 題目所示：

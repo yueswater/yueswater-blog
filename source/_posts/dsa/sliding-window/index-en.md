@@ -62,19 +62,17 @@ As mentioned, two adjacent windows share $k - 1$ overlapping elements, and those
 In other words, once you know the previous window's sum, the new window's sum can be computed directly as **the previous sum, minus the element that left, plus the element that entered** -- no need to re-sum the window's contents at all. That's exactly why fixed-size windows bring the per-step cost down from $O(k)$ to $O(1)$: the outer loop still has to pass through $n$ positions, but each one only does constant work, so overall it's $O(n)$.
 
 ```plaintext
-Algorithm 1 Fixed-size Sliding Window
-    procedure FixedWindow(A, k)
-        for i = 1 to k do
-            ▷ Add A[i] to the window
-        end for
-        ▷ Process the first window
+FixedWindow(A, k)
+    for i = 1 to k do
+        ▷ Add A[i] to the window
+    end for
+    ▷ Process the first window
 
-        for i = k + 1 to A.length do
-            ▷ Remove A[i - k] from the window
-            ▷ Add A[i] to the window
-            ▷ Process the current window
-        end for
-end procedure
+    for i = k + 1 to A.length do
+        ▷ Remove A[i - k] from the window
+        ▷ Add A[i] to the window
+        ▷ Process the current window
+    end for
 ```
 
 To keep the explanation simple, @fig-window-slide-mechanics uses 1-indexed arrays:
@@ -94,21 +92,19 @@ As for how it changes, picture the two ends of the window as movable handles: th
 Both handles only ever move in the same direction (right) -- never backward. The only thing that changes is which handle gets pulled, and when: the right handle keeps expanding until the window's contents satisfy the condition; once it does, the left handle takes over and shrinks the window, checking and updating the answer at each step, until the window no longer satisfies the condition; then the right handle takes over again and keeps expanding. This repeats until the right handle reaches the end of the array.
 
 ```plaintext
-Algorithm 2 Variable-size Sliding Window
-    procedure VariableWindow(A)
-        left = 1
-        right = 1
-        while right ≤ A.length do
-            ▷ Add A[right] to the window
-            right = right + 1
+VariableWindow(A)
+    left = 1
+    right = 1
+    while right ≤ A.length do
+        ▷ Add A[right] to the window
+        right = right + 1
 
-            while ▷ the window satisfies the shrink condition do
-                ▷ Process the current window
-                ▷ Remove A[left] from the window
-                left = left + 1
-            end while
+        while ▷ the window satisfies the shrink condition do
+            ▷ Process the current window
+            ▷ Remove A[left] from the window
+            left = left + 1
         end while
-end procedure
+    end while
 ```
 
 As shown in the animation below: the right handle expands the window first, until it satisfies the condition; then the left handle takes over and shrinks it, until the window no longer satisfies the condition; this repeats until the right handle reaches the end of the array.

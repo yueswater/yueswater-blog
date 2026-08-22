@@ -83,21 +83,17 @@ query(l, r) = prefix[r + 1] - prefix[l]
 整理成通用寫法：
 
 ```plaintext
-Algorithm 1 Build Prefix Sum
-    procedure BuildPrefixSum(A)
-        prefix[0] = 0
-        for i = 1 to A.length do
-            prefix[i] = prefix[i - 1] + A[i - 1]
-        end for
-        return prefix
-end procedure
+BuildPrefixSum(A)
+    prefix[0] = 0
+    for i = 1 to A.length do
+        prefix[i] = prefix[i - 1] + A[i - 1]
+    end for
+    return prefix
 ```
 
 ```plaintext
-Algorithm 2 Range Sum Query
-    procedure RangeSum(prefix, l, r)
-        return prefix[r + 1] - prefix[l]
-end procedure
+RangeSum(prefix, l, r)
+    return prefix[r + 1] - prefix[l]
 ```
 
 `Algorithm 1` 花 $O(n)$ 建表，`Algorithm 2` 每次查詢是 $O(1)$，兩者合起來就是完整的前綴和套路。
@@ -226,24 +222,20 @@ class NumArray:
 整理成通用寫法：
 
 ```plaintext
-Algorithm 3 Range Update via Difference Array
-    procedure RangeUpdate(diff, l, r, v)
-        diff[l] = diff[l] + v
-        if r + 1 < diff.length then
-            diff[r + 1] = diff[r + 1] - v
-        end if
-end procedure
+RangeUpdate(diff, l, r, v)
+    diff[l] = diff[l] + v
+    if r + 1 < diff.length then
+        diff[r + 1] = diff[r + 1] - v
+    end if
 ```
 
 ```plaintext
-Algorithm 4 Reconstruct Array from Difference Array
-    procedure Reconstruct(diff)
-        result[0] = diff[0]
-        for i = 1 to diff.length - 1 do
-            result[i] = result[i - 1] + diff[i]
-        end for
-        return result
-end procedure
+Reconstruct(diff)
+    result[0] = diff[0]
+    for i = 1 to diff.length - 1 do
+        result[i] = result[i - 1] + diff[i]
+    end for
+    return result
 ```
 
 `Algorithm 3` 每次更新是 $O(1)$，`Algorithm 4` 在所有更新做完後**只呼叫一次**，花 $O(n)$ 還原整個陣列，兩者合起來就是完整的差分陣列套路。
@@ -383,31 +375,27 @@ matrix = [
 
 ```plaintext
 sumRegion(row1, col1, row2, col2)
-    = prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
-      - prefix[row2 + 1][col1] + prefix[row1][col1]
+        = prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
+          - prefix[row2 + 1][col1] + prefix[row1][col1]
 ```
 
 整理成通用寫法：
 
 ```plaintext
-Algorithm 5 Build 2D Prefix Sum
-    procedure Build2DPrefixSum(M)
-        for i = 1 to M.rows do
-            for j = 1 to M.cols do
-                prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1]
-                             - prefix[i - 1][j - 1] + M[i - 1][j - 1]
-            end for
+Build2DPrefixSum(M)
+    for i = 1 to M.rows do
+        for j = 1 to M.cols do
+            prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1]
+                         - prefix[i - 1][j - 1] + M[i - 1][j - 1]
         end for
-        return prefix
-end procedure
+    end for
+    return prefix
 ```
 
 ```plaintext
-Algorithm 6 2D Range Sum Query
-    procedure RangeSum2D(prefix, row1, col1, row2, col2)
-        return prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
-             - prefix[row2 + 1][col1] + prefix[row1][col1]
-end procedure
+RangeSum2D(prefix, row1, col1, row2, col2)
+    return prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
+         - prefix[row2 + 1][col1] + prefix[row1][col1]
 ```
 
 `Algorithm 5` 花 $O(r \times c)$ 建表，`Algorithm 6` 每次查詢是 $O(1)$，兩者合起來就是完整的二維前綴和套路。

@@ -57,15 +57,13 @@ Given two pointers — a left pointer `left` and a right pointer `right` — `le
 Along the way (usually inside a loop), how the pointers move depends on whatever condition the problem requires — you might move only `left`, only `right`, or both at once.
 
 ```plaintext
-Algorithm 1 Two Pointers (Left/Right)
-    procedure TwoPointerLeftRight(A)
-        left = 1
-        right = A.length
-        while left < right do
-            ▷ Do the actual work
-            ▷ Decide how to move the pointers based on the condition
-        end while
-end procedure
+TwoPointerLeftRight(A)
+    left = 1
+    right = A.length
+    while left < right do
+        ▷ Do the actual work
+        ▷ Decide how to move the pointers based on the condition
+    end while
 ```
 
 ::: {#fig-left-right-pointers}
@@ -92,16 +90,14 @@ $$
 and $k^{*}$ is exactly the distance the slow pointer has covered — meaning it ends up at the $1/n$ mark.
 
 ```plaintext
-Algorithm 2 Two Pointers (Fast/Slow)
-    procedure TwoPointerFastSlow(head)
-        slow = head
-        fast = head
-        while fast ≠ NIL and fast.next ≠ NIL do
-            ▷ Do the actual work
-            slow = slow.next
-            fast = fast.next.next
-        end while
-end procedure
+TwoPointerFastSlow(head)
+    slow = head
+    fast = head
+    while fast ≠ NIL and fast.next ≠ NIL do
+        ▷ Do the actual work
+        slow = slow.next
+        fast = fast.next.next
+    end while
 ```
 
 ::: {#fig-fast-slow-pointers}
@@ -121,15 +117,13 @@ Given two pointers — `i` and `j` — each traversing a **different** structure
 The difference from left/right pointers: left/right pointers are two pointers on the *same* structure closing in on each other; parallel pointers are pointers on *two separate* structures, each advancing independently — there's no "closing in" or "meeting" involved.
 
 ```plaintext
-Algorithm 3 Two Pointers (Parallel)
-    procedure TwoPointerParallel(A, B)
-        i = 1
-        j = 1
-        while i ≤ A.length and j ≤ B.length do
-            ▷ Do the actual work
-            ▷ Decide whether to move i, j, or both, based on the condition
-        end while
-end procedure
+TwoPointerParallel(A, B)
+    i = 1
+    j = 1
+    while i ≤ A.length and j ≤ B.length do
+        ▷ Do the actual work
+        ▷ Decide whether to move i, j, or both, based on the condition
+    end while
 ```
 
 | Use Case | LeetCode |

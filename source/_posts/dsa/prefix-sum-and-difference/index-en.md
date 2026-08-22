@@ -83,21 +83,17 @@ Proof:
 Written as a general algorithm:
 
 ```plaintext
-Algorithm 1 Build Prefix Sum
-    procedure BuildPrefixSum(A)
-        prefix[0] = 0
-        for i = 1 to A.length do
-            prefix[i] = prefix[i - 1] + A[i - 1]
-        end for
-        return prefix
-end procedure
+BuildPrefixSum(A)
+    prefix[0] = 0
+    for i = 1 to A.length do
+        prefix[i] = prefix[i - 1] + A[i - 1]
+    end for
+    return prefix
 ```
 
 ```plaintext
-Algorithm 2 Range Sum Query
-    procedure RangeSum(prefix, l, r)
-        return prefix[r + 1] - prefix[l]
-end procedure
+RangeSum(prefix, l, r)
+    return prefix[r + 1] - prefix[l]
 ```
 
 `Algorithm 1` builds the table in $O(n)$, `Algorithm 2` answers each query in $O(1)$ -- together they make up the complete prefix-sum playbook.
@@ -226,24 +222,20 @@ A difference array is really just an extension of prefix sum -- only `left` and 
 Written as a general algorithm:
 
 ```plaintext
-Algorithm 3 Range Update via Difference Array
-    procedure RangeUpdate(diff, l, r, v)
-        diff[l] = diff[l] + v
-        if r + 1 < diff.length then
-            diff[r + 1] = diff[r + 1] - v
-        end if
-end procedure
+RangeUpdate(diff, l, r, v)
+    diff[l] = diff[l] + v
+    if r + 1 < diff.length then
+        diff[r + 1] = diff[r + 1] - v
+    end if
 ```
 
 ```plaintext
-Algorithm 4 Reconstruct Array from Difference Array
-    procedure Reconstruct(diff)
-        result[0] = diff[0]
-        for i = 1 to diff.length - 1 do
-            result[i] = result[i - 1] + diff[i]
-        end for
-        return result
-end procedure
+Reconstruct(diff)
+    result[0] = diff[0]
+    for i = 1 to diff.length - 1 do
+        result[i] = result[i - 1] + diff[i]
+    end for
+    return result
 ```
 
 `Algorithm 3` is $O(1)$ per update; `Algorithm 4` gets called **exactly once** after every update is done, spending $O(n)$ to reconstruct the whole array -- together they make up the complete difference-array playbook.
@@ -364,31 +356,27 @@ With `prefix` built, querying uses the same inclusion-exclusion trick: `sumRegio
 
 ```plaintext
 sumRegion(row1, col1, row2, col2)
-    = prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
-      - prefix[row2 + 1][col1] + prefix[row1][col1]
+        = prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
+          - prefix[row2 + 1][col1] + prefix[row1][col1]
 ```
 
 Written as a general algorithm:
 
 ```plaintext
-Algorithm 5 Build 2D Prefix Sum
-    procedure Build2DPrefixSum(M)
-        for i = 1 to M.rows do
-            for j = 1 to M.cols do
-                prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1]
-                             - prefix[i - 1][j - 1] + M[i - 1][j - 1]
-            end for
+Build2DPrefixSum(M)
+    for i = 1 to M.rows do
+        for j = 1 to M.cols do
+            prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1]
+                         - prefix[i - 1][j - 1] + M[i - 1][j - 1]
         end for
-        return prefix
-end procedure
+    end for
+    return prefix
 ```
 
 ```plaintext
-Algorithm 6 2D Range Sum Query
-    procedure RangeSum2D(prefix, row1, col1, row2, col2)
-        return prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
-             - prefix[row2 + 1][col1] + prefix[row1][col1]
-end procedure
+RangeSum2D(prefix, row1, col1, row2, col2)
+    return prefix[row2 + 1][col2 + 1] - prefix[row1][col2 + 1]
+         - prefix[row2 + 1][col1] + prefix[row1][col1]
 ```
 
 `Algorithm 5` builds the table in $O(r \times c)$, `Algorithm 6` answers each query in $O(1)$ -- together they make up the complete 2D prefix-sum playbook.
