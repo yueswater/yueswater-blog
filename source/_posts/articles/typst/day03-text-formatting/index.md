@@ -105,7 +105,7 @@ typst fonts | sort
 
 以筆者的電腦為例，總共列出 482 種字型，這裡只列出排序後的前五個與後五個：
 
-```
+```plaintext
 Academy Engraved LET
 ADT Slab Numeric
 ADT Slab Soft Numeric

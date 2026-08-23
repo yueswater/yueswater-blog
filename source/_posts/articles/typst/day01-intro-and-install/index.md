@@ -66,7 +66,7 @@ typst --version
 
 如果一切順利，終端機會印出類似以下的版本資訊：
 
-```
+```plaintext
 typst 0.15.1 (a1b2c3d)
 ```
 

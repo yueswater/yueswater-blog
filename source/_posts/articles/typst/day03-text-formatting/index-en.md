@@ -104,7 +104,7 @@ typst fonts | sort
 
 On the author's machine, this lists 482 fonts in total; here are just the first five and last five after sorting:
 
-```
+```plaintext
 Academy Engraved LET
 ADT Slab Numeric
 ADT Slab Soft Numeric

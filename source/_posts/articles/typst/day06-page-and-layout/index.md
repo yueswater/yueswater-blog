@@ -33,7 +33,7 @@ Typst 內建大量標準紙張尺寸，透過 `#set page(paper: "...")` 直接�
 | US Letter | `us-letter` | 215.9mm x 279.4mm |
 | US Legal | `us-legal` | 215.9mm x 355.6mm |
 
-```
+```typst
 #set page(paper: "a4")
 ```
 
@@ -43,7 +43,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 如果標準尺寸都不符合需求（例如要做名片、海報），可以用 `width`、`height` 直接指定尺寸：
 
-```
+```typst
 #set page(
     width: 9cm,
     height: 5.5cm
@@ -52,7 +52,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 想要橫向版面，不用自己把寬高數字對調，直接加上 `flipped: true`，Typst 就會把指定的紙張尺寸轉成橫向：
 
-```
+```typst
 #set page(
     paper: "a4",
     flipped: true
@@ -63,7 +63,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 用 `page` 函式在同一份文件裡放兩種不同的頁面設定：第一頁是預設方向的 A4，第二頁換成橫向的 B5：
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 12pt
@@ -102,7 +102,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 最簡單的情況，用 `margin` 搭配單一數值，就能讓四邊套用同一個邊界：
 
-```
+```typst
 #set page(margin: 2.5cm)
 ```
 
@@ -112,13 +112,13 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 `margin` 也可以吃一個字典，分別指定 `top`、`bottom`、`left`、`right`，或用 `x`、`y` 一次設定水平、垂直方向，剩下沒填的邊則可以用 `rest` 補上預設值：
 
-```
+```typst
 #set page(margin: (top: 3cm, bottom: 2cm, x: 2.5cm))
 ```
 
 如果文件是要雙面印刷、裝訂成冊的（對照上圖的**內側邊距**、**外側邊距**），裝訂側通常要留比較大的空間，這時候比起 `left`、`right`，更適合用 `inside`、`outside` 搭配 `binding` 參數：
 
-```
+```typst
 #set page(
   binding: left,
   margin: (inside: 3cm, outside: 1.5cm, y: 2cm),
@@ -131,7 +131,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 底下的範例用一個貼齊內文區域的紅框，實際畫出 `inside`、`outside` 邊界在奇偶頁之間怎麼對稱翻轉：
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 11pt
@@ -164,13 +164,13 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 整頁分欄用 `page` 函式的 `columns` 參數，填數字決定要分幾欄，內容會自動依序填滿每一欄：
 
-```
+```typst
 #set page(columns: 2)
 ```
 
 只想讓某一段內容分欄，其他地方維持原本的單欄排版，則要用獨立的 `columns` 函式包住那段內容[^1]，並且可以用 `gutter` 調整欄與欄之間的間距（預設是頁面寬度的 4%）：
 
-```
+```typst
 #columns(2, gutter: 12pt)[
   這是第一欄的內容，會先填滿再換到下一欄。
 
@@ -186,7 +186,7 @@ Typst 預設紙張就是 A4，沒有特別指定的話不用另外設定。更�
 
 寫一份濃縮在一頁 A4 裡的範例：上半部是單欄的標題跟摘要，下半部的內文則用 `columns` 分成兩欄，很接近常見的論文排版：
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 10.5pt
@@ -256,13 +256,13 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 `numbering` 參數控制頁碼要不要顯示、顯示成什麼格式，寫法跟 [Day 04](/articles/typst/day04-lists-and-links/) 講過的標題編號是同一套 pattern 字串規則：
 
-```
+```typst
 #set page(numbering: "1")
 ```
 
 如果想同時顯示目前頁數跟總頁數，可以用 `"1 / 1"` 這個 pattern，Typst 會自動算出總頁數填進去：
 
-```
+```typst
 #set page(numbering: "1 / 1")
 ```
 
@@ -272,7 +272,7 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 頁碼預設會印在頁尾置中，如果想換位置，要用 `number-align` 參數。它接受垂直方向（`top` 頁首、`bottom` 頁尾）加水平方向（`left`、`center`、`right`）用 `+` 組合起來，總共六種位置可以選，跟 [LaTeX 的 `fancyhdr`](https://ctan.org/pkg/fancyhdr?lang=en) 六宮格是同一個概念：
 
-```
+```typst
 #set page(
   numbering: "1",
   number-align: right + top,
@@ -285,7 +285,7 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 沿用**分欄**那節寫的 Typst 介紹範例，加上頁碼，格式改成中文的**第 x 頁，共 x 頁**，位置放在頁尾右下角：
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 10.5pt
@@ -315,7 +315,7 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 用 `header`、`footer` 兩個參數就能塞進任意內容，效果跟直接設定 `numbering` 類似，但可以放標題、章節名稱這類靜態文字：
 
-```
+```typst
 #set page(
   header: align(right)[*Typst：現代化排版系統*],
 )
@@ -323,7 +323,7 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 如果想讓頁首、頁尾隨著頁數（例如奇偶頁）顯示不同內容——書籍常見的排版習慣是奇數頁放書名、偶數頁放章節名，這時候要用 `context` 搭配 `counter(page)` 讀出目前頁數，再用 `calc.rem` 判斷奇偶：
 
-```
+```typst
 #set page(
   header: context {
     let n = counter(page).get().first()
@@ -342,7 +342,7 @@ Typst 是一套設計來取代 LaTeX 的現代化排版系統，語法比 LaTeX 
 
 繼續沿用 Typst 介紹那份範例，這次加上奇偶頁交替的頁首，內文也補多兩節（與其他工具的比較、延伸閱讀），份量增加後自然溢到第二頁，正好可以看出奇偶頁的頁首差異：
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 10.5pt

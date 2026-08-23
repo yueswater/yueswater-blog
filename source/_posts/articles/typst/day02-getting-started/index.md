@@ -21,7 +21,7 @@ Typst 檔案本質上就是一份純文字檔，副檔名為 `.typ`，不需要�
 
 首先我們在 VS Code 或任何編輯器建資料夾，名為 `hello-typst/`。建立成功後再底下建立 `hello.typ` 檔：
 
-```
+```plaintext
 hello-typst/
 └── hello.typ
 ```
@@ -124,7 +124,7 @@ typst watch hello.typ
 
 執行指令後，終端機會停在那裡持續監看，不會馬上結束；接下來只要存檔，Typst 就會自動偵測變更並重新編譯，`hello.pdf` 也會跟著即時更新。這時候只要用支援自動刷新的 PDF 閱讀器打開 `hello.pdf`（例如 VS Code 內建的 PDF 檢視、或 [Skim](https://skim-app.sourceforge.io/) 等第三方閱讀器），改一個字存檔，畫面幾乎立刻跟著變。想結束監看的話，回到終端機按 `Ctrl + C` 就會停止。
 
-```
+```plaintext
 watching hello.typ
 writing to hello.pdf
 

@@ -24,7 +24,7 @@ Earlier posts have already used `#set` plenty of times. This section breaks it d
 
 A `#set` rule always follows the same shape: the `set` keyword, followed by the name of an element function[^1], followed by the desired values as named arguments:
 
-```
+```typst
 #set text(size: 14pt)
 
 This paragraph will be 14pt.
@@ -36,7 +36,7 @@ You can think of what's happening underneath as Typst keeping a **list of curren
 
 Not every parameter of a function can go into a `#set` rule. Only **named, optional** parameters can -- things like `text`'s `size`, `font`, and `fill`. **Positional, required** parameters -- like the actual text content passed to `text` -- can't be set this way:
 
-```
+```typst
 #set text("this is some text")
 ```
 
@@ -52,7 +52,7 @@ That confirms `font` is a parameter you can set with `#set`.
 
 Combining a few settable parameters into a document with a custom font, size, and color:
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 12pt,
@@ -78,7 +78,7 @@ After compiling, the result looks like this:
 
 A `#set` written at the top level (not wrapped in any block) takes effect from the line it appears on, all the way through to the end of the file:
 
-```
+```typst
 First paragraph, using the default size.
 
 #set text(size: 18pt)
@@ -92,7 +92,7 @@ The first paragraph, before the `#set`, keeps the default; everything from the s
 
 If you only want a small piece of content to get a special setting, without affecting the rest of the document, wrap the `#set` and the content it should affect together inside square brackets `[...]`. Once the block ends, the setting automatically stops applying, and content outside is unaffected:
 
-```
+```typst
 This paragraph keeps the default style.
 
 #[
@@ -107,7 +107,7 @@ This paragraph is back outside the block, so it reverts to the default style -- 
 
 Sometimes you want a `#set` to apply only under a certain condition -- say, turning text red only in draft mode, as a reminder. There's an easy trap here: if you put the `#set` inside an `if`'s `{}` code block, separate from the content it's supposed to affect, you'll find it simply doesn't work:
 
-```
+```typst
 #let draft = true
 
 #[
@@ -122,7 +122,7 @@ After actually compiling this, the text stays black -- the `set` inside the `if`
 
 The correct way to write it is to wrap the `#set` and the content it should affect together inside the same square-bracket `[...]` branch, instead of splitting them between `{}` and the outside:
 
-```
+```typst
 #let draft = true
 
 #[
@@ -141,7 +141,7 @@ Written this way, when `draft` is `true`, execution enters the first branch, and
 
 Combining all three scoping situations -- to-the-end-of-file, block-limited, and conditional -- into one document:
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 12pt
@@ -186,7 +186,7 @@ In practice, you rarely write just one `#set`. This section looks at how Typst d
 
 Setting the same function with `#set` more than once doesn't mean the later call wipes out everything the earlier one set -- it's compared **property by property**: for a property both calls touch, the later value wins; for a property only the earlier call touched, that value is kept:
 
-```
+```typst
 #set text(fill: blue)
 #set text(size: 20pt)
 
@@ -195,7 +195,7 @@ This paragraph is blue and 20pt -- the color comes from the first #set, the size
 
 Since the two `#set` calls set different properties, the end result is exactly the same as writing one combined `#set` with both properties together:
 
-```
+```typst
 #set text(
   fill: blue,
   size: 20pt,
@@ -206,7 +206,7 @@ Whether you write it split up or combined, as long as there's no overlapping pro
 
 It's only when two `#set` calls set the *same* property that the later one wins:
 
-```
+```typst
 #set text(fill: blue)
 #set text(fill: red)
 
@@ -217,7 +217,7 @@ This paragraph is red, because fill was set twice, and the last one wins.
 
 Different element functions each keep their own independent list of styles. Setting one function with `#set` never affects another function's settings, even when both appear in the same document:
 
-```
+```typst
 #set list(marker: [→])
 #set enum(numbering: "(1)")
 
@@ -231,7 +231,7 @@ Different element functions each keep their own independent list of styles. Sett
 
 Combining same-function stacking and different-function independence into one document:
 
-```
+```typst
 #set text(
     font: ("Libertinus Serif", "PingFang TC"),
     size: 12pt
@@ -263,7 +263,7 @@ This post hasn't formally covered how to write your own function yet -- this is 
 
 If the same group of `#set` rules keeps getting applied across different documents (say, a company's internal reports always need a certain font and a certain margin), retyping it every time gets old fast. You can use `#let` to package that group of settings into a function:
 
-```
+```typst
 #let report-style(body) = {
   set text(font: ("Libertinus Serif", "PingFang TC"), size: 11pt)
   set page(margin: 2.5cm)
@@ -276,7 +276,7 @@ Breaking that down: `#let report-style(body) = {...}` defines a function called 
 
 Once it's defined, apply it to the rest of the document with `#show: report-style`:
 
-```
+```typst
 #show: report-style
 
 = Chapter One
@@ -292,7 +292,7 @@ Content...
 
 Applying the `report-style` function to a simple document:
 
-```
+```typst
 #let report-style(body) = {
   set text(
     font: ("Libertinus Serif", "PingFang TC"),

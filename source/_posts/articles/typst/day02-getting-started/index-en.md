@@ -22,7 +22,7 @@ A Typst file is essentially a plain text file with a `.typ` extension — no ext
 
 First, create a folder named `hello-typst/` in VS Code or any editor. Once created, create a `hello.typ` file inside it:
 
-```
+```plaintext
 hello-typst/
 └── hello.typ
 ```
@@ -125,7 +125,7 @@ typst watch hello.typ
 
 After running the command, the terminal stays open and keeps watching — it doesn't exit right away. From here, just save the file, and Typst automatically detects the change and recompiles, with `hello.pdf` updating right along with it. Open `hello.pdf` with a PDF reader that supports auto-refresh (such as VS Code's built-in PDF view, or a third-party reader like [Skim](https://skim-app.sourceforge.io/)), change a character and save, and the view updates almost instantly. To stop watching, go back to the terminal and press `Ctrl + C`.
 
-```
+```plaintext
 watching hello.typ
 writing to hello.pdf
 

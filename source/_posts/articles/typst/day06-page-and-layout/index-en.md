@@ -36,7 +36,7 @@ Typst has a large built-in table of standard paper sizes, applied directly via `
 | US Letter | `us-letter` | 215.9mm x 279.4mm |
 | US Legal | `us-legal` | 215.9mm x 355.6mm |
 
-```
+```typst
 #set page(paper: "a4")
 ```
 
@@ -46,13 +46,13 @@ Typst's default paper is already A4, so there's no need to set this explicitly i
 
 If none of the standard sizes fit your needs (say, for a business card or a poster), you can specify dimensions directly with `width` and `height`:
 
-```
+```typst
 #set page(width: 9cm, height: 5.5cm)
 ```
 
 For a landscape layout, there's no need to swap the width and height numbers yourself -- just add `flipped: true`, and Typst will rotate the specified paper size into landscape:
 
-```
+```typst
 #set page(paper: "a4", flipped: true)
 ```
 
@@ -60,7 +60,7 @@ For a landscape layout, there's no need to swap the width and height numbers you
 
 Using the `page` function to place two different page settings in the same document: the first page is A4 in the default orientation, and the second switches to B5 in landscape:
 
-```
+```typst
 #set text(font: ("Libertinus Serif", "PingFang TC"), size: 12pt)
 
 #page(paper: "a4")[
@@ -96,7 +96,7 @@ The odd one out is the **marginal note** on the far right (along with **marginpa
 
 The simplest case: pair `margin` with a single value, and all four sides get the same margin:
 
-```
+```typst
 #set page(margin: 2.5cm)
 ```
 
@@ -106,13 +106,13 @@ Without an explicit setting, Typst's default margin value is `auto`, which picks
 
 `margin` can also take a dictionary, specifying `top`, `bottom`, `left`, and `right` individually, or `x` and `y` to set the horizontal and vertical directions at once -- any side left unfilled can be backfilled with a default via `rest`:
 
-```
+```typst
 #set page(margin: (top: 3cm, bottom: 2cm, x: 2.5cm))
 ```
 
 If a document is meant to be printed double-sided and bound (compare **inside margin** and **outside margin** in the diagram above), the binding side usually needs extra space -- in that case, `inside` and `outside` paired with the `binding` parameter fit better than `left` and `right`:
 
-```
+```typst
 #set page(
   binding: left,
   margin: (inside: 3cm, outside: 1.5cm, y: 2cm),
@@ -125,7 +125,7 @@ If a document is meant to be printed double-sided and bound (compare **inside ma
 
 The example below uses a red box flush against the body area to actually draw out how the `inside` and `outside` margins mirror between odd and even pages:
 
-```
+```typst
 #set text(font: ("Libertinus Serif", "PingFang TC"), size: 11pt)
 #set page(
   paper: "a5",
@@ -155,13 +155,13 @@ Reports and handouts sometimes call for a newspaper-style multi-column layout. T
 
 For full-page columns, use the `columns` parameter on the `page` function -- fill in a number to decide how many columns, and content automatically flows to fill each one in order:
 
-```
+```typst
 #set page(columns: 2)
 ```
 
 To scope columns to just one section of content while leaving the rest as single-column, wrap that section in the standalone `columns` function instead[^1], and `gutter` can adjust the spacing between columns (the default is 4% of the page width):
 
-```
+```typst
 #columns(2, gutter: 12pt)[
   This is the content of the first column, which fills up before moving to the next.
 
@@ -177,7 +177,7 @@ Worth noting: the first argument to the `columns` function is the column count, 
 
 Write an example condensed onto a single A4 page: the top half is a single-column title and abstract, and the bottom half's body text is split into two columns with `columns` -- pretty close to a typical paper layout:
 
-```
+```typst
 #set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
 #set page(paper: "a4", margin: 2.2cm)
 #set par(justify: true)
@@ -241,13 +241,13 @@ Once a document has more than a few pages, page numbers are basically essential,
 
 The `numbering` parameter controls whether page numbers show up and what format they use -- the pattern-string rules are the same ones used for heading numbering in [Day 04](/articles/typst/day04-lists-and-links-en/):
 
-```
+```typst
 #set page(numbering: "1")
 ```
 
 To show both the current page and total page count, use the `"1 / 1"` pattern, and Typst automatically computes the total and fills it in:
 
-```
+```typst
 #set page(numbering: "1 / 1")
 ```
 
@@ -257,7 +257,7 @@ Just like heading numbering, `1` can be swapped for `a` (letters), `i` (Roman nu
 
 By default, page numbers print centered in the footer. To change the position, use the `number-align` parameter. It takes a vertical direction (`top` for header, `bottom` for footer) combined with a horizontal direction (`left`, `center`, `right`) via `+`, giving six possible positions -- the same concept as the six-cell grid in [LaTeX's `fancyhdr`](https://ctan.org/pkg/fancyhdr?lang=en):
 
-```
+```typst
 #set page(
   numbering: "1",
   number-align: right + top,
@@ -270,7 +270,7 @@ That switches the page number from the default centered footer to the top-right 
 
 Continuing with the Typst introduction example from the **Columns** section, add page numbers, changing the format to **Page x of x** and placing it at the bottom-right of the footer:
 
-```
+```typst
 #set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
 #set page(
   paper: "a4",
@@ -297,7 +297,7 @@ Page numbers are just the most common kind of content in a footer (or header) --
 
 The `header` and `footer` parameters let you insert arbitrary content, with an effect similar to setting `numbering` directly, but you can put in titles, section names, and other static text:
 
-```
+```typst
 #set page(
   header: align(right)[*Typst: A Modern Typesetting System*],
 )
@@ -305,7 +305,7 @@ The `header` and `footer` parameters let you insert arbitrary content, with an e
 
 To have the header or footer show different content depending on the page number (say, odd vs. even) -- a common convention in books is putting the book title on odd pages and the chapter name on even pages -- you need `context` paired with `counter(page)` to read the current page number, then `calc.rem` to check odd or even:
 
-```
+```typst
 #set page(
   header: context {
     let n = counter(page).get().first()
@@ -324,7 +324,7 @@ Worth noting: if `header` (or `footer` when `number-align` is set to top-aligned
 
 Continuing with the Typst introduction example, this time adding a header that alternates between odd and even pages. The body also gets two more sections (Comparison with Other Tools, Further Reading) -- with the extra content, it naturally overflows onto a second page, which is exactly what lets us see the odd/even header difference:
 
-```
+```typst
 #set text(font: ("Libertinus Serif", "PingFang TC"), size: 10.5pt)
 #set page(
   paper: "a4",

@@ -67,7 +67,7 @@ typst --version
 
 If everything went well, the terminal will print version information similar to:
 
-```
+```plaintext
 typst 0.15.1 (a1b2c3d)
 ```
 
