@@ -1,6 +1,6 @@
 ---
 title: Stack
-date: '2026-08-22'
+date: '2026-08-23'
 lang: en
 permalink: dsa/stack-en/
 categories: &id001
