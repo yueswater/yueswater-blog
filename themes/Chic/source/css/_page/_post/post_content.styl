@@ -138,6 +138,14 @@
 
   img[data-action="zoom"]
     cursor zoom-in
+
+  // LINE-sticker article's brand-icon tabsets (OS install, ImageMagick
+  // install): icons inherit currentColor from the button text in
+  // default/hover states, but the active state's forced white (#fff, see
+  // tabset.css) should be #f3f3f3 instead -- scoped to this class so it
+  // doesn't touch other pages' tabset icons (e.g. pip/poetry/uv)
+  .brand-tabset .tabset-btn.active .tabset-icon
+    fill #f3f3f3
   // this element is rendered by hexo.extend.tag.register()
   // location: scripts/image.js
   .image-box
