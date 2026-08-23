@@ -26,6 +26,12 @@ The **stack** is an extremely common data structure in computer science -- every
 
 ## Basic Operations
 
+Every stack operation happens at the same end, the **top**: new elements go in at the top, and the only element you can take out is the one at the top — everything buried below it is out of reach. That leaves just three operations to describe the whole behaviour of a stack: **push**, which puts an element on top, **pop**, which removes the top element, and **top**, which peeks at the top element without disturbing it.
+
+::: {#fig-stack-operations}
+![The three basic stack operations](images/stack-operations-en.png){width=400}
+:::
+
 ### Push
 
 Pushing first checks whether the stack is full, then does one of the following:
