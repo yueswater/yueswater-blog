@@ -129,11 +129,29 @@ Front(Q)
 
 ```python
 class ArrayQueue:
-    def __init__(self):
-        self._queue: list[int] = []
-        self.size: int = 0
+    def __init__(self, size: int):
+        """初始化佇列"""
+        self._queue: list[int] = [0] * size
         self.head: int = 0
         self.tail: int = 0
-```
 
-### 使用鏈結串列ㄎ
+    def is_empty(self) -> bool:
+        """檢查佇列是否為空"""
+        return self.head == self.tail
+
+    def size(self) -> int:
+        """回傳佇列長度"""
+        return len(self._queue)
+
+    def _next(self, endpoint: int) -> int:
+        """回傳某索引下一格"""
+        return (endpoint + 1) % self.size()
+
+    def enqueue(self, x: int) -> None:
+        """入列"""
+        if self._next(self.tail) == self.head:
+            raise IndexError("佇列已滿")
+        else:
+            self._queue[self.tail] = x
+            self.tail = self._next(self.tail)
+```
