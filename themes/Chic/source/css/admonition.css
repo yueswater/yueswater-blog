@@ -99,9 +99,12 @@
     page-break-inside: avoid;
 }
 
+/* block, not flex: a flex container turns each run of text into its own
+   anonymous flex item and collapses that item's leading/trailing spaces, so
+   a title split by an inline element -- MathJax's <mjx-container> for $...$,
+   or a <code> span -- loses the spaces around it. */
 .admonition-title {
-    display: flex;
-    align-items: center;
+    display: block;
     font-weight: 600;
     padding: 0 1rem 0.1rem 0.75rem;
     font-size: 1.05em;
@@ -112,10 +115,11 @@
 }
 
 .admonition-icon {
+    display: inline-block;
+    vertical-align: -0.1em;
     font-size: 1.2em;
     margin-right: 0.6rem;
     opacity: 0.85;
-    margin-top: 0.1rem;
 }
 
 /* 内容区域 */
