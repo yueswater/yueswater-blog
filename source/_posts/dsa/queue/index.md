@@ -129,9 +129,10 @@ Front(Q)
 
 ```python
 class ArrayQueue:
-    def __init__(self, size: int):
+    def __init__(self, capacity: int):
         """初始化佇列"""
-        self._queue: list[int] = [0] * size
+        self.capacity = capacity
+        self._queue: list[int] = [0] * self.capacity
         self.head: int = 0
         self.tail: int = 0
 
@@ -141,21 +142,40 @@ class ArrayQueue:
 
     def size(self) -> int:
         """回傳佇列長度"""
-        return len(self._queue)
+        return (self.tail - self.head) % self.capacity
 
     def _next(self, endpoint: int) -> int:
         """回傳某索引下一格"""
-        return (endpoint + 1) % self.size()
+        return (endpoint + 1) % self.capacity
 
     def enqueue(self, x: int) -> None:
         """入列"""
         if self._next(self.tail) == self.head:
             raise IndexError("佇列已滿")
-        else:
-            self._queue[self.tail] = x
-            self.tail = self._next(self.tail)
+        self._queue[self.tail] = x
+        self.tail = self._next(self.tail)
 
     def dequeue(self) -> int:
         """出列"""
-        ...
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        x = self._queue[self.head]
+        self.head = self._next(self.head)
+        return x
+
+    def front(self) -> int:
+        """查看佇列首"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._queue[self.head]
+
+    def __repr__(self) -> str:
+        """轉為字串"""
+        result: list[str] = []
+        curr_idx = self.head
+        while curr_idx != self.tail:
+            result.append(str(self._queue[curr_idx]))
+            curr_idx = self._next(curr_idx)
+
+        return " <- ".join(result)
 ```
