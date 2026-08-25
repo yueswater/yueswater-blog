@@ -109,6 +109,7 @@ stylesheets:
   - /css/citations.css
   - /css/problem-statement.css
   - /css/site-logo.css
+  - /css/gallery.css
 
 # scripts loaded in the end of the body
 scripts:
@@ -121,6 +122,7 @@ scripts:
   - /js/permalink-copy.js
   - /js/supabase-views.js
   - /js/tabset.js
+  - /js/gallery.js
 
 # plugin functions
 ## Mathjax: Math Formula Support

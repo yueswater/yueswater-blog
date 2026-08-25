@@ -1,0 +1,201 @@
+/* Photo carousels -- see scripts/galleryTag.js for the {% gallery %} tag.
+   Black frame, photo contained inside it, chevrons out in the letterbox,
+   one dot per photo over the bottom, per-photo caption underneath. */
+
+.gallery {
+    margin: 1.8em 0;
+}
+
+.gallery-viewport {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    /* no plate behind the photo: whatever the shot's proportions, the space
+       around it is just page background. The frame still keeps one fixed
+       shape so paging between portrait and landscape doesn't jump. */
+    background: transparent;
+    overflow: hidden;
+}
+
+.gallery-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.gallery-slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.gallery-slide[data-active="true"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.gallery-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* ---- controls ---- */
+
+.gallery-viewport button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    /* the controls can land on the page or on the photo itself, so they
+       take the page's text colour and carry a halo for the second case */
+    color: rgba(0, 0, 0, 0.55);
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.dark-theme .gallery-viewport button {
+    color: rgba(255, 255, 255, 0.75);
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+
+.gallery-viewport button:hover {
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.dark-theme .gallery-viewport button:hover {
+    color: #fff;
+}
+
+.gallery-viewport button svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.gallery-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.6rem;
+    height: 3.4rem;
+}
+
+.gallery-prev {
+    left: 0.75rem;
+}
+
+.gallery-next {
+    right: 0.75rem;
+}
+
+.gallery-fullscreen {
+    right: 0.9rem;
+    bottom: 0.9rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* ---- dots ---- */
+
+.gallery-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 0.9rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+    max-width: 70%;
+}
+
+/* scoped past `.gallery-viewport button`, which would otherwise win on
+   specificity and strip the fill off every inactive dot */
+.gallery-viewport .gallery-dot {
+    position: static;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    /* inactive dots are a translucent white, the current one solid */
+    background: rgba(255, 255, 255, 0.55);
+    transition: background 0.2s ease;
+}
+
+.gallery-viewport .gallery-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.gallery-viewport .gallery-dot.is-active {
+    background: #fff;
+}
+
+/* ---- caption ---- */
+
+/* every photo has its own caption element; only the current one shows.
+   The block holds its height so paging between a captioned and an
+   uncaptioned photo doesn't shift the page. */
+.gallery-captions {
+    position: relative;
+    margin-top: 0.7em;
+    min-height: 1.6em;
+}
+
+.gallery-caption {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.6;
+    text-align: center;
+    opacity: 0.75;
+    display: none;
+}
+
+.gallery-caption[data-active="true"] {
+    display: block;
+}
+
+/* one photo has nothing to page through */
+.gallery.is-single .gallery-nav,
+.gallery.is-single .gallery-dots {
+    display: none;
+}
+
+/* ---- fullscreen ---- */
+
+.gallery-viewport:fullscreen {
+    aspect-ratio: auto;
+    width: 100vw;
+    height: 100vh;
+}
+
+@media screen and (max-width: 1023px) {
+    .gallery-viewport {
+        aspect-ratio: 4 / 3;
+    }
+
+    .gallery-nav {
+        width: 2rem;
+        height: 2.6rem;
+    }
+
+    .gallery-prev {
+        left: 0.35rem;
+    }
+
+    .gallery-next {
+        right: 0.35rem;
+    }
+}
