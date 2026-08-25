@@ -154,4 +154,8 @@ class ArrayQueue:
         else:
             self._queue[self.tail] = x
             self.tail = self._next(self.tail)
+
+    def dequeue(self) -> int:
+        """出列"""
+        ...
 ```
