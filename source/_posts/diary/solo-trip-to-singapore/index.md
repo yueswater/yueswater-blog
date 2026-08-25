@@ -19,12 +19,6 @@ excerpt: 第一次一個人出國，關於新加坡的那幾天。
 - 
 :::
 
-### 巴士
-
-:::gallery {source="day01/巴士"}
-- 
-:::
-
 ### 甘榜格南
 
 :::gallery {source="day01/甘榜格南"}
@@ -51,22 +45,11 @@ excerpt: 第一次一個人出國，關於新加坡的那幾天。
 - 
 :::
 
-### DUO 大廈
-
-:::gallery {source="day01/DUO大廈"}
-- 
-:::
-
 ### 武吉士街
 
 :::gallery {source="day01/武吉士街"}
 - 
 - 
-:::
-
-### 中元普渡
-
-:::gallery {source="day01/中元普渡"}
 - 
 :::
 
