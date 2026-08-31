@@ -487,19 +487,19 @@ print(ll.query_by(3).data)   # 3
 首先可以定義雙向鏈結串列的節點：
 
 ```python
-class ListNode:
+class DoublyListNode:
     def __init__(self, data: int):
         self.data: int = data
-        self.prev: ListNode | None = None
-        self.next: ListNode | None = None
+        self.prev: DoublyListNode | None = None
+        self.next: DoublyListNode | None = None
 ```
 
 跟單向鏈結串列一樣，把各項操作整理成一個 `DoublyLinkedList` 類別，差別在插入、刪除時，`prev` 跟 `next` 兩條指標都要顧到：
 
 ```python
 class DoublyLinkedList:
-    def __init__(self, head: ListNode | None = None):
-        self.head: ListNode | None = head
+    def __init__(self, head: DoublyListNode | None = None):
+        self.head: DoublyListNode | None = head
 
     def traverse(self) -> str:
         result: list[str] = []
@@ -518,7 +518,7 @@ class DoublyLinkedList:
         return count
 
     def insert_at_head(self, data: int) -> None:
-        p = ListNode(data)
+        p = DoublyListNode(data)
         p.next = self.head          # 接住舊 head
         if self.head is not None:
             self.head.prev = p      # 舊 head 回指 p
@@ -537,7 +537,7 @@ class DoublyLinkedList:
         if curr is None:
             raise ValueError("k 超出串列長度")
 
-        p = ListNode(data)
+        p = DoublyListNode(data)
         p.next = curr.next           # 接住 curr 原本的下一個
         p.prev = curr                # p 回指 curr
         if curr.next is not None:
@@ -545,7 +545,7 @@ class DoublyLinkedList:
         curr.next = p                # curr 改指向 p
 
     def insert_at_tail(self, data: int) -> None:
-        p = ListNode(data)
+        p = DoublyListNode(data)
         if self.head is None:
             self.head = p
             return
@@ -595,7 +595,7 @@ class DoublyLinkedList:
 
         curr.prev.next = None            # 斷開前一個節點的 next
 
-    def query_at(self, k: int) -> ListNode | None:
+    def query_at(self, k: int) -> DoublyListNode | None:
         curr = self.head
         i = 0
         while curr and i < k:
@@ -603,7 +603,7 @@ class DoublyLinkedList:
             i += 1
         return curr
 
-    def query_by(self, data: int) -> ListNode | None:
+    def query_by(self, data: int) -> DoublyListNode | None:
         curr = self.head
         while curr and curr.data != data:
             curr = curr.next

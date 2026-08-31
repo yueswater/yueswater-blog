@@ -1,6 +1,6 @@
 ---
 title: 佇列
-date: '2026-08-24'
+date: '2026-08-26'
 lang: zh-TW
 permalink: dsa/queue/
 categories: &id001
@@ -131,18 +131,18 @@ Front(Q)
 class ArrayQueue:
     def __init__(self, capacity: int):
         """初始化佇列"""
-        self.capacity = capacity
+        self.capacity: int = capacity
         self._queue: list[int] = [0] * self.capacity
-        self.head: int = 0
-        self.tail: int = 0
+        self._head: int = 0
+        self._tail: int = 0
 
     def is_empty(self) -> bool:
         """檢查佇列是否為空"""
-        return self.head == self.tail
+        return self._head == self._tail
 
     def size(self) -> int:
         """回傳佇列長度"""
-        return (self.tail - self.head) % self.capacity
+        return (self._tail - self._head) % self.capacity
 
     def _next(self, endpoint: int) -> int:
         """回傳某索引下一格"""
@@ -150,32 +150,489 @@ class ArrayQueue:
 
     def enqueue(self, x: int) -> None:
         """入列"""
-        if self._next(self.tail) == self.head:
+        if self._next(self._tail) == self._head:
             raise IndexError("佇列已滿")
-        self._queue[self.tail] = x
-        self.tail = self._next(self.tail)
+        self._queue[self._tail] = x
+        self._tail = self._next(self._tail)
 
     def dequeue(self) -> int:
         """出列"""
         if self.is_empty():
             raise IndexError("佇列為空")
-        x = self._queue[self.head]
-        self.head = self._next(self.head)
+        x = self._queue[self._head]
+        self._head = self._next(self._head)
         return x
 
     def front(self) -> int:
         """查看佇列首"""
         if self.is_empty():
             raise IndexError("佇列為空")
-        return self._queue[self.head]
+        return self._queue[self._head]
 
     def __repr__(self) -> str:
         """轉為字串"""
         result: list[str] = []
-        curr_idx = self.head
-        while curr_idx != self.tail:
+        curr_idx = self._head
+        while curr_idx != self._tail:
             result.append(str(self._queue[curr_idx]))
             curr_idx = self._next(curr_idx)
 
         return " <- ".join(result)
 ```
+
+### 使用鏈結串列
+
+首先定義節點：
+
+```python
+class ListNode:
+    def __init__(self, data: int):
+        self.data: int = data
+        self.next: ListNode | None = None
+```
+
+接著開始實作：
+
+```python
+class LinkedListQueue:
+    def __init__(self):
+        """初始化佇列"""
+        self._head: ListNode | None = None
+        self._tail: ListNode | None = None
+        self._size: int = 0
+
+    def is_empty(self) -> bool:
+        """檢查佇列是否為空"""
+        return not self._head
+
+    def size(self) -> int:
+        """回傳佇列長度"""
+        return self._size 
+    
+    def enqueue(self, x: int) -> None:
+        """入列"""
+        node: ListNode = ListNode(x)
+        if self.is_empty():
+            self._head = node
+            self._tail = node
+        else:
+            self._tail.next = node
+            self._tail = node
+        self._size += 1
+
+    def dequeue(self) -> int:
+        """出列"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+
+        node = self._head
+        self._head = self._head.next
+        if self._head is None:
+            self._tail = None
+
+        self._size -= 1
+        return node.data
+
+    def front(self) -> int:
+        """查佇列首"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._head.data
+
+    def __repr__(self) -> str:
+        """轉為字串"""
+        if self.is_empty():
+            return ""
+
+        result: list[str] = []
+        curr = self._head
+
+        while curr:
+            result.append(str(curr.data))
+            curr = curr.next
+
+        return " <- ".join(result)
+```
+
+## 雙向佇列
+
+前面實作的佇列限制得很死，佇列只能從尾端進、頭端出。這個限制換來的是 $O(1)$ 的操作，但也讓某些需求做不到——例如想反悔剛才放進去的元素，或是想從隊伍最後面插隊。
+
+**雙向佇列 (double-ended queue, deque)** 放寬了這個限制：頭尾兩端都可以進、也都可以出，且四個操作的時間複雜度全部都是 $O(1)$。
+
+!!! info "定義：雙向佇列 (deque)"
+    雙向佇列是一種同時具備堆疊與佇列性質的動態集合，其兩端皆可執行插入與刪除操作。
+
+放寬限制之後，它同時涵蓋了前面學過的兩種結構：只從尾端進、頭端出，它就是佇列；只從尾端進、尾端出，它就是堆疊。因此雙向佇列可以視為堆疊與佇列的一般化形式。
+
+### 基本操作
+
+兩端都能進出，因此操作數量是普通佇列的兩倍：
+
+| 方法名 | 描述 | 時間複雜度 |
+| --- | --- | --- |
+| `push_first()` | 將元素新增至佇首 | $O(1)$ |
+| `push_last()` | 將元素新增至佇尾 | $O(1)$ |
+| `pop_first()` | 刪除佇首元素 | $O(1)$ |
+| `pop_last()` | 刪除佇尾元素 | $O(1)$ |
+| `peek_first()` | 訪問佇首元素 | $O(1)$ |
+| `peek_last()` | 訪問佇尾元素 | $O(1)$ |
+
+上面是通用的命名，實際在 Python 中會對應到 `collections` 裡 `deque` 的方法（以下 `d` 為一個 `deque` 物件）：
+
+| 方法名 | `deque` | 本篇的佇列 |
+| --- | --- | --- |
+| `push_last()` | `d.append(x)` | `enqueue(x)` |
+| `push_first()` | `d.appendleft(x)` | —— |
+| `pop_first()` | `d.popleft()` | `dequeue()` |
+| `pop_last()` | `d.pop()` | —— |
+| `peek_first()` | `d[0]` | `front()` |
+| `peek_last()` | `d[-1]` | —— |
+
+最右欄空著的四格就是雙向佇列多出來的能力。只用 `push_last()` 與 `pop_first()` 就是普通佇列；只用 `push_last()` 與 `pop_last()`（兩個都在佇尾）就是堆疊——這也是為什麼一個 `deque` 就能同時扮演堆疊與佇列。
+
+另外要注意，`deque` 雖然可以用索引存取中間的元素，但那是 $O(n)$：它不是陣列，越靠近中間就要走越多步。**需要頻繁隨機存取就別用 `deque` 而是 `list`。
+
+### 使用陣列
+
+```python
+class ArrayDeque:
+    def __init__(self, capacity: int):
+        """初始化雙向佇列"""
+        self.capacity: int = capacity
+        self._deque: list[int] = [0] * self.capacity
+        self._head: int = 0
+        self._tail: int = 0
+    
+    def is_empty(self) -> bool:
+        """檢查佇列是否為空"""
+        return self._head == self._tail
+
+    def size(self) -> int:
+        """回傳佇列長度"""
+        return (self._tail - self._head) % self.capacity
+
+    def _next(self, endpoint: int) -> int:
+        """回傳某索引下一格"""
+        return (endpoint + 1) % self.capacity
+
+    def _prev(self, endpoint: int) -> int:
+        """回傳某索引前一格"""
+        return (endpoint - 1) % self.capacity
+
+    def push_last(self, x: int) -> None:
+        """入列——尾端"""
+        if self._next(self._tail) == self._head:
+            raise IndexError("佇列已滿")
+        self._deque[self._tail] = x
+        self._tail = self._next(self._tail)
+
+    def push_first(self, x: int) -> None:
+        """入列——頭端"""
+        if self._next(self._tail) == self._head:
+            raise IndexError("佇列已滿")
+        self._head = self._prev(self._head)
+        self._deque[self._head] = x
+
+    def pop_last(self) -> int:
+        """出列——尾端"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        self._tail = self._prev(self._tail)
+        x = self._deque[self._tail]
+        return x
+
+    def pop_first(self) -> int:
+        """出列——頭端"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        x = self._deque[self._head]
+        self._head = self._next(self._head)
+        return x
+
+    def peek_last(self) -> int:
+        """查看佇列尾"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._deque[self._prev(self._tail)]
+
+    def peek_first(self) -> int:
+        """查看佇列首"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._deque[self._head]
+
+    def __repr__(self) -> str:
+        """轉為字串"""
+        result: list[str] = []
+        curr_idx = self._head
+        while curr_idx != self._tail:
+            result.append(str(self._deque[curr_idx]))
+            curr_idx = self._next(curr_idx)
+
+        return " <- ".join(result)
+```
+
+### 使用鏈結串列
+
+首先定義雙向鏈結串列的節點：
+
+```python
+class DoublyListNode:
+    def __init__(self, data: int):
+        self.data: int = data
+        self.prev: DoublyListNode | None = None
+        self.next: DoublyListNode | None = None
+```
+
+與陣列實作雙向佇列的方式，以下用鏈結串列實作：
+
+```python
+class LinkedListDeque:
+    def __init__(self):
+        """初始化佇列"""
+        self._head: DoublyListNode | None = None
+        self._tail: DoublyListNode | None = None
+        self._size: int = 0
+
+    def is_empty(self) -> bool:
+        """檢查佇列是否為空"""
+        return not self._head
+
+    def size(self) -> int:
+        """回傳佇列長度"""
+        return self._size
+
+    def push_last(self, x: int) -> None:
+        """入列——尾端"""
+        node: DoublyListNode = DoublyListNode(x)
+        if self.is_empty():
+            self._head = node
+            self._tail = node
+        else:
+            self._tail.next = node
+            node.prev = self._tail
+            self._tail = node
+        self._size += 1
+
+    def push_first(self, x: int) -> None:
+        """入列——頭端"""
+        node: DoublyListNode = DoublyListNode(x)
+        if self.is_empty():
+            self._head = node
+            self._tail = node
+        else:
+            self._head.prev = node
+            node.next = self._head
+            self._head = node
+        self._size += 1
+
+    def pop_first(self) -> int:
+        """出列——頭端"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        
+        node = self._head
+        self._head = self._head.next
+        if self._head is None:
+            self._tail = None
+        else:
+            self._head.prev = None
+
+        self._size -= 1
+        return node.data
+    
+    def pop_last(self) -> int:
+        """出列——尾端"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        
+        node = self._tail
+        self._tail = self._tail.prev
+        if self._tail is None:
+            self._head = None
+        else:
+            self._tail.next = None
+
+        self._size -= 1
+        return node.data
+
+    def peek_first(self) -> int:
+        """查佇列首"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._head.data
+
+    def peek_last(self) -> int:
+        """查佇列尾"""
+        if self.is_empty():
+            raise IndexError("佇列為空")
+        return self._tail.data
+
+    def __repr__(self) -> str:
+        """轉為字串"""
+        if self.is_empty():
+            return ""
+
+        result: list[str] = []
+        curr = self._head
+
+        while curr:
+            result.append(str(curr.data))
+            curr = curr.next
+
+        return " <- ".join(result)
+```
+
+### 使用 `deque`
+
+前面使用陣列與鏈結串列實作佇列，雖然可以了解底層邏輯，但實務上鮮少人這麼做，理由很簡單——太麻煩了！而如果偷懶直接拿 Python 的 `list` 當佇列用（`append` 進、`pop(0)` 出），效能又會非常慘：
+
+| 元素個數 | `list.pop(0)` | `deque.popleft()` | 倍數 |
+| --- | --- | --- | --- |
+| 10,000 | 6.0 ms | 0.3 ms | 18x |
+| 50,000 | 195.0 ms | 1.6 ms | 124x |
+| 100,000 | 781.8 ms | 3.3 ms | 240x |
+| 200,000 | 3894.0 ms | 8.0 ms | 488x |
+
+慢的原因就是前面提到的：`pop(0)` 會把後面所有元素往前搬一格來補上空位，每次出列都是 $O(n)$。
+
+通常來說，若要使用佇列，會利用 Python 內建函式庫的 `collections` 裡的 `deque`[^1]。
+
+`deque` 位於 `collections` 模組中，並非內建型別，因此使用前必須先匯入：
+
+```python
+from collections import deque
+```
+
+`deque` 有三種常見的建立方式：
+
+```python
+d = deque()             # 建立空雙向佇列
+d = deque([1, 2, 3])    # 從可迭代物件建立雙向佇列
+d = deque(range(1, 5))  # 同上
+```
+
+接著是四個端點操作，與前面自己實作的方法逐一對應：
+
+```python
+d = deque([1, 2, 3])
+
+d.append(4)       # 入列至佇尾
+d.appendleft(0)   # 入列至佇首
+
+d[0]              # 查看佇首
+d[-1]             # 查看佇尾
+
+d.pop()           # 從佇尾出列
+d.popleft()       # 從佇首出列
+
+len(d)            # 目前元素個數
+```
+
+命名規則相當好記：**沒有 `left` 的都在尾端**（`append`、`pop`），與 `list` 的用法一致；**加上 `left` 的則在頭端**（`appendleft`、`popleft`）。
+
+因此把 `deque` 當作佇列使用時，進出只會用到 `append` 與 `popleft`：
+
+```python
+q = deque()
+q.append(x)       # 入列
+q.popleft()       # 出列
+q[0]              # 查佇列首
+```
+
+當作堆疊使用則是 `append` 搭配 `pop`，兩者都在尾端，寫法與 `list` 完全相同。
+
+若對空的 `deque` 執行出列或查看，會拋出 `IndexError`，與前面自己實作時 `raise IndexError` 的行為一致：
+
+```plaintext
+deque().pop()      # IndexError: pop from an empty deque
+deque().popleft()  # IndexError: pop from an empty deque
+deque()[0]         # IndexError: deque index out of range
+```
+
+實務上判斷是否為空，直接寫 `if not d:` 即可。
+
+除了上述基本操作外，`deque` 建立時還可以指定 `maxlen`，也就是容量上限：
+
+```python
+d = deque(maxlen=3)
+```
+
+指定之後，一旦元素數量達到上限，再放入新元素時**另一端最舊的元素會自動被擠掉**，既不會拋出例外，也不需要自己處理：
+
+```plaintext
+append(1)  ->  deque([1])
+append(2)  ->  deque([1, 2])
+append(3)  ->  deque([1, 2, 3])
+append(4)  ->  deque([2, 3, 4])   # 1 被擠掉
+append(5)  ->  deque([3, 4, 5])   # 2 被擠掉
+```
+
+方向是相對的：從佇尾放入，擠掉的是佇首；從佇首放入（`appendleft`），擠掉的則是佇尾——永遠從另一端推出去。
+
+!!! tip "滿了要報錯，還是丟掉最舊的？"
+    可以很明顯地注意到 `deque` 的 `maxlen` 與前面自己實作的 `ArrayDeque` 行為並不相同：前者認為**滿了代表出事，應該讓呼叫端知道**，滿了會 `raise IndexError("佇列已滿")`；後者則是**只在乎最近的 $N$ 筆，舊的本來就該淘汰**。
+
+    故 `maxlen` 的用途可理解為**僅保留最近 $N$ 筆資料**。常見的情境包括保留最近若干筆日誌、記錄使用者最近幾次操作以支援復原，以及滑動視窗——視窗往前移動時新元素進入、最舊的元素自動離開等。
+
+若沒有 `maxlen`，同樣的效果得自己手動維護：
+
+```python
+d.append(x)
+if len(d) > 3:
+    d.popleft()
+```
+
+值得注意的是，`d.maxlen` 為唯讀屬性，建立之後無法更改；未指定時則代表沒有上限。
+
+### 複雜度比較
+
+接著我們使用以下表格來比較兩種實作佇列的差異：
+
+| | 陣列佇列（`ArrayQueue`） | 鏈結串列佇列（`LinkedListQueue`） | `collections.deque` |
+| --- | --- | --- | --- |
+| 容量 | 建立時就固定，且實際可用只有 $n-1$ | 理論上無上限（僅受記憶體限制） | 預設無上限，可用 `maxlen` 指定 |
+| 需要事先知道大小 | 是 | 否 | 否 |
+| 額外空間開銷 | 一開始就配置整個陣列，沒裝滿的格子也一直佔著 | 每個節點多一個 `next` 指標的空間 | 指標開銷分攤到整個區塊上 |
+| 記憶體局部性 | 好，元素連續存放，快取命中率高 | 差，節點散落在記憶體各處 | 好，區塊內部連續存放 |
+| `enqueue` / `dequeue` / `front` | 均 $O(1)$ | 均 $O(1)$ | 均 $O(1)$ |
+
+三個核心操作的時間複雜度完全一樣，差別在記憶體怎麼用。陣列版在建立時就把 $n$ 格配置好，之後不管實際裝幾個，那塊空間都佔著；鏈結串列版則是有幾個元素就配置幾個節點，但每個節點都要多存一個 `next` 指標。
+
+同堆疊一樣，實際跑起來陣列版通常比較快。元素在記憶體裡連續排列，讀寫時記憶體局部性較好、快取命中率較高；鏈結串列版每個節點的位置是分散的，即使操作次數相同，實際存取速度仍會慢一截。
+
+至於自己實作時怎麼選，關鍵在於**事先知不知道會有多少元素**：
+
+- 上限明確、又在意速度（例如固定大小的緩衝區）：用陣列版
+- 完全不知道會來多少（例如 BFS 的待處理節點）：用鏈結串列版，不必煩惱滿了要怎麼辦
+
+不過實務上兩者都不必自己寫。`deque` 的內部結構是一串固定大小的區塊，再以雙向指標串接起來——區塊內部連續存放，因此保有陣列的記憶體局部性；區塊之間用指標相連，因此長度不受限制，而且指標的開銷是分攤在整個區塊上，而不是每個元素各付一次。換句話說，它同時拿下了上表前兩欄的優點，這也是為什麼標準函式庫值得直接拿來用。
+
+雙向佇列的兩種實作也是同樣的取捨，但有兩個佇列沒有的差異：
+
+| | 陣列雙向佇列（`ArrayDeque`） | 鏈結串列雙向佇列（`LinkedListDeque`） |
+| --- | --- | --- |
+| 容量 | 建立時就固定，且實際可用只有 $n-1$ | 理論上無上限（僅受記憶體限制） |
+| 每個元素的額外空間 | 無 | 兩個指標（`prev` 與 `next`） |
+| 佇尾的位置 | `_tail` 指向空格，取值需再算一次 `_prev()` | `_tail` 直接指向節點 |
+| 六項操作 | 均 $O(1)$ | 均 $O(1)$ |
+
+第一個差異是空間：佇列的鏈結串列版每個節點只多存一個 `next`，雙向佇列則要存 `prev` 與 `next` 兩個，額外開銷加倍。這是換取「兩端都能 $O(1)$ 進出」所付出的代價——單向串列刪除佇尾必須先找到前一個節點，只能從頭走一遍，是 $O(n)$。
+
+第二個差異是取值的便利性。陣列版沿用佇列的慣例，`_head` 指向第一個元素、`_tail` 指向下一個空格，兩個指標的語意並不對稱，因此 `peek_last()` 要多算一次 `_prev(_tail)` 才拿得到佇尾；鏈結串列版的 `_tail` 直接就是最後一個節點，`peek_first()` 與 `peek_last()` 完全對稱。
+
+這個不對稱也決定了陣列版四個進出操作的寫法，實作時特別容易寫反：
+
+| 操作 | 指標指向 | 順序 |
+| --- | --- | --- |
+| `push_last` | `_tail` 為空格 | 先寫入，再移動指標 |
+| `pop_last` | `_tail` 為空格 | 先移動指標，再讀取 |
+| `push_first` | `_head` 為元素 | 先移動指標，再寫入 |
+| `pop_first` | `_head` 為元素 | 先讀取，再移動指標 |
+
+規則是：指標指向空格時「先寫後移、先移後讀」，指向元素時則完全相反。
+
+鏈結串列版沒有這個問題，但有另一個要注意的地方：**雙向串列的每條連結都是成對的**，接上新節點時要同時設定兩個方向，移除節點時也要把兩邊都斷乾淨。撰寫頭端與尾端的鏡像版本時，`_head` 與 `_tail`、`prev` 與 `next` 必須**同時**對調，只換其中一組就會把串列接錯。
+
+[^1]: 這裡的 `deque` 不是出列（那是 `dequeue`），請特別注意拼字，此處的 `deque` 代表**雙端佇列 (double-ended queue)**，亦即可以透過兩端進、出，四項操作全部為 $O(1)$。
