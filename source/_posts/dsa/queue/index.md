@@ -127,6 +127,8 @@ Front(Q)
 
 ### 使用陣列
 
+以下用固定大小的陣列實作環形佇列，其中 `size()` 的寫法利用了 Python `%` 運算子的一個特性[^1]：
+
 ```python
 class ArrayQueue:
     def __init__(self, capacity: int):
@@ -375,7 +377,7 @@ class ArrayDeque:
 
 ### 使用鏈結串列
 
-首先定義雙向鏈結串列的節點：
+首先定義節點。與前面佇列的單向節點不同，這裡的節點必須同時記住前後兩個方向[^2]：
 
 ```python
 class DoublyListNode:
@@ -497,7 +499,7 @@ class LinkedListDeque:
 
 慢的原因就是前面提到的：`pop(0)` 會把後面所有元素往前搬一格來補上空位，每次出列都是 $O(n)$。
 
-通常來說，若要使用佇列，會利用 Python 內建函式庫的 `collections` 裡的 `deque`[^1]。
+通常來說，若要使用佇列，會利用 Python 內建函式庫的 `collections` 裡的 `deque`[^3]。
 
 `deque` 位於 `collections` 模組中，並非內建型別，因此使用前必須先匯入：
 
@@ -635,4 +637,223 @@ if len(d) > 3:
 
 鏈結串列版沒有這個問題，但有另一個要注意的地方：**雙向串列的每條連結都是成對的**，接上新節點時要同時設定兩個方向，移除節點時也要把兩邊都斷乾淨。撰寫頭端與尾端的鏡像版本時，`_head` 與 `_tail`、`prev` 與 `next` 必須**同時**對調，只換其中一組就會把串列接錯。
 
-[^1]: 這裡的 `deque` 不是出列（那是 `dequeue`），請特別注意拼字，此處的 `deque` 代表**雙端佇列 (double-ended queue)**，亦即可以透過兩端進、出，四項操作全部為 $O(1)$。
+## 實作
+
+### [LeetCode 933：最近的請求次數](https://leetcode.com/problems/number-of-recent-calls/)
+
+::: {.problem}
+寫一個 `RecentCounter` 類別，用於計算最近 3000 毫秒內的請求次數。請實作以下方法：
+
+- `RecentCounter()`：初始化計數器，請求數為 0
+- `int ping(int t)`：在時間 `t` 加入一個新請求，回傳發生在 `[t - 3000, t]` 範圍內的請求總數（包含新加入的這一個）
+
+保證每次呼叫 `ping` 時傳入的 `t` 都比前一次更大。
+
+#### 範例
+
+```plaintext
+輸入：
+["RecentCounter", "ping", "ping", "ping", "ping"]
+[[], [1], [100], [3001], [3002]]
+輸出：
+[null, 1, 2, 3, 3]
+
+解釋：
+recentCounter = RecentCounter()
+recentCounter.ping(1)     # 請求 = [1]，範圍 [-2999, 1]，回傳 1
+recentCounter.ping(100)   # 請求 = [1, 100]，範圍 [-2900, 100]，回傳 2
+recentCounter.ping(3001)  # 請求 = [1, 100, 3001]，範圍 [1, 3001]，回傳 3
+recentCounter.ping(3002)  # 請求 = [1, 100, 3001, 3002]，範圍 [2, 3002]，回傳 3
+                          # 此時 1 已經掉出範圍
+```
+:::
+
+新的請求一律加入佇尾；接著只要佇首的時間早於 `t - 3000`，就代表它已經掉出範圍，從佇首移除。由於題目保證 `t` 遞增，範圍的左邊界只會往右移，掉出去的請求永遠不會再回來，因此可以安心直接丟棄，最後佇列裡剩下的就是範圍內的所有請求，數量即為答案：
+
+```python
+from collections import deque
+
+class RecentCounter:
+    def __init__(self):
+        self.q = deque()
+
+    def ping(self, t: int) -> int:
+        self.q.append(t)
+        while self.q[0] < t - 3000:
+            self.q.popleft()
+        return len(self.q)
+```
+
+要注意這裡必須使用 `while` 而非 `if`——單次 `ping` 需要淘汰的請求數量並不固定，取決於這次的 `t` 跳了多遠。以 `ping(1)`、`ping(2)`、`ping(3)` 之後接著 `ping(5000)` 為例，範圍變成 `[2000, 5000]`，前三個請求會一次全部掉出範圍。
+
+複雜度方面，單次 `ping` 最壞情況為 $O(n)$（一次淘汰所有既有請求），但每個請求終其一生只會被加入一次、移除一次，因此 $n$ 次 `ping` 的總成本是 $O(n)$，**攤銷後每次為 $O(1)$**。
+
+!!! tip "題目條件與使用結構"
+    本題之所以適合佇列，是三個條件湊在一起的結果：`t` 遞增，所以新請求直接加到佇尾即可，不必排序或搜尋；範圍左邊界只往右移，所以掉出去的請求可以直接丟棄；題目只問「有幾個」而不問「是哪些」，所以 `len()` 就是答案。先進先出、只碰兩端——正適合使用佇列。
+
+### [LeetCode 232：用堆疊實作佇列](https://leetcode.com/problems/implement-queue-using-stacks/)
+
+::: {.problem}
+僅使用兩個堆疊，實作一個先進先出的佇列。這個佇列必須支援一般佇列的所有操作（`push`、`pop`、`peek`、`empty`）。實作 `MyQueue` 類別：
+
+- `void push(int x)`：將元素 `x` 推入佇列尾端
+- `int pop()`：從佇列頭端移除並回傳元素
+- `int peek()`：回傳佇列頭端的元素
+- `boolean empty()`：若佇列為空則回傳 `true`，否則回傳 `false`
+
+僅能使用堆疊的標準操作，也就是推入頂端、查看／彈出頂端、判斷是否為空。
+
+#### 範例
+
+```plaintext
+輸入：
+["MyQueue", "push", "push", "peek", "pop", "empty"]
+[[], [1], [2], [], [], []]
+輸出：
+[null, null, null, 1, 1, false]
+
+解釋：
+myQueue = MyQueue()
+myQueue.push(1)   # queue = [1]
+myQueue.push(2)   # queue = [1, 2]
+myQueue.peek()    # 回傳 1
+myQueue.pop()     # 回傳 1，queue = [2]
+myQueue.empty()   # 回傳 False
+```
+:::
+
+一個堆疊會把元素的順序顛倒過來，那麼顛倒兩次，順序就轉回來了。因此準備兩個堆疊：`push` 進來的元素一律放進 `_in`，而 `pop` 與 `peek` 一律從 `_out` 取；當 `_out` 空了，就把 `_in` 裡的元素整批倒過去，順序自然就是先進先出：
+
+```plaintext
+push 1, 2, 3       _in  = [1, 2, 3]        頂端在右，pop 會先拿到 3
+整批倒進 _out       _out = [3, 2, 1]        pop 會先拿到 1，正是先進先出
+```
+
+由於 `pop` 與 `peek` 都需要這個動作，把它抽成一個私有方法：
+
+```python
+class MyQueue:
+    def __init__(self):
+        self._in: list[int] = []
+        self._out: list[int] = []
+
+    def push(self, x: int) -> None:
+        self._in.append(x)
+
+    def _transfer(self) -> None:
+        if not self._out:
+            while self._in:
+                self._out.append(self._in.pop())
+
+    def pop(self) -> int:
+        self._transfer()
+        return self._out.pop()
+
+    def peek(self) -> int:
+        self._transfer()
+        return self._out[-1]
+
+    def empty(self) -> bool:
+        return len(self._in) == 0 and len(self._out) == 0
+```
+
+這裡有兩個地方特別容易寫錯。第一是 `_transfer` 的判斷式：**必須等 `_out` 完全空了才能倒**。若 `_out` 還有元素在等待就把 `_in` 倒過去，新元素會疊在舊元素上面，被搶先取出，順序就毀了。第二是 `empty()` 要同時檢查兩個堆疊——元素可能全都待在 `_out` 裡，只看 `_in` 會誤判為空。
+
+單次 `pop` 的最壞情況是 $O(n)$，也就是剛好碰上 `_out` 為空、需要整批搬移的時候。但每個元素終其一生只會經歷四個動作：推入 `_in`、從 `_in` 彈出、推入 `_out`、從 `_out` 彈出。不論操作如何交錯都是這四次，因此 $n$ 次操作的總成本為 $O(n)$，**攤銷後每次為 $O(1)$**。
+
+關鍵正是 `if not self._out` 這個判斷：它保證元素不會被反覆倒來倒去。如果每次 `pop` 都重倒一遍，複雜度就會真的退化成 $O(n)$。
+
+### [LeetCode 622：設計循環佇列](https://leetcode.com/problems/design-circular-queue/)
+
+::: {.problem}
+設計一個循環佇列，實作 `MyCircularQueue` 類別：
+
+- `MyCircularQueue(k)`：初始化佇列，容量為 `k`
+- `boolean enQueue(int value)`：將元素插入佇列，成功回傳 `true`
+- `boolean deQueue()`：從佇列刪除一個元素，成功回傳 `true`
+- `int Front()`：取得佇首元素，佇列為空則回傳 `-1`
+- `int Rear()`：取得佇尾元素，佇列為空則回傳 `-1`
+- `boolean isEmpty()`：檢查佇列是否為空
+- `boolean isFull()`：檢查佇列是否已滿
+
+#### 範例
+
+```plaintext
+輸入：
+["MyCircularQueue", "enQueue", "enQueue", "enQueue", "enQueue", "Rear", "isFull", "deQueue", "enQueue", "Rear"]
+[[3], [1], [2], [3], [4], [], [], [], [4], []]
+輸出：
+[null, true, true, true, false, 3, true, true, true, 4]
+
+解釋：
+myCircularQueue = MyCircularQueue(3)
+myCircularQueue.enQueue(1)   # 回傳 True
+myCircularQueue.enQueue(2)   # 回傳 True
+myCircularQueue.enQueue(3)   # 回傳 True
+myCircularQueue.enQueue(4)   # 回傳 False，佇列已滿
+myCircularQueue.Rear()       # 回傳 3
+myCircularQueue.isFull()     # 回傳 True
+myCircularQueue.deQueue()    # 回傳 True
+myCircularQueue.enQueue(4)   # 回傳 True
+myCircularQueue.Rear()       # 回傳 4
+```
+:::
+
+這題就是本篇 `ArrayQueue` 的翻版，差別只在介面：失敗時回傳 `False` 而不是拋出例外，`Front()` 與 `Rear()` 在佇列為空時回傳 `-1`。
+
+不過有一點必須調整。`ArrayQueue` 犧牲一格來區分空與滿，長度 $n$ 的陣列只能裝 $n-1$ 個；但本題要求 `MyCircularQueue(k)` 必須確實裝得下 $k$ 個。因此陣列要開 $k+1$ 格，把那格分隔的成本吸收掉。要注意 `_next()` 與 `_prev()` 的模數必須跟著改成陣列的實際長度，否則最後一格永遠用不到，容量又會退回 $k-1$：
+
+```python
+class MyCircularQueue:
+    def __init__(self, k: int):
+        self.k: int = k
+        self.capacity: int = k + 1
+        self.q: list[int] = [0] * self.capacity
+        self._head: int = 0
+        self._tail: int = 0
+
+    def _next(self, endpoint: int) -> int:
+        return (endpoint + 1) % self.capacity
+
+    def _prev(self, endpoint: int) -> int:
+        return (endpoint - 1) % self.capacity
+
+    def enQueue(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        self.q[self._tail] = value
+        self._tail = self._next(self._tail)
+        return True
+
+    def deQueue(self) -> bool:
+        if self.isEmpty():
+            return False
+        self._head = self._next(self._head)
+        return True
+
+    def Front(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.q[self._head]
+
+    def Rear(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.q[self._prev(self._tail)]
+
+    def isEmpty(self) -> bool:
+        return self._head == self._tail
+
+    def isFull(self) -> bool:
+        return self._next(self._tail) == self._head
+```
+
+另外兩個容易寫錯的地方，前面也都提過。一是 `isFull()` 不能寫成 `self._tail == self.k`——`_tail` 是 `_next()` 算出來的，範圍永遠落在合法索引內，這個條件永遠不成立，佇列會被無限塞爆。二是 `Rear()` 不能直接讀 `q[_tail]`，因為 `_tail` 指的是下一個空格，最後一個元素在它的前一格，必須用 `_prev()` 取得。
+
+由於 `deQueue()` 只需回傳成功與否，被移除的值不必取出，因此不需要像 `dequeue()` 那樣先用變數接住。
+
+[^1]: 佇列繞回開頭之後，`_tail` 會落在 `_head` 後方，兩者相減是負數。Python 的 `%` 運算子，其結果的正負號永遠跟隨除數，因此 `-2 % 5` 會得到 `3`，負的差值剛好被換算成正確的元素個數，不需要額外處理。C、C++、Java 的 `%` 則是跟隨被除數，`-2 % 5` 會得到 `-2`，同樣的算式必須改寫成 `(tail - head + capacity) % capacity` 才會正確。
+
+[^2]: 單向串列刪除佇尾時，必須讓「倒數第二個節點」成為新的尾端，但單向串列無法從一個節點回頭找到指向它的前一個節點，只能從頭走一遍，因此是 $O(n)$。在每個節點多存一個 `prev` 指標，正是為了讓四個端點操作全部維持 $O(1)$。
+
+[^3]: 這裡的 `deque` 不是出列（那是 `dequeue`），請特別注意拼字，此處的 `deque` 代表**雙端佇列 (double-ended queue)**，亦即可以透過兩端進、出，四項操作全部為 $O(1)$。

@@ -1,6 +1,7 @@
 ---
 title: 新加坡之旅——第一次獨旅！好好玩
 date: '2026-08-25'
+published: false
 lang: zh-TW
 permalink: diary/solo-trip-to-singapore/
 categories: &id001
