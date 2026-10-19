@@ -8,7 +8,17 @@
       "statusCode": 301
     },
     {
+      "source": "/posts/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/login",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/login/",
       "destination": "/",
       "statusCode": 301
     },
@@ -18,7 +28,17 @@
       "statusCode": 301
     },
     {
+      "source": "/register/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/forgot-password",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/forgot-password/",
       "destination": "/",
       "statusCode": 301
     },
@@ -28,7 +48,17 @@
       "statusCode": 301
     },
     {
+      "source": "/privacy/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/:slug(museum|R-tutorial-1|flask-routing|taiwanese-preservation|dsa-stack|queue)",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/:slug(museum|R-tutorial-1|flask-routing|taiwanese-preservation|dsa-stack|queue)/",
       "destination": "/",
       "statusCode": 301
     },
@@ -38,12 +68,27 @@
       "statusCode": 301
     },
     {
+      "source": "/_next/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/cdn-cgi/:path*",
       "destination": "/",
       "statusCode": 301
     },
     {
+      "source": "/cdn-cgi/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/page/8",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/page/8/",
       "destination": "/",
       "statusCode": 301
     },
@@ -58,7 +103,17 @@
       "statusCode": 301
     },
     {
+      "source": "/tags/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/categories",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/categories/",
       "destination": "/",
       "statusCode": 301
     },
@@ -68,7 +123,17 @@
       "statusCode": 301
     },
     {
+      "source": "/tags/:name(縮排|%E7%B8%AE%E6%8E%92|資料庫|%E8%B3%87%E6%96%99%E5%BA%AB|運算子|%E9%81%8B%E7%AE%97%E5%AD%90|macOS|Command Line|Command%20Line|路由|%E8%B7%AF%E7%94%B1|佇列|%E4%BD%87%E5%88%97|查詢字串|%E6%9F%A5%E8%A9%A2%E5%AD%97%E4%B8%B2|structure|矩陣|%E7%9F%A9%E9%99%A3|靜態檔案|%E9%9D%9C%E6%85%8B%E6%AA%94%E6%A1%88|鏈結串列|%E9%8F%88%E7%B5%90%E4%B8%B2%E5%88%97|腳註|%E8%85%B3%E8%A8%BB|字串|%E5%AD%97%E4%B8%B2|樣板引擎|%E6%A8%A3%E6%9D%BF%E5%BC%95%E6%93%8E|pop|flask|一維陣列|%E4%B8%80%E7%B6%AD%E9%99%A3%E5%88%97|列表|%E5%88%97%E8%A1%A8|容器|%E5%AE%B9%E5%99%A8|矩陣操作|%E7%9F%A9%E9%99%A3%E6%93%8D%E4%BD%9C|增刪查改|%E5%A2%9E%E5%88%AA%E6%9F%A5%E6%94%B9|LaTeX|邏輯|%E9%82%8F%E8%BC%AF|String|資料庫管理系統|%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1|Poetry|哈希表|%E5%93%88%E5%B8%8C%E8%A1%A8|push|enqueue|節點|%E7%AF%80%E9%BB%9E|二維陣列|%E4%BA%8C%E7%B6%AD%E9%99%A3%E5%88%97|dequeue|墓碑標記|%E5%A2%93%E7%A2%91%E6%A8%99%E8%A8%98|哈希衝突|%E5%93%88%E5%B8%8C%E8%A1%9D%E7%AA%81|哈希函數|%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B8|摘要|%E6%91%98%E8%A6%81|Terminal|Tuple|tag)/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/categories/:name(開發者工具|%E9%96%8B%E7%99%BC%E8%80%85%E5%B7%A5%E5%85%B7|經濟學|%E7%B6%93%E6%BF%9F%E5%AD%B8|前端筆記|%E5%89%8D%E7%AB%AF%E7%AD%86%E8%A8%98|R-語言教學|R-%E8%AA%9E%E8%A8%80%E6%95%99%E5%AD%B8|專案|%E5%B0%88%E6%A1%88|心情日記|%E5%BF%83%E6%83%85%E6%97%A5%E8%A8%98)",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/categories/:name(開發者工具|%E9%96%8B%E7%99%BC%E8%80%85%E5%B7%A5%E5%85%B7|經濟學|%E7%B6%93%E6%BF%9F%E5%AD%B8|前端筆記|%E5%89%8D%E7%AB%AF%E7%AD%86%E8%A8%98|R-語言教學|R-%E8%AA%9E%E8%A8%80%E6%95%99%E5%AD%B8|專案|%E5%B0%88%E6%A1%88|心情日記|%E5%BF%83%E6%83%85%E6%97%A5%E8%A8%98)/",
       "destination": "/",
       "statusCode": 301
     },
@@ -78,7 +143,17 @@
       "statusCode": 302
     },
     {
+      "source": "/dsa-en/:path*/",
+      "destination": "/en/",
+      "statusCode": 302
+    },
+    {
       "source": "/dsa/:path(.*-en)",
+      "destination": "/en/",
+      "statusCode": 302
+    },
+    {
+      "source": "/dsa/:path(.*-en)/",
       "destination": "/en/",
       "statusCode": 302
     },
@@ -88,12 +163,27 @@
       "statusCode": 302
     },
     {
+      "source": "/dsa/:path(.*-en\\.html)/",
+      "destination": "/en/",
+      "statusCode": 302
+    },
+    {
       "source": "/dsa/:path*",
       "destination": "/",
       "statusCode": 302
     },
     {
+      "source": "/dsa/:path*/",
+      "destination": "/",
+      "statusCode": 302
+    },
+    {
       "source": "/diary/solo-trip-to-singapore",
+      "destination": "/",
+      "statusCode": 302
+    },
+    {
+      "source": "/diary/solo-trip-to-singapore/",
       "destination": "/",
       "statusCode": 302
     },
@@ -138,12 +228,27 @@
       "statusCode": 301
     },
     {
+      "source": "/glossary/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/articles/posts/latex/:path*",
       "destination": "/",
       "statusCode": 301
     },
     {
+      "source": "/articles/posts/latex/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/articles/posts/2026/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/2026/:path*/",
       "destination": "/",
       "statusCode": 301
     },
@@ -158,12 +263,22 @@
       "statusCode": 301
     },
     {
+      "source": "/articles/posts/:cat/:folder/:slug/",
+      "destination": "/articles/:cat/:slug/",
+      "statusCode": 301
+    },
+    {
       "source": "/projects/posts/:folder/:slug.html",
       "destination": "/projects/:slug/",
       "statusCode": 301
     },
     {
       "source": "/projects/posts/:folder/:slug",
+      "destination": "/projects/:slug/",
+      "statusCode": 301
+    },
+    {
+      "source": "/projects/posts/:folder/:slug/",
       "destination": "/projects/:slug/",
       "statusCode": 301
     },
@@ -178,7 +293,17 @@
       "statusCode": 301
     },
     {
+      "source": "/diary/posts/:slug/",
+      "destination": "/diary/:slug/",
+      "statusCode": 301
+    },
+    {
       "source": "/articles/posts/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/:path*/",
       "destination": "/",
       "statusCode": 301
     },
@@ -188,7 +313,17 @@
       "statusCode": 301
     },
     {
+      "source": "/projects/posts/:path*/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/diary/posts/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/diary/posts/:path*/",
       "destination": "/",
       "statusCode": 301
     }
