@@ -42,6 +42,21 @@ nickname_en: Anthony
 description: 個人部落格——教學文章、專案與生活筆記。
 description_en: Personal blog — tutorials, projects, and life notes.
 avatar: /image/avatar.png
+# Homepage avatar pool (themes/Chic/source/image/avatars/<name>.svg). Each
+# visitor's browser swaps to a different one every 12-24 hours; `avatar`
+# above stays the static fallback and the og:image.
+avatars:
+  - original
+  - face-right-grin
+  - face-right-surprised
+  - face-front-sleepy
+  - face-left-profile-thinking
+  - face-front-laughing
+  - face-right-confident
+  - face-left-explaining
+  - face-right-wink
+  - face-front-excited
+  - face-left-content
 
 # main menu navigation
 ## each entry is {url, icon}; icon must match a key in the linkIcons

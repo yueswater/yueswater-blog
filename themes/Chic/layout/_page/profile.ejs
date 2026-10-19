@@ -18,7 +18,30 @@
 <div class="container profile-container">
     <div class="intro">
         <div class="avatar">
-            <a href="<%- url_for(articlesHref) %>"><img src="<%- url_for(theme.avatar) %>"></a>
+            <a href="<%- url_for(articlesHref) %>"><img id="profile-avatar" src="<%- url_for(theme.avatar) %>"></a>
+            <% if (theme.avatars && theme.avatars.length > 1) { %>
+            <script>
+            // Swap the avatar at a random 12-24h interval, remembered per browser.
+            (function () {
+                var pool = <%- JSON.stringify(theme.avatars.map(function (n) { return url_for('/image/avatars/' + n + '.svg'); })) %>;
+                var img = document.getElementById('profile-avatar');
+                var KEY = 'avatar-rotation';
+                var MIN = 12 * 3600 * 1000, MAX = 24 * 3600 * 1000;
+                var now = Date.now(), state = null;
+                try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+                if (!state || pool.indexOf(state.src) < 0 || now >= state.until) {
+                    var others = pool.filter(function (s) { return !state || s !== state.src; });
+                    state = {
+                        src: others[Math.floor(Math.random() * others.length)],
+                        until: now + MIN + Math.random() * (MAX - MIN)
+                    };
+                    // no storage (private window etc.): keep the static avatar instead of reshuffling every load
+                    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { return; }
+                }
+                img.src = state.src;
+            })();
+            </script>
+            <% } %>
         </div>
         <div class="nickname"><%- profileNickname %></div>
         <div class="description"><%- markdown(profileDescription) %></div>
