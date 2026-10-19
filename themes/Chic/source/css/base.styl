@@ -20,9 +20,9 @@ html
       background-color #ddd
 
 body
-  font-size 11pt
+  font-size 16px
   font-weight normal
-  line-height 2em
+  line-height 1.7
   background-color $light-background-color
   color $light-font-color
   transition color 0.2s ease, border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease
@@ -43,6 +43,14 @@ body
     background-color $dark-background-color
     color $dark-font-color
     transition color 0.2s ease, border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease
+
+::selection
+  background-color $light-accent-color
+  color #fff
+
+.dark-theme ::selection
+  background-color $dark-accent-color
+  color #fff
 
 a
   color $light-global-link-color

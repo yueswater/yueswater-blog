@@ -1,6 +1,6 @@
 //// ========== TOC ========== //
 
-$post-toc-width= 15rem
+$post-toc-width= 17rem
 
 $padding-1= 1px
 $padding-4= 0.25rem
@@ -32,12 +32,12 @@ $font-size-32= 2rem
   top 32px+63px // top value = (navbar>continer).height + (.post-wrap).padding-top
   right 2em
   width $post-toc-width
-  font-size $font-size-12
+  font-size $font-size-14
 
 
   .tocbot-list 
     max-height 450px
-    max-width 250px
+    max-width 280px
     overflow auto
     position relative
     padding-right $padding-14
@@ -56,6 +56,8 @@ $font-size-32= 2rem
 
       li 
         margin-left $padding-4
+        margin-top $padding-6
+        margin-bottom $padding-6
 
   .toc-link::before
     background-color white
@@ -70,7 +72,7 @@ $font-size-32= 2rem
       color $dark-accent-color
   .tocbot-list-menu
     margin $padding-16 $padding-12
-    font-size $font-size-12
+    font-size $font-size-14
     a 
       display block
       margin $padding-6 0
