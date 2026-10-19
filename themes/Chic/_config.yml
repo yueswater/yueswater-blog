@@ -14,7 +14,7 @@ logo_dark: /assets/logo-dark.svg
 nav:
   articles: /articles
   projects: /projects
-  dsa: /dsa
+  # dsa: /dsa  # archived for now, see archive/dsa
   diary: /diary
   category: /category
   tag: /tag
@@ -22,7 +22,7 @@ nav:
 nav_lang_split:
   - articles
   - projects
-  - dsa
+  # - dsa
   - diary
   - about
 
@@ -51,10 +51,10 @@ links:
     url: https://www.facebook.com/yueswater/
     icon: facebook
   IG:
-    url: https://instagram.com/yues_19_water
+    url: https://instagram.com/yueswater
     icon: instagram
   Threads:
-    url: https://www.threads.com/@yues_19_water
+    url: https://www.threads.com/@yueswater
     icon: threads
   Email:
     url: mailto:contact@yueswater.com
