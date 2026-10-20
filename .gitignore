@@ -12,6 +12,9 @@ book/
 # Notes
 notes/
 
+# Code
+code
+
 # Claude Code
 .claude/
 
