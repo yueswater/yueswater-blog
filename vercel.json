@@ -188,6 +188,26 @@
       "statusCode": 302
     },
     {
+      "source": "/projects/ntun3si",
+      "destination": "/projects/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/ntun3si/",
+      "destination": "/projects/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/ntun3si-en",
+      "destination": "/projects-en/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/ntun3si-en/",
+      "destination": "/projects-en/",
+      "statusCode": 302
+    },
+    {
       "source": "/about.html",
       "destination": "/about/",
       "statusCode": 301
