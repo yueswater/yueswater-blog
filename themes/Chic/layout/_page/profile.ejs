@@ -23,14 +23,15 @@
             <script>
             // Swap the avatar at a random 12-24h interval, remembered per browser.
             (function () {
-                var pool = <%- JSON.stringify(theme.avatars.map(function (n) { return url_for('/image/avatars/' + n + '.svg'); })) %>;
+                var pool = <%- JSON.stringify(theme.avatars.map(function (a) { return { src: url_for('/image/avatars/' + a.name + '.svg'), t: 'translate(' + a.x + '%, ' + a.y + '%) scale(' + a.scale + ')' }; })) %>;
+                var srcs = pool.map(function (a) { return a.src; });
                 var img = document.getElementById('profile-avatar');
                 var KEY = 'avatar-rotation';
                 var MIN = 12 * 3600 * 1000, MAX = 24 * 3600 * 1000;
                 var now = Date.now(), state = null;
                 try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-                if (!state || pool.indexOf(state.src) < 0 || now >= state.until) {
-                    var others = pool.filter(function (s) { return !state || s !== state.src; });
+                if (!state || srcs.indexOf(state.src) < 0 || now >= state.until) {
+                    var others = srcs.filter(function (s) { return !state || s !== state.src; });
                     state = {
                         src: others[Math.floor(Math.random() * others.length)],
                         until: now + MIN + Math.random() * (MAX - MIN)
@@ -39,6 +40,7 @@
                     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { return; }
                 }
                 img.src = state.src;
+                img.style.transform = pool[srcs.indexOf(state.src)].t;
             })();
             </script>
             <% } %>
