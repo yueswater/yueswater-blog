@@ -40,7 +40,15 @@ if (is_archive()){
     // page.excerpt is rendered HTML (see scripts/excerptMarkdown.js) -- meta
     // description content must be plain text, so strip any tags out of it.
     var ogDescription = (page.excerpt || page.description || config.description || '').replace(/<[^>]+>/g, '');
-    var ogImage = full_url_for(page.thumbnail || theme.avatar);
+    // thumbnails may be post-relative ("images/cover.svg", resolved against the
+    // post's own URL) or site-absolute. Link previews (LINE, X, ...) don't render
+    // SVG, so an .svg thumbnail is swapped for a sibling .png of the same name.
+    var ogThumb = page.thumbnail || theme.avatar;
+    if (page.thumbnail && !/^(https?:)?\/\//.test(ogThumb) && ogThumb.charAt(0) !== '/') {
+        ogThumb = page.path.replace(/[^\/]*$/, '') + ogThumb;
+    }
+    ogThumb = ogThumb.replace(/\.svg$/i, '.png');
+    var ogImage = full_url_for(ogThumb);
     var ogType = page.__post ? 'article' : 'website';
     var ogLocale = page.lang === 'en' ? 'en_US' : 'zh_TW';
     // pages/the homepage keep their raw "index.html" source path instead
