@@ -48,7 +48,9 @@ if (is_archive()){
         ogThumb = page.path.replace(/[^\/]*$/, '') + ogThumb;
     }
     ogThumb = ogThumb.replace(/\.svg$/i, '.png');
-    var ogImage = full_url_for(ogThumb);
+    // the apex domain 308-redirects to www, and link-preview crawlers (LINE) don't
+    // follow redirects when fetching og:image, so point it straight at www.
+    var ogImage = full_url_for(ogThumb).replace('//yueswater.com/', '//www.yueswater.com/');
     var ogType = page.__post ? 'article' : 'website';
     var ogLocale = page.lang === 'en' ? 'en_US' : 'zh_TW';
     // pages/the homepage keep their raw "index.html" source path instead
