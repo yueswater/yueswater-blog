@@ -74,8 +74,14 @@ $font-size-32= 2rem
     margin $padding-16 $padding-12
     font-size $font-size-14
     a 
-      display block
+      display flex
+      align-items center
+      gap 0.5rem
       margin $padding-6 0
+      .toc-btn-icon
+        width 16px
+        height 16px
+        flex-shrink 0
       color #999
       cursor pointer
     a:hover 

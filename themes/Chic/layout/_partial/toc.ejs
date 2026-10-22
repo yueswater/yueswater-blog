@@ -2,9 +2,9 @@
     <div class="tocbot-list">
     </div>
     <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()"><%= __('expand_all') %></a>
-        <a onclick="go_top()"><%= __('back_to_top') %></a>
-        <a onclick="go_bottom()"><%= __('go_to_bottom') %></a>
+        <a class="tocbot-toc-expand" onclick="expand_toc()"><svg class="toc-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9l5-5 5 5"/><path d="M7 15l5 5 5-5"/></svg><span class="toc-btn-label"><%= __('expand_all') %></span></a>
+        <a onclick="go_top()"><svg class="toc-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14"/><path d="M12 20V8"/><path d="M6 13l6-6 6 6"/></svg><span class="toc-btn-label"><%= __('back_to_top') %></span></a>
+        <a onclick="go_bottom()"><svg class="toc-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20h14"/><path d="M12 4v12"/><path d="M6 11l6 6 6-6"/></svg><span class="toc-btn-label"><%= __('go_to_bottom') %></span></a>
     </div>
 </div>
 
@@ -78,7 +78,7 @@
             collapseDepth: expanded ? 1 : DEPTH_MAX
         }));
         requestAnimationFrame(apply_toc_overrides);
-        b.innerText = expanded ? TOC_EXPAND_ALL_TEXT : TOC_COLLAPSE_ALL_TEXT;
+        b.querySelector('.toc-btn-label').innerText = expanded ? TOC_EXPAND_ALL_TEXT : TOC_COLLAPSE_ALL_TEXT;
     }
 
     function go_top() {
