@@ -21,7 +21,7 @@
                     var navSuffix = page.lang === 'en' ? '-en' : '';
                 %>
                 <% for (var i in theme.nav){ %>
-                <a class="menu-item" href="<%- url_for(theme.nav[i] + (navSplitSet[i] ? navSuffix : '')) %>"><%= __('nav_' + i) %></a>
+                <a class="menu-item" href="<%- url_for(theme.nav[i] + (navSplitSet[i] ? navSuffix : '')) %>"><span><%= __('nav_' + i) %></span></a>
                 <% } %>
 
                 <%
@@ -117,4 +117,64 @@
             mobileMenu.classList.add("active")
         }
     }
+</script>
+
+<script>
+    // keep the reader's place when switching language: remember which heading
+    // (and how far into its section) is at the top, then restore it on the
+    // sibling-language page. Falls back to overall scroll ratio when the two
+    // versions don't have the same number of headings.
+    (function () {
+        var KEY = 'lang-switch-scroll';
+        var HEADINGS = '.post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5';
+        var norm = function (p) { return p.replace(/index\.html$/, '').replace(/\/?$/, '/'); };
+        var docHeight = function () { return document.documentElement.scrollHeight; };
+        var maxScroll = function () { return Math.max(1, docHeight() - window.innerHeight); };
+        var absTop = function (el) { return el.getBoundingClientRect().top + window.scrollY; };
+
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest && e.target.closest('a.lang-switch[href]');
+            if (!a) return;
+            try {
+                var y = window.scrollY;
+                var hs = Array.prototype.slice.call(document.querySelectorAll(HEADINGS));
+                var idx = -1;
+                for (var i = 0; i < hs.length; i++) {
+                    if (absTop(hs[i]) <= y + 1) idx = i; else break;
+                }
+                var frac = 0;
+                if (idx >= 0) {
+                    var top = absTop(hs[idx]);
+                    var end = hs[idx + 1] ? absTop(hs[idx + 1]) : docHeight();
+                    frac = (y - top) / Math.max(1, end - top);
+                }
+                sessionStorage.setItem(KEY, JSON.stringify({
+                    path: norm(new URL(a.href, location.href).pathname),
+                    n: hs.length, idx: idx, frac: frac, ratio: y / maxScroll(), t: Date.now()
+                }));
+            } catch (err) {}
+        });
+
+        var saved = null;
+        try {
+            saved = JSON.parse(sessionStorage.getItem(KEY));
+            sessionStorage.removeItem(KEY);
+        } catch (err) {}
+        if (!saved || Date.now() - saved.t > 30000 || saved.path !== norm(location.pathname)) return;
+
+        var restore = function () {
+            var hs = Array.prototype.slice.call(document.querySelectorAll(HEADINGS));
+            var y;
+            if (saved.idx >= 0 && hs.length === saved.n) {
+                var top = absTop(hs[saved.idx]);
+                var end = hs[saved.idx + 1] ? absTop(hs[saved.idx + 1]) : docHeight();
+                y = top + saved.frac * (end - top);
+            } else {
+                y = saved.ratio * maxScroll();
+            }
+            window.scrollTo(0, y);
+        };
+        restore();
+        window.addEventListener('load', restore);
+    })();
 </script>
