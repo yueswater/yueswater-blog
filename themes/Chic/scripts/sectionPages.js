@@ -8,6 +8,7 @@
  * listing never shows English posts and vice versa.
  */
 var pagination = require('hexo-pagination');
+var newestFirst = require('./lib/postOrder');
 
 var SECTIONS = [
   { path: 'articles', prefix: 'articles/', title: { 'zh-TW': '文章', en: 'Articles' } },
@@ -30,13 +31,22 @@ hexo.extend.generator.register('section_pages', function (locals) {
     ['zh-TW', 'en'].forEach(function (lang) {
       var posts = sectionPosts.filter(function (post) {
         return lang === 'en' ? post.lang === 'en' : post.lang !== 'en';
-      }).sort('-date');
+      }).toArray().sort(newestFirst);
 
       var base = lang === 'en' ? section.path + '-en' : section.path;
+      // totals for the whole section (not just one page), shown as
+      // "INDEX · n" in the page head and "n 篇" next to each year
+      var yearCounts = {};
+      posts.forEach(function (post) {
+        var y = post.date.year();
+        yearCounts[y] = (yearCounts[y] || 0) + 1;
+      });
       var pageData = {
         title: section.title[lang],
         lang: lang,
-        section_prefix: section.prefix
+        section_prefix: section.prefix,
+        total_posts: posts.length,
+        year_counts: yearCounts
       };
 
       if (posts.length === 0) {

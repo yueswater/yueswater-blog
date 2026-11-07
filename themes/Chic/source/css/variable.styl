@@ -1,8 +1,8 @@
 /** light theme **/
 
-$light-background-color = #fff
+$light-background-color = #f4f9fd
 
-$light-accent-color = #4ca7a0
+$light-accent-color = #1747e6
 
 $light-font-color = #222
 $light-font-secondary-color = #666
@@ -13,15 +13,15 @@ $light-global-link-color = #222
 $light-global-link-hover-color = $light-accent-color
 
 $light-post-link-color = $light-accent-color
-$light-post-link-hover-color = #3a8d86
+$light-post-link-hover-color = #0f35b8
 
 $light-pagination-link-color = $light-accent-color
 $light-pagination-link-active-color = #222
 
 $light-border-color = #dfe2e6
 
-$light-code-font-color = #2f7f79
-$light-code-background-color = #eef6f5
+$light-code-font-color = #0f35b8
+$light-code-background-color = #e8f1f9
 
 $light-post-blockquote-border-color = $light-global-link-hover-color
 $light-post-blockquote-background-color = lighten($light-global-link-hover-color,90%)
@@ -36,7 +36,7 @@ $dark-font-color = #a9a9b3
 $dark-font-secondary-color = #87878d
 
 $dark-navbar-active-color = #fff
-$dark-accent-color = #4ca7a0
+$dark-accent-color = #4fd1ff
 
 $dark-global-link-color = #a9a9b3
 $dark-global-link-hover-color = $dark-accent-color
@@ -56,3 +56,20 @@ $dark-post-blockquote-border-color = #dcdcdc
 $dark-post-blockquote-background-color = #3e3e3e
 
 $dark-post-table-background-color = darken($dark-accent-color, 60%)
+
+/** list-page / header design tokens (ported from hexo-theme-bisect) **/
+$f-display = 'Archivo', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif
+$f-body = -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Hiragino Sans CNS', 'Microsoft JhengHei', 'Noto Sans CJK TC', Roboto, sans-serif
+$f-mono = 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'PingFang TC', 'Microsoft JhengHei', monospace
+
+// side gutter shared by navbar, page head, year labels and rows
+$gx = unquote('clamp(16px, 4vw, 56px)')
+
+// fill used on hover / active: dark enough for white text in both themes
+$row-fill = #1747e6
+$row-ease = cubic-bezier(.65, 0, .35, 1)
+
+themed(prop, light, dark)
+  {prop} light
+  .dark-theme &
+    {prop} dark

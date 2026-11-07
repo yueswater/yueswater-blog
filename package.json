@@ -10,7 +10,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ocean": "esbuild tools/ascii-ocean/ascii-sharks/entry.ts --bundle --minify --format=iife --target=es2019 --outfile=themes/Chic/source/js/ascii-ocean.js"
   },
   "repository": {
     "type": "git",
@@ -38,9 +39,11 @@
     "hexo-renderer-ejs": "^2.0.0",
     "hexo-renderer-kramed": "^0.1.4",
     "hexo-renderer-stylus": "^3.0.1",
-    "hexo-server": "^3.0.0"
+    "hexo-server": "^3.0.0",
+    "pinyin": "^4.0.0"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "hexo-browsersync": "^0.3.0",
     "simple-icons": "^16.28.0"
   }

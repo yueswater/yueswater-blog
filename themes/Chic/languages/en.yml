@@ -47,3 +47,45 @@ times_unit: times
 no_posts_yet: No posts here yet.
 copy_permalink: Copy link
 site_title: Yueswater Blog
+year_count: "%d posts"
+index_label: INDEX
+pagehead:
+  articles:
+    kicker: "POSTS · Articles"
+    lead: "Tutorials, notes and thoughts, %d posts so far."
+    label: POSTS
+  projects:
+    kicker: "PROJECTS · Projects"
+    lead: "Things I have built and the trade-offs behind them, %d posts."
+    label: PROJECTS
+  dsa:
+    kicker: "DSA · Data structures"
+    lead: "Study notes on algorithms and data structures, %d posts."
+    label: DSA
+  diary:
+    kicker: "DIARY · Diary"
+    lead: "Scattered notes from daily life, %d posts."
+    label: DIARY
+  archive:
+    kicker: "ARCHIVE · Timeline"
+    title: Archive
+    lead: "From %d until now, %d posts in all."
+    label: ARCHIVE
+  category:
+    kicker: "CATEGORY · Category"
+    lead: "%d posts in this category."
+    label: CATEGORY
+  categories:
+    kicker: "CATEGORIES · Categories"
+    title: Categories
+    lead: "%d categories, indexed by letter and Zhuyin."
+    label: CATEGORIES
+  tag:
+    kicker: "TAG · Tag"
+    lead: "%d posts carry this tag."
+    label: TAG
+  tags:
+    kicker: "TAGS · Tags"
+    title: Tags
+    lead: "%d tags, indexed by letter and Zhuyin."
+    label: TAGS

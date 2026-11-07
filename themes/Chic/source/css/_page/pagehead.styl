@@ -1,0 +1,81 @@
+/** Page head of list pages: left white, right accent panel **/
+// Ported from hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect).
+
+.pagehead
+  display grid
+  grid-template-columns minmax(0, 62%) minmax(0, 1fr)
+  min-height unquote('clamp(300px, 44vh, 480px)')
+
+.pagehead-main
+  display flex
+  flex-direction column
+  justify-content flex-end
+  gap 1rem
+  padding unquote('clamp(40px, 7vw, 96px)') unquote('clamp(24px, 4vw, 64px)') unquote('clamp(32px, 4vw, 56px)') $gx
+
+.pagehead-kicker
+  margin 0
+  font-family $f-mono
+  font-size 0.72rem
+  font-weight 500
+  line-height 1.5
+  letter-spacing 0.12em
+  text-transform uppercase
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+.pagehead-title
+  margin 0
+  font-family $f-display
+  font-size unquote('clamp(2.4rem, 6vw, 5.6rem)')
+  font-weight 900
+  line-height 1.05
+  letter-spacing -0.02em
+  overflow-wrap anywhere
+  border-bottom none
+
+.pagehead-lead
+  margin 0
+  max-width 34em
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+.pagehead-side
+  display flex
+  flex-direction column
+  justify-content space-between
+  gap 1rem
+  padding unquote('clamp(28px, 4vw, 48px)') $gx unquote('clamp(28px, 4vw, 48px)') unquote('clamp(24px, 3vw, 40px)')
+  background $row-fill
+  color #fff
+  overflow hidden
+
+.pagehead-label
+  font-family $f-mono
+  font-size 0.75rem
+  font-weight 500
+  line-height 1
+  letter-spacing 0.16em
+  color rgba(255, 255, 255, 0.78)
+
+.pagehead-big
+  font-family 'Archivo', $f-display
+  font-size unquote('clamp(4.5rem, 13vw, 12rem)')
+  font-weight 900
+  font-stretch 125%
+  line-height 0.8
+  letter-spacing -0.04em
+  text-align right
+  font-variant-numeric tabular-nums
+
+@media (max-width: 699px)
+  .pagehead
+    grid-template-columns minmax(0, 1fr)
+    min-height 0
+  .pagehead-main
+    padding-top 48px
+  .pagehead-side
+    flex-direction row
+    align-items flex-end
+    padding-top 20px
+    padding-bottom 20px
+  .pagehead-big
+    font-size 4.2rem

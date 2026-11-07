@@ -1,0 +1,32 @@
+<%#
+    Book-style index of categories or tags: a jump bar, then the groups in
+    three columns with the post count at the right. Layout ported from
+    hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect);
+    grouping (A-Z, then Zhuyin) comes from scripts/taxonomyIndex.js.
+
+    locals: groups -- the result of taxonomy_groups(items)
+%>
+<div class="tax-index">
+    <nav class="tax-letters">
+        <% groups.forEach(function (group, i) { %>
+            <a href="#tax-<%= i %>"><%= group.key %></a>
+        <% }) %>
+    </nav>
+    <div class="tax-groups">
+        <% groups.forEach(function (group, i) { %>
+            <section class="tax-group" id="tax-<%= i %>">
+                <h2 class="tax-group-key"><%= group.key %></h2>
+                <ul class="tax-list">
+                    <% group.items.forEach(function (item) { %>
+                        <li>
+                            <a class="tax-item" href="<%- item.url %>">
+                                <span class="tax-name"><%= item.name %></span>
+                                <span class="tax-count"><%= item.count %></span>
+                            </a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </section>
+        <% }) %>
+    </div>
+</div>

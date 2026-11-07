@@ -5,7 +5,7 @@
     <%- partial('_partial/head',{cache: true}) %>
 </head>
 
-<body>
+<body<% if (is_home() || page.is_home_en) { %> class="is-home"<% } %>>
     <script>
         // this function is used to check current theme before page loaded.
         (() => {

@@ -42,12 +42,12 @@
 
 .tabset-btn.active {
   opacity: 1;
-  background: #4ca7a0;
+  background: #1747e6;
   color: #fff;
 }
 
 .dark-theme .tabset-btn.active {
-  background: #4ca7a0;
+  background: #1747e6;
   color: #fff;
 }
 

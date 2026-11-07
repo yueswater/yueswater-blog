@@ -24,6 +24,8 @@ nav_lang_split:
   - projects
   # - dsa
   - diary
+  - category
+  - tag
   - about
 
 # favicon

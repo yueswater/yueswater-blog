@@ -1,0 +1,19 @@
+/** Page transition: a blue cut sweeps left to right **/
+// Ported from hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect).
+// Cross-document View Transitions, pure CSS: browsers without support (Firefox so far)
+// ignore the rules and navigate normally. Written as a raw @css block because Stylus
+// does not know @view-transition or the ::view-transition-* pseudo-elements.
+// The colour below is the accent ($row-fill in variable.styl); keep them in sync.
+@css {
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+  }
+  ::view-transition { background: #1747e6; }
+  ::view-transition-old(root) { animation: page-cut-out .62s cubic-bezier(.65, 0, .35, 1) both; }
+  ::view-transition-new(root) { animation: page-cut-in .62s cubic-bezier(.65, 0, .35, 1) .1s both; }
+  @keyframes page-cut-out { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 0 100%); } }
+  @keyframes page-cut-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  }
+}

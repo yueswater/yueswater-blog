@@ -1,0 +1,86 @@
+/** Category / tag overview: a book-style index **/
+// Ported from hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect).
+
+.tax-index
+  padding 0 $gx 4rem
+
+// jump bar: one link per group, the active hover just recolours the letter
+.tax-letters
+  display flex
+  flex-wrap wrap
+  gap 0.1rem
+  padding 1.6rem 0 1.2rem
+  themed(border-bottom, 1px solid $light-border-color, 1px solid rgba(255, 255, 255, 0.14))
+  a
+    padding 0.5em 0.7em
+    font-family $f-mono
+    font-size 0.78rem
+    font-weight 600
+    line-height 1
+    text-decoration none
+    transition color 0.2s ease
+    themed(color, $light-font-color, $dark-font-color)
+    &:hover
+      themed(color, $light-accent-color, $dark-accent-color)
+
+// groups flow down three columns, never split across one
+.tax-groups
+  column-count 3
+  column-gap unquote('clamp(2rem, 4vw, 4rem)')
+  padding-top 2rem
+
+.tax-group
+  break-inside avoid
+  margin-bottom 2.4rem
+  scroll-margin-top 5.5rem
+
+.tax-group-key
+  margin 0
+  padding 0 0 0.4rem
+  font-family $f-display
+  font-size 2rem
+  font-weight 900
+  font-stretch 112%
+  line-height 1.1
+  border-bottom none
+  themed(color, $light-accent-color, $dark-accent-color)
+  themed(border-bottom, 1.5px solid $light-font-color, 1.5px solid $dark-font-color)
+
+.tax-list
+  list-style none
+  margin 0
+  padding 0
+  li
+    themed(border-bottom, 1px solid $light-border-color, 1px solid rgba(255, 255, 255, 0.14))
+
+.tax-item
+  display flex
+  align-items baseline
+  justify-content space-between
+  gap 1rem
+  padding 0.8rem 0
+  font-family $f-body
+  font-size 0.95rem
+  line-height 1.4
+  text-decoration none
+  transition color 0.2s ease
+  themed(color, $light-font-color, $dark-font-color)
+  &:hover
+    themed(color, $light-accent-color, $dark-accent-color)
+
+.tax-name
+  overflow-wrap anywhere
+
+.tax-count
+  flex none
+  font-family $f-mono
+  font-size 0.72rem
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+@media (max-width: 1023px)
+  .tax-groups
+    column-count 2
+
+@media (max-width: 599px)
+  .tax-groups
+    column-count 1

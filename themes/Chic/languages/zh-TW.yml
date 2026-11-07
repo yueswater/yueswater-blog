@@ -48,3 +48,45 @@ times_unit: 次
 no_posts_yet: 這裡還沒有文章。
 copy_permalink: 複製連結
 site_title: 岳氏礦泉水
+year_count: "%d 篇"
+index_label: INDEX
+pagehead:
+  articles:
+    kicker: "POSTS · 文章"
+    lead: "教學、筆記與想法，目前共 %d 篇。"
+    label: POSTS
+  projects:
+    kicker: "PROJECTS · 專案"
+    lead: "做過的東西，以及做的時候怎麼取捨，共 %d 篇。"
+    label: PROJECTS
+  dsa:
+    kicker: "DSA · 資料結構"
+    lead: "演算法與資料結構的學習筆記，共 %d 篇。"
+    label: DSA
+  diary:
+    kicker: "DIARY · 日記"
+    lead: "零碎的生活紀錄，共 %d 篇。"
+    label: DIARY
+  archive:
+    kicker: "ARCHIVE · 年表"
+    title: 彙整
+    lead: "從 %d 年到現在，一共 %d 篇。"
+    label: ARCHIVE
+  category:
+    kicker: "CATEGORY · 分類"
+    lead: "這個分類底下共 %d 篇。"
+    label: CATEGORY
+  categories:
+    kicker: "CATEGORIES · 分類"
+    title: 分類
+    lead: "共 %d 個分類，依字母與注音排成索引。"
+    label: CATEGORIES
+  tag:
+    kicker: "TAG · 標籤"
+    lead: "貼了這個標籤的文章共 %d 篇。"
+    label: TAG
+  tags:
+    kicker: "TAGS · 標籤"
+    title: 標籤
+    lead: "共 %d 個標籤，依字母與注音排成索引。"
+    label: TAGS

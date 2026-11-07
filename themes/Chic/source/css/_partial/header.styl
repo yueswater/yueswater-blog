@@ -14,42 +14,24 @@ header
     display flex
     align-items center
 .navbar .menu
-    // modeled on techblog.lycorp.co.jp: 14px bold items, 2px underline sweeping in on hover
+    // bisect-style type (bold, one line); the hovered / current item just turns
+    // the accent colour, no background
+    gap 0.25rem
     .menu-item
-      padding 0 1.2vw
-      font-family $font-family-bold
-      font-size 14px
-      font-weight 500
-      letter-spacing 0.03em
-      line-height 20px
       display inline-flex
       align-items center
+      padding 0.7rem 0.9rem
+      font-family $f-body
+      font-size 0.95rem
+      font-weight 700
+      line-height 1.2
       white-space nowrap
-      color $light-font-color
-      .dark-theme &
-        color $dark-font-color
-      span
-        display inline-block
-        position relative
-        &:before
-          content ""
-          position absolute
-          bottom -6px
-          left 0
-          width 100%
-          height 2px
-          background-color $light-accent-color
-          .dark-theme &
-            background-color $dark-accent-color
-          transform scaleX(0)
-          transition transform 0.4s cubic-bezier(.645,.045,.355,1)
-      &:hover
-        color $light-accent-color
-        .dark-theme &
-          color $dark-accent-color
-        span:before
-          transform scaleX(1)
+      text-decoration none
+      transition color 0.2s ease
+      themed(color, $light-font-color, $dark-font-color)
+      &:hover, &[aria-current='page']
+        themed(color, $light-accent-color, $dark-accent-color)
     .lang-switch
-      margin-left 1.2vw
+      margin-left 1rem
     .theme-toggle
-      margin-left 1.2vw
+      margin-left 1rem
