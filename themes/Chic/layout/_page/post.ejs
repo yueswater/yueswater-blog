@@ -13,18 +13,36 @@
         <% if(theme.post_meta_enable){ %>
             <dl class="post-facts">
                 <% if(theme.post_author_enable && config.author){ %>
-                    <div class="post-fact post-author"><dt>AUTHOR</dt><dd><a itemprop="author" rel="author" href="/"><%- config.author %></a></dd></div>
+                    <div class="post-fact post-author"><dt><%= __('author') %></dt><dd><a itemprop="author" rel="author" href="/"><%- config.author %></a></dd></div>
                 <% } %>
                 <% if(page.date && theme.post_date_enable){ %>
-                    <div class="post-fact post-time"><dt>DATE</dt><dd><time datetime="<%= date_xml(page.date) %>"><%- date(page.date, 'YYYY.MM.DD') %></time></dd></div>
+                    <div class="post-fact post-time"><dt><%= __('date') %></dt><dd><time datetime="<%= date_xml(page.date) %>"><%- date(page.date, 'YYYY.MM.DD') %></time></dd></div>
                 <% } %>
                 <% if(page.categories.length!==0 && theme.post_category_enable){ %>
-                    <div class="post-fact post-category"><dt>CATEGORY</dt><dd>
+                    <div class="post-fact post-category"><dt><%= __('category') %></dt><dd>
                         <% page.categories.forEach(function(item){ %><a href="<%- url_for(taxonomy_path(item, page.lang)) %>"><%- item.name %></a><% }) %>
                     </dd></div>
                 <% } %>
-                <div class="post-fact post-reading-time"><dt>READ</dt><dd><%= reading_time(page) %> <%= __('min_unit') %></dd></div>
-                <div class="post-fact post-views"><dt>VIEWS</dt><dd><span class="supabase-views" data-path="<%- url_for(page.path) %>" data-supabase-record="<%- url_for(page.path) %>">–</span> <%= __('times_unit') %></dd></div>
+                <div class="post-fact post-reading-time"><dt><%= __('fact_read') %></dt><dd><%= reading_time(page) %> <%= __('min_unit') %></dd></div>
+                <div class="post-fact post-views"><dt><%= __('fact_views') %></dt><dd><span class="supabase-views" data-path="<%- url_for(page.path) %>" data-supabase-record="<%- url_for(page.path) %>">–</span> <%= __('times_unit') %></dd></div>
+                <% if (theme.pdf_enable && theme.supabase_url && !/^(https?:\/\/[^\/]+)?\/?diary\//.test(String(page.permalink || ''))) { %>
+                <div class="post-fact post-download"><dt><%= __('fact_download') %></dt><dd>
+                    <%
+                        // PDFs live in the public Supabase bucket "pdfs", at <post path without -en>/<zh|en>.pdf
+                        var pdfLang = page.lang === 'en' ? 'en' : 'zh';
+                        var pdfSlug = String(page.permalink || '').replace(/^https?:\/\/[^\/]+\//, '').replace(/\/$/, '').replace(/-en$/, '');
+                        var pdfKey = '/' + pdfSlug + '/' + pdfLang + '.pdf';
+                        // saved as "岳氏礦泉水-<title>.pdf" / "Yueswater-<title>.pdf"; characters filesystems reject are dropped
+                        var pdfName = (pdfLang === 'en' ? 'Yueswater' : '岳氏礦泉水') + '-' + String(page.title).replace(/`/g, '').replace(/\s*:\s*/g, ' - ').replace(/[\\/*?"<>|]/g, '').replace(/\s+/g, ' ').trim() + '.pdf';
+                        // ?download=<name> makes Supabase send Content-Disposition, so the file is saved under that name
+                        var pdfUrl = theme.supabase_url.replace(/\/$/, '') + '/storage/v1/object/public/pdfs/' + pdfSlug + '/' + pdfLang + '.pdf?download=' + encodeURIComponent(pdfName);
+                    %>
+                    <span class="post-download-count"><span class="supabase-views" data-path="<%- pdfKey %>">–</span> <%= __('times_unit') %></span>
+                    <a class="post-download-btn" href="<%- pdfUrl %>" download data-download-path="<%- pdfKey %>" data-toast="<%= __('toast_download') %>" title="<%= __('download_pdf') %>" aria-label="<%= __('download_pdf') %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>
+                    </a>
+                </dd></div>
+                <% } %>
             </dl>
         <% } %>
     </div>
@@ -49,7 +67,7 @@
             <%- page.content %>
         </div>
 
-        <div class="post-share" data-url="<%- page.permalink %>" data-title="<%= page.title %>">
+        <div class="post-share" data-url="<%- page.permalink %>" data-title="<%= page.title %>" data-toast-copied="<%= __('toast_copied') %>" data-toast-share="<%= __('toast_share') %>">
             <span class="post-share-label"><%= __('share') %></span>
             <a class="post-share-btn" href="https://social-plugins.line.me/lineit/share?url=<%- encodeURIComponent(page.permalink) %>" target="_blank" rel="noopener noreferrer" aria-label="LINE" title="LINE">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
@@ -74,12 +92,19 @@
                     var done = function () {
                         btn.classList.add('copied');
                         setTimeout(function () { btn.classList.remove('copied'); }, 1500);
+                        if (window.siteToast) window.siteToast(btn.closest('.post-share').getAttribute('data-toast-copied'));
                     };
                     if (navigator.clipboard && navigator.clipboard.writeText) {
                         navigator.clipboard.writeText(url).then(done, function () {});
                     }
                 });
             })();
+            // LINE / X open the platform's share window in a new tab
+            document.querySelectorAll('.post-share a.post-share-btn').forEach(function (a) {
+                a.addEventListener('click', function () {
+                    if (window.siteToast) window.siteToast(a.closest('.post-share').getAttribute('data-toast-share'));
+                });
+            });
         </script>
 
         <% if(theme.post_copyright_enable){ %>

@@ -44,11 +44,18 @@ reading_time_label: "Reading:"
 min_unit: min
 views_label: "Views:"
 times_unit: times
+fact_read: Read
+fact_download: Download
+toast_copied: Link copied
+toast_share: Share window opened
+toast_download: PDF download started
+fact_views: Views
 no_posts_yet: No posts here yet.
 empty_kicker: EMPTY
 empty_title: Nothing here yet
 empty_lead: New posts will show up here as soon as they are written.
 copy_permalink: Copy link
+download_pdf: Download as PDF
 site_title: Yueswater Blog
 year_count: "%d posts"
 index_label: INDEX

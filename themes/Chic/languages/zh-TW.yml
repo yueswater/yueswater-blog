@@ -45,11 +45,18 @@ reading_time_label: "閱讀時間:"
 min_unit: 分鐘
 views_label: "瀏覽次數:"
 times_unit: 次
+fact_read: 閱讀時間
+fact_download: 下載
+toast_copied: 已複製連結
+toast_share: 已開啟分享視窗
+toast_download: 開始下載 PDF
+fact_views: 瀏覽次數
 no_posts_yet: 這裡還沒有文章。
 empty_kicker: 空空如也
 empty_title: 這裡還沒有內容
 empty_lead: 有新文章的時候，會第一時間出現在這裡。
 copy_permalink: 複製連結
+download_pdf: 下載 PDF 電子版
 site_title: 岳氏礦泉水
 year_count: "%d 篇"
 index_label: INDEX

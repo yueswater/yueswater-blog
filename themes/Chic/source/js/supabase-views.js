@@ -37,6 +37,28 @@
         });
     }
 
+    // A click on the PDF button counts one download. Same RPC and the same
+    // once-per-IP-per-day rule as views; the PDF's own URL is the counter key.
+    var dl = document.querySelector('[data-download-path]');
+    if (dl) {
+      dl.addEventListener('click', function () {
+        if (window.siteToast) window.siteToast(dl.getAttribute('data-toast'));
+        var dlPath = dl.getAttribute('data-download-path');
+        fetch(url + '/rest/v1/rpc/increment_page_view', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ page_path: dlPath }),
+          keepalive: true
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (n) {
+            var w = dl.querySelector('.supabase-views');
+            if (w && typeof n === 'number') w.textContent = n;
+          })
+          .catch(function () {});
+      });
+    }
+
     // Record exactly one view for the current post, via an RPC call --
     // clients never write to the page_views table directly (see the
     // create_page_views migration).
