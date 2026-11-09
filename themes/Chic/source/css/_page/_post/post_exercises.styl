@@ -1,0 +1,114 @@
+// Practice questions: every question of a section sits in one callout (see scripts/exercises.js).
+//   .exercises        the callout; its head is data-title
+//   .exercise         one question, numbered by a CSS counter
+//   .q-stem           the question text
+//   .q-options > ul   options, lettered by a counter; js/exercises.js picks 4 / 2 / 1 columns
+//   .q-answer         <details> holding the answer
+.exercises
+  counter-reset ex-q
+  margin 0 0 1.25em
+  themed(background, #fff, rgba(255, 255, 255, 0.03))
+  themed(border, 1px solid $light-line, 1px solid $dark-line)
+
+  // head: blue square + title
+  &::before
+    content attr(data-title)
+    display block
+    padding 0.9rem 1.3rem 0.9rem 2.9rem
+    font-weight 700
+    line-height 1.4
+    background linear-gradient($row-fill, $row-fill) 1.3rem 50% / 0.7rem 0.7rem no-repeat
+    themed(color, $light-ink, $dark-ink)
+    themed(border-bottom, 1px solid $light-line, 1px solid $dark-line)
+
+.exercise
+  counter-increment ex-q
+  counter-reset ex-opt
+  display grid
+  grid-template-columns 2.6rem minmax(0, 1fr)
+  padding 1.2rem 1.3rem 1.15rem
+  & + .exercise
+    themed(border-top, 1px solid $light-line, 1px solid $dark-line)
+  > *
+    grid-column 2
+    min-width 0
+  &::before
+    content counter(ex-q, decimal-leading-zero)
+    grid-column 1
+    grid-row 1 / span 4
+    display grid
+    place-items center
+    width 1.7rem
+    height 1.7rem
+    margin-top 0.1rem
+    background $row-fill
+    color #fff
+    font-family $f-mono
+    font-size 0.72rem
+    font-weight 600
+
+.exercises .q-md
+  > :first-child
+    margin-top 0
+  > :last-child
+    margin-bottom 0
+
+.q-stem
+  margin-bottom 0.85rem
+
+.q-options
+  margin-bottom 0.85rem
+  ul
+    display grid
+    grid-template-columns minmax(0, 1fr)
+    gap 0.45rem 1.2rem
+    margin 0
+    padding 0
+    list-style none
+  li
+    position relative
+    min-width 0
+    margin 0
+    padding-left 1.7rem
+    counter-increment ex-opt
+    &::before
+      content counter(ex-opt, upper-alpha)
+      position absolute
+      left 0
+      top 0.42em
+      font-family $f-mono
+      font-size 0.8rem
+      font-weight 600
+      themed(color, $light-accent-color, $dark-accent-color)
+  // js/exercises.js sets one of these from the width the longest option needs
+  &.opts-4 ul
+    grid-template-columns repeat(4, minmax(0, 1fr))
+  &.opts-2 ul
+    grid-template-columns repeat(2, minmax(0, 1fr))
+  &.opts-probe li
+    white-space nowrap
+
+.q-answer
+  summary
+    cursor pointer
+    list-style none
+    user-select none
+    font-family $f-mono
+    font-size 0.74rem
+    font-weight 600
+    letter-spacing 0.1em
+    themed(color, $light-accent-color, $dark-accent-color)
+    &::-webkit-details-marker
+      display none
+    &::before
+      content '+'
+      display inline-block
+      width 1.3em
+  &[open] > summary::before
+    content '−'
+  .q-answer-body
+    margin-top 0.7rem
+    padding-top 0.7rem
+    themed(border-top, 1px dashed $light-line, 1px dashed $dark-line)
+    p
+      margin 0 0 0.6em

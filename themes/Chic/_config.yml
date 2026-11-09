@@ -144,6 +144,7 @@ scripts:
   - /js/code-copy.js
   - /js/permalink-copy.js
   - /js/toast.js
+  - /js/exercises.js
   - /js/supabase-views.js
   - /js/tabset.js
   - /js/gallery.js
