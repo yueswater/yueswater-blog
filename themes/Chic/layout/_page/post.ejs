@@ -38,7 +38,7 @@
                         var pdfUrl = theme.supabase_url.replace(/\/$/, '') + '/storage/v1/object/public/pdfs/' + pdfSlug + '/' + pdfLang + '.pdf?download=' + encodeURIComponent(pdfName);
                     %>
                     <span class="post-download-count"><span class="supabase-views" data-path="<%- pdfKey %>">–</span> <%= __('times_unit') %></span>
-                    <a class="post-download-btn" href="<%- pdfUrl %>" download data-download-path="<%- pdfKey %>" data-toast="<%= __('toast_download') %>" title="<%= __('download_pdf') %>" aria-label="<%= __('download_pdf') %>">
+                    <a class="post-download-btn" href="<%- pdfUrl %>" download="<%= pdfName %>" data-download-name="<%= pdfName %>" data-download-path="<%- pdfKey %>" data-toast="<%= __('toast_download') %>" title="<%= __('download_pdf') %>" aria-label="<%= __('download_pdf') %>">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>
                     </a>
                 </dd></div>

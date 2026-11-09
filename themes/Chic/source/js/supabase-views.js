@@ -41,8 +41,29 @@
     // once-per-IP-per-day rule as views; the PDF's own URL is the counter key.
     var dl = document.querySelector('[data-download-path]');
     if (dl) {
-      dl.addEventListener('click', function () {
+      dl.addEventListener('click', function (e) {
         if (window.siteToast) window.siteToast(dl.getAttribute('data-toast'));
+        // The file sits on another origin, where browsers ignore the download
+        // attribute (and some skip the save altogether). Fetch it and save the
+        // blob from here instead; if that fails, fall through to the plain link.
+        if (window.fetch && window.URL && URL.createObjectURL && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button)) {
+          e.preventDefault();
+          fetch(dl.href)
+            .then(function (res) {
+              if (!res.ok) throw new Error(res.status);
+              return res.blob();
+            })
+            .then(function (blob) {
+              var a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = dl.getAttribute('data-download-name') || 'download.pdf';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              setTimeout(function () { URL.revokeObjectURL(a.href); }, 10000);
+            })
+            .catch(function () { window.location.href = dl.href; });
+        }
         var dlPath = dl.getAttribute('data-download-path');
         fetch(url + '/rest/v1/rpc/increment_page_view', {
           method: 'POST',
