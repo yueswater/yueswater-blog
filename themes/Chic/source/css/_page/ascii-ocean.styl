@@ -22,22 +22,16 @@
   position relative
   z-index 1
 
-// A soft halo in the page colour behind the profile: sharks fade out around the name
-// and tagline instead of running behind the text.
+// Sharks fade out right around the profile instead of running behind it. Each piece
+// gets its own glow in the page colour that hugs its shape (text, avatar circle,
+// icons), so the cleared area is irregular and soft rather than one block.
 .profile-container .intro
-  position relative
-  &::before
-    content ""
-    position absolute
-    z-index -1
-    top -70px
-    right -170px
-    bottom -50px
-    left -170px
-    pointer-events none
-    background radial-gradient(ellipse at center, $light-background-color 0, $light-background-color 48%, transparent 74%)
-    .dark-theme &
-      background radial-gradient(ellipse at center, $dark-background-color 0, $dark-background-color 48%, transparent 74%)
+  .nickname, .description
+    themed(text-shadow, unquote('0 0 3px #f4f9fd, 0 0 8px #f4f9fd, 0 0 14px #f4f9fd, 0 0 22px #f4f9fd, 0 0 32px #f4f9fd'), unquote('0 0 3px #0f1b2d, 0 0 8px #0f1b2d, 0 0 14px #0f1b2d, 0 0 22px #0f1b2d, 0 0 32px #0f1b2d'))
+  .avatar a
+    themed(box-shadow, unquote('0 0 0 0.3618em rgba(0, 0, 0, 0.05), 0 0 22px 14px #f4f9fd, 0 0 44px 22px #f4f9fd'), unquote('0 0 0 0.3618em rgba(255, 255, 255, 0.1), 0 0 22px 14px #0f1b2d, 0 0 44px 22px #0f1b2d'))
+  .links .link-item
+    themed(filter, unquote('drop-shadow(0 0 4px #f4f9fd) drop-shadow(0 0 10px #f4f9fd) drop-shadow(0 0 18px #f4f9fd)'), unquote('drop-shadow(0 0 4px #0f1b2d) drop-shadow(0 0 10px #0f1b2d) drop-shadow(0 0 18px #0f1b2d)'))
 
 // Home only: the navbar is see-through so the ocean runs edge to edge.
 // The canvas ignores pointer events, so the links underneath stay clickable.
