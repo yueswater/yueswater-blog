@@ -8,7 +8,15 @@
   font-weight 300 700
   font-display swap
 
-$font-family = 'lanting', Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
+// lanting draws the apostrophe (U+2019, which the renderer turns ' into) and the hyphen
+// as wide CJK-style glyphs ("I   m", "all - time"). Latin system fonts take just those
+// code points. Curly double quotes stay with the CJK fonts on purpose (Chinese text).
+@font-face
+  font-family 'latin-punct'
+  src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('Roboto')
+  unicode-range: U+002D, U+0027, U+2019
+
+$font-family = 'latin-punct', 'lanting', Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
 
 // lanting only ships as a single static weight; synthetic-bolding it
 // per range gives inconsistent glyph coverage (some characters bold,

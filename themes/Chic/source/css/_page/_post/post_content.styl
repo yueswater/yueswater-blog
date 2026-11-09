@@ -33,6 +33,12 @@
 
   p
     margin 0 0 1.25em
+    // a lead-in line ("...:") hugs the list it introduces instead of leaving a blank line
+    &:has(+ ul, + ol)
+      margin-bottom 0.4em
+
+  p + ul, p + ol
+    margin-top 0
   > :first-child
     margin-top 0
 
