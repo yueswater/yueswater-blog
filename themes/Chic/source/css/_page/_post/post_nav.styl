@@ -8,12 +8,18 @@
 
   a.prev, a.next
     float none
-    display flex
-    flex-direction column
-    gap 0.5rem
-    padding 1.3rem 1.2rem
+    // not flex: the title is text plus inline <code>, and flex would turn each piece
+    // into its own line. The PREV / NEXT label is pinned at the top instead.
+    position relative
+    // one line when it fits, never more than two (then cut with an ellipsis)
+    display -webkit-box
+    -webkit-box-orient vertical
+    -webkit-line-clamp 2
+    overflow hidden
+    text-wrap balance
+    padding 2.9rem 1.2rem 1.3rem
     font-family $f-display
-    font-size 1rem
+    font-size 0.95rem
     font-weight 700
     line-height 1.5
     background linear-gradient($row-fill, $row-fill) no-repeat left / 0% 100%
@@ -25,6 +31,10 @@
       transform none
 
   a.prev::before, a.next::after
+    position absolute
+    top 1.3rem
+    left 1.2rem
+    right 1.2rem
     margin 0
     font-family $f-mono
     font-size 0.66rem
@@ -45,7 +55,6 @@
     text-align right
     &::after
       content "NEXT →"
-      order -1
 
 .tag:not(:last-child) a::after
   content " / "
