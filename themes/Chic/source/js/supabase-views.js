@@ -52,8 +52,11 @@
         })
           .then(function (res) { return res.json(); })
           .then(function (n) {
-            var w = dl.querySelector('.supabase-views');
-            if (w && typeof n === 'number') w.textContent = n;
+            // the counter is a sibling of the button, not inside it: find it by key
+            if (typeof n !== 'number') return;
+            items.forEach(function (el) {
+              if (el.getAttribute('data-path') === dlPath) el.textContent = n;
+            });
           })
           .catch(function () {});
       });

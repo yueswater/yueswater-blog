@@ -3,6 +3,36 @@
   "outputDirectory": "public",
   "redirects": [
     {
+      "source": "/articles/typst/:path(.*-en)",
+      "destination": "/articles-en/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/typst/:path(.*-en)/",
+      "destination": "/articles-en/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/typst",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/typst/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/typst/:path*",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/typst/:path*/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
       "source": "/posts/:path*",
       "destination": "/",
       "statusCode": 301
@@ -96,6 +126,76 @@
       "source": "/index-en.html",
       "destination": "/en/",
       "statusCode": 301
+    },
+    {
+      "source": "/categories/Typst",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/排版系統",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/排版系統/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/%E6%8E%92%E7%89%88%E7%B3%BB%E7%B5%B1",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/%E6%8E%92%E7%89%88%E7%B3%BB%E7%B5%B1/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/Typesetting",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/categories/Typst/Typesetting/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/排版系統",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/排版系統/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/%E6%8E%92%E7%89%88%E7%B3%BB%E7%B5%B1",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/%E6%8E%92%E7%89%88%E7%B3%BB%E7%B5%B1/",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/Typesetting",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/tags/Typesetting/",
+      "destination": "/articles/",
+      "statusCode": 302
     },
     {
       "source": "/tags",
@@ -321,6 +421,16 @@
       "source": "/articles/posts/backend/:path*/",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/articles/posts/typst/:path*",
+      "destination": "/articles/",
+      "statusCode": 302
+    },
+    {
+      "source": "/articles/posts/typst/:path*/",
+      "destination": "/articles/",
+      "statusCode": 302
     },
     {
       "source": "/articles/posts/:cat/:folder/:slug.html",
