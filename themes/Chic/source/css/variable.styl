@@ -28,34 +28,48 @@ $light-post-blockquote-background-color = lighten($light-global-link-hover-color
 
 $light-post-table-background-color = lighten($light-global-link-hover-color,70%)
 
-/** dark theme **/
+/** dark theme: midnight sky blue **/
 
-$dark-background-color = #292a2d
+$dark-background-color = #0f1b2d
 
-$dark-font-color = #a9a9b3
-$dark-font-secondary-color = #87878d
+$dark-font-color = #c8d3e2
+$dark-font-secondary-color = #8397b0
 
 $dark-navbar-active-color = #fff
-$dark-accent-color = #4fd1ff
+$dark-accent-color = #5aa9ff
 
-$dark-global-link-color = #a9a9b3
+$dark-global-link-color = #c8d3e2
 $dark-global-link-hover-color = $dark-accent-color
 
-$dark-post-link-color = #eee
+$dark-post-link-color = #f1f6fc
 $dark-post-link-hover-color = #fff
 
-$dark-pagination-link-color = #a9a9b3
+$dark-pagination-link-color = #c8d3e2
 $dark-pagination-link-active-color = $dark-accent-color
 
-$dark-border-color = #909196
+$dark-border-color = #26364f
 
-$dark-code-font-color = #fffe28
-$dark-code-background-color = #787575
+$dark-code-font-color = #a8d4ff
+$dark-code-background-color = #203b66
 
-$dark-post-blockquote-border-color = #dcdcdc
-$dark-post-blockquote-background-color = #3e3e3e
+$dark-post-blockquote-border-color = $dark-accent-color
+$dark-post-blockquote-background-color = #14243b
 
 $dark-post-table-background-color = darken($dark-accent-color, 60%)
+
+/** article page tokens (light / dark pairs) **/
+$light-ink = #0f172a
+$dark-ink = #f1f6fc
+$light-ink-soft = #3d4f66
+$dark-ink-soft = #c8d3e2
+$light-muted = #4a5f7a
+$dark-muted = #8397b0
+$light-line = #d4dbe3
+$dark-line = #26364f
+// code blocks are white in both themes, no border
+$code-block-bg = #fff
+$code-block-fg = #1e293b
+$code-gutter = rgba(74, 95, 122, 0.5)
 
 /** list-page / header design tokens (ported from hexo-theme-bisect) **/
 $f-display = 'Archivo', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif

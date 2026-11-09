@@ -25,9 +25,10 @@ export type SharkSpec = { kind: SharkKind; size: number };
 
 // The landing hero: a humpback whale pod (a cow, a juvenile and a calf) at different depths.
 const DEFAULT_SHARKS: SharkSpec[] = [
-  { kind: "whale", size: 1 },
-  { kind: "whale", size: 0.72 },
-  { kind: "whale", size: 0.5 },
+  { kind: "classic", size: 1 },
+  { kind: "classic", size: 0.7 },
+  { kind: "classic", size: 0.84 },
+  { kind: "classic", size: 0.77 },
 ];
 
 export interface Fish {

@@ -32,3 +32,36 @@ body.is-home
     -webkit-backdrop-filter none
   .navbar-mobile .container
     background transparent
+
+// Post pages: the same ocean, but only in the empty space around the article: a
+// viewport-sized layer masked so the text column stays clear (side gutters), and a
+// strip under the article (floor). The engine sizes itself from each canvas box and
+// pauses when it is off screen or the system asks for reduced motion.
+.ascii-ocean.ascii-ocean--gutter
+  z-index -1
+  opacity 0.6
+  -webkit-mask-image linear-gradient(to right, #000 0, #000 calc(50% - 27rem), transparent calc(50% - 23rem), transparent calc(50% + 23rem), #000 calc(50% + 27rem), #000 100%)
+  mask-image linear-gradient(to right, #000 0, #000 calc(50% - 27rem), transparent calc(50% - 23rem), transparent calc(50% + 23rem), #000 calc(50% + 27rem), #000 100%)
+  // no gutters on narrow screens
+  @media (max-width: 1023px)
+    display none
+
+// the head stays clear: an opaque band keeps the fixed layer from running behind the title
+.pagehead--post
+  position relative
+  z-index 0
+  themed(background-color, $light-background-color, $dark-background-color)
+
+.post-ocean
+  position relative
+  height 14rem
+  margin-top 2rem
+
+.ascii-ocean.ascii-ocean--floor
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  z-index 0
+  opacity 0.6

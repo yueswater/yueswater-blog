@@ -1,26 +1,15 @@
-.post-copyright 
-  margin-top 4rem
-  border-top 1px solid $light-border-color
-  border-bottom 1px solid $light-border-color
-  line-height 1.5
+.post-copyright
+  margin 1.5rem 0 0
+  padding 1rem 0 0
+  font-family $f-mono
+  font-size 0.8rem
+  line-height 1.9
+  themed(border-top, 1px solid $light-line, 1px solid $dark-line)
+  themed(color, $light-muted, $dark-muted)
   a
-    color: $light-post-link-color
-    .dark-theme &
-      color: $dark-post-link-color
-
+    themed(color, $light-post-link-color, $dark-accent-color)
     &:hover
-      color: $light-post-link-hover-color
-      .dark-theme &
-        color: $dark-post-link-hover-color
+      themed(color, $light-post-link-hover-color, $dark-post-link-hover-color)
 
-  .copyright-item 
+  .copyright-item
     margin 5px 0
-
-  .lincese 
-    font-family $font-family-bold
-    font-weight 500
-
-  .dark-theme & 
-    border-top 1px solid $dark-border-color
-    border-bottom 1px solid $dark-border-color
-  

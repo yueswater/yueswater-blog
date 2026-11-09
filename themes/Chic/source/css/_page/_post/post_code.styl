@@ -1,55 +1,58 @@
 .post-content
   code, pre
     line-height 1.7em
-    padding 7px
     font-size 13px
-    font-family Consolas, Monaco, Menlo, Consolas, monospace
-  code
-    line-height 1.7em
-    padding 3px 5px
-    border-radius 4px
-    color $light-code-font-color
-    background $light-code-background-color
-    .dark-theme &
-      color $dark-code-font-color
-      background $dark-code-background-color
-  
+    font-family $f-mono
+  // inline code: square, mono, tinted block
+  :not(pre) > code
+    padding 0.12em 0.38em
+    border-radius 0
+    font-size 0.86em
+    font-weight 500
+    // 1, not the prose line-height: a taller inline box (and a different font's
+    // metrics) would stretch every line that contains inline code
+    line-height 1
+    vertical-align baseline
+    themed(color, $light-code-font-color, $dark-code-font-color)
+    themed(background, $light-code-background-color, $dark-code-background-color)
+
   h1,h2,h3,h4,h5  // title inline code block
     code
-      font-size inherit        
+      font-size inherit
 
   figure.highlight
-    margin 1em 0
+    margin 2em 0
     overflow-x auto
     position relative
-    &::-webkit-scrollbar
-      width 6px
-      height 6px
-    &::-webkit-scrollbar-thumb
-      width 6px
-      background-color #eee
-      border-radius 2px
+    border-radius 0
+    pre, code
+      padding 0
+      background transparent
+      color inherit
+      font-size 0.84rem
+      line-height 1.75
     figcaption
-      padding 0 0.5em
+      padding 0.3em 0.8em
       text-align right
       font-size 13px
       span
         margin 0 0.5em
     table
       position relative
+      width 100%
     table, tr, td
       margin 0
       padding 0
       border 0
-      width 100%
       border-collapse collapse
-    .code
-      pre
-        margin 0 10px
-
-    // line number
     .gutter
-      width 10px
-      color #d0d0d0
+      width 1%
       pre
         margin 0
+        padding 1.2em 0 1.2em 1.1em
+        text-align right
+        color $code-gutter
+    .code
+      pre
+        margin 0
+        padding 1.2em 1.3em 1.2em 0.9em

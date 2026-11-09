@@ -1,50 +1,78 @@
-// post structure
-.post-wrap
-  p
-    font-size 1em
-    margin 1em 0 1em 0
-  .post-header h1
-    margin 0 !important
+// post page head: the list-page .pagehead in a compact flavour, plus the facts row
+.pagehead--post
+  grid-template-columns minmax(0, 1fr) 14rem
+  min-height 0
+  themed(border-bottom, 1.5px solid $light-ink, 1.5px solid $dark-line)
+  .pagehead-main
+    gap 1rem
+    padding-top unquote('clamp(36px, 5vw, 64px)')
+    padding-bottom unquote('clamp(24px, 3vw, 36px)')
+  .pagehead-title
+    font-size unquote('clamp(1.9rem, 3.4vw, 3.2rem)')
+    line-height 1.18
+    letter-spacing -0.01em
+    text-wrap balance
+  .pagehead-side
+    padding 1.4rem 1.4rem 1.2rem
+  .pagehead-big
+    align-self flex-end
+    font-size unquote('clamp(4.5rem, 8vw, 7rem)')
 
-  .post-title
-    font-size 2em
-    line-height 1.5em
+.dark-theme .pagehead-title
+  color $dark-ink
 
-  .post-meta
-    color rgba(85, 85, 85, 0.52941) !important
-    .dark-theme &
-      color $dark-font-secondary-color !important
-
+// AUTHOR / DATE / CATEGORY / READ / VIEWS
+.post-facts
+  display grid
+  grid-template-columns repeat(auto-fit, minmax(0, max-content))
+  gap 0.9rem 2.6rem
+  margin 0.4rem 0 0
+  padding-top 1.1rem
+  themed(border-top, 1px solid $light-line, 1px solid $dark-line)
+  .post-fact
+    display grid
+    gap 0.3rem
+  dt
+    font-family $f-mono
+    font-size 0.66rem
+    font-weight 500
+    line-height 1
+    letter-spacing 0.14em
+    themed(color, $light-muted, $dark-muted)
+  dd
+    margin 0
+    font-family $f-mono
+    font-size 0.95rem
+    font-weight 600
+    line-height 1.3
+    font-variant-numeric tabular-nums
+    themed(color, $light-ink, $dark-ink)
     a
-      color $light-post-link-color
-      .dark-theme &
-        color $dark-post-link-color
-
+      background none
+      themed(color, $light-accent-color, $dark-accent-color)
       &:hover
-        color $light-post-link-hover-color
-        .dark-theme &
-          color $dark-post-link-hover-color
+        color #fff
+        background $row-fill
+      & + a::before
+        content "/"
+        display inline-block
+        margin 0 0.5em
+        themed(color, $light-muted, $dark-muted)
 
-    .meta-icon
-      width 0.9em
-      height 0.9em
-      vertical-align -0.05em
-      margin-right 0.35em
-
-    .post-meta-primary
-      > span
-        margin-right 1em
-        &:last-child
-          margin-right 0
-
-      @media screen and (max-width: 1023px)
-        .post-category
-          display block
-          margin-top 0.4em
-
-    .post-meta-secondary
-      margin-top 0.4em
-      span
-        margin-right 1em
-        &:last-child
-          margin-right 0
+@media (max-width: 699px)
+  .pagehead--post
+    grid-template-columns minmax(0, 1fr)
+    .pagehead-main
+      padding-top 40px
+    .pagehead-big
+      font-size 4rem
+  // two columns; the category list can run long, so it takes a full row
+  .post-facts
+    grid-template-columns repeat(2, minmax(0, 1fr))
+    gap 0.9rem 1.2rem
+    .post-category
+      grid-column 1 / -1
+    dd
+      white-space nowrap
+    .post-category dd
+      white-space normal

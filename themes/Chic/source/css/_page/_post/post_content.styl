@@ -1,120 +1,182 @@
+// ---- article layout: toc rail | prose | spare ----
+.main .container.post-layout
+  display grid
+  grid-template-columns minmax(0, 1fr) minmax(0, 44rem) minmax(0, 1fr)
+  gap 0 unquote('clamp(24px, 4vw, 64px)')
+  height auto
+  max-width none
+  padding unquote('clamp(32px, 4vw, 56px) clamp(16px, 4vw, 56px) clamp(48px, 6vw, 96px)')
+
+.post-layout .post-wrap
+  grid-column 2
+  max-width none
+  min-width 0
+  padding 0
+
+@media (max-width: 1279px)
+  .main .container.post-layout
+    grid-template-columns minmax(0, 1fr)
+  .post-layout .post-wrap
+    grid-column 1
+    width 100%
+    max-width 44rem
+    margin 0 auto
+
 .post-content
-  padding-top 2rem
-  text-align justify
+  padding-top 0
+  margin 0
+  text-align left
+  font-size unquote('clamp(1.02rem, 0.96rem + 0.25vw, 1.125rem)')
+  line-height 1.88
+  letter-spacing 0.01em
+  line-break strict
 
-  h2,
-  h3,
-  h4,
-  h5,
-  h6
-    padding-top .8em
-    padding-bottom .3em
+  p
+    margin 0 0 1.25em
+  > :first-child
+    margin-top 0
+
+  .headerlink
+    display none
+
+  h1, h2, h3, h4, h5, h6
+    font-family $f-display
+    font-weight 900
+    text-wrap balance
+    scroll-margin-top 6rem
+    padding 0
+    border 0
+    themed(color, $light-ink, $dark-ink)
+
+  // heading spacing is in rem on purpose: em would scale with each heading's own
+  // font size and give h2 / h3 / h4 gaps that don't match
+  h2
+    margin 2.8rem 0 1.1rem
+    font-size 1.62em
+    line-height 1.3
+
+  h3
+    margin 2.2rem 0 0.9rem
+    font-size 1.24em
+    line-height 1.4
+    &::before
+      content ""
+      display inline-block
+      width 0.42em
+      height 0.42em
+      margin 0 0.55em 0.1em 0
+      vertical-align middle
+      themed(background, $light-accent-color, $dark-accent-color)
+
   h4
-    padding-bottom .05em
+    margin 2rem 0 0.7rem
+    font-size 1.05em
+
   h1::before
-       content "#"
-       margin-right 5px
-       color $light-post-link-color
-       .dark-theme &
-         color $dark-accent-color
-  h2::before
-       content "#"
-       margin-right 5px
-       color $light-post-link-color
-       .dark-theme &
-         color $dark-accent-color
+    content none
 
-  h3::before
-       content "|"
-       margin-right 5px
-       font-weight 900
-       color $light-post-link-color
-       .dark-theme &
-         color $dark-accent-color
+  // the body's 'lanting' webfont draws a very heavy bold; the system CJK fonts give a
+  // medium-weight one
+  strong, b
+    font-family $f-body
+    font-weight 600
+    line-height 1
+    themed(color, $light-ink, $dark-ink)
 
+  li::marker
+    font-family $f-mono
+    font-size 0.85em
+    themed(color, $light-accent-color, $dark-accent-color)
+
+  // links: no underline, filled from the left on hover
   a
-    color $light-post-link-color
-    background-image linear-gradient(to right, $light-post-link-color 50%, transparent 50%)
-    background-size 200% 100%
-    background-position right bottom
+    text-decoration none
     background-repeat no-repeat
-    transition background-position 0.25s ease, color 0.25s ease
-    .dark-theme &
-      color $dark-post-link-color
-      background-image linear-gradient(to right, $dark-accent-color 50%, transparent 50%)
+    background-position left
+    background-size 0% 100%
+    transition background-size 0.3s, color 0.2s
+    themed(color, $light-post-link-color, $dark-accent-color)
+    themed(background-image, linear-gradient($light-post-link-color, $light-post-link-color), linear-gradient($dark-accent-color, $dark-accent-color))
 
   a:hover
-    background-position left bottom
-    color #f3f3f3
+    background-size 100% 100%
     border-radius 0
+    color #fff
     .dark-theme &
-      color #f3f3f3
+      color #0f1b2d
 
   // links that only wrap an image (e.g. inline logos) shouldn't get the
   // text-underline sweep -- there's no text for it to highlight
   a:has(img)
     background-image none
+    text-decoration none
 
-  code, pre
-    padding 7px
-    font-size 13px
-    font-family Consolas, Monaco, Menlo, Consolas, monospace
-  code
-    padding 3px 5px
-    border-radius 4px
+  hr
+    width 5rem
+    height 6px
+    margin 3.5em auto
+    border 0
+    themed(background, linear-gradient(90deg, $light-ink 0 50%, $light-accent-color 50% 100%), linear-gradient(90deg, $dark-ink 0 50%, $dark-accent-color 50% 100%))
 
-  figure.highlight
-    margin 1em 0
-    overflow-x auto
+  blockquote:not([id^="fn_"])
     position relative
-    &::-webkit-scrollbar
-      width 6px
-      height 6px
-    &::-webkit-scrollbar-thumb
-      width 6px
-      background-color #eee
-      border-radius 2px
-    table
-      position relative
-    table, tr, td
+    display block
+    margin 2em 0
+    padding 1.1em 1.4em 1.1em unquote('calc(3rem + 1.2em)')
+    font-size 1rem
+    border 0
+    themed(color, $light-ink-soft, $dark-ink-soft)
+    themed(background-color, $light-code-background-color, $dark-post-blockquote-background-color)
+    &::before
+      content "\201C"
+      position absolute
+      left 0
+      top 0
+      bottom 0
+      width 3rem
+      display flex
+      justify-content center
+      padding-top 0.25em
+      font-family $f-display
+      font-size 2.6rem
+      font-weight 900
+      line-height 1
+      color #f4f9fd
+      background $row-fill
+    p
       margin 0
-      padding 0
-      border 0
-      width 100%
-      border-collapse collapse
-    .code
-      pre
-        margin 0 10px
-
-    // line number
-    .gutter
-      width 10px
-      color #d0d0d0
-      pre
-        margin 0
-
-
-  ul
-    padding-left 2em
+    footer
+      strong
+        margin-right 0.5em
+    &.pullquote
+      background-color transparent
 
   table
     max-width 100%
-    width auto
-    margin 10px auto
-    border-spacing 0
-    thead
-      background #1747e6
-      .dark-theme &
-        background #0f35b8
-      th
-        color #fff
-        border-color #1747e6
-        .dark-theme &
-          border-color #0f35b8
+    width 100%
+    margin 2em 0
+    border-collapse collapse
+    font-size 0.92em
+    themed(border-top, 1.5px solid $light-ink, 1.5px solid $dark-line)
+    themed(border-bottom, 1.5px solid $light-ink, 1.5px solid $dark-line)
+    thead th
+      font-family $f-mono
+      font-size 0.74rem
+      font-weight 600
+      line-height 1.4
+      letter-spacing 0.08em
+      text-align left
+      color #fff
+      background $row-fill
     th, td
-      padding 5px 15px
-      border .5px solid $light-border-color
+      padding 0.7em 1em
+      border 0
+      themed(border-bottom, 1px solid $light-line, 1px solid $dark-line)
 
+  ul, ol
+    margin 0 0 1.25em
+  ul
+    padding-left 2em
 
   .image-caption:not(:empty)
     min-width 20%
@@ -133,6 +195,9 @@
     height auto
     margin 0 auto
     overflow hidden
+    // white-backed figures melt into the tinted page (light mode only)
+    body:not(.dark-theme) &
+      mix-blend-mode multiply
 
   // shields.io-style badges (e.g. project website/commits links) are meant
   // to sit inline in a row, not stack as full-width block images
@@ -163,28 +228,6 @@
       .dark-theme &
         color $dark-font-secondary-color
   // end element
-
-  blockquote
-    font-size 1rem
-    display block
-    margin 1em 0
-    padding 1em 1.2em 1em 1.2em
-    position relative
-    color rgba(#34495e, 0.8)
-    background-color $light-post-blockquote-background-color
-    border-left 2px solid $light-post-blockquote-border-color
-    //box-shadow 1px 1px 2px rgba(0,0,0,0.125)
-    p
-      margin 0
-    footer
-      strong
-        margin-right 0.5em
-    .dark-theme &
-      color $dark-font-color
-      background-color $dark-post-blockquote-background-color
-      border-left 2px solid $dark-post-blockquote-border-color
-    &.pullquote
-      background-color transparent
 
   // kramed renders footnote definitions ([^1]: ...) as <blockquote
   // id="fn_N">, which otherwise inherits the quote-box styling above --
@@ -226,3 +269,9 @@
       &.right
         float right
         text-align right 
+
+// phones: let long cell text wrap instead of widening the page
+@media (max-width: 699px)
+  .post-content table
+    th, td
+      overflow-wrap anywhere

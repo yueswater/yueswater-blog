@@ -1,8 +1,10 @@
-/** Page transition: a blue cut sweeps left to right **/
+/** Page and theme-toggle transition: a blue cut sweeps left to right **/
 // Ported from hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect).
 // Cross-document View Transitions, pure CSS: browsers without support (Firefox so far)
 // ignore the rules and navigate normally. Written as a raw @css block because Stylus
 // does not know @view-transition or the ::view-transition-* pseudo-elements.
+// The light/dark toggle (js/script.js) runs through document.startViewTransition, so it
+// reuses the same pseudo-element rules.
 // The colour below is the accent ($row-fill in variable.styl); keep them in sync.
 @css {
   @media (prefers-reduced-motion: no-preference) {
