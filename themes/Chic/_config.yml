@@ -28,6 +28,9 @@ nav_lang_split:
   - tag
   - about
 
+# PDF download button on posts (files come from the Supabase "pdfs" bucket: make reports reports-upload).
+pdf_enable: true
+
 # favicon
 favicon: /assets/favicon.png
 
@@ -124,6 +127,7 @@ stylesheets:
   - /css/code-copy.css
   - /css/caption.css
   - /css/permalink-copy.css
+  - /css/toast.css
   - /css/tabset.css
   - /css/citations.css
   - /css/problem-statement.css
@@ -139,6 +143,7 @@ scripts:
   - /js/clipboard.min.js
   - /js/code-copy.js
   - /js/permalink-copy.js
+  - /js/toast.js
   - /js/supabase-views.js
   - /js/tabset.js
   - /js/gallery.js
