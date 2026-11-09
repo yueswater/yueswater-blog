@@ -76,3 +76,23 @@ body.is-home
   height 100%
   z-index 0
   opacity 0.6
+
+// List pages: sharks swim in the white half of the page head (left of the big number).
+// The text keeps a glow in the page colour so it stays readable when one swims past.
+.pagehead-main
+  position relative
+  overflow hidden
+  > *:not(canvas)
+    position relative
+    z-index 1
+  .pagehead-title, .pagehead-kicker, .pagehead-lead
+    themed(text-shadow, unquote('0 0 3px #f4f9fd, 0 0 8px #f4f9fd, 0 0 14px #f4f9fd, 0 0 22px #f4f9fd'), unquote('0 0 3px #0f1b2d, 0 0 8px #0f1b2d, 0 0 14px #0f1b2d, 0 0 22px #0f1b2d'))
+
+.ascii-ocean.ascii-ocean--head
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  z-index 0
+  opacity 0.6

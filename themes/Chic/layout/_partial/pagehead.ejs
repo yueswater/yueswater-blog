@@ -12,6 +12,7 @@
 %>
 <header class="pagehead">
     <div class="pagehead-main">
+        <canvas class="ascii-ocean ascii-ocean--head" aria-hidden="true"></canvas>
         <p class="pagehead-kicker"><%= kicker %></p>
         <h1 class="pagehead-title"><%- title %></h1>
         <% if (typeof lead !== 'undefined' && lead) { %><p class="pagehead-lead"><%= lead %></p><% } %>
@@ -21,3 +22,4 @@
         <% if (typeof big !== 'undefined' && big !== null) { %><span class="pagehead-big"><%= big %></span><% } %>
     </div>
 </header>
+<script src="<%- url_for('/js/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>
