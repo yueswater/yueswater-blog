@@ -58,6 +58,17 @@ if (is_archive()){
     // so og:url matches the actual canonical address.
     var ogPath = page.path.replace(/index\.html$/, '');
 %>
+<%
+    // one canonical address per page: https + www (config.url), no "index.html"
+    var canonicalUrl = full_url_for(ogPath);
+    var altHref = alt_lang_href(page);
+%>
+<% if (page.noindex) { %><meta name="robots" content="noindex, follow"><% } %>
+<link rel="canonical" href="<%- canonicalUrl %>">
+<% if (altHref && page.lang) { %>
+<link rel="alternate" hreflang="<%= page.lang === 'en' ? 'en' : 'zh-TW' %>" href="<%- canonicalUrl %>">
+<link rel="alternate" hreflang="<%= page.lang === 'en' ? 'zh-TW' : 'en' %>" href="<%- full_url_for(altHref.replace(/index\.html$/, '')) %>">
+<% } %>
 <meta property="og:site_name" content="<%= __('site_title') %>">
 <meta property="og:title" content="<%= ogTitle %>">
 <% if (ogDescription) { %>

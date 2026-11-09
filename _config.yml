@@ -11,7 +11,7 @@ language: [zh-TW, en]
 timezone: "Asia/Taipei"
 
 # URL
-url: https://yueswater.com
+url: https://www.yueswater.com
 permalink: :title/
 permalink_defaults:
 pretty_urls:

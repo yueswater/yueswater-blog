@@ -33,3 +33,27 @@ hexo.extend.helper.register('alt_lang_post', function (page) {
   }
   return null;
 });
+
+/**
+ * Path of the other-language twin of any page (post, page, section listing,
+ * homepage, taxonomy page), or null. Same rules as the language switch in
+ * _partial/header.ejs; used for <link rel="alternate" hreflang>.
+ */
+hexo.extend.helper.register('alt_lang_href', function (page) {
+  var altPost = this.alt_lang_post(page);
+  var href = altPost ? altPost.path : null;
+  if (!href && page.section_prefix) {
+    href = page.lang === 'en'
+      ? page.path.replace(/^([^\/]+)-en\//, '$1/')
+      : page.path.replace(/^([^\/]+)\//, '$1-en/');
+  }
+  if (!href && page.is_home_en) {
+    href = '/';
+  } else if (!href && this.is_home()) {
+    href = '/en/';
+  }
+  if (!href && (page.category || page.tag)) {
+    href = page.alt_path || page.alt_index;
+  }
+  return href;
+});

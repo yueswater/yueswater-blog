@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yueswater.com/sitemap.xml
+Sitemap: https://www.yueswater.com/sitemap.xml
