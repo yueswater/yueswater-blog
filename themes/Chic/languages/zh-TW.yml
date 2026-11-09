@@ -46,6 +46,9 @@ min_unit: 分鐘
 views_label: "瀏覽次數:"
 times_unit: 次
 no_posts_yet: 這裡還沒有文章。
+empty_kicker: 空空如也
+empty_title: 這裡還沒有內容
+empty_lead: 有新文章的時候，會第一時間出現在這裡。
 copy_permalink: 複製連結
 site_title: 岳氏礦泉水
 year_count: "%d 篇"

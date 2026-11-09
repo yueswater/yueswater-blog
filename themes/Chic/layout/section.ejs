@@ -12,7 +12,11 @@
 <div class="container container--bleed">
     <div class="post-wrap post-wrap--wide section-list">
         <% if (page.posts.length === 0) { %>
-            <p class="section-empty"><%= __('no_posts_yet') %></p>
+            <div class="section-empty">
+                <span class="section-empty-kicker"><%= __('empty_kicker') %></span>
+                <p class="section-empty-title"><%= __('empty_title') %></p>
+                <p class="section-empty-lead"><%= __('empty_lead') %></p>
+            </div>
         <% } else { %>
             <%- partial('_partial/post-rows', { posts: page.posts, year_counts: page.year_counts }) %>
         <% } %>

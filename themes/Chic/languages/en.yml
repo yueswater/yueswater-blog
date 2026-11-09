@@ -45,6 +45,9 @@ min_unit: min
 views_label: "Views:"
 times_unit: times
 no_posts_yet: No posts here yet.
+empty_kicker: EMPTY
+empty_title: Nothing here yet
+empty_lead: New posts will show up here as soon as they are written.
 copy_permalink: Copy link
 site_title: Yueswater Blog
 year_count: "%d posts"

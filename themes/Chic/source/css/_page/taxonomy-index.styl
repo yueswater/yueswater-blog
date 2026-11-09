@@ -54,19 +54,48 @@
     themed(border-bottom, 1px solid $light-border-color, 1px solid rgba(255, 255, 255, 0.14))
 
 .tax-item
+  position relative
+  isolation isolate
   display flex
   align-items baseline
   justify-content space-between
   gap 1rem
-  padding 0.8rem 0
+  // the fill spans exactly the width of the group rule above; text is inset inside it
+  padding 0.8rem 0.7rem
   font-family $f-body
   font-size 0.95rem
   line-height 1.4
   text-decoration none
   transition color 0.2s ease
   themed(color, $light-font-color, $dark-font-color)
-  &:hover
-    themed(color, $light-accent-color, $dark-accent-color)
+  // same fill as the post rows: sweeps in from the left on hover
+  &::before
+    content ""
+    position absolute
+    top 0
+    right 0
+    bottom 0
+    left 0
+    z-index -1
+    background $row-fill
+    transform scaleX(0)
+    transform-origin left center
+    transition transform 0.48s $row-ease
+
+@media (hover: hover)
+  .tax-item:hover, .tax-item:focus-visible
+    outline none
+    color #fff
+    &::before
+      transform scaleX(1)
+    .tax-name
+      color #fff
+    .tax-count
+      color rgba(255, 255, 255, 0.8)
+
+@media (prefers-reduced-motion: reduce)
+  .tax-item::before
+    transition none
 
 .tax-name
   overflow-wrap anywhere
@@ -75,6 +104,7 @@
   flex none
   font-family $f-mono
   font-size 0.72rem
+  transition color 0.2s ease
   themed(color, $light-font-secondary-color, $dark-font-secondary-color)
 
 @media (max-width: 1023px)
