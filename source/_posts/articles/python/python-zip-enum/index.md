@@ -240,54 +240,61 @@ print(scores_dict)
 
 ## 練習 
 
+::: exercises
 
-### 問題 1 
-
+::: q
 `zip(["a", "b", "c"], [1, 2])` 的結果會是什麼？
 
-- A. `[("a", 1), ("b", 2), ("c", None)]`
-- B. 拋出 `ValueError`
-- C. `[("a", 1), ("b", 2)]`
-- D. `[("a", 1), ("b", 2), ("c",)]`
+- `[("a", 1), ("b", 2), ("c", None)]`
+- 拋出 `ValueError`
+- `[("a", 1), ("b", 2)]`
+- `[("a", 1), ("b", 2), ("c",)]`
 
+::: answer
 **答案：C**
 
 `zip()` 預設以最短序列為準，`"c"` 沒有對應的元素，直接被捨棄。若要讓長度不一致時報錯，需傳入 `strict=True`（Python 3.10+）。
+:::
+:::
 
-### 問題 2 
-
+::: q
 以下哪段程式碼能正確地同時印出索引（從 1 開始）、姓名與成績？
 
-- A. `for i, name, grade in enumerate(zip(names, grades), start=1):`
-- B. `for i, (name, grade) in enumerate(zip(names, grades), start=1):`
-- C. `for i, name, grade in zip(enumerate(names), grades):`
-- D. `for i, (name, grade) in zip(enumerate(names, start=1), grades):`
+- `for i, name, grade in enumerate(zip(names, grades), start=1):`
+- `for i, (name, grade) in enumerate(zip(names, grades), start=1):`
+- `for i, name, grade in zip(enumerate(names), grades):`
+- `for i, (name, grade) in zip(enumerate(names, start=1), grades):`
 
+::: answer
 **答案：B**
 
 `enumerate(zip(names, grades), start=1)` 每次產生 `(i, (name, grade))`，因此需要 `for i, (name, grade)` 才能正確解包。選項 A 少了括號，Python 無法把兩層元組解成三個變數；C 和 D 的結構也不正確。
+:::
+:::
 
-### 問題 3 
-
+::: q
 `dict(zip(keys, values))` 的作用相當於下列哪段程式碼？
 
-- A. `{k: v for k, v in zip(keys, values)}`
-- B. `{keys[i]: values[i] for i in range(len(keys))}`
-- C. 以上皆等價
-- D. 以上皆不等價
+- `{k: v for k, v in zip(keys, values)}`
+- `{keys[i]: values[i] for i in range(len(keys))}`
+- 以上皆等價
+- 以上皆不等價
 
+::: answer
 **答案：C**
 
 三種寫法的結果完全相同，差別在於風格。`dict(zip(...))` 最簡潔；字典推導式最具彈性（可加條件過濾）；`range(len())` 則是最傳統但最不 Pythonic 的寫法。
+:::
+:::
 
-### 問題 4 
-
+::: q
 給定以下配對列表，請用 `zip(*...)` 將其解壓縮為兩個獨立的列表，分別存入 `cities` 與 `populations`：
 
 ```python
 data = [("台北", 2600000), ("台中", 2800000), ("高雄", 2700000)]
 ```
 
+::: answer
 ```python
 data = [("台北", 2600000), ("台中", 2800000), ("高雄", 2700000)]
 
@@ -297,7 +304,10 @@ print(list(populations))
 ```
 
 `zip(*data)` 將 `data` 展開為 `zip(("台北", 2600000), ("台中", 2800000), ("高雄", 2700000))`，再由 `zip()` 將各元組的第一個元素、第二個元素分別聚合，達到解壓縮的效果。
+:::
+:::
 
+:::
 
 ## 本章小結 
 

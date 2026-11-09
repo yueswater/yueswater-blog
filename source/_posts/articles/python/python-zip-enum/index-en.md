@@ -222,54 +222,61 @@ You will encounter this pattern frequently when reading other people's Python co
 
 ## Exercises
 
+::: exercises
 
-### Question 1
-
+::: q
 What does `zip(["a", "b", "c"], [1, 2])` produce?
 
-- A. `[("a", 1), ("b", 2), ("c", None)]`
-- B. A `ValueError` is raised
-- C. `[("a", 1), ("b", 2)]`
-- D. `[("a", 1), ("b", 2), ("c",)]`
+- `[("a", 1), ("b", 2), ("c", None)]`
+- A `ValueError` is raised
+- `[("a", 1), ("b", 2)]`
+- `[("a", 1), ("b", 2), ("c",)]`
 
+::: answer
 **Answer: C**
 
 `zip()` stops at the shortest sequence. The element `"c"` has no matching value and is silently dropped. To raise a `ValueError` when lengths differ, pass `strict=True` (Python 3.10+).
+:::
+:::
 
-### Question 2
-
+::: q
 Which of the following correctly prints an index (starting from 1), a name, and a score on each line?
 
-- A. `for i, name, grade in enumerate(zip(names, grades), start=1):`
-- B. `for i, (name, grade) in enumerate(zip(names, grades), start=1):`
-- C. `for i, name, grade in zip(enumerate(names), grades):`
-- D. `for i, (name, grade) in zip(enumerate(names, start=1), grades):`
+- `for i, name, grade in enumerate(zip(names, grades), start=1):`
+- `for i, (name, grade) in enumerate(zip(names, grades), start=1):`
+- `for i, name, grade in zip(enumerate(names), grades):`
+- `for i, (name, grade) in zip(enumerate(names, start=1), grades):`
 
+::: answer
 **Answer: B**
 
 `enumerate(zip(names, grades), start=1)` produces `(i, (name, grade))` on each step. The inner parentheses in `for i, (name, grade)` tell Python to unpack that nested tuple. Option A is missing the inner parentheses and will raise a `ValueError`; options C and D have incorrect structure.
+:::
+:::
 
-### Question 3
-
+::: q
 `dict(zip(keys, values))` is equivalent to which of the following?
 
-- A. `{k: v for k, v in zip(keys, values)}`
-- B. `{keys[i]: values[i] for i in range(len(keys))}`
-- C. Both A and B are equivalent
-- D. Neither A nor B is equivalent
+- `{k: v for k, v in zip(keys, values)}`
+- `{keys[i]: values[i] for i in range(len(keys))}`
+- Both A and B are equivalent
+- Neither A nor B is equivalent
 
+::: answer
 **Answer: C**
 
 All three produce the same dictionary. The differences are stylistic: `dict(zip(...))` is the most concise; the dict comprehension is the most flexible (conditions can be added); `range(len())` is the most verbose and least Pythonic.
+:::
+:::
 
-### Question 4
-
+::: q
 Given the list of tuples below, use `zip(*...)` to unzip it into two separate lists stored in `cities` and `populations`:
 
 ```python
 data = [("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000)]
 ```
 
+::: answer
 ```python
 data = [("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000)]
 
@@ -279,7 +286,10 @@ print(list(populations))
 ```
 
 `zip(*data)` expands `data` into `zip(("Taipei", 2600000), ("Taichung", 2800000), ("Kaohsiung", 2700000))`. `zip()` then groups the first elements together and the second elements together, effectively transposing the structure.
+:::
+:::
 
+:::
 
 ## Chapter Summary
 

@@ -43,6 +43,34 @@
   block(width: w, set-line(chosen, parts.map(rich).join(linebreak())))
 }
 
+// Practice questions: one callout, numbered questions, options in 4 / 2 / 1 columns (chosen by the
+// converter from option length), the answer always shown (a PDF cannot fold it away).
+#let exercises-box(title, qs) = block(width: 100%, stroke: 0.6pt + border, fill: white, inset: 0pt, {
+  block(width: 100%, inset: (x: 12pt, y: 9pt), stroke: (bottom: 0.6pt + border), sticky: true, {
+    box(width: 7pt, height: 7pt, fill: primary)
+    h(8pt)
+    text(weight: "bold")[#title]
+  })
+  for (i, q) in qs.enumerate() {
+    block(width: 100%, inset: 12pt, breakable: false, stroke: if i > 0 { (top: 0.6pt + border) } else { none },
+      grid(columns: (22pt, 1fr), column-gutter: 8pt,
+        box(width: 17pt, height: 17pt, fill: primary, align(center + horizon, text(fill: white, size: 8pt, weight: "bold", font: mono)[#str(i + 1)])),
+        {
+          q.stem
+          if q.options.len() > 0 {
+            v(0.4em)
+            grid(columns: (1fr,) * q.cols, row-gutter: 0.55em, column-gutter: 12pt,
+              ..q.options.enumerate().map(((j, o)) => grid(columns: (1.2em, 1fr),
+                text(fill: primary, font: mono, size: 0.85em, weight: "bold", "ABCDEFGH".at(j)), o)))
+          }
+          if q.answer != none {
+            v(0.7em)
+            block(width: 100%, fill: tint-light, inset: (x: 9pt, y: 7pt), stroke: (left: 2pt + primary), q.answer)
+          }
+        }))
+  }
+})
+
 #let tab-label(name) = block(above: 1.1em, below: 0.5em, sticky: true, {
   box(width: 0.5em, height: 0.5em, fill: primary)
   h(0.5em)

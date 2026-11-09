@@ -436,48 +436,54 @@ print(total_revenue)  # 3150
 
 ## 練習題 
 
+::: exercises
 
-### 問題 1 
-
+::: q
 下列哪一個敘述**最正確**？
 
-- A. `map` 會回傳列表，因此可無限次重複迭代
-- B. `filter` 與 `map` 在 Python 3 預設都回傳迭代器（iterator）
-- C. `reduce` 是 Python 的 built-in，不需額外匯入
-- D. `lambda` 可以寫多行 `if/for` 區塊
+- `map` 會回傳列表，因此可無限次重複迭代
+- `filter` 與 `map` 在 Python 3 預設都回傳迭代器（iterator）
+- `reduce` 是 Python 的 built-in，不需額外匯入
+- `lambda` 可以寫多行 `if/for` 區塊
 
+::: answer
 **答案：B**
 
 `map` 與 `filter` 在 Python 3 都回傳 iterator，通常會被消耗。`reduce` 位於 `functools`，需要 `from functools import reduce`。`lambda` 只能寫單一運算式。
+:::
+:::
 
-### 問題 2 
-
+::: q
 給定 `a = [1, 2, 3]` 與 `b = [10, 20]`，執行 `list(map(lambda x, y: x + y, a, b))` 的結果為何？
 
-- A. `[11, 22, 3]`
-- B. 拋出 `ValueError`
-- C. `[11, 22]`
-- D. `[11, 22, None]`
+- `[11, 22, 3]`
+- 拋出 `ValueError`
+- `[11, 22]`
+- `[11, 22, None]`
 
+::: answer
 **答案：C**
 
 多個 iterable 傳給 `map` 時會平行取值，預設行為是以最短序列為準，因此只會產出兩筆。
+:::
+:::
 
-### 問題 3 
-
+::: q
 下列哪個寫法最適合「空列表也要安全加總」的情境？
 
-- A. `reduce(lambda acc, x: acc + x, nums, 0)`
-- B. `reduce(lambda acc, x: acc + x, nums)`
-- C. `sum = reduce(lambda acc, x: acc + x, nums)`
-- D. `reduce(sum, nums)`
+- `reduce(lambda acc, x: acc + x, nums, 0)`
+- `reduce(lambda acc, x: acc + x, nums)`
+- `sum = reduce(lambda acc, x: acc + x, nums)`
+- `reduce(sum, nums)`
 
+::: answer
 **答案：A**
 
 提供 `initial=0` 可以避免空列表時拋出 `TypeError`，也是實務上最穩定的寫法。
+:::
+:::
 
-### 問題 4 
-
+::: q
 請完成下列任務：  
 給定 `orders`，先保留 `status == "paid"` 且 `is_test == False` 的資料，再計算總營收 `price * qty` 加總。
 
@@ -490,6 +496,7 @@ orders = [
 ]
 ```
 
+::: answer
 ```python
 from functools import reduce
 
@@ -503,9 +510,10 @@ print(total)  # 520
 ```
 
 這題重點在於先過濾無效資料，再用 `reduce` 收斂成單一指標。
+:::
+:::
 
-### 問題 5 
-
+::: q
 請將以下 `for` 迴圈改寫為 `map + filter`（可搭配 `lambda` 或 `def`）：
 
 ```python
@@ -517,6 +525,7 @@ for n in nums:
 print(result)
 ```
 
+::: answer
 ```python
 nums = [-2, -1, 0, 1, 2, 3]
 result = list(map(lambda n: n ** 2, filter(lambda n: n > 0, nums)))
@@ -524,7 +533,10 @@ print(result)  # [1, 4, 9]
 ```
 
 這題練習的是把「控制流程」轉成「資料管線」思維。
+:::
+:::
 
+:::
 
 ## 本篇小結 
 

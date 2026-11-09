@@ -154,6 +154,64 @@ function html(text, ctx) {
   return '' // wrapper divs and other markup carry no content
 }
 
+// ---------- practice questions (::: exercises ... ::: q ... ::: answer, see themes/Chic/scripts/exercises.js) ----------
+function splitOptions(lines) {
+  let end = lines.length
+  while (end > 0 && lines[end - 1].trim() === '') end--
+  let i = end
+  while (i > 0 && (/^[-*]\s+\S/.test(lines[i - 1]) || /^\s{2,}\S/.test(lines[i - 1]))) i--
+  while (i < end && !/^[-*]\s+\S/.test(lines[i])) i++
+  if (i >= end) return { stem: lines, options: [] }
+  const options = []
+  for (const l of lines.slice(i, end)) {
+    if (/^[-*]\s+/.test(l)) options.push(l.replace(/^[-*]\s+/, ''))
+    else options[options.length - 1] += ' ' + l.trim()
+  }
+  return { stem: lines.slice(0, i), options }
+}
+
+function exercisesTyp(block, ctx) {
+  const qs = block.kids.filter((k) => k.name === 'q')
+  const title = block.title || (ctx.lang === 'en' ? `${qs.length} ${qs.length === 1 ? 'question' : 'questions'}` : `共 ${qs.length} 題`)
+  const items = qs.map((q) => {
+    const { stem, options } = splitOptions(q.lines)
+    const ans = q.kids.find((k) => k.name === 'answer')
+    const longest = Math.max(0, ...options.map((o) => o.replace(/`/g, '').length))
+    const cols = !options.length ? 1 : longest <= 14 ? 4 : longest <= 30 ? 2 : 1
+    return `(stem: [${render(stem.join('\n').trim(), ctx)}], options: (${options.map((o) => `[${inline(o, ctx)}]`).join(', ')}${options.length === 1 ? ',' : ''}), cols: ${cols}, answer: ${ans ? `[${render(ans.lines.join('\n').trim(), ctx)}]` : 'none'})`
+  })
+  return `#exercises-box(${str(title)}, (${items.join(',\n  ')}${items.length === 1 ? ',' : ''}))`
+}
+
+// Pull every exercises block out of the Markdown; leave a marker paragraph that is swapped for the Typst later.
+function extractExercises(md, ctx, out) {
+  const res = []
+  let inFence = false
+  let cur = null
+  for (const line of md.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
+    const open = !inFence && /^:::\s*([a-z]+)\s*(.*)$/.exec(line)
+    const close = !inFence && /^:::\s*$/.test(line)
+    if (open && /^(exercises|q|answer)$/.test(open[1])) {
+      cur = { name: open[1], title: open[2].trim(), lines: [], kids: [], parent: cur }
+      continue
+    }
+    if (close && cur) {
+      const done = cur
+      cur = cur.parent
+      if (cur) cur.kids.push(done)
+      else {
+        out.push(done)
+        res.push('', `EXERCISESBLOCK${out.length - 1}X`, '')
+      }
+      continue
+    }
+    if (cur) cur.lines.push(line)
+    else res.push(line)
+  }
+  return res.join('\n')
+}
+
 // ---------- one post ----------
 function build(post) {
   const file = path.resolve(post)
@@ -173,7 +231,11 @@ function build(post) {
     ctx.notes[id] = text.replace(/\s*\n\s*/g, ' ').trim()
     return ''
   })
-  const body = render(mdBody, ctx)
+  ctx.lang = meta.lang === 'en' ? 'en' : 'zh'
+  const exBlocks = []
+  const mdNoEx = extractExercises(mdBody, ctx, exBlocks)
+  let body = render(mdNoEx, ctx)
+  exBlocks.forEach((b, i) => { body = body.replace(`EXERCISESBLOCK${i}X`, () => exercisesTyp(b, ctx)) })
 
   const cats = [...new Set(meta.categories || [])]
   const date = new Date(meta.date)
@@ -185,7 +247,7 @@ function build(post) {
   const slug = slugOf(meta, post)
   const out = path.join('reports', '.build', slug, lang)
   fs.mkdirSync(out, { recursive: true })
-  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
+  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
   fs.writeFileSync(path.join(out, 'main.typ'), `#import "/reports/template/template.typ": report, end-report
 
 #show: report.with(
