@@ -32,7 +32,9 @@
             <div class="main">
                 <%- body %>
             </div>
+            <% if (page.footer !== false) { %>
             <%- partial('_partial/footer',{cache: true}) %>
+            <% } %>
     </div>
 </body>
 
