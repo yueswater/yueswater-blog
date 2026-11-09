@@ -65,13 +65,18 @@
             .catch(function () { window.location.href = dl.href; });
         }
         var dlPath = dl.getAttribute('data-download-path');
-        fetch(url + '/rest/v1/rpc/increment_page_view', {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify({ page_path: dlPath }),
-          keepalive: true
-        })
-          .then(function (res) { return res.json(); })
+        // Every download counts (increment_download); falls back to the once-a-day
+        // page-view counter on a database that does not have that function yet.
+        function bump(fn) {
+          return fetch(url + '/rest/v1/rpc/' + fn, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({ page_path: dlPath }),
+            keepalive: true
+          }).then(function (res) { return res.json(); });
+        }
+        bump('increment_download')
+          .then(function (n) { return typeof n === 'number' ? n : bump('increment_page_view'); })
           .then(function (n) {
             // the counter is a sibling of the button, not inside it: find it by key
             if (typeof n !== 'number') return;
