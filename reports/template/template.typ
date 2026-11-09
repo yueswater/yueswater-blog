@@ -43,6 +43,13 @@
   block(width: w, set-line(chosen, parts.map(rich).join(linebreak())))
 }
 
+// !!! note / tip / warning ... callouts: tinted block, brand-blue bar, bold title line.
+#let admonition(kind, title, body) = block(width: 100%, fill: tint-light, stroke: (left: 2.5pt + primary), inset: (x: 12pt, y: 9pt), breakable: true, {
+  text(font: heading-fonts, weight: "bold", fill: primary)[#title]
+  v(0.35em)
+  body
+})
+
 // Practice questions: one callout, numbered questions, options in 4 / 2 / 1 columns (chosen by the
 // converter from option length), the answer always shown (a PDF cannot fold it away).
 #let exercises-box(title, qs) = block(width: 100%, stroke: 0.6pt + border, fill: white, inset: 0pt, {

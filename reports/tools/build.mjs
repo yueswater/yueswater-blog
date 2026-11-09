@@ -70,7 +70,12 @@ function blocks(tokens, pos, ctx, stop) {
         out.push('#mitex(`' + t.text.trim() + '`)')
         break
       case 'heading':
-        out.push(`${'='.repeat(Math.max(1, t.depth - ctx.top))} ${inline(t.text, ctx)}`)
+        {
+          const level = Math.max(1, t.depth - ctx.top)
+          // practice sections carry no number
+          if (/^(練習題?|Exercises?|Practice)\s*$/i.test(t.text)) out.push(`#heading(level: ${level}, numbering: none)[${inline(t.text, ctx)}]`)
+          else out.push(`${'='.repeat(level)} ${inline(t.text, ctx)}`)
+        }
         break
       case 'paragraph':
       case 'text':
@@ -212,6 +217,34 @@ function extractExercises(md, ctx, out) {
   return res.join('\n')
 }
 
+// ---------- admonitions (!!! type "title" + indented body) ----------
+function extractAdmonitions(md, ctx, out) {
+  const lines = md.split('\n')
+  const res = []
+  let inFence = false
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
+    const m = !inFence && /^!!!([+-]?)\s+([A-Za-z]+)(?:\s+"(.*)")?\s*$/.exec(line)
+    if (!m) { res.push(line); continue }
+    const body = []
+    let j = i + 1
+    while (j < lines.length) {
+      const l = lines[j]
+      if (/^( {4}|\t)/.test(l)) body.push(l.replace(/^( {4}|\t)/, ''))
+      else if (l.trim() === '' && j + 1 < lines.length && /^( {4}|\t)/.test(lines[j + 1])) body.push('')
+      else break
+      j++
+    }
+    i = j - 1
+    const kind = m[2].toLowerCase()
+    const title = m[3] || (kind[0].toUpperCase() + kind.slice(1))
+    out.push(`#admonition(${str(kind)}, ${str(title)}, [${render(body.join('\n').trim(), ctx)}])`)
+    res.push('', `ADMONBLOCK${out.length - 1}X`, '')
+  }
+  return res.join('\n')
+}
+
 // ---------- one post ----------
 function build(post) {
   const file = path.resolve(post)
@@ -222,7 +255,13 @@ function build(post) {
   const md = raw.slice(fm[0].length)
 
   // the shallowest heading in the post becomes level 1 (posts usually start at ##)
-  const depths = [...md.matchAll(/^(#{1,6})\s/gm)].map((m) => m[1].length)
+  // (headings only: lines inside code fences, like `# comment`, do not count)
+  const depths = []
+  let fenced = false
+  for (const line of md.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) fenced = !fenced
+    else if (!fenced) { const m = /^(#{1,6})\s/.exec(line); if (m) depths.push(m[1].length) }
+  }
   const top = Math.min(...depths, 6) - 1
   const ctx = { top, img: (p) => (/^https?:|^\//.test(p) ? p : path.relative(ROOT, path.join(dir, p))) }
   // footnote definitions ([^id]: text) are pulled out and inlined as #footnote[...] at their markers
@@ -233,9 +272,11 @@ function build(post) {
   })
   ctx.lang = meta.lang === 'en' ? 'en' : 'zh'
   const exBlocks = []
-  const mdNoEx = extractExercises(mdBody, ctx, exBlocks)
+  const admons = []
+  const mdNoEx = extractAdmonitions(extractExercises(mdBody, ctx, exBlocks), ctx, admons)
   let body = render(mdNoEx, ctx)
   exBlocks.forEach((b, i) => { body = body.replace(`EXERCISESBLOCK${i}X`, () => exercisesTyp(b, ctx)) })
+  admons.forEach((t, i) => { body = body.replace(`ADMONBLOCK${i}X`, () => t) })
 
   const cats = [...new Set(meta.categories || [])]
   const date = new Date(meta.date)
@@ -247,7 +288,7 @@ function build(post) {
   const slug = slugOf(meta, post)
   const out = path.join('reports', '.build', slug, lang)
   fs.mkdirSync(out, { recursive: true })
-  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
+  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box, admonition\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
   fs.writeFileSync(path.join(out, 'main.typ'), `#import "/reports/template/template.typ": report, end-report
 
 #show: report.with(
