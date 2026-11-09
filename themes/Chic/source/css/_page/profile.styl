@@ -24,6 +24,11 @@
       -o-transition all ease 0.4s
       transition all ease 0.4s
       cursor pointer
+      // the avatars are transparent, black-haired busts: give them a light disc on dark pages
+      .dark-theme &
+        background #e8f1f9
+        -webkit-box-shadow 0 0 0 0.3618em rgba(255, 255, 255, 0.1)
+        box-shadow 0 0 0 0.3618em rgba(255, 255, 255, 0.1)
       &:hover
         position relative
         -webkit-transform translateY(-0.75em)

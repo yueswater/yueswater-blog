@@ -22,6 +22,23 @@
   position relative
   z-index 1
 
+// A soft halo in the page colour behind the profile: sharks fade out around the name
+// and tagline instead of running behind the text.
+.profile-container .intro
+  position relative
+  &::before
+    content ""
+    position absolute
+    z-index -1
+    top -70px
+    right -170px
+    bottom -50px
+    left -170px
+    pointer-events none
+    background radial-gradient(ellipse at center, $light-background-color 0, $light-background-color 48%, transparent 74%)
+    .dark-theme &
+      background radial-gradient(ellipse at center, $dark-background-color 0, $dark-background-color 48%, transparent 74%)
+
 // Home only: the navbar is see-through so the ocean runs edge to edge.
 // The canvas ignores pointer events, so the links underneath stay clickable.
 body.is-home
