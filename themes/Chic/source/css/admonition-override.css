@@ -13,3 +13,22 @@
   font-family: Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial;
   font-weight: 700;
 }
+
+/* The callout keeps its light background in the dark theme (the plugin only knows
+   [data-theme="dark"], this site uses .dark-theme), so its text has to stay dark. */
+.dark-theme .admonition-content,
+.dark-theme .admonition-content p,
+.dark-theme .admonition-content li,
+.dark-theme .admonition-content strong,
+.dark-theme .admonition-content em {
+  color: #0f172a;
+}
+
+.dark-theme .admonition-content :not(pre) > code {
+  color: #1747e6;
+  background: #e8f1f9;
+}
+
+.dark-theme .admonition-content a {
+  color: #1747e6;
+}

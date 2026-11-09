@@ -56,6 +56,13 @@
 .q-stem
   margin-bottom 0.85rem
 
+// the callout is white (light theme), so code blocks take the page colour to stay visible;
+// in the dark theme they keep the site's white
+.exercises .highlight
+  background $light-background-color
+.dark-theme .exercises .highlight
+  background $code-block-bg
+
 .q-options
   margin-bottom 0.85rem
   ul
