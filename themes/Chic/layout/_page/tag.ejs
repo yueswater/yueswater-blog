@@ -1,7 +1,12 @@
 <%# single tag page%>
-<div class="container">
-    <div class="post-wrap tags">
-        <h2 class="post-title">-&nbsp;Tag&nbsp;·&nbsp;<%-page.tag%>-</h2>
-    </div>
+<% var tagCount = page.total_posts || 0; %>
+<%- partial('_partial/pagehead', {
+    kicker: __('pagehead.tag.kicker'),
+    title: escape_html(page.tag),
+    lead: __('pagehead.tag.lead', tagCount),
+    label: __('pagehead.tag.label'),
+    big: tagCount
+}) %>
+<div class="container container--bleed">
     <%- partial('archive', {pagination: config.tag, index: true}) %>
 </div>

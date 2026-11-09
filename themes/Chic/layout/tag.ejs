@@ -22,16 +22,14 @@ how to add a tag page:
 <% if(is_tag()){ %>
     <%- partial('_page/tag', {pagination: config.tag, index: true}) %>
 <% }else{ %>
-    <div class="container">
-        <div class="post-wrap tags">
-            <h2 class="post-title">-&nbsp;<%= __('tagcloud') %>&nbsp;-</h2>
-
-            <div class="tag-cloud-tags">
-                <%site.tags.forEach(item=>{%>
-                    <a href="<%-url_for(item.path)%>"><%- item.name%><small>(<%-item.length%>)</small></a>
-                <%})%>
-            </div>
-        </div>
-    </div>
+    <% var tagItems = taxonomy_items(site.tags, page.lang); %>
+    <%- partial('_partial/pagehead', {
+        kicker: __('pagehead.tags.kicker'),
+        title: escape_html(__('pagehead.tags.title')),
+        lead: __('pagehead.tags.lead', tagItems.length),
+        label: __('pagehead.tags.label'),
+        big: tagItems.length
+    }) %>
+    <%- partial('_partial/taxonomy-index', { groups: taxonomy_groups(tagItems) }) %>
 
 <% } %>

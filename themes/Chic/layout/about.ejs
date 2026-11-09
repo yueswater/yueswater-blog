@@ -1,0 +1,41 @@
+<%#
+    About page: a sticky accent rail (avatar, name, facts, links, sharks) beside the
+    prose, which is cut at its <h2>s into numbered rows. The rail text comes from the
+    page front matter (about.name / nick / tag / facts); the sections come from the
+    markdown headings.
+%>
+<%
+    var info = page.about || {};
+    var sections = about_sections(page.content);
+    var facts = info.facts || [];
+%>
+<div class="about">
+    <aside class="about-rail">
+        <div class="about-rail-in">
+            <canvas class="ascii-ocean ascii-ocean--head" aria-hidden="true"></canvas>
+            <div class="about-avatar"><img src="<%- url_for(theme.avatar) %>" alt=""></div>
+            <p class="about-kicker">ABOUT · <%= page.lang === 'en' ? 'ME' : '關於' %></p>
+            <h1 class="about-name"><%= info.name || page.title %></h1>
+            <% if (info.nick) { %><p class="about-nick"><%= info.nick %></p><% } %>
+            <% if (info.tag) { %><p class="about-tag"><%= info.tag %></p><% } %>
+            <% if (facts.length) { %>
+                <dl class="about-facts">
+                    <% facts.forEach(function (f) { %><div><dt><%= f.k %></dt><dd><%= f.v %></dd></div><% }) %>
+                </dl>
+            <% } %>
+            <%- partial('_partial/profile-links') %>
+        </div>
+    </aside>
+    <div class="about-rows">
+        <% sections.forEach(function (s, i) { %>
+            <section class="about-row" id="<%= s.id %>">
+                <h2 class="about-row-label">
+                    <span class="about-row-num"><%= i + 1 < 10 ? '0' + (i + 1) : i + 1 %></span>
+                    <span class="about-row-title"><%= s.title %></span>
+                </h2>
+                <div class="post-content about-row-body"><%- s.body %></div>
+            </section>
+        <% }) %>
+    </div>
+</div>
+<script src="<%- url_for('/js/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>

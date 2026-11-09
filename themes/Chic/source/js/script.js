@@ -55,8 +55,13 @@ document.ready(
         const toggleBtns = document.getElementsByClassName('toggleBtn')
         for (let i = 0; i < toggleBtns.length; i++) {
             toggleBtns[i].addEventListener('click', () => {
-                window.sessionStorage.theme = window.sessionStorage.theme === 'dark' ? 'light' : 'dark'
-                setTheme(window.sessionStorage.theme)
+                const next = window.sessionStorage.theme === 'dark' ? 'light' : 'dark'
+                // Same blue cut as page navigation (see _page/transition.styl): the
+                // ::view-transition-* rules there apply to this same-document transition too.
+                const animate = document.startViewTransition &&
+                    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                if (animate) document.startViewTransition(() => setTheme(next))
+                else setTheme(next)
             })
         }
     }

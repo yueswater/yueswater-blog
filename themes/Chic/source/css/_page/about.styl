@@ -1,0 +1,152 @@
+/** About page: sticky accent rail + numbered rows **/
+// Rail on the left (avatar, name, facts, links, sharks), the prose on the right cut into
+// 01 / 02 / ... rows like the year rows of the list pages.
+
+.about
+  display grid
+  grid-template-columns minmax(0, 26rem) minmax(0, 1fr)
+  min-height calc(100vh - 4.5rem)
+
+.about-rail
+  position relative
+  color #fff
+  background $row-fill
+
+.about-rail-in
+  position sticky
+  top 4.5rem
+  display flex
+  flex-direction column
+  justify-content flex-end
+  gap 0.9rem
+  min-height calc(100vh - 4.5rem)
+  padding unquote('clamp(28px, 4vw, 48px) clamp(24px, 3vw, 40px)')
+  overflow hidden
+  > *:not(canvas)
+    position relative
+    z-index 1
+  // raw canvas screened onto the blue, not the light-mode invert trick
+  .ascii-ocean.ascii-ocean--head
+    filter none
+    mix-blend-mode screen
+    opacity 0.55
+
+.about-avatar
+  width 132px
+  height 132px
+  overflow hidden
+  border-radius 50%
+  background #f4f9fd
+  box-shadow 0 0 0 0.3618em rgba(255, 255, 255, 0.18)
+  img
+    display block
+    width 100%
+    height 100%
+    transform translateY(6%) scale(1.25)
+
+.about-kicker
+  margin 0.6rem 0 0
+  font-family $f-mono
+  font-size 0.72rem
+  letter-spacing 0.14em
+  color rgba(255, 255, 255, 0.78)
+
+.about-name
+  margin 0
+  border 0
+  font-family $f-display
+  font-size unquote('clamp(2.4rem, 4vw, 3.4rem)')
+  font-weight 900
+  line-height 1.05
+  letter-spacing -0.02em
+  color #fff
+
+.about-nick
+  margin 0
+  font-family $f-mono
+  font-size 0.95rem
+  font-weight 600
+  color rgba(255, 255, 255, 0.85)
+
+.about-tag
+  margin 0.2rem 0 0
+  color rgba(255, 255, 255, 0.85)
+
+.about-facts
+  display grid
+  gap 0.9rem
+  margin 0.8rem 0 0
+  padding-top 1rem
+  border-top 1px solid rgba(255, 255, 255, 0.3)
+  dt
+    font-family $f-mono
+    font-size 0.66rem
+    font-weight 500
+    line-height 1
+    letter-spacing 0.14em
+    color rgba(255, 255, 255, 0.7)
+  dd
+    margin 0.3rem 0 0
+    font-family $f-mono
+    font-size 0.95rem
+    font-weight 600
+    line-height 1.3
+    color #fff
+
+.about-rail .links
+  margin-top 0.4rem
+  a, a:hover
+    padding 0 8px 0 0
+    color #fff
+    background none
+
+// ---- the rows ----
+.about-row
+  display grid
+  grid-template-columns minmax(0, 13rem) minmax(0, 1fr)
+  themed(border-bottom, 1px solid $light-line, 1px solid $dark-line)
+
+.about-row-label
+  position sticky
+  top 4.5rem
+  align-self start
+  display flex
+  flex-direction column
+  gap 0.5rem
+  margin 0
+  padding 2.2rem 1rem 2rem unquote('clamp(24px, 4vw, 56px)')
+
+.about-row-num
+  font-family 'Archivo', $f-display
+  font-size unquote('clamp(1.9rem, 2.8vw, 2.6rem)')
+  font-weight 900
+  line-height 1
+  letter-spacing -0.02em
+  themed(color, $light-ink, $dark-ink)
+
+.about-row-title
+  font-family $f-mono
+  font-size 0.78rem
+  font-weight 500
+  line-height 1.4
+  letter-spacing 0.08em
+  themed(color, $light-muted, $dark-muted)
+
+.about .post-content.about-row-body
+  max-width 46rem
+  margin 0
+  padding 2.1rem unquote('clamp(24px, 4vw, 56px)') 0.6rem 0
+
+@media (max-width: 899px)
+  .about
+    grid-template-columns minmax(0, 1fr)
+  .about-rail-in
+    position static
+    min-height 0
+  .about-row
+    grid-template-columns minmax(0, 1fr)
+  .about-row-label
+    position static
+    padding-bottom 0.4rem
+  .about .post-content.about-row-body
+    padding-left unquote('clamp(24px, 4vw, 56px)')

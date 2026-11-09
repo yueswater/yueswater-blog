@@ -1,0 +1,25 @@
+<%#
+    Page head shared by every list page: kicker, big title and a lead line on
+    the left, an accent panel with a label and a big number on the right.
+    Layout ported from hexo-theme-bisect (MIT,
+    https://github.com/LiuXiu233/hexo-theme-bisect).
+
+    locals: kicker -- small mono line above the title (plain text)
+            title  -- trusted HTML (escape user data before passing it in)
+            lead   -- optional one-line description (plain text)
+            label  -- small mono line at the top of the panel (plain text)
+            big    -- the number shown large in the panel
+%>
+<header class="pagehead">
+    <div class="pagehead-main">
+        <canvas class="ascii-ocean ascii-ocean--head" aria-hidden="true"></canvas>
+        <p class="pagehead-kicker"><%= kicker %></p>
+        <h1 class="pagehead-title"><%- title %></h1>
+        <% if (typeof lead !== 'undefined' && lead) { %><p class="pagehead-lead"><%= lead %></p><% } %>
+    </div>
+    <div class="pagehead-side" aria-hidden="true">
+        <span class="pagehead-label"><%= label %></span>
+        <% if (typeof big !== 'undefined' && big !== null) { %><span class="pagehead-big"><%= big %></span><% } %>
+    </div>
+</header>
+<script src="<%- url_for('/js/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>

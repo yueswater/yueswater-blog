@@ -5,8 +5,8 @@ navname_en: Yueswater Blog
 # Navbar logo -- light-theme pages use the light-colored icon on a black
 # plate, dark-theme pages use the dark-colored icon on a white plate (the
 # plate color is set in CSS; the two files just differ in icon color).
-logo_light: /assets/logo-light.svg
-logo_dark: /assets/logo-dark.svg
+logo_light: /assets/logo-light.png
+logo_dark: /assets/logo-dark.png
 
 # navigatior items
 ## keys are i18n string ids (see languages/*.yml, nav_<id>), not display text.
@@ -24,10 +24,12 @@ nav_lang_split:
   - projects
   # - dsa
   - diary
+  - category
+  - tag
   - about
 
 # favicon
-favicon: /assets/favicon.svg
+favicon: /assets/favicon.png
 
 # Supabase (powers per-page view counts; anon key is meant to be public,
 # it's restricted to SELECT on page_views + EXECUTE on increment_page_view)

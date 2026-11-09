@@ -1,0 +1,210 @@
+/** Post lists: section pages, archive, single category, single tag **/
+// Ported from hexo-theme-bisect (MIT, https://github.com/LiuXiu233/hexo-theme-bisect):
+// full-bleed year-grouped rows, a fill that sweeps across the row on hover, and
+// its Archivo / JetBrains Mono type. Both fonts are SIL OFL (licenses in source/fonts/).
+// Differences: our accent instead of its blue, no cover thumbnails, Traditional
+// Chinese system fonts in place of its Simplified ones.
+
+@font-face
+  font-family 'Archivo'
+  src url(../fonts/archivo-latin.woff2) format('woff2')
+  font-weight 100 900
+  font-stretch 62% 125%
+  font-display swap
+  // Latin only, so quotes and dashes fall through to the CJK font
+  unicode-range U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2122, U+2191, U+2193, U+2212, U+2215
+
+@font-face
+  font-family 'JetBrains Mono'
+  src url(../fonts/jetbrains-mono-latin.woff2) format('woff2')
+  font-weight 400 700
+  font-display swap
+  unicode-range U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2122, U+2190-2193, U+2212, U+2215, U+25B6, U+25C0
+
+// (design tokens $f-*, $gx, $row-fill, $row-ease and the themed() mixin live in variable.styl)
+
+// list pages run edge to edge instead of the usual centred column
+.main .container.container--bleed
+  padding-left 0
+  padding-right 0
+
+.post-wrap.post-wrap--wide
+  max-width none
+  padding-top 0
+
+.post-rows
+  margin 0
+
+// ---- one block per year ----
+.post-year
+  display grid
+  grid-template-columns minmax(0, 14rem) minmax(0, 1fr)
+  themed(border-top, 1.5px solid $light-font-color, 1.5px solid $dark-font-color)
+  &:last-child
+    themed(border-bottom, 1px solid $light-border-color, 1px solid rgba(255, 255, 255, 0.14))
+
+.post-year-label
+  align-self start
+  position sticky
+  top calc(4.5rem + 8px)
+  display flex
+  flex-direction column
+  gap 0.3rem
+  margin 0
+  padding 1.1rem 1rem 1.1rem $gx
+
+.post-year-num
+  font-family $f-display
+  font-size unquote('clamp(1.9rem, 2.8vw, 2.6rem)')
+  font-weight 900
+  font-stretch 112%
+  line-height 1
+  letter-spacing -0.02em
+  font-variant-numeric tabular-nums
+
+.post-year-count
+  font-family $f-mono
+  font-size 0.72rem
+  font-weight 500
+  line-height 1
+  letter-spacing 0.1em
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+.post-year-rows
+  list-style none
+  margin 0
+  padding 0
+  min-width 0
+
+// ---- one row ----
+.post-row
+  position relative
+  &:hover
+    z-index 3
+  & + .post-row .post-row-link
+    themed(border-top, 1px solid $light-border-color, 1px solid rgba(255, 255, 255, 0.14))
+
+.post-row-link
+  position relative
+  isolation isolate
+  display grid
+  grid-template-columns 4.5rem minmax(0, 1fr) 7rem 6.5rem 9.5rem
+  grid-template-areas "no main cats date meta"
+  align-items center
+  gap 1.25rem
+  min-height 92px
+  padding 1.1rem $gx 1.1rem 1rem
+  color inherit
+  text-decoration none
+  // the fill, parked off to the left until hover
+  &::before
+    content ""
+    position absolute
+    top 0
+    right 0
+    bottom 0
+    left 0
+    z-index -1
+    background $row-fill
+    transform scaleX(0)
+    transform-origin left center
+    transition transform 0.48s $row-ease
+
+.post-row-no, .post-row-cats, .post-row-date, .post-row-meta
+  font-family $f-mono
+  font-size 0.74rem
+  font-weight 500
+  line-height 1.4
+  letter-spacing 0.06em
+  font-variant-numeric tabular-nums
+  transition color 0.2s
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+.post-row-no
+  grid-area no
+
+.post-row-cats
+  grid-area cats
+  font-family $f-body
+  font-size 0.8rem
+  letter-spacing 0.02em
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.post-row-date
+  grid-area date
+
+.post-row-meta
+  grid-area meta
+  text-align right
+  white-space nowrap
+
+.post-row-main
+  grid-area main
+  display grid
+  gap 0.3rem
+  min-width 0
+
+.post-row-title
+  font-family $f-body
+  font-size unquote('clamp(1.05rem, 1.35vw, 1.28rem)')
+  font-weight 700
+  line-height 1.45
+  overflow-wrap anywhere
+  transition color 0.2s
+
+.post-row-excerpt
+  font-size 0.88rem
+  line-height 1.6
+  overflow hidden
+  display -webkit-box
+  -webkit-line-clamp 1
+  -webkit-box-orient vertical
+  transition color 0.2s
+  themed(color, $light-font-secondary-color, $dark-font-secondary-color)
+
+@media (hover: hover) and (min-width: 900px)
+  .post-row-link:hover, .post-row-link:focus-visible
+    outline none
+    &::before
+      transform scaleX(1)
+    .post-row-title
+      color #fff
+    .post-row-excerpt, .post-row-no, .post-row-cats, .post-row-date, .post-row-meta
+      color rgba(255, 255, 255, 0.8)
+
+@media (prefers-reduced-motion: reduce)
+  .post-row-link::before
+    transition none
+
+// ---- narrow screens: one column, the small columns fold into one line under the title ----
+@media (max-width: 899px)
+  .post-year
+    grid-template-columns minmax(0, 1fr)
+  .post-year-label
+    position static
+    flex-direction row
+    align-items baseline
+    gap 0.8rem
+    padding 1rem $gx 0.4rem
+  .post-row-link
+    grid-template-columns minmax(0, 1fr)
+    grid-template-areas "main" "no"
+    gap 0.5rem
+    min-height 0
+    padding 1rem $gx
+    &:active
+      themed(background, rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.06))
+  .post-row-no::after
+    content attr(data-meta)
+  .post-row-cats, .post-row-date, .post-row-meta
+    display none
+  .post-row-excerpt
+    -webkit-line-clamp 2
+
+// pagination lines up with the rows
+.post-wrap--wide .pagination
+  padding-left $gx
+  padding-right $gx
+  justify-content flex-start

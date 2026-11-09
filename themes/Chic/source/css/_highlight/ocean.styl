@@ -1,0 +1,39 @@
+/*
+   Code blocks: white in both light and dark mode, no border. Token colours are
+   tuned for a white background. Replaces atelier-forest-light / darkula.
+*/
+.highlight
+  background $code-block-bg
+  color $code-block-fg
+
+  .code
+    .strong, .emphasis
+      color #0f172a
+
+    .emphasis
+      font-style italic
+
+    .bullet, .quote, .link, .number, .regexp, .literal
+      color #b45309
+
+    .code, .selector-class
+      color #0f766e
+
+    .keyword, .selector-tag, .section, .attribute, .name, .variable
+      color #1747e6
+
+    .params
+      color #334155
+
+    .string, .subst, .type, .built_in, .builtin-name, .symbol, .selector-id, .selector-attr, .selector-pseudo, .template-tag, .template-variable, .addition
+      color #0f766e
+
+    .comment, .deletion
+      color #64748b
+
+    // Typst: headings, function calls, labels, math ($...$)
+    .title, .function
+      color #1747e6
+
+    .meta
+      color #6d28d9

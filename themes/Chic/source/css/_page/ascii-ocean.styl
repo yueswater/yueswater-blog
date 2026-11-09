@@ -1,0 +1,98 @@
+/** Home page ASCII ocean background **/
+// The engine paints on a black canvas. In light mode the canvas is inverted
+// and desaturated so it reads as dark glyphs on white, then multiplied onto
+// the page so the white drops out. In dark mode the raw canvas is screened on.
+.ascii-ocean
+  position fixed
+  top 0
+  left 0
+  width 100vw
+  height 100vh
+  z-index 0
+  pointer-events none
+  font-family ui-monospace, 'SF Mono', Menlo, Consolas, monospace
+  filter invert(1) grayscale(1)
+  mix-blend-mode multiply
+  .dark-theme &
+    filter none
+    mix-blend-mode screen
+
+// keep the profile and the navbar above the canvas
+.profile-container
+  position relative
+  z-index 1
+
+// Sharks fade out right around the profile instead of running behind it. Each piece
+// gets its own glow in the page colour that hugs its shape (text, avatar circle,
+// icons), so the cleared area is irregular and soft rather than one block.
+.profile-container .intro
+  .nickname, .description
+    themed(text-shadow, unquote('0 0 3px #f4f9fd, 0 0 8px #f4f9fd, 0 0 14px #f4f9fd, 0 0 22px #f4f9fd, 0 0 32px #f4f9fd'), unquote('0 0 3px #0f1b2d, 0 0 8px #0f1b2d, 0 0 14px #0f1b2d, 0 0 22px #0f1b2d, 0 0 32px #0f1b2d'))
+  .avatar a
+    themed(box-shadow, unquote('0 0 0 0.3618em rgba(0, 0, 0, 0.05), 0 0 22px 14px #f4f9fd, 0 0 44px 22px #f4f9fd'), unquote('0 0 0 0.3618em rgba(255, 255, 255, 0.1), 0 0 22px 14px #0f1b2d, 0 0 44px 22px #0f1b2d'))
+  .links .link-item
+    themed(filter, unquote('drop-shadow(0 0 4px #f4f9fd) drop-shadow(0 0 10px #f4f9fd) drop-shadow(0 0 18px #f4f9fd)'), unquote('drop-shadow(0 0 4px #0f1b2d) drop-shadow(0 0 10px #0f1b2d) drop-shadow(0 0 18px #0f1b2d)'))
+
+// Home only: the navbar is see-through so the ocean runs edge to edge.
+// The canvas ignores pointer events, so the links underneath stay clickable.
+body.is-home
+  .navbar
+    background-color transparent
+    border-bottom-color transparent
+    backdrop-filter none
+    -webkit-backdrop-filter none
+  .navbar-mobile .container
+    background transparent
+
+// Post pages: the same ocean, but only in the empty space around the article: a
+// viewport-sized layer masked so the text column stays clear (side gutters), and a
+// strip under the article (floor). The engine sizes itself from each canvas box and
+// pauses when it is off screen or the system asks for reduced motion.
+.ascii-ocean.ascii-ocean--gutter
+  z-index -1
+  opacity 0.6
+  -webkit-mask-image linear-gradient(to right, #000 0, #000 calc(50% - 27rem), transparent calc(50% - 23rem), transparent calc(50% + 23rem), #000 calc(50% + 27rem), #000 100%)
+  mask-image linear-gradient(to right, #000 0, #000 calc(50% - 27rem), transparent calc(50% - 23rem), transparent calc(50% + 23rem), #000 calc(50% + 27rem), #000 100%)
+  // no gutters on narrow screens
+  @media (max-width: 1023px)
+    display none
+
+// the head stays clear: an opaque band keeps the fixed layer from running behind the title
+.pagehead--post
+  position relative
+  z-index 0
+  themed(background-color, $light-background-color, $dark-background-color)
+
+.post-ocean
+  position relative
+  height 14rem
+  margin-top 2rem
+
+.ascii-ocean.ascii-ocean--floor
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  z-index 0
+  opacity 0.6
+
+// List pages: sharks swim in the white half of the page head (left of the big number).
+// The text keeps a glow in the page colour so it stays readable when one swims past.
+.pagehead-main
+  position relative
+  overflow hidden
+  > *:not(canvas)
+    position relative
+    z-index 1
+  .pagehead-title, .pagehead-kicker, .pagehead-lead
+    themed(text-shadow, unquote('0 0 3px #f4f9fd, 0 0 8px #f4f9fd, 0 0 14px #f4f9fd, 0 0 22px #f4f9fd'), unquote('0 0 3px #0f1b2d, 0 0 8px #0f1b2d, 0 0 14px #0f1b2d, 0 0 22px #0f1b2d'))
+
+.ascii-ocean.ascii-ocean--head
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  z-index 0
+  opacity 0.6

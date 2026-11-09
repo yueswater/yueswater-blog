@@ -1,7 +1,12 @@
 <%# single category page%>
-<div class="container">
-    <div class="post-wrap categories">
-        <h2 class="post-title">-&nbsp;Categories&nbsp;·&nbsp;<%-page.category%>-</h2>
-    </div>
+<% var catCount = page.total_posts || 0; %>
+<%- partial('_partial/pagehead', {
+    kicker: __('pagehead.category.kicker'),
+    title: escape_html(page.category),
+    lead: __('pagehead.category.lead', catCount),
+    label: __('pagehead.category.label'),
+    big: catCount
+}) %>
+<div class="container container--bleed">
     <%- partial('archive', {pagination: config.category, index: true}) %>
 </div>

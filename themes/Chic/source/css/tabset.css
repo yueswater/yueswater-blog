@@ -4,7 +4,7 @@
 }
 
 .dark-theme .tabset {
-  border-color: #909196;
+  border-color: #26364f;
 }
 
 .tabset-nav {
@@ -13,7 +13,7 @@
 }
 
 .dark-theme .tabset-nav {
-  border-bottom-color: #909196;
+  border-bottom-color: #26364f;
 }
 
 .tabset-btn {
@@ -42,12 +42,12 @@
 
 .tabset-btn.active {
   opacity: 1;
-  background: #4ca7a0;
+  background: #1747e6;
   color: #fff;
 }
 
 .dark-theme .tabset-btn.active {
-  background: #4ca7a0;
+  background: #1747e6;
   color: #fff;
 }
 

@@ -1,0 +1,55 @@
+<%#
+    Year-grouped, column-aligned post list shared by the section pages
+    (/articles/, /projects/ ...) and the archive / single category / single tag
+    pages. Ported from hexo-theme-bisect (MIT,
+    https://github.com/LiuXiu233/hexo-theme-bisect), minus the cover images.
+
+    locals: posts       -- an array-like of posts, already sorted newest first
+            year_counts -- optional { year: total posts that year }
+%>
+<%
+    var rowGroups = [];
+    posts.forEach(function (post) {
+        var y = post.date.year();
+        var last = rowGroups[rowGroups.length - 1];
+        if (!last || last.year !== y) {
+            last = { year: y, posts: [] };
+            rowGroups.push(last);
+        }
+        last.posts.push(post);
+    });
+    var counts = typeof year_counts !== 'undefined' ? year_counts : null;
+%>
+<div class="post-rows">
+    <% rowGroups.forEach(function (group) { %>
+        <section class="post-year">
+            <h3 class="post-year-label">
+                <span class="post-year-num"><%= group.year %></span>
+                <% if (counts && counts[group.year]) { %><span class="post-year-count"><%= __('year_count', counts[group.year]) %></span><% } %>
+            </h3>
+            <ol class="post-year-rows">
+                <% group.posts.forEach(function (post) {
+                    var cats = post.categories ? post.categories.map(function (c) { return c.name; }) : [];
+                    var topCat = cats.length ? cats[0] : '';
+                    var excerpt = post.excerpt ? strip_html(post.excerpt).replace(/\s+/g, ' ').trim() : '';
+                    var no = post_no(post);
+                    var reading = reading_time(post) + ' ' + __('min_unit');
+                    var meta = ' · ' + date(post.date, 'YYYY.MM.DD') + (topCat ? ' · ' + topCat : '') + ' · ' + reading;
+                %>
+                <li class="post-row">
+                    <a class="post-row-link" href="<%- url_for(post.path) %>">
+                        <span class="post-row-no" data-meta="<%= meta %>">NO.<%= no < 10 ? '0' + no : no %></span>
+                        <span class="post-row-main">
+                            <span class="post-row-title"><%- title_html(post.title) %></span>
+                            <% if (excerpt) { %><span class="post-row-excerpt"><%= excerpt %></span><% } %>
+                        </span>
+                        <span class="post-row-cats"><%= topCat %></span>
+                        <time class="post-row-date" datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+                        <span class="post-row-meta"><%= reading %> · <span class="supabase-views" data-path="<%- url_for(post.path) %>">–</span> <%= __('times_unit') %></span>
+                    </a>
+                </li>
+                <% }) %>
+            </ol>
+        </section>
+    <% }) %>
+</div>

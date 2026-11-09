@@ -1,1 +1,14 @@
-<%- partial('_page/archive', {pagination: config.archive, index: true}) %>
+<%
+    var archiveTotal = site.posts.length;
+    var archiveFirst = archiveTotal ? site.posts.sort('date').first().date.year() : new Date().getFullYear();
+%>
+<%- partial('_partial/pagehead', {
+    kicker: __('pagehead.archive.kicker'),
+    title: escape_html(page.year ? String(page.year) : __('pagehead.archive.title')),
+    lead: __('pagehead.archive.lead', archiveFirst, archiveTotal),
+    label: __('pagehead.archive.label'),
+    big: archiveTotal
+}) %>
+<div class="container container--bleed">
+    <%- partial('_page/archive', {pagination: config.archive, index: true}) %>
+</div>
