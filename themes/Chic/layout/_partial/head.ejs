@@ -75,9 +75,10 @@ if (is_archive()){
 <meta name="twitter:image" content="<%- ogImage %>">
 
 <%# favicon %>
-<% if (theme.favicon){ %>
-    <link rel="icon" href="<%- url_for(theme.favicon) %>">
-<% } %>
+<link rel="icon" href="<%- url_for('/favicon.ico') %>" sizes="48x48">
+<link rel="icon" type="image/png" href="<%- url_for('/assets/favicon-48.png') %>" sizes="48x48">
+<link rel="icon" type="image/png" href="<%- url_for('/assets/favicon-192.png') %>" sizes="192x192">
+<link rel="apple-touch-icon" href="<%- url_for('/assets/apple-touch-icon.png') %>">
 
 <%# css list %>
 <% if (theme.stylesheets !== undefined && theme.stylesheets.length > 0) { %>
