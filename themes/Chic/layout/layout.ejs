@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= config.language %>">
+<html lang="<%= page.lang === 'en' ? 'en' : 'zh-TW' %>">
 
 <head>
     <%- partial('_partial/head',{cache: true}) %>
