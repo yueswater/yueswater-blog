@@ -51,31 +51,31 @@
 })
 
 // ::: {.definition} / {.theorem} / {.lemma} / {.proposition} / {.example} callouts (the site's
-// themes/Chic/scripts/theoremDiv.js). `kind` picks the look: definition = tinted block with a thick
-// bar; theorem (also lemma, proposition) = outlined box with a blue header band; example = open block
-// with a dashed rule. `label` is the localised name, `title` an optional string.
-#let theorem-box(kind, label, title, body) = {
-  let head = {
+// themes/Chic/scripts/theoremDiv.js). Every kind opens with a badge strip "定義：名稱". `kind` picks the
+// look: definition = tinted block, thick bar, blue strip; theorem (also lemma, proposition) = outlined
+// box, dark strip; example = open block with a dashed rule. `label` is the localised name, `title`
+// optional content, `sep` the colon between them.
+#let theorem-box(kind, label, title, body, sep: "：") = {
+  // every kind opens with a badge strip that reads "定義：名稱"; the kind picks the look
+  let head(fill) = text(font: (mono, zh), size: 8pt, weight: "bold", tracking: 0.06em, fill: fill, {
     upper(label)
-    if title != none { text(weight: "regular")[#h(0.5em)\(#title\)] }
-  }
-  let label-text(fill, prefix: "") = text(font: (mono, zh), size: 8pt, weight: "bold", tracking: 0.06em, fill: fill, prefix + head)
+    if title != none { text(weight: "medium", tracking: 0.02em, font: body-fonts)[#sep#title] }
+  })
+  let strip(bg, fg) = block(width: 100%, fill: bg, inset: (x: 12pt, y: 5pt), sticky: true, head(fg))
   if kind == "theorem" or kind == "lemma" or kind == "proposition" {
     block(width: 100%, stroke: 0.8pt + ink, inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
-      block(width: 100%, fill: primary, inset: (x: 12pt, y: 5pt), sticky: true, label-text(white))
+      strip(ink, white)
       block(width: 100%, inset: (x: 12pt, y: 9pt), body)
     })
   } else if kind == "example" {
-    block(width: 100%, stroke: (left: (paint: muted, thickness: 1.2pt, dash: "dashed")), inset: (left: 12pt, y: 6pt), breakable: true, above: 1.1em, below: 1.1em, {
-      label-text(muted, prefix: "// ")
-      v(0.35em)
-      body
+    block(width: 100%, stroke: (left: (paint: muted, thickness: 1.2pt, dash: "dashed")), inset: (left: 12pt, y: 0pt), breakable: true, above: 1.1em, below: 1.1em, {
+      block(width: 100%, stroke: (bottom: (paint: muted, thickness: 0.6pt, dash: "dashed")), inset: (y: 5pt), sticky: true, head(muted))
+      block(width: 100%, inset: (y: 8pt), body)
     })
   } else {
-    block(width: 100%, fill: tint-light, stroke: (left: 3.5pt + primary), inset: (x: 12pt, y: 9pt), breakable: true, above: 1.1em, below: 1.1em, {
-      label-text(primary)
-      v(0.35em)
-      body
+    block(width: 100%, fill: tint-light, stroke: (left: 3.5pt + primary), inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
+      strip(primary, white)
+      block(width: 100%, inset: (x: 12pt, y: 9pt), body)
     })
   }
 }

@@ -17,7 +17,8 @@
  *
  * where <style> is the kind except that theorem, lemma and proposition share
  * "theorem" (one look, only the label text differs). The optional title="..."
- * shows after the label: 定義（尋租） / Definition (Rent seeking). No numbering.
+ * shows in the badge on top: 定義：尋租 / Definition: Rent seeking. The name can also be
+ * a leading heading line in the body ("# 尋租"). No numbering.
  * The body is full markdown, rendered here because kramed does not recurse into
  * raw HTML blocks (same reason as problemDiv.js / admonitionMarkdown.js).
  * Outer fence parsed by the shared lib/fencedDiv helper.
@@ -46,17 +47,24 @@ hexo.extend.filter.register('before_post_render', function (data) {
     if (!m) return full;
     var kind = m[1];
     var style = /^(?:lemma|proposition)$/.test(kind) ? 'theorem' : kind;
-    var title = '';
-    if (m[2] && m[2].trim()) {
-      title = '<span class="callout-title">' + (en ? ' (' : '（') + escapeHtml(m[2].trim()) + (en ? ')' : '）') + '</span>';
+    // The name goes in the badge on top: a leading heading line in the body
+    // ("# 尋租") or, as before, title="尋租" in the fence.
+    var name = m[2] && m[2].trim() ? escapeHtml(m[2].trim()) : '';
+    var lead = /^\s*#{1,6}[ \t]+(.+?)[ \t]*(?:\n|$)/.exec(body);
+    if (lead) {
+      body = body.slice(lead[0].length);
+      // inline markdown (math, code, bold) allowed in the name
+      name = hexo.render.renderSync({ text: lead[1], engine: 'markdown' }).trim().replace(/^<p>([\s\S]*)<\/p>$/, '$1');
     }
+    var badge = '<span class="callout-kind">' + labels[kind] + '</span>' +
+      (name ? '<span class="callout-name">' + (en ? ': ' : '：') + name + '</span>' : '');
     var html = hexo.render.renderSync({ text: body, engine: 'markdown' });
     // see admonitionMarkdown.js: a nested div ends kramed's raw-HTML block early
     html = html.replace(/<div class="table-container">([\s\S]*?)<\/div>/g, '<section class="table-container">$1</section>');
     // headings inside a callout stay out of the TOC (same as problemDiv.js)
     html = html.replace(/<(h[1-6])\b/g, '<$1 class="no-toc"');
     return '\n\n<div class="callout callout-' + style + '" data-kind="' + kind + '">' +
-      '<span class="callout-label">' + labels[kind] + title + '</span>\n' +
+      '<span class="callout-label">' + badge + '</span>\n' +
       html.trim() + '\n</div>\n\n';
   });
 

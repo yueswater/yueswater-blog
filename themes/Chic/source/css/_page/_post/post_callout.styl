@@ -1,8 +1,9 @@
 // ---- definition / theorem / example callouts (see scripts/theoremDiv.js) ----
-// Three looks, all square-cornered and mono-labelled like the rest of the bisect style:
-//   .callout-definition  tinted block, thick brand-blue bar on the left
-//   .callout-theorem     (theorem, lemma and proposition share it) outlined box, blue header band
-//   .callout-example     open block, dashed rule on the left, muted "//" label
+// Every callout opens with a badge strip on top that reads "定義：名稱" (kind in mono caps,
+// then the optional name). Three looks, all square-cornered like the rest of the bisect style:
+//   .callout-definition  tinted block, blue bar on the left, brand-blue badge strip
+//   .callout-theorem     (theorem, lemma and proposition share it) outlined box, dark badge strip
+//   .callout-example     open block, dashed rule on the left, outlined muted badge strip
 // Text colour is inherited from the page in both themes (no forced colours, unlike the
 // light-backed .admonition), so the dark theme only needs its own fills and rules.
 
@@ -13,7 +14,7 @@ $callout-px = 1.3rem
 .post-content .callout
   position relative
   margin 1.8em 0
-  padding 1em $callout-px
+  padding 0 $callout-px 1em
   border-radius 0
   line-height 1.8
   // a long formula or table scrolls inside the box instead of widening the page
@@ -24,19 +25,23 @@ $callout-px = 1.3rem
   .callout-label + *
     margin-top 0
 
+  // the badge strip: bleeds to the box edges, then the body starts one line below
   .callout-label
     display block
-    margin-bottom 0.6em
+    margin 0 (-($callout-px)) 1em
+    padding 0.5em $callout-px
     font-family $f-mono
     font-size 0.78rem
     font-weight 600
     line-height 1.5
     letter-spacing 0.08em
-    text-transform uppercase
-    .callout-title
-      font-weight 400
+    color #fff
+    .callout-kind
+      text-transform uppercase
+    .callout-name
+      font-family $f-body
+      font-weight 500
       letter-spacing 0.02em
-      text-transform none
 
   // keep nested blocks compact and flush with the callout's own padding
   table
@@ -52,24 +57,18 @@ $callout-px = 1.3rem
   themed(background-color, $light-code-background-color, $dark-post-blockquote-background-color)
   themed(border-left, 4px solid $light-accent-color, 4px solid $dark-accent-color)
   .callout-label
-    themed(color, $light-accent-color, $dark-accent-color)
+    background $row-fill
 
 .post-content .callout-theorem
-  padding-top 0
   themed(border, 1.5px solid $light-ink, 1.5px solid $dark-line)
   .callout-label
-    // header band, same fill and type as a table header
-    margin 0 (-($callout-px)) 1em
-    padding 0.5em $callout-px
-    color #fff
-    background $row-fill
-    .callout-title
-      color rgba(255, 255, 255, 0.82)
+    themed(background, $light-ink, $dark-line)
 
 .post-content .callout-example
   padding-left 1.4rem
   themed(border-left, 2px dashed $light-muted, 2px dashed $dark-muted)
   .callout-label
+    margin-left -1.4rem
+    background transparent
     themed(color, $light-muted, $dark-muted)
-    &::before
-      content '// '
+    themed(border-bottom, 1px dashed $light-muted, 1px dashed $dark-muted)

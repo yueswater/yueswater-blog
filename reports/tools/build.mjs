@@ -272,8 +272,14 @@ function extractTheorems(md, ctx, out) {
       j++
     }
     i = j // skip the closing :::
-    const title = m[2] && m[2].trim() ? str(m[2].trim()) : 'none'
-    out.push(`#theorem-box(${str(m[1])}, ${str(THEOREM_LABELS[ctx.lang][m[1]])}, ${title}, [${render(body.join('\n').trim(), ctx)}])`)
+    // the name: a leading "# 名稱" line in the body, or title="..." in the fence
+    let name = m[2] && m[2].trim() ? m[2].trim() : ''
+    const first = body.findIndex((l) => l.trim() !== '')
+    const lead = first === 0 ? /^#{1,6}[ \t]+(.+?)[ \t]*$/.exec(body[0]) : null
+    if (lead) { name = lead[1]; body.shift() }
+    const title = name ? `[${render(name, ctx).trim()}]` : 'none'
+    const sep = ctx.lang === 'en' ? ': ' : '：'
+    out.push(`#theorem-box(${str(m[1])}, ${str(THEOREM_LABELS[ctx.lang][m[1]])}, ${title}, [${render(body.join('\n').trim(), ctx)}], sep: ${str(sep)})`)
     res.push('', `THEOREMBLOCK${out.length - 1}X`, '')
   }
   return res.join('\n')
