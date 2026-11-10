@@ -10,11 +10,12 @@
 
 // lanting draws the apostrophe (U+2019, which the renderer turns ' into) and the hyphen
 // as wide CJK-style glyphs ("I   m", "all - time"). Latin system fonts take just those
-// code points. Curly double quotes stay with the CJK fonts on purpose (Chinese text).
+// code points (accented Latin letters too: the "ó" in "Corchón" was drawn wide as well).
+// Curly double quotes stay with the CJK fonts on purpose (Chinese text).
 @font-face
   font-family 'latin-punct'
   src: local('Helvetica Neue'), local('Arial'), local('Segoe UI'), local('Roboto')
-  unicode-range: U+002D, U+0027, U+2019
+  unicode-range: U+002D, U+0027, U+2019, U+00C0-00D6, U+00D8-00F6, U+00F8-024F
 
 $font-family = 'latin-punct', 'lanting', Lantinghei SC, PingFang SC, 'Microsoft Jhenghei', Segoe UI, Microsoft Yahei, Arial
 
