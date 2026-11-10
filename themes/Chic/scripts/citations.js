@@ -7,6 +7,8 @@
  *   @citep[key]    -> (Author, Year)    (parenthetical; two authors: "A & B")
  *   @citep[k1,k2]  -> (A, 1974; B, 1967) (several works, sorted, one pair of parentheses)
  *   @citeyear[key] -> (Year)            (year only)
+ *   @citep[key|p. 291]  -> (Author, Year, p. 291)   (page / locator, one work only;
+ *   @citet[key|p. 291]  -> Author (Year, p. 291)     also pp. 3-5, chap. 2 ...)
  *   [references]   -> expands into an APA 7 reference list, sorted by
  *                      author surname then year, for every key actually
  *                      cited in the post. @article, @incollection/@inbook,
@@ -160,7 +162,7 @@ hexo.extend.filter.register('before_post_render', function (data) {
     if (usedKeys.indexOf(key) === -1) usedKeys.push(key);
   }
 
-  data.content = data.content.replace(/@(citet|citep|citeyear)\[([\w:,\s-]+)\]/g, function (match, cmd, raw) {
+  data.content = data.content.replace(/@(citet|citep|citeyear)\[([\w:,\s-]+)(?:\|([^\]\n]+))?\]/g, function (match, cmd, raw, locator) {
     var keys = raw.split(',').map(function (k) { return k.trim(); }).filter(Boolean);
     if (!keys.length || keys.some(function (k) { return !entries[k]; })) return match;
     keys.forEach(mark);
@@ -173,14 +175,16 @@ hexo.extend.filter.register('before_post_render', function (data) {
       return '<a class="citation-link" href="#ref-' + k + '">' + text + '</a>';
     };
 
+    // "|p. 291": a locator after the year, for a single work
+    var loc = locator && keys.length === 1 ? ', ' + esc(locator.trim().replace(/-{1,2}/g, '\u2013')) : '';
     if (cmd === 'citet') {
       return keys.map(function (k) {
-        return link(k, authorListInline(entries[k].authors, false) + ' (' + entries[k].fields.year + ')');
+        return link(k, authorListInline(entries[k].authors, false) + ' (' + entries[k].fields.year + loc + ')');
       }).join(', ');
     }
     var parts = keys.map(function (k) {
       var e = entries[k];
-      return link(k, cmd === 'citep' ? authorListInline(e.authors, true) + ', ' + e.fields.year : e.fields.year);
+      return link(k, cmd === 'citep' ? authorListInline(e.authors, true) + ', ' + e.fields.year + loc : e.fields.year + loc);
     });
     return '(' + parts.join('; ') + ')';
   });
