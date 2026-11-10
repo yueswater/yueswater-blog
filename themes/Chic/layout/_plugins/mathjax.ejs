@@ -1,37 +1,36 @@
-<!-- MathJax配置，可通过单美元符号书写行内公式等 -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-    "HTML-CSS": {
-        preferredFont: "TeX",
-        availableFonts: ["STIX","TeX"],
-        linebreaks: { automatic:true },
-        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-    },
-    tex2jax: {
-        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
-        processEscapes: true,
-        ignoreClass: "tex2jax_ignore|dno",
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-        equationNumbers: { autoNumber: "AMS" },
-        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
-        Macros: { href: "{}" }
-    },
-    messageStyle: "none"
-    });
-</script>
-<!-- 给MathJax元素添加has-jax class -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
+<!-- MathJax 4, TeX Gyre Pagella math font. $...$ inline, $$...$$ display -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [["$", "$"], ["\\(", "\\)"]],
+            processEscapes: true,
+            tags: "ams"
+        },
+        options: {
+            ignoreHtmlClass: "tex2jax_ignore|dno",
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+        },
+        output: {
+            font: "mathjax-pagella"
+        },
+        startup: {
+            pageReady: function () {
+                // kramed turns $$...$$ into MathJax 2's <script type="math/tex"> tags, which
+                // MathJax 4 ignores: put the source back as plain delimited text first
+                document.querySelectorAll('script[type^="math/tex"]').forEach(function (el) {
+                    var display = /mode=display/.test(el.type);
+                    var holder = document.createElement(display ? "div" : "span");
+                    holder.textContent = display ? "\\[" + el.text + "\\]" : "\\(" + el.text + "\\)";
+                    el.parentNode.replaceChild(holder, el);
+                });
+                return MathJax.startup.defaultPageReady().then(function () {
+                    // kept from the 2.x config: mark each formula's parent
+                    document.querySelectorAll("mjx-container").forEach(function (el) {
+                        if (el.parentNode) el.parentNode.classList.add("has-jax");
+                    });
+                });
+            }
         }
-    });
+    };
 </script>
-<!-- 通过连接CDN加载MathJax的js代码 -->
-<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-chtml.js"></script>
