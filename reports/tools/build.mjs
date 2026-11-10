@@ -19,6 +19,61 @@ const yaml = require('js-yaml')
 const ROOT = process.cwd()
 const only = process.argv[2]
 
+// mitex 0.2.6 turns \partial into `diff`, a name Typst 0.15 no longer has; the plain character works
+const texFix = (s) => s.replace(/\\partial(?![A-Za-z])/g, '\u2202')
+
+// ---------- numbered equations: `::: {.equation #eq:id}` blocks and `@eq:id` references ----------
+// Same syntax as the site (themes/Chic/scripts/equationRef.js). The blocks become markers here and
+// `#mitex(...) <eq:id>` at the end; references become `#ref(<eq:id>)`, which Typst numbers itself
+// (the template numbers every display equation, so the numbers need not match the web page).
+const EQ_BLOCK = /^:::[ \t]*\{([^}\n]*)\}[ \t]*\n([\s\S]*?)\n:::[ \t]*$/gm
+const CJK = '\\u3400-\\u9fff\\u3000-\\u303f\\uff00-\\uffef'
+const EQ_SKIP_OR_REF = new RegExp(
+  '(```[\\s\\S]*?```|~~~[\\s\\S]*?~~~|`[^`\\n]*`)' +
+  '|(?:(?<=[' + CJK + '])[ \\t]+)?(?:(式|Eq\\.?|Equation)[ \\t]*)?(?<![\\w@])@(eq:[\\w:-]*\\w)(?:[ \\t]+(?=[' + CJK + ']))?',
+  'g'
+)
+
+function extractEquations(md, eqs, refs) {
+  const labels = new Set()
+  let out = md.replace(EQ_BLOCK, (match, attrs, body) => {
+    if (!/(^|\s)\.equation(\s|$)/.test(attrs)) return match
+    const id = (attrs.match(/#([\w:.-]+)/) || [])[1]
+    const tex = body.trim().replace(/^```(?:tex|latex)?\s*\n/, '').replace(/\n```$/, '').trim()
+    if (id) labels.add(id)
+    eqs.push({ id, tex })
+    return `\n\nEQUATIONBLOCK${eqs.length - 1}X\n\n`
+  })
+  // the "式" / "Eq." written before a reference is absorbed: the #ref brings its own supplement
+  out = out.replace(EQ_SKIP_OR_REF, (match, skip, written, id) => {
+    if (skip !== undefined || !labels.has(id)) return match
+    refs.push(id)
+    return `EQREF${refs.length - 1}X`
+  })
+  return out
+}
+
+// ---------- citations: @citet[key] / @citep[a,b|p. 3] / @citeyear[key] and the [references] marker ----------
+// Same markers as the site (themes/Chic/scripts/citations.js). Typst's own bibliography does the
+// formatting from the post's references.bib in APA style; adjacent #cite calls are grouped by Typst.
+const CITE_SKIP_OR_MARK = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|@(citet|citep|citeyear)\[([\w:,\s-]+)(?:\|([^\]\n]+))?\]|^\[references\][ \t]*$/gm
+
+function extractCitations(md, cites, hasBib) {
+  if (!hasBib) return md
+  return md.replace(CITE_SKIP_OR_MARK, (match, skip, kind, keys, locator) => {
+    if (skip !== undefined) return match
+    if (kind === undefined) return '\n\nBIBLIOGRAPHYX\n\n'
+    cites.push({ kind, keys: keys.split(',').map((k) => k.trim()).filter(Boolean), locator: locator && locator.trim() })
+    return `CITE${cites.length - 1}X`
+  })
+}
+
+const citeTyp = ({ kind, keys, locator }) => keys.map((k) => {
+  const form = kind === 'citet' ? ', form: "prose"' : kind === 'citeyear' ? ', form: "year"' : ''
+  const supp = locator && keys.length === 1 ? `, supplement: [${esc(locator)}]` : ''
+  return `#cite(<${k}>${form}${supp})`
+}).join(' ')
+
 // ---------- Typst escaping ----------
 const esc = (s) => s
   .replace(/\\/g, '\\\\')
@@ -46,7 +101,7 @@ function inline(src, ctx) {
       const note = ctx.notes && ctx.notes[m[11]]
       out += note !== undefined ? `#footnote[${inline(note, { ...ctx, notes: {} })}]` : esc(m[0])
     }
-    else if (m[12] !== undefined) out += '#mi(`' + m[12] + '`)'
+    else if (m[12] !== undefined) out += '#mi(`' + texFix(m[12]) + '`)'
     // other inline html tags are dropped
   }
   return out + esc(src.slice(last))
@@ -67,7 +122,7 @@ function blocks(tokens, pos, ctx, stop) {
     switch (t.type) {
       case 'space': case 'hr': break
       case 'math':
-        out.push('#mitex(`' + t.text.trim() + '`)')
+        out.push('#mitex(`' + texFix(t.text.trim()) + '`)')
         break
       case 'heading':
         {
@@ -155,6 +210,12 @@ function html(text, ctx) {
       const fmt = magic[0] === 0xff && magic[1] === 0xd8 ? ', format: "jpg"' : ''
       return `#fit-figure(${str('/' + file)}${fmt}${limit}${cap})`
     }).join('\n\n')
+  }
+  if (text.includes('class="tullock-sim"')) {
+    // the interactive simulator only exists on the web page: point to it
+    const note = ctx.lang === 'en' ? 'Interactive simulator (best responses and payoff, figures downloadable as SVG / PNG / PDF): use the web edition.' : '互動式模擬器（最佳反應與預期報酬，圖形可下載成 SVG、PNG、PDF）：請至網頁版使用。'
+    const link = ctx.webUrl ? `#link(${str('https://' + ctx.webUrl)})[${esc(ctx.webUrl)}]` : ''
+    return `#block(fill: tint-light, inset: (x: 12pt, y: 8pt), width: 100%, stroke: (left: 2.5pt + primary))[${esc(note)} ${link}]`
   }
   return '' // wrapper divs and other markup carry no content
 }
@@ -326,19 +387,35 @@ function build(post) {
   const ctx = { top, img: (p) => (/^https?:|^\//.test(p) ? p : path.relative(ROOT, path.join(dir, p))) }
   // footnote definitions ([^id]: text) are pulled out and inlined as #footnote[...] at their markers
   ctx.notes = {}
-  const mdBody = md.replace(/^\[\^([^\]]+)\]:[ \t]*([^\n]*(?:\n(?!\n|\[\^)[^\n]*)*)/gm, (_, id, text) => {
+  const bibFile = path.join(dir, 'references.bib')
+  const hasBib = fs.existsSync(bibFile)
+  const cites = []
+  const mdCited = extractCitations(md, cites, hasBib)
+  const mdBody = mdCited.replace(/^\[\^([^\]]+)\]:[ \t]*([^\n]*(?:\n(?!\n|\[\^)[^\n]*)*)/gm, (_, id, text) => {
     ctx.notes[id] = text.replace(/\s*\n\s*/g, ' ').trim()
     return ''
   })
   ctx.lang = meta.lang === 'en' ? 'en' : 'zh'
+  ctx.webUrl = meta.permalink ? `yueswater.com/${String(meta.permalink).replace(/^\/|\/$/g, '')}/` : ''
   const exBlocks = []
   const admons = []
   const theorems = []
-  const mdNoEx = extractAdmonitions(extractTheorems(extractExercises(mdBody, ctx, exBlocks), ctx, theorems), ctx, admons)
+  const eqs = []
+  const eqRefs = []
+  const mdNoEx = extractAdmonitions(extractTheorems(extractExercises(extractEquations(mdBody, eqs, eqRefs), ctx, exBlocks), ctx, theorems), ctx, admons)
   let body = render(mdNoEx, ctx)
   exBlocks.forEach((b, i) => { body = body.replace(`EXERCISESBLOCK${i}X`, () => exercisesTyp(b, ctx)) })
   admons.forEach((t, i) => { body = body.replace(`ADMONBLOCK${i}X`, () => t) })
   theorems.forEach((t, i) => { body = body.replace(`THEOREMBLOCK${i}X`, () => t) })
+  // equations and references last, so those inside callouts and exercises are replaced too
+  body = body.replace(/CITE(\d+)X/g, (_, n) => citeTyp(cites[+n]))
+  body = body.replace('BIBLIOGRAPHYX', () => `#[#set text(lang: "en")\n#bibliography(${str('references.bib')}, style: "apa", title: none)]`)
+  body = body.replace(/EQUATIONBLOCK(\d+)X/g, (_, n) => {
+    const { id, tex } = eqs[+n]
+    return '#mitex(`' + texFix(tex) + '`)' + (id ? ` <${id}>` : '')
+  })
+  const eqWord = ctx.lang === 'en' ? 'Eq.' : '式'
+  body = body.replace(/EQREF(\d+)X/g, (_, n) => `#context link(<${eqRefs[+n]}>)[${eqWord} #numbering("(1)", ..counter(math.equation).at(<${eqRefs[+n]}>))]`)
 
   const cats = [...new Set(meta.categories || [])]
   const date = new Date(meta.date)
@@ -350,6 +427,8 @@ function build(post) {
   const slug = slugOf(meta, post)
   const out = path.join('reports', '.build', slug, lang)
   fs.mkdirSync(out, { recursive: true })
+  // the site's bib parser takes a plain $; BibLaTeX (Typst) wants it escaped, so Typst gets a copy
+  if (hasBib) fs.writeFileSync(path.join(out, 'references.bib'), fs.readFileSync(bibFile, 'utf8').replace(/(?<!\\)\$/g, '\\$'))
   fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box, admonition, theorem-box\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
   fs.writeFileSync(path.join(out, 'main.typ'), `#import "/reports/template/template.typ": report, end-report
 

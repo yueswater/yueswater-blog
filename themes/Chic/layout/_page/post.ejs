@@ -20,7 +20,7 @@
                 <% } %>
                 <% if(page.categories.length!==0 && theme.post_category_enable){ %>
                     <div class="post-fact post-category"><dt><%= __('category') %></dt><dd>
-                        <% page.categories.forEach(function(item){ %><a href="<%- url_for(taxonomy_path(item, page.lang)) %>"><%- item.name %></a><% }) %>
+                        <% page.categories.forEach(function(item, i){ %><% if (i) { %><span class="cat-sep">/</span><% } %><a href="<%- url_for(taxonomy_path(item, page.lang)) %>"><%- item.name %></a><% }) %>
                     </dd></div>
                 <% } %>
                 <div class="post-fact post-reading-time"><dt><%= __('fact_read') %></dt><dd><%= reading_time(page) %> <%= __('min_unit') %></dd></div>

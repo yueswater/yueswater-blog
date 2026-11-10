@@ -55,11 +55,11 @@
       &:hover
         color #fff
         background $row-fill
-      & + a::before
-        content "/"
-        display inline-block
-        margin 0 0.5em
-        themed(color, $light-muted, $dark-muted)
+    // the "/" between categories is its own element, so a link's hover fill stops at the text
+    .cat-sep
+      display inline-block
+      margin 0 0.5em
+      themed(color, $light-muted, $dark-muted)
 
 // PDF download: "x 次" like the views, then a bare download icon that links to the file
 .post-facts .post-download dd
