@@ -1,6 +1,5 @@
 // ---- definition / theorem / example callouts (see scripts/theoremDiv.js) ----
-// Every callout opens with a badge strip on top that reads "定義：名稱" (kind in mono caps,
-// then the optional name). Three looks, all square-cornered like the rest of the bisect style:
+// Every callout opens with a badge strip on top that reads "定義：名稱" (body font). Three looks, all square-cornered like the rest of the bisect style:
 //   .callout-definition  tinted block, blue bar on the left, brand-blue badge strip
 //   .callout-theorem     (theorem, lemma and proposition share it) outlined box, dark badge strip
 //   .callout-example     open block, dashed rule on the left, outlined muted badge strip
@@ -30,18 +29,13 @@ $callout-px = 1.3rem
     display block
     margin 0 (-($callout-px)) 1em
     padding 0.5em $callout-px
-    font-family $f-mono
-    font-size 0.78rem
-    font-weight 600
-    line-height 1.5
-    letter-spacing 0.08em
+    // body font, same as the text below
+    font-family $f-body
+    font-size 0.95rem
+    font-weight 700
+    line-height 1.6
+    letter-spacing 0.02em
     color #fff
-    .callout-kind
-      text-transform uppercase
-    .callout-name
-      font-family $f-body
-      font-weight 500
-      letter-spacing 0.02em
 
   // keep nested blocks compact and flush with the callout's own padding
   table

@@ -57,9 +57,9 @@
 // optional content, `sep` the colon between them.
 #let theorem-box(kind, label, title, body, sep: "：") = {
   // every kind opens with a badge strip that reads "定義：名稱"; the kind picks the look
-  let head(fill) = text(font: (mono, zh), size: 8pt, weight: "bold", tracking: 0.06em, fill: fill, {
-    upper(label)
-    if title != none { text(weight: "medium", tracking: 0.02em, font: body-fonts)[#sep#title] }
+  let head(fill) = text(font: body-fonts, size: 9.5pt, weight: "bold", fill: fill, {
+    label
+    if title != none { [#sep#title] }
   })
   let strip(bg, fg) = block(width: 100%, fill: bg, inset: (x: 12pt, y: 5pt), sticky: true, head(fg))
   if kind == "theorem" or kind == "lemma" or kind == "proposition" {
