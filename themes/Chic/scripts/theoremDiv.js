@@ -1,5 +1,5 @@
 /**
- * Definition / theorem / lemma / proposition / example callouts for math and
+ * Definition / theorem / lemma / proposition / corollary / example callouts for math and
  * economics writing:
  *
  *   ::: {.definition}
@@ -10,28 +10,32 @@
  *   For a right triangle, $a^2 + b^2 = c^2$.
  *   :::
  *
- * Kinds: .definition, .theorem, .lemma, .proposition, .example. Compiles to
+ * Kinds: .definition, .theorem, .lemma, .proposition, .corollary, .example, .proof. Compiles to
  *
  *   <div class="callout callout-<style>" data-kind="<kind>">
  *     <span class="callout-label">Label<span class="callout-title">(Title)</span></span> ...
  *
- * where <style> is the kind except that theorem, lemma and proposition share
+ * where <style> is the kind except that theorem, lemma, proposition and corollary share
  * "theorem" (one look, only the label text differs). The optional title="..."
  * shows in the badge on top: 定義：尋租 / Definition: Rent seeking. The name can also be
  * a leading heading line in the body ("# 尋租"). No numbering.
+ *
+ * .proof looks and folds like the answer of an exercise: a bordered box holding a <details>
+ * ("+ 顯示證明"), closed by default; the proof body appears when it is clicked. It is rendered
+ * with <section>, not <div>, inside (a nested div ends kramed's raw-HTML block early).
  * The body is full markdown, rendered here because kramed does not recurse into
  * raw HTML blocks (same reason as problemDiv.js / admonitionMarkdown.js).
  * Outer fence parsed by the shared lib/fencedDiv helper.
  */
 var fencedDiv = require('./lib/fencedDiv');
 
-var KINDS = '(?:definition|theorem|lemma|proposition|example)';
+var KINDS = '(?:definition|theorem|lemma|proposition|corollary|example|proof)';
 var ATTRS_PATTERN = '\\.' + KINDS + '(?:[ \\t]+title="[^"\\n]*")?[ \\t]*';
 var ATTRS_RE = new RegExp('^\\.(' + KINDS.slice(3, -1) + ')(?:[ \\t]+title="([^"\\n]*)")?[ \\t]*$');
 
 var LABEL = {
-  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '範例' },
-  en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', example: 'Example' }
+  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', corollary: '推論', example: '範例', proof: '證明' },
+  en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', corollary: 'Corollary', example: 'Example', proof: 'Proof' }
 };
 
 function escapeHtml(s) {
@@ -46,7 +50,7 @@ hexo.extend.filter.register('before_post_render', function (data) {
     var m = ATTRS_RE.exec(attrs);
     if (!m) return full;
     var kind = m[1];
-    var style = /^(?:lemma|proposition)$/.test(kind) ? 'theorem' : kind;
+    var style = /^(?:lemma|proposition|corollary)$/.test(kind) ? 'theorem' : kind;
     // The name goes in the badge on top: a leading heading line in the body
     // ("# 尋租") or, as before, title="尋租" in the fence.
     var name = m[2] && m[2].trim() ? escapeHtml(m[2].trim()) : '';
@@ -63,6 +67,11 @@ hexo.extend.filter.register('before_post_render', function (data) {
     html = html.replace(/<div class="table-container">([\s\S]*?)<\/div>/g, '<section class="table-container">$1</section>');
     // headings inside a callout stay out of the TOC (same as problemDiv.js)
     html = html.replace(/<(h[1-6])\b/g, '<$1 class="no-toc"');
+    if (kind === 'proof') {
+      return '\n\n<div class="callout callout-proof" data-kind="proof"><details class="proof-details">' +
+        '<summary>' + (en ? 'Show proof' : '顯示證明') + '</summary>\n' +
+        '<section class="proof-body">\n' + html.trim() + '\n</section></details></div>\n\n';
+    }
     return '\n\n<div class="callout callout-' + style + '" data-kind="' + kind + '">' +
       '<span class="callout-label">' + badge + '</span>\n' +
       html.trim() + '\n</div>\n\n';

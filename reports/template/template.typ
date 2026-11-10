@@ -50,10 +50,10 @@
   body
 })
 
-// ::: {.definition} / {.theorem} / {.lemma} / {.proposition} / {.example} callouts (the site's
+// ::: {.definition} / {.theorem} / {.lemma} / {.proposition} / {.corollary} / {.example} / {.proof} callouts (the site's
 // themes/Chic/scripts/theoremDiv.js). Every kind opens with a badge strip "定義：名稱". `kind` picks the
-// look: definition = tinted block, thick bar, blue strip; theorem (also lemma, proposition) = outlined
-// box, dark strip; example = the definition look in purple. `label` is the localised name, `title`
+// look: definition = tinted block, thick bar, blue strip; theorem (also lemma, proposition, corollary) = outlined
+// box, blue strip; proof = plain bordered box, always open; example = the definition look in purple. `label` is the localised name, `title`
 // optional content, `sep` the colon between them.
 #let theorem-box(kind, label, title, body, sep: "：") = {
   // every kind opens with a badge strip that reads "定義：名稱"; the kind picks the look
@@ -62,10 +62,18 @@
     if title != none { [#sep#title] }
   })
   let strip(bg, fg) = block(width: 100%, fill: bg, inset: (x: 12pt, y: 5pt), sticky: true, head(fg))
-  if kind == "theorem" or kind == "lemma" or kind == "proposition" {
-    block(width: 100%, stroke: 0.8pt + ink, inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
-      strip(ink, white)
-      block(width: 100%, inset: (x: 12pt, y: 9pt), body)
+  let statement(content) = block(width: 100%, inset: (x: 12pt, y: 9pt), content)
+  if kind == "theorem" or kind == "lemma" or kind == "proposition" or kind == "corollary" {
+    block(width: 100%, stroke: 0.8pt + primary, inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
+      strip(primary, white)
+      statement(body)
+    })
+  } else if kind == "proof" {
+    // the site folds it like an exercise answer; a PDF cannot, so it is always open
+    block(width: 100%, stroke: 0.6pt + border, inset: (x: 12pt, y: 9pt), breakable: true, above: 1.1em, below: 1.1em, {
+      text(font: mono, size: 8pt, weight: "bold", fill: primary, label)
+      v(0.5em)
+      body
     })
   } else if kind == "example" {
     let violet = rgb("#6d3fc9")
@@ -76,7 +84,7 @@
   } else {
     block(width: 100%, fill: tint-light, stroke: (left: 3.5pt + primary), inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
       strip(primary, white)
-      block(width: 100%, inset: (x: 12pt, y: 9pt), body)
+      statement(body)
     })
   }
 }

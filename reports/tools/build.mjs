@@ -245,10 +245,10 @@ function extractAdmonitions(md, ctx, out) {
   return res.join('\n')
 }
 
-// ---------- definition / theorem / lemma / proposition / example (::: {.kind title="..."} ... :::, see themes/Chic/scripts/theoremDiv.js) ----------
+// ---------- definition / theorem / lemma / proposition / corollary / example / proof (::: {.kind title="..."} ... :::, see themes/Chic/scripts/theoremDiv.js) ----------
 const THEOREM_LABELS = {
-  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '範例' },
-  en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', example: 'Example' },
+  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', corollary: '推論', example: '範例', proof: '證明' },
+  en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', corollary: 'Corollary', example: 'Example', proof: 'Proof' },
 }
 
 // Runs after extractExercises, so exercise blocks are already markers and their bare `:::` closers are gone.
@@ -259,7 +259,7 @@ function extractTheorems(md, ctx, out) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
-    const m = !inFence && /^:::[ \t]*\{\.(definition|theorem|lemma|proposition|example)(?:[ \t]+title="([^"\n]*)")?[ \t]*\}[ \t]*$/.exec(line)
+    const m = !inFence && /^:::[ \t]*\{\.(definition|theorem|lemma|proposition|corollary|example|proof)(?:[ \t]+title="([^"\n]*)")?[ \t]*\}[ \t]*$/.exec(line)
     if (!m) { res.push(line); continue }
     // body runs to the next bare `:::` outside a code fence
     const body = []
