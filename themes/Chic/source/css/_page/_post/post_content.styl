@@ -183,6 +183,22 @@
     margin 0 0 1.25em
   ul
     padding-left 2em
+  // square bullets at every level (the browser default is disc, then circle). Drawn as a
+  // box instead of ::marker so its size is ours and it sits on the middle of the first
+  // line: the line is 1.88em tall, so the centre is 0.94em down.
+  ul:not([class])
+    list-style none
+    > li
+      position relative
+      &::before
+        content ''
+        position absolute
+        left -1.2em
+        top 0.94em
+        width 0.5em
+        height 0.5em
+        transform translateY(-50%)
+        themed(background, $light-accent-color, $dark-accent-color)
 
   .image-caption:not(:empty)
     min-width 20%
