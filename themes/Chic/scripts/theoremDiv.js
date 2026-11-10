@@ -30,7 +30,7 @@ var ATTRS_PATTERN = '\\.' + KINDS + '(?:[ \\t]+title="[^"\\n]*")?[ \\t]*';
 var ATTRS_RE = new RegExp('^\\.(' + KINDS.slice(3, -1) + ')(?:[ \\t]+title="([^"\\n]*)")?[ \\t]*$');
 
 var LABEL = {
-  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '例' },
+  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '範例' },
   en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', example: 'Example' }
 };
 

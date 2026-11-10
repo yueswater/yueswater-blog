@@ -2,13 +2,17 @@
 // Every callout opens with a badge strip on top that reads "定義：名稱" (body font). Three looks, all square-cornered like the rest of the bisect style:
 //   .callout-definition  tinted block, blue bar on the left, brand-blue badge strip
 //   .callout-theorem     (theorem, lemma and proposition share it) outlined box, dark badge strip
-//   .callout-example     open block, dashed rule on the left, outlined muted badge strip
+//   .callout-example     the definition look in purple (tinted block, purple bar and badge strip)
 // Text colour is inherited from the page in both themes (no forced colours, unlike the
 // light-backed .admonition), so the dark theme only needs its own fills and rules.
 
 // side padding in rem: the header band bleeds out by exactly this much, and an em would
 // resolve against the label's smaller font size
 $callout-px = 1.3rem
+
+// the example callout: the definition look in purple
+$callout-purple = #6d3fc9
+$callout-purple-dark = #b79cff
 
 .post-content .callout
   position relative
@@ -59,10 +63,7 @@ $callout-px = 1.3rem
     themed(background, $light-ink, $dark-line)
 
 .post-content .callout-example
-  padding-left 1.4rem
-  themed(border-left, 2px dashed $light-muted, 2px dashed $dark-muted)
+  themed(background-color, #f4f0fc, rgba(183, 156, 255, 0.1))
+  themed(border-left, 4px solid $callout-purple, 4px solid $callout-purple-dark)
   .callout-label
-    margin-left -1.4rem
-    background transparent
-    themed(color, $light-muted, $dark-muted)
-    themed(border-bottom, 1px dashed $light-muted, 1px dashed $dark-muted)
+    background $callout-purple

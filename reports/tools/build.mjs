@@ -247,7 +247,7 @@ function extractAdmonitions(md, ctx, out) {
 
 // ---------- definition / theorem / lemma / proposition / example (::: {.kind title="..."} ... :::, see themes/Chic/scripts/theoremDiv.js) ----------
 const THEOREM_LABELS = {
-  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '例' },
+  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '範例' },
   en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', example: 'Example' },
 }
 

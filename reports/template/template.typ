@@ -53,7 +53,7 @@
 // ::: {.definition} / {.theorem} / {.lemma} / {.proposition} / {.example} callouts (the site's
 // themes/Chic/scripts/theoremDiv.js). Every kind opens with a badge strip "定義：名稱". `kind` picks the
 // look: definition = tinted block, thick bar, blue strip; theorem (also lemma, proposition) = outlined
-// box, dark strip; example = open block with a dashed rule. `label` is the localised name, `title`
+// box, dark strip; example = the definition look in purple. `label` is the localised name, `title`
 // optional content, `sep` the colon between them.
 #let theorem-box(kind, label, title, body, sep: "：") = {
   // every kind opens with a badge strip that reads "定義：名稱"; the kind picks the look
@@ -68,9 +68,10 @@
       block(width: 100%, inset: (x: 12pt, y: 9pt), body)
     })
   } else if kind == "example" {
-    block(width: 100%, stroke: (left: (paint: muted, thickness: 1.2pt, dash: "dashed")), inset: (left: 12pt, y: 0pt), breakable: true, above: 1.1em, below: 1.1em, {
-      block(width: 100%, stroke: (bottom: (paint: muted, thickness: 0.6pt, dash: "dashed")), inset: (y: 5pt), sticky: true, head(muted))
-      block(width: 100%, inset: (y: 8pt), body)
+    let violet = rgb("#6d3fc9")
+    block(width: 100%, fill: violet.lighten(92%), stroke: (left: 3.5pt + violet), inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
+      strip(violet, white)
+      block(width: 100%, inset: (x: 12pt, y: 9pt), body)
     })
   } else {
     block(width: 100%, fill: tint-light, stroke: (left: 3.5pt + primary), inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
