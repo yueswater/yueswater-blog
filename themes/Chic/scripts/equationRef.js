@@ -15,7 +15,14 @@
  */
 var BLOCK = /^:::[ \t]*\{([^}\n]*)\}[ \t]*\n([\s\S]*?)\n:::[ \t]*$/gm;
 // an "式" / "Eq." already written in front of the reference is absorbed into the link
-var SKIP_OR_REF = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|(?:(式|Eq\.?|Equation)[ \t]*)?(?<![\w@])@(eq:[\w:-]*\w)/g;
+// Blanks between a CJK character and the reference are swallowed too: "由 @eq:foc 可得" and
+// "由@eq:foc可得" both come out as "由式 (4)可得" with no stray gap (the link carries its own word).
+var CJK = '\\u3400-\\u9fff\\u3000-\\u303f\\uff00-\\uffef';
+var SKIP_OR_REF = new RegExp(
+  '(```[\\s\\S]*?```|~~~[\\s\\S]*?~~~|`[^`\\n]*`)' +
+  '|(?:(?<=[' + CJK + '])[ \\t]+)?(?:(式|Eq\\.?|Equation)[ \\t]*)?(?<![\\w@])@(eq:[\\w:-]*\\w)(?:[ \\t]+(?=[' + CJK + ']))?',
+  'g'
+);
 
 hexo.extend.filter.register('before_post_render', function (data) {
   if (!data.content || data.content.indexOf('.equation') === -1) return data;
