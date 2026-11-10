@@ -55,14 +55,23 @@
 // look: definition = tinted block, thick bar, blue strip; theorem (also lemma, proposition, corollary) = outlined
 // box, blue strip; proof = plain bordered box, always open; example = the definition look in purple. `label` is the localised name, `title`
 // optional content, `sep` the colon between them.
-#let theorem-box(kind, label, title, body, sep: "：") = {
+#let theorem-box(kind, label, title, body, sep: "：", proof: none, proof-label: "") = {
   // every kind opens with a badge strip that reads "定義：名稱"; the kind picks the look
   let head(fill) = text(font: body-fonts, size: 9.5pt, weight: "bold", fill: fill, {
     label
     if title != none { [#sep#title] }
   })
   let strip(bg, fg) = block(width: 100%, fill: bg, inset: (x: 12pt, y: 5pt), sticky: true, head(fg))
-  let statement(content) = block(width: 100%, inset: (x: 12pt, y: 9pt), content)
+  // a proof that followed the statement sits under it in the same box (the site folds it; a PDF cannot)
+  let statement(content) = block(width: 100%, inset: (x: 12pt, y: 9pt), {
+    content
+    if proof != none {
+      v(0.7em)
+      text(font: mono, size: 8pt, weight: "bold", fill: primary, proof-label)
+      v(0.35em)
+      proof
+    }
+  })
   if kind == "theorem" or kind == "lemma" or kind == "proposition" or kind == "corollary" {
     block(width: 100%, stroke: 0.8pt + primary, inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
       strip(primary, white)

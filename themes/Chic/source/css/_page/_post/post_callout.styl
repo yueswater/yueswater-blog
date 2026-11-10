@@ -68,13 +68,9 @@ $callout-purple-dark = #b79cff
   .callout-label
     background $callout-purple
 
-// proof: the same look as an exercise (white box, "+ 顯示證明" toggle in the mono face), closed
-// by default. No badge strip: the statement above it already carries the theorem badge.
-.post-content .callout-proof
-  padding 0.9rem 1.3rem
-  line-height 1.8
-  themed(background, #fff, rgba(255, 255, 255, 0.03))
-  themed(border, 1px solid $light-line, 1px solid $dark-line)
+// proof: a "+ 顯示證明" fold, closed by default. After a statement it sits inside that callout; on its own it is a white box like an exercise (no badge strip: the statement
+// above it already carries the badge).
+.post-content .callout .proof-details
   summary
     cursor pointer
     list-style none
@@ -90,7 +86,7 @@ $callout-purple-dark = #b79cff
       content '+'
       display inline-block
       width 1.3em
-  details[open] > summary::before
+  &[open] > summary::before
     content '\2212'
   .proof-body
     margin-top 0.7rem
@@ -98,3 +94,14 @@ $callout-purple-dark = #b79cff
     themed(border-top, 1px dashed $light-line, 1px dashed $dark-line)
     > :last-child
       margin-bottom 0
+
+// inside a statement callout: just a little space under the statement
+.post-content .callout:not(.callout-proof) .proof-details
+  margin-top 1em
+
+// on its own
+.post-content .callout-proof
+  padding 0.9rem 1.3rem
+  line-height 1.8
+  themed(background, #fff, rgba(255, 255, 255, 0.03))
+  themed(border, 1px solid $light-line, 1px solid $dark-line)

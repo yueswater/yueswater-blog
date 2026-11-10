@@ -20,7 +20,8 @@
  * shows in the badge on top: 定義：尋租 / Definition: Rent seeking. The name can also be
  * a leading heading line in the body ("# 尋租"). No numbering.
  *
- * .proof looks and folds like the answer of an exercise: a bordered box holding a <details>
+ * A .proof written right after one of the others is part of that callout: a "+ 顯示證明" fold
+ * inside the box, under the statement. On its own, .proof looks and folds like the answer of an exercise: a bordered box holding a <details>
  * ("+ 顯示證明"), closed by default; the proof body appears when it is clicked. It is rendered
  * with <section>, not <div>, inside (a nested div ends kramed's raw-HTML block early).
  * The body is full markdown, rendered here because kramed does not recurse into
@@ -42,9 +43,19 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// A .proof block that directly follows a definition / theorem / lemma / proposition / corollary
+// (only blank lines between) is folded into that callout: its body is appended to the statement
+// after a marker line, and the handler below renders it as the "+ 顯示證明" fold inside the box.
+var PROOF_MARK = '@@proof@@';
+var MERGE_PROOF = /(^:::[ \t]*\{\.(?:definition|theorem|lemma|proposition|corollary)\b[^}\n]*\}[ \t]*\n[\s\S]*?)\n?:::[ \t]*\n(?:[ \t]*\n)+:::[ \t]*\{\.proof\}[ \t]*\n([\s\S]*?)\n?:::[ \t]*$/gm;
+
 hexo.extend.filter.register('before_post_render', function (data) {
   var en = data.lang === 'en';
   var labels = en ? LABEL.en : LABEL.zh;
+
+  data.content = data.content.replace(MERGE_PROOF, function (m, statement, proof) {
+    return statement + '\n\n' + PROOF_MARK + '\n\n' + proof + '\n:::';
+  });
 
   data.content = fencedDiv.replaceFencedDivs(data.content, ATTRS_PATTERN, function (attrs, body, full) {
     var m = ATTRS_RE.exec(attrs);
@@ -62,7 +73,17 @@ hexo.extend.filter.register('before_post_render', function (data) {
     }
     var badge = '<span class="callout-kind">' + labels[kind] + '</span>' +
       (name ? '<span class="callout-name">' + (en ? ': ' : '：') + name + '</span>' : '');
+    var proofText = null;
+    var cut = body.search(/^@@proof@@[ \t]*$/m);
+    if (cut !== -1) {
+      proofText = body.slice(cut).replace(/^@@proof@@[ \t]*\n/, '');
+      body = body.slice(0, cut);
+    }
     var html = hexo.render.renderSync({ text: body, engine: 'markdown' });
+    if (proofText !== null) {
+      html = html.trim() + '\n<details class="proof-details"><summary>' + (en ? 'Show proof' : '顯示證明') + '</summary>\n' +
+        '<section class="proof-body">\n' + hexo.render.renderSync({ text: proofText, engine: 'markdown' }).trim() + '\n</section></details>';
+    }
     // see admonitionMarkdown.js: a nested div ends kramed's raw-HTML block early
     html = html.replace(/<div class="table-container">([\s\S]*?)<\/div>/g, '<section class="table-container">$1</section>');
     // headings inside a callout stay out of the TOC (same as problemDiv.js)

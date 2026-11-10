@@ -272,6 +272,25 @@ function extractTheorems(md, ctx, out) {
       j++
     }
     i = j // skip the closing :::
+    // a .proof block right after a statement belongs to the same box (see theoremDiv.js)
+    let proofBody = null
+    if (m[1] !== 'proof' && m[1] !== 'example') {
+      let k = j + 1
+      while (k < lines.length && lines[k].trim() === '') k++
+      if (k < lines.length && /^:::[ \t]*\{\.proof\}[ \t]*$/.test(lines[k])) {
+        const pb = []
+        let q = k + 1
+        let pfence = false
+        while (q < lines.length) {
+          if (/^\s*(```|~~~)/.test(lines[q])) pfence = !pfence
+          if (!pfence && /^:::[ \t]*$/.test(lines[q])) break
+          pb.push(lines[q])
+          q++
+        }
+        proofBody = pb
+        i = q
+      }
+    }
     // the name: a leading "# 名稱" line in the body, or title="..." in the fence
     let name = m[2] && m[2].trim() ? m[2].trim() : ''
     const first = body.findIndex((l) => l.trim() !== '')
@@ -279,7 +298,8 @@ function extractTheorems(md, ctx, out) {
     if (lead) { name = lead[1]; body.shift() }
     const title = name ? `[${render(name, ctx).trim()}]` : 'none'
     const sep = ctx.lang === 'en' ? ': ' : '：'
-    out.push(`#theorem-box(${str(m[1])}, ${str(THEOREM_LABELS[ctx.lang][m[1]])}, ${title}, [${render(body.join('\n').trim(), ctx)}], sep: ${str(sep)})`)
+    const proof = proofBody ? `, proof: [${render(proofBody.join('\n').trim(), ctx)}], proof-label: ${str(THEOREM_LABELS[ctx.lang].proof)}` : ''
+    out.push(`#theorem-box(${str(m[1])}, ${str(THEOREM_LABELS[ctx.lang][m[1]])}, ${title}, [${render(body.join('\n').trim(), ctx)}], sep: ${str(sep)}${proof})`)
     res.push('', `THEOREMBLOCK${out.length - 1}X`, '')
   }
   return res.join('\n')
