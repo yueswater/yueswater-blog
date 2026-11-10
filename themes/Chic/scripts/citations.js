@@ -11,8 +11,9 @@
  *                      author surname then year, for every key actually
  *                      cited in the post. @article, @incollection/@inbook,
  *                      @book get their own layout (journal, volume(issue),
- *                      pages, editors, booktitle, publisher, DOI); anything
- *                      else (@misc ...) prints title, note and url.
+ *                      pages, editors, booktitle, publisher, DOI);
+ *                      @online (news article, web page) prints (Year, Month Day), title,
+ *                      site and url; anything else (@misc ...) prints title, note and url.
  *
  * .bib author fields must use "Last, First" (BibTeX convention),
  * multiple authors joined by " and ".
@@ -129,6 +130,10 @@ function apaFullEntryHtml(key, entry) {
     // Author. (Year). Title (edition). Publisher.
     text = head + '<em>' + endStop(title).replace(/\.$/, '') + '</em>' + (f.edition ? ' (' + esc(f.edition) + ' ed.)' : '') + '.' +
       (f.publisher ? ' ' + esc(f.publisher) + '.' : '');
+  } else if (type === 'online') {
+    // news article / web page: Author. (Year, Month Day). Title. Site name. URL
+    var date = year + (f.month ? ', ' + esc(f.month) + (f.day ? ' ' + esc(f.day) : '') : '');
+    text = authors + ' (' + date + '). ' + endStop(title) + (f.site ? ' ' + esc(f.site) + '.' : '');
   } else {
     var note = f.note ? ' (' + esc(f.note) + ')' : '';
     text = head + endStop(title) + note;
