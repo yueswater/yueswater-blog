@@ -123,3 +123,7 @@ if (is_archive()){
         <% } %>
     <% } %>
 <% } %>
+<%# Tullock contest simulator: posts opt in with `tullock_sim: true` in the front matter %>
+<% if (page.tullock_sim) { %>
+    <script src="/js/tullock-sim.js" defer></script>
+<% } %>
