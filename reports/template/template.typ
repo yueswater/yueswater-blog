@@ -50,6 +50,36 @@
   body
 })
 
+// ::: {.definition} / {.theorem} / {.lemma} / {.proposition} / {.example} callouts (the site's
+// themes/Chic/scripts/theoremDiv.js). `kind` picks the look: definition = tinted block with a thick
+// bar; theorem (also lemma, proposition) = outlined box with a blue header band; example = open block
+// with a dashed rule. `label` is the localised name, `title` an optional string.
+#let theorem-box(kind, label, title, body) = {
+  let head = {
+    upper(label)
+    if title != none { text(weight: "regular")[#h(0.5em)\(#title\)] }
+  }
+  let label-text(fill, prefix: "") = text(font: (mono, zh), size: 8pt, weight: "bold", tracking: 0.06em, fill: fill, prefix + head)
+  if kind == "theorem" or kind == "lemma" or kind == "proposition" {
+    block(width: 100%, stroke: 0.8pt + ink, inset: 0pt, breakable: true, above: 1.1em, below: 1.1em, {
+      block(width: 100%, fill: primary, inset: (x: 12pt, y: 5pt), sticky: true, label-text(white))
+      block(width: 100%, inset: (x: 12pt, y: 9pt), body)
+    })
+  } else if kind == "example" {
+    block(width: 100%, stroke: (left: (paint: muted, thickness: 1.2pt, dash: "dashed")), inset: (left: 12pt, y: 6pt), breakable: true, above: 1.1em, below: 1.1em, {
+      label-text(muted, prefix: "// ")
+      v(0.35em)
+      body
+    })
+  } else {
+    block(width: 100%, fill: tint-light, stroke: (left: 3.5pt + primary), inset: (x: 12pt, y: 9pt), breakable: true, above: 1.1em, below: 1.1em, {
+      label-text(primary)
+      v(0.35em)
+      body
+    })
+  }
+}
+
 // Practice questions: one callout, numbered questions, options in 4 / 2 / 1 columns (chosen by the
 // converter from option length), the answer always shown (a PDF cannot fold it away).
 #let exercises-box(title, qs) = block(width: 100%, stroke: 0.6pt + border, fill: white, inset: 0pt, {

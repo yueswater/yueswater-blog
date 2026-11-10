@@ -245,6 +245,40 @@ function extractAdmonitions(md, ctx, out) {
   return res.join('\n')
 }
 
+// ---------- definition / theorem / lemma / proposition / example (::: {.kind title="..."} ... :::, see themes/Chic/scripts/theoremDiv.js) ----------
+const THEOREM_LABELS = {
+  zh: { definition: '定義', theorem: '定理', lemma: '引理', proposition: '命題', example: '例' },
+  en: { definition: 'Definition', theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', example: 'Example' },
+}
+
+// Runs after extractExercises, so exercise blocks are already markers and their bare `:::` closers are gone.
+function extractTheorems(md, ctx, out) {
+  const lines = md.split('\n')
+  const res = []
+  let inFence = false
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence
+    const m = !inFence && /^:::[ \t]*\{\.(definition|theorem|lemma|proposition|example)(?:[ \t]+title="([^"\n]*)")?[ \t]*\}[ \t]*$/.exec(line)
+    if (!m) { res.push(line); continue }
+    // body runs to the next bare `:::` outside a code fence
+    const body = []
+    let j = i + 1
+    let fence = false
+    while (j < lines.length) {
+      if (/^\s*(```|~~~)/.test(lines[j])) fence = !fence
+      if (!fence && /^:::[ \t]*$/.test(lines[j])) break
+      body.push(lines[j])
+      j++
+    }
+    i = j // skip the closing :::
+    const title = m[2] && m[2].trim() ? str(m[2].trim()) : 'none'
+    out.push(`#theorem-box(${str(m[1])}, ${str(THEOREM_LABELS[ctx.lang][m[1]])}, ${title}, [${render(body.join('\n').trim(), ctx)}])`)
+    res.push('', `THEOREMBLOCK${out.length - 1}X`, '')
+  }
+  return res.join('\n')
+}
+
 // ---------- one post ----------
 function build(post) {
   const file = path.resolve(post)
@@ -273,10 +307,12 @@ function build(post) {
   ctx.lang = meta.lang === 'en' ? 'en' : 'zh'
   const exBlocks = []
   const admons = []
-  const mdNoEx = extractAdmonitions(extractExercises(mdBody, ctx, exBlocks), ctx, admons)
+  const theorems = []
+  const mdNoEx = extractAdmonitions(extractTheorems(extractExercises(mdBody, ctx, exBlocks), ctx, theorems), ctx, admons)
   let body = render(mdNoEx, ctx)
   exBlocks.forEach((b, i) => { body = body.replace(`EXERCISESBLOCK${i}X`, () => exercisesTyp(b, ctx)) })
   admons.forEach((t, i) => { body = body.replace(`ADMONBLOCK${i}X`, () => t) })
+  theorems.forEach((t, i) => { body = body.replace(`THEOREMBLOCK${i}X`, () => t) })
 
   const cats = [...new Set(meta.categories || [])]
   const date = new Date(meta.date)
@@ -288,7 +324,7 @@ function build(post) {
   const slug = slugOf(meta, post)
   const out = path.join('reports', '.build', slug, lang)
   fs.mkdirSync(out, { recursive: true })
-  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box, admonition\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
+  fs.writeFileSync(path.join(out, 'body.typ'), `#import "/reports/template/template.typ": tab-label, fit-figure, exercises-box, admonition, theorem-box\n#import "/reports/template/theme.typ": *\n#import "@preview/mitex:0.2.6": mi, mitex\n\n${body}\n`)
   fs.writeFileSync(path.join(out, 'main.typ'), `#import "/reports/template/template.typ": report, end-report
 
 #show: report.with(
