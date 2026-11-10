@@ -1,3 +1,14 @@
+// The PDF edition exists only once reports have been built and uploaded, so the download fact
+// (label, count and button) starts hidden and is shown only when the file is really there.
+document.addEventListener('DOMContentLoaded', function () {
+  var fact = document.querySelector('.post-download');
+  var btn = fact && fact.querySelector('[data-download-path]');
+  if (!fact || !btn || !window.fetch) return;
+  fetch(btn.href, { method: 'HEAD' })
+    .then(function (res) { if (res.ok) fact.hidden = false; })
+    .catch(function () {});
+});
+
 (function () {
   document.addEventListener('DOMContentLoaded', function () {
     var url = window.SUPABASE_URL;

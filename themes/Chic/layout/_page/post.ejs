@@ -26,7 +26,7 @@
                 <div class="post-fact post-reading-time"><dt><%= __('fact_read') %></dt><dd><%= reading_time(page) %> <%= __('min_unit') %></dd></div>
                 <div class="post-fact post-views"><dt><%= __('fact_views') %></dt><dd><span class="supabase-views" data-path="<%- url_for(page.path) %>" data-supabase-record="<%- url_for(page.path) %>">–</span> <%= __('times_unit') %></dd></div>
                 <% if (theme.pdf_enable && theme.supabase_url && !/^(https?:\/\/[^\/]+)?\/?diary\//.test(String(page.permalink || ''))) { %>
-                <div class="post-fact post-download"><dt><%= __('fact_download') %></dt><dd>
+                <div class="post-fact post-download" hidden><dt><%= __('fact_download') %></dt><dd>
                     <%
                         // PDFs live in the public Supabase bucket "pdfs", at <post path without -en>/<zh|en>.pdf
                         var pdfLang = page.lang === 'en' ? 'en' : 'zh';

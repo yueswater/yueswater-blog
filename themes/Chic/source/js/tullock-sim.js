@@ -367,7 +367,8 @@ const TS_LABELS = {"x1":{"w":12.67,"h":13.57,"body":"<path d=\"M 2572 714  C 252
     const zip = (box.dataset.zip || '').replace('{lang}', LANG)
     box.replaceChildren()
 
-    const defs = { V: [20, 100, 10, 100], c: [1, 4, 0.5, 1], r: [0.2, 3, 0.1, 1] }
+    // r stops at 2: beyond it the equilibrium payoff (2 - r)V/4 is negative and no pure-strategy equilibrium exists
+    const defs = { V: [20, 100, 10, 100], c: [1, 4, 0.01, 1], r: [0.2, 2, 0.01, 1] }
     const val = {}
     const ctl = Object.assign(document.createElement('div'), { className: 'ts-ctl' })
     for (const k in defs) {
