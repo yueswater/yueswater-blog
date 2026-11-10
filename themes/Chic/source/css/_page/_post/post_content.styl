@@ -200,15 +200,18 @@
         transform translateY(-50%)
         themed(background, $light-accent-color, $dark-accent-color)
 
-  // display maths get the same gap as two paragraphs (1.25em) above and below, and the rows
-  // of an aligned / align / gather block are spaced out a little. MathJax's own 1em margin
-  // is uneven against the paragraphs' 1.25em, and its 0.15em row padding (inline style,
-  // hence !important) is too tight.
+  // display maths sit close to the text around them: 0.8em above and below (about one line gap), and the rows of
+  // an aligned / align / gather block 0.5em apart. The paragraph in front gives up its own
+  // 1.25em bottom margin (margins collapse, so the larger one would win), like a lead-in line
+  // before a list. MathJax's own defaults (1em margin, 0.15em row padding as an inline style,
+  // hence !important) are too loose against the page and too tight inside aligned blocks.
+  p:has(+ div > mjx-container[display="true"])
+    margin-bottom 0.8em
   mjx-container[jax="CHTML"][display="true"]
-    margin 1.25em 0
+    margin 0.8em 0
   mjx-mtable[data-latex^="\\begin{align"], mjx-mtable[data-latex^="\\begin{split"], mjx-mtable[data-latex^="\\begin{gather"], mjx-mtable[data-latex^="\\begin{eqnarray"]
     > mjx-table > mjx-itable > mjx-mtr:not(:last-child) > mjx-mtd
-      padding-bottom 0.6em !important
+      padding-bottom 0.5em !important
 
   .image-caption:not(:empty)
     min-width 20%
