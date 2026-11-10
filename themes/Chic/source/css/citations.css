@@ -25,3 +25,14 @@
   -ms-hyphens: auto;
   hyphens: auto;
 }
+
+/* "式 (1)" cross-reference: one link; MathJax's own inner link just follows it */
+.post-content a.eq-ref mjx-container a {
+  color: inherit;
+  background: none;
+  pointer-events: none;
+}
+
+.post-content a.eq-ref:hover mjx-container {
+  color: inherit;
+}

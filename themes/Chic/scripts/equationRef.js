@@ -5,7 +5,7 @@
  *   p_i = \dfrac{x_i^r}{x_i^r + x_j^r}
  *   :::
  *
- *   ... see @eq:ratio ...        -> "(1)", a link to the equation
+ *   ... see @eq:ratio ...        -> "式 (1)" ("Eq. (1)" in non-zh posts), one link to the equation
  *
  * The block body is bare TeX (a ```tex fence around it is tolerated). It becomes a
  * MathJax `equation` environment with \label{id}, so MathJax numbers it in page order
@@ -14,7 +14,8 @@
  * Runs before mathProtect (priority 1) so the generated $\eqref{}$ is protected too.
  */
 var BLOCK = /^:::[ \t]*\{([^}\n]*)\}[ \t]*\n([\s\S]*?)\n:::[ \t]*$/gm;
-var SKIP_OR_REF = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|(?<![\w@])@(eq:[\w:-]*\w)/g;
+// an "式" / "Eq." already written in front of the reference is absorbed into the link
+var SKIP_OR_REF = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|(?:(式|Eq\.?|Equation)[ \t]*)?(?<![\w@])@(eq:[\w:-]*\w)/g;
 
 hexo.extend.filter.register('before_post_render', function (data) {
   if (!data.content || data.content.indexOf('.equation') === -1) return data;
@@ -30,9 +31,11 @@ hexo.extend.filter.register('before_post_render', function (data) {
       tex + '\n\\end{' + env + '}\n$$';
   });
 
-  data.content = data.content.replace(SKIP_OR_REF, function (match, skip, id) {
+  var word = /^zh/i.test(data.lang || '') || !data.lang ? '式' : 'Eq.';
+  data.content = data.content.replace(SKIP_OR_REF, function (match, skip, written, id) {
     if (skip !== undefined || !labels[id]) return match;
-    return '$\\eqref{' + id + '}$';
+    // <span class="eq-ref"> is turned into one <a> (word + number) by mathjax.ejs
+    return '<span class="eq-ref" data-eq="' + id + '">' + word + ' $\\eqref{' + id + '}$</span>';
   });
   return data;
 }, 0);

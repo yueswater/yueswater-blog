@@ -23,6 +23,17 @@
                     holder.textContent = display ? "\\[" + el.text + "\\]" : "\\(" + el.text + "\\)";
                     el.parentNode.replaceChild(holder, el);
                 });
+                // @eq:id gives <span class="eq-ref" data-eq="id">式 $\eqref{id}$</span>; MathJax's
+                // own link would cover only "(1)", so the whole span becomes one link to the
+                // target MathJax names mjx-eqn:<id>. (Done before typesetting: the promise
+                // below is not a reliable "finished" signal.)
+                document.querySelectorAll("span.eq-ref").forEach(function (span) {
+                    var link = document.createElement("a");
+                    link.className = "eq-ref";
+                    link.href = "#" + encodeURIComponent("mjx-eqn:" + span.getAttribute("data-eq"));
+                    while (span.firstChild) link.appendChild(span.firstChild);
+                    span.parentNode.replaceChild(link, span);
+                });
                 return MathJax.startup.defaultPageReady().then(function () {
                     // kept from the 2.x config: mark each formula's parent
                     document.querySelectorAll("mjx-container").forEach(function (el) {
