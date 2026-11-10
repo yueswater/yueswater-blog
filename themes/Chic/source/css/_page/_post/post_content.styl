@@ -200,6 +200,16 @@
         transform translateY(-50%)
         themed(background, $light-accent-color, $dark-accent-color)
 
+  // display maths get the same gap as two paragraphs (1.25em) above and below, and the rows
+  // of an aligned / align / gather block are spaced out a little. MathJax's own 1em margin
+  // is uneven against the paragraphs' 1.25em, and its 0.15em row padding (inline style,
+  // hence !important) is too tight.
+  mjx-container[jax="CHTML"][display="true"]
+    margin 1.25em 0
+  mjx-mtable[data-latex^="\\begin{align"], mjx-mtable[data-latex^="\\begin{split"], mjx-mtable[data-latex^="\\begin{gather"], mjx-mtable[data-latex^="\\begin{eqnarray"]
+    > mjx-table > mjx-itable > mjx-mtr:not(:last-child) > mjx-mtd
+      padding-bottom 0.6em !important
+
   .image-caption:not(:empty)
     min-width 20%
     max-width 80%
