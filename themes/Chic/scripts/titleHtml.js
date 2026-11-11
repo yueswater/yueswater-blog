@@ -16,9 +16,11 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;');
 }
 
-hexo.extend.helper.register('title_html', function (title) {
+// `plainMath` drops the $...$ around inline math (lists show "Nash", not "$Nash$"); the lists do not typeset math.
+hexo.extend.helper.register('title_html', function (title, plainMath) {
   if (!title) return '';
-  return String(title)
+  const text = plainMath ? String(title).replace(/\$([^$]+)\$/g, '$1') : String(title);
+  return text
     .split(/(`[^`]+`)/g)
     .map(function (part) {
       if (part.length >= 2 && part.charAt(0) === '`' && part.charAt(part.length - 1) === '`') {

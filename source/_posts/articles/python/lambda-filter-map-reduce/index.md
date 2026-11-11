@@ -1,5 +1,5 @@
 ---
-title: Python 教學系列：lambda、map、filter 與 reduce
+title: 'Python 教學系列：`lambda`、`map`、`filter` 與 `reduce`'
 date: '2026-05-10'
 lang: zh-TW
 permalink: articles/python/lambda-filter-map-reduce/
