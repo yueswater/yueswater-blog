@@ -1,4 +1,4 @@
-"""Build themes/Chic/source/js/lang-trend.js: data + logos + widget in one file.
+"""Build themes/Chic/source/js/widgets/lang-trend.js: data + logos + widget in one file.
 
 Usage: python3 tools/lang-trend/build.py
 Data: tiobe_series.json (run fetch_tiobe.py to refresh), jobs_go.json (run fetch_jobs.py). Logos: Devicon (MIT), see logos/LICENSE-devicon.txt.
@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE.parent.parent / "themes/Chic/source/js/lang-trend.js"
+OUT = HERE.parent.parent / "themes/Chic/source/js/widgets/lang-trend.js"
 LOGO_FILE = {"Python": "python", "C": "c", "Java": "java", "C++": "cplusplus", "C#": "csharp",
              "JavaScript": "javascript", "Go": "go", "Visual Basic": "visualbasic", "R": "r"}
 

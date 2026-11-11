@@ -1,52 +1,67 @@
-// variable & init style
-@import 'variable.styl';
-@import 'normalize.styl';
-// font
-@import 'font.styl';
-// structure style
-@import 'base.styl';
-@import 'layout.styl';
-// icon
+// Single stylesheet entry. Everything lives in underscore-prefixed folders so Hexo
+// compiles only this file; the order below is the cascade order.
+
+// base: variables, reset, fonts, element defaults
+@import '_base/variable.styl';
+@import '_base/normalize.styl';
+@import '_base/font.styl';
+@import '_base/base.styl';
+
+// layout: page skeleton and site chrome
+@import '_layout/layout.styl';
 @import '../fonts/iconfont/iconfont.css';
-// partial
-@import '_partial/checkbox.styl';
-@import '_partial/header.styl';
-@import '_partial/footer.styl';
-@import '_partial/paginator.styl';
-// page
-@import '_page/profile.styl';
-@import '_page/ascii-ocean.styl';
-@import '_page/post-rows.styl';
-@import '_page/pagehead.styl';
-@import '_page/taxonomy-index.styl';
-@import '_page/transition.styl';
-@import '_page/archive.styl';
-@import '_page/category.styl';
-@import '_page/tag.styl';
-@import '_page/page.styl';
-@import '_page/section.styl';
-@import '_page/about.styl';
-// page post
-@import '_page/_post/post_header.styl';
-@import '_page/_post/post_content.styl';
-@import '_page/_post/post_callout.styl';
-@import '_page/_post/post_copyright.styl';
-@import '_page/_post/post_share.styl';
-@import '_page/_post/post_code.styl';
-@import '_page/_post/post_exercises.styl';
-@import '_page/_post/post_tags.styl';
-@import '_page/_post/post_nav.styl';
-// partial tocbot
-@import '_page/_post/post_toc.styl';
-@import '_lib/tocbot.css';
-// mobile
-@import 'media.styl';
+@import '_components/checkbox.styl';
+@import '_layout/header.styl';
+@import '_layout/footer.styl';
+@import '_layout/paginator.styl';
+
+// pages
+@import '_pages/profile.styl';
+@import '_pages/ascii-ocean.styl';
+@import '_pages/post-rows.styl';
+@import '_pages/pagehead.styl';
+@import '_pages/taxonomy-index.styl';
+@import '_pages/transition.styl';
+@import '_pages/archive.styl';
+@import '_pages/category.styl';
+@import '_pages/tag.styl';
+@import '_pages/page.styl';
+@import '_pages/section.styl';
+@import '_pages/about.styl';
+
+// post page
+@import '_pages/post/post_header.styl';
+@import '_pages/post/post_content.styl';
+@import '_pages/post/post_callout.styl';
+@import '_pages/post/post_copyright.styl';
+@import '_pages/post/post_share.styl';
+@import '_pages/post/post_code.styl';
+@import '_pages/post/post_exercises.styl';
+@import '_pages/post/post_tags.styl';
+@import '_pages/post/post_nav.styl';
+@import '_pages/post/post_toc.styl';
+
+// vendor
+@import '_vendor/tocbot.css';
+
+// responsive overrides
+@import '_layout/media.styl';
 
 // code-block style (navy in both themes)
-@import '_highlight/ocean.styl';
+@import '_vendor/highlight/ocean.styl';
 
-// // ==============================
-// // Custom style
-// // ==============================
-// // You can override the variables in variable.styl to customize the style
-@import 'custom.styl';
+// site-wide overrides
+@import '_base/custom.styl';
+
+// components (formerly separate stylesheets, same order as they were linked)
+@import '_components/admonition.css';
+@import '_components/admonition-override.css';
+@import '_components/code-copy.css';
+@import '_components/caption.css';
+@import '_components/permalink-copy.css';
+@import '_components/toast.css';
+@import '_components/tabset.css';
+@import '_components/citations.css';
+@import '_components/problem-statement.css';
+@import '_components/site-logo.css';
+@import '_components/gallery.css';

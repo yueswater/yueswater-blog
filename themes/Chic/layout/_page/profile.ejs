@@ -13,7 +13,7 @@
             <script>
             // Swap the avatar at a random 12-24h interval, remembered per browser.
             (function () {
-                var pool = <%- JSON.stringify(theme.avatars.map(function (a) { return { src: url_for('/image/avatars/' + a.name + '.svg'), t: 'translate(' + a.x + '%, ' + a.y + '%) scale(' + a.scale + ')' }; })) %>;
+                var pool = <%- JSON.stringify(theme.avatars.map(function (a) { return { src: url_for('/images/avatars/' + a.name + '.svg'), t: 'translate(' + a.x + '%, ' + a.y + '%) scale(' + a.scale + ')' }; })) %>;
                 var srcs = pool.map(function (a) { return a.src; });
                 var img = document.getElementById('profile-avatar');
                 var KEY = 'avatar-rotation';

@@ -23,7 +23,7 @@
  * is enough, no front-matter `photos:` list to keep in sync.
  *
  * Everything is rendered server-side, dots and captions included, so the
- * markup is complete before source/js/gallery.js wires up the paging; with
+ * markup is complete before source/js/post/gallery.js wires up the paging; with
  * JS off the first photo still shows. Paths are relative to the post
  * ("images/day01/foo.jpg"), matching figureDiv.js -- indexImages.js copies
  * the images/ tree to each language's post URL.

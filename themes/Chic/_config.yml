@@ -46,8 +46,8 @@ nickname_en: Anthony
 ### this variable is MarkDown form.
 description: 個人部落格——教學文章、專案與生活筆記。
 description_en: Personal blog — tutorials, projects, and life notes.
-avatar: /image/avatar.png
-# Homepage avatar pool (themes/Chic/source/image/avatars/<name>.svg). Each
+avatar: /images/avatar.png
+# Homepage avatar pool (themes/Chic/source/images/avatars/<name>.svg). Each
 # visitor's browser swaps to a different one every 12-24 hours; `avatar`
 # above stays the static fallback and the og:image.
 # scale/x/y fit each face inside the avatar circle (x, y in % of the image box,
@@ -122,32 +122,21 @@ time_format: HH:mm
 # stylesheets loaded in the <head>
 stylesheets:
   - /css/style.css
-  - /css/admonition.css
-  - /css/admonition-override.css
-  - /css/code-copy.css
-  - /css/caption.css
-  - /css/permalink-copy.css
-  - /css/toast.css
-  - /css/tabset.css
-  - /css/citations.css
-  - /css/problem-statement.css
-  - /css/site-logo.css
-  - /css/gallery.css
 
 # scripts loaded in the end of the body
 scripts:
-  - /js/script.js
-  - /js/tocbot.min.js
+  - /js/core/script.js
+  - /js/vendor/tocbot.min.js
     # tscanlin/tocbot: Build a table of contents from headings in an HTML document.
     # https://github.com/tscanlin/tocbot
-  - /js/clipboard.min.js
-  - /js/code-copy.js
-  - /js/permalink-copy.js
-  - /js/toast.js
-  - /js/exercises.js
-  - /js/supabase-views.js
-  - /js/tabset.js
-  - /js/gallery.js
+  - /js/vendor/clipboard.min.js
+  - /js/post/code-copy.js
+  - /js/post/permalink-copy.js
+  - /js/core/toast.js
+  - /js/post/exercises.js
+  - /js/data/supabase-views.js
+  - /js/post/tabset.js
+  - /js/post/gallery.js
 
 # plugin functions
 ## Mathjax: Math Formula Support
