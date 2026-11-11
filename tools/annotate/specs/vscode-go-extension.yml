@@ -1,0 +1,20 @@
+# Annotation spec for one screenshot. All coordinates are pixels of the SOURCE image
+# (use `--grid` to print a coordinate grid over it). Edit, save, and `annotate.py --watch` redraws.
+source: ../src/vscode-go-extension.jpg
+output: ../../../source/_posts/articles/go/hello-to-go/images/vscode-go-extension.webp
+width: 1600 # output width in px (height follows)
+window_corners: true # make the dark area outside the rounded macOS window transparent
+color: "#00ADD8" # Go blue: boxes and arrows
+text_color: "#007D9C" # darker Go blue, readable on light grey
+font: # first file that exists is used (Microsoft JhengHei UI Bold, then PingFang)
+  - ~/Library/Group Containers/UBF8T346G9.Office/FontCache/4/CloudFonts/Microsoft JhengHei UI/54598404117.ttf
+  - /System/Library/AssetsV2/com_apple_MobileAsset_Font8/86ba2c91f017a3749571a82f2c6d890ac7ffb2fb.asset/AssetData/PingFang.ttc
+
+boxes: # x, y = top-left corner
+  - { x: 586, y: 390, w: 286, h: 48, radius: 9, stroke: 5 }
+
+arrows: # tip = where the arrowhead touches; scale = size; rotate = degrees, counter-clockwise
+  - { tip: [870, 388], scale: 0.2, rotate: 32 }
+
+labels: # x, y = top-left of the text
+  - { text: "認明發行者：Go Team at Google", x: 953, y: 275, size: 24 }
