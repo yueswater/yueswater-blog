@@ -8,7 +8,7 @@ categories: &id001
 - LINE 貼圖
 - LINE 表情貼
 tags: *id001
-excerpt: ''
+excerpt: 用 AI 生成貼圖與表情貼的圖案，依規格裁切後，到 LINE Creators Market 上架。
 thumbnail: /images/covers/LINE_Stickers_logo.png
 ---
 

@@ -9,10 +9,17 @@
 // SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are provided by Supabase.
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
+// the admin page calls this from the browser, so the preflight and the answer both need CORS headers
+const cors = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-cron-secret',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
 const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
+  new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
   const url = Deno.env.get('SUPABASE_URL')!
   const admin = createClient(url, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
 
