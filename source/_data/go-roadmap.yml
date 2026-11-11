@@ -1,0 +1,45 @@
+# Route of the Go notes series, drawn by themes/Chic/scripts/goRoadmap.js ({% go_roadmap %}).
+# A chamber lights up and links as soon as a post whose `permalink` equals its `slug` exists.
+# `gopher` = sprite name in themes/Chic/source/images/go-roadmap/ (optional).
+# Goal of the route: a backend engineer who can do payment-style Go services
+# (Go + concurrency/runtime + Gin/gRPC/GORM + Postgres/Redis/Kafka + Docker/K8s + idempotency/reconciliation).
+entrance:
+  title: 入口：初步認識 Go
+  title_en: Entrance — Meet Go
+  slug: articles/go/intro-to-go/
+stages:
+  - title: 基礎
+    title_en: Basics
+    nodes:
+      - { title: 環境與 Hello World, title_en: Setup and Hello World, slug: articles/go/hello-world/, gopher: 06-type }
+      - { title: 型別與流程控制, title_en: Types and control flow, slug: articles/go/types-and-control-flow/, gopher: 05-read }
+      - { title: 函式, title_en: Functions, slug: articles/go/functions/ }
+      - { title: slice 與 map, title_en: Slices and maps, slug: articles/go/slice-and-map/, gopher: 03-dig }
+      - { title: struct 與 interface, title_en: Structs and interfaces, slug: articles/go/struct-and-interface/, gopher: 07-map }
+      - { title: 錯誤處理, title_en: Error handling, slug: articles/go/error-handling/, gopher: 10-think }
+  - title: 進階
+    title_en: Advanced
+    nodes:
+      - { title: goroutine 與 channel, title_en: Goroutines and channels, slug: articles/go/goroutine-and-channel/, gopher: 04-lamp }
+      - { title: sync 與 context, title_en: sync and context, slug: articles/go/sync-and-context/ }
+      - { title: GMP 調度模型, title_en: The GMP scheduler, slug: articles/go/gmp-scheduler/ }
+      - { title: 記憶體管理與 GC, title_en: Memory and GC, slug: articles/go/memory-and-gc/ }
+      - { title: 測試與 benchmark, title_en: Testing and benchmarks, slug: articles/go/testing-and-benchmark/ }
+      - { title: 泛型與模組, title_en: Generics and modules, slug: articles/go/generics-and-modules/ }
+  - title: 後端
+    title_en: Backend
+    nodes:
+      - { title: Gin 與 REST API, title_en: Gin and REST APIs, slug: articles/go/gin-rest-api/ }
+      - { title: PostgreSQL 與 GORM, title_en: PostgreSQL and GORM, slug: articles/go/postgres-and-gorm/ }
+      - { title: Redis 與快取策略, title_en: Redis and caching, slug: articles/go/redis-and-caching/ }
+      - { title: gRPC 與 protobuf, title_en: gRPC and protobuf, slug: articles/go/grpc-and-protobuf/ }
+      - { title: Kafka 與 RabbitMQ, title_en: Kafka and RabbitMQ, slug: articles/go/kafka-and-rabbitmq/, gopher: 08-cart }
+      - { title: DynamoDB（補充）, title_en: DynamoDB (extra), slug: articles/go/dynamodb/ }
+  - title: 專案
+    title_en: Project
+    nodes:
+      - { title: 支付系統設計與冪等, title_en: Payment design and idempotency, slug: articles/go/payment-design/ }
+      - { title: 訂單、付款與帳務, title_en: Orders, payments and ledger, slug: articles/go/orders-payments-ledger/ }
+      - { title: 微服務拆分與通訊, title_en: Splitting into microservices, slug: articles/go/microservices/ }
+      - { title: 效能調優與壓測, title_en: Profiling and load testing, slug: articles/go/profiling-and-load-testing/ }
+      - { title: Docker 與 k8s, title_en: Docker and k8s, slug: articles/go/deploy-docker-k8s/, gopher: 09-box }
