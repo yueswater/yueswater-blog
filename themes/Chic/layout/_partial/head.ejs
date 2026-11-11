@@ -128,7 +128,7 @@ if (is_archive()){
     <script src="/js/widgets/lang-trend.js" defer></script>
 <% } %>
 
-<%# Tullock contest simulator: posts opt in with `tullock_sim: true` in the front matter %>
+<%# Tullock contest simulators (ES modules, see code/tullock-sim/web/README.md): posts opt in with `tullock_sim: true`; index.js mounts the widget each box asks for %>
 <% if (page.tullock_sim) { %>
-    <script src="/js/widgets/tullock-sim.js" defer></script>
+    <script type="module" src="/js/widgets/tullock-sim/index.js"></script>
 <% } %>
