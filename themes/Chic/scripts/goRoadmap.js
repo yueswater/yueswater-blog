@@ -216,14 +216,27 @@ function sprite(name, cx, bottom) {
     '" width="' + f(w) + '" height="' + f(h) + '"/>';
 }
 
+// Hexo caches a post's rendered content, so a chart drawn inside the tag would go stale when another post
+// is added (the series post itself is untouched). The tag therefore only leaves a placeholder; the chart is
+// drawn by the after_render:html filter below, which runs on every page render.
 hexo.extend.tag.register('go_roadmap', function (args) {
   var caption = (args || []).join(' ').trim();
+  return '<figure data-go-roadmap="' + Buffer.from(caption, 'utf8').toString('base64') + '"></figure>';
+});
+
+hexo.extend.filter.register('after_render:html', function (html, locals) {
+  if (typeof html !== 'string' || html.indexOf('data-go-roadmap') === -1) return html;
+  var page = (locals && locals.page) || {};
+  return html.replace(/<figure data-go-roadmap="([^"]*)"><\/figure>/g, function (m, b64) {
+    return buildRoadmap(Buffer.from(b64, 'base64').toString('utf8'), page.lang === 'en', norm(page.path));
+  });
+});
+
+function buildRoadmap(caption, en, here) {
   // footnote markers written in the caption ([^label], already renumbered to [^N] by footnoteNumbers.js)
   // never reach the Markdown renderer, so emit the same markup it produces for a reference
   caption = caption.replace(/\[\^(\d+)\]/g, '<sup><a href="#fn_$1" id="reffn_$1">$1</a></sup>');
   var cfg = yaml.load(fs.readFileSync(pathFn.join(hexo.source_dir, '_data', 'go-roadmap.yml'), 'utf8'));
-  var en = this.lang === 'en';
-  var here = norm(this.path);
   var live = publishedPermalinks(pathFn.join(hexo.source_dir, '_posts'));
   var T = function (o) { return (en && o.title_en) || o.title; };
 
@@ -333,4 +346,4 @@ hexo.extend.tag.register('go_roadmap', function (args) {
     '<div class="gr-track"><div class="gr-frame"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(label) + '">' +
     out.join('') + '</svg></div></div>' + (caption ? '<figcaption>' + caption + '</figcaption>' : '') +
     '<script>' + SCRIPT + '</script></figure>';
-});
+}
