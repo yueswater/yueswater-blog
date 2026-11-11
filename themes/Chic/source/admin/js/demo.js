@@ -16,7 +16,6 @@ export function createDemo(signedIn) {
     onAuth: (cb) => { listeners.push(cb); return { data: { subscription: { unsubscribe() {} } } } },
     signIn: async () => set({ user: { email: 'demo@localhost' } }),
     setPassword: async () => {},
-    sendReset: async () => {},
     signOut: async () => set(null),
     isAdmin: async () => true,
     list: async () => rows,

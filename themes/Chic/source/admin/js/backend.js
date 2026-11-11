@@ -10,7 +10,6 @@ export function createBackend({ supabaseUrl, anonKey }) {
     signIn: async (email, password) => fail(await sb.auth.signInWithPassword({ email, password })),
     signOut: () => sb.auth.signOut(),
     setPassword: async (password) => fail(await sb.auth.updateUser({ password })),
-    sendReset: async (email) => fail(await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/admin/` })),
     isAdmin: async () => { const r = await sb.rpc('is_admin'); return !r.error && r.data === true },
     list: async () => { const r = await sb.from('post_status').select('*'); fail(r); return r.data },
     save: async (rows) => fail(await sb.from('post_status').upsert(rows)),

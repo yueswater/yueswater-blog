@@ -67,6 +67,10 @@ dialog::backdrop { background: rgb(0 0 0 / .35); }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); padding: .6em 1.2em; color: #fff; background: var(--ink); border: 1px solid var(--line); max-width: calc(100% - 32px); }
 .toast.warn { background: var(--warn); color: #fff; } [hidden] { display: none !important; }
 @media (max-width: 640px) { .content { padding: 12px; } .bar { padding: 10px 12px; } }
-.link { display: block; margin: 14px auto 0; padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: .85rem; cursor: pointer; }
-.link:hover { text-decoration: underline; }
-.form-ok { margin: 0; padding: .5em .7em; color: #1b7a3a; border: 1px solid #1b7a3a; font-size: .9rem; }
+
+/* password field with an eye button */
+.pw { position: relative; }
+.pw input { padding-right: 2.6em; }
+.eye { position: absolute; top: 0; right: 0; bottom: 0; width: 2.4em; display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; }
+.eye:hover { color: var(--ink); }
+.eye svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
