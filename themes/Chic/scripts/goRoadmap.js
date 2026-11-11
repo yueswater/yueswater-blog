@@ -294,7 +294,10 @@ hexo.extend.tag.register('go_roadmap', function (args) {
   out.push('<path class="tunnel" style="opacity:.55" d="' +
     ribbon([[[lastIt.x, last + 10], [lastIt.x, last + 70], [XM, last + 60], [XM, last + 100]]], 9) + '"/>');
   items.forEach(function (it, idx) {
-    var slug = norm(it.node.slug), isOn = !!live[slug], isHere = slug === here;
+    // the English edition of a post lives at <slug>-en/; chambers without one stay dark in English
+    var slug = norm(it.node.slug);
+    if (en) slug = slug.replace(/\/$/, '-en/');
+    var isOn = !!live[slug], isHere = slug === here;
     var title = esc(T(it.node));
     var cave = blob(it.x, it.y, RX, RY, 100 + idx * 17);
     var g = '<g class="' + (isOn ? 'on' : 'off') + '">' +
