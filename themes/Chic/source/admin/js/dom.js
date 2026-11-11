@@ -19,7 +19,3 @@ export const fmtTime = (iso) => iso
 export const fmtDate = (iso) => fmtTime(iso).slice(0, 10)
 
 // <input type="datetime-local"> wants local time without a zone: 2026-11-12T09:30
-export const toLocalInput = (iso) => {
-  const d = new Date(iso)
-  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
-}
