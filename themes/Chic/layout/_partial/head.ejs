@@ -123,6 +123,11 @@ if (is_archive()){
         <% } %>
     <% } %>
 <% } %>
+<%# Programming-language trend chart: posts opt in with `lang_trend: true` in the front matter %>
+<% if (page.lang_trend) { %>
+    <script src="/js/lang-trend.js" defer></script>
+<% } %>
+
 <%# Tullock contest simulator: posts opt in with `tullock_sim: true` in the front matter %>
 <% if (page.tullock_sim) { %>
     <script src="/js/tullock-sim.js" defer></script>

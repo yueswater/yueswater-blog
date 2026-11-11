@@ -19,12 +19,16 @@
  *
  * .bib author fields must use "Last, First" (BibTeX convention),
  * multiple authors joined by " and ".
+ * An organisation is written with double braces, author = {{TIOBE Software BV}}, and is printed as is.
  */
 var fs = require('fs');
 var pathFn = require('path');
 
 function parseBibAuthors(raw) {
   return raw.split(/\s+and\s+/).map(function (name) {
+    // {Organisation name} (written {{...}} in the .bib file) is one unit: no first name, no initials
+    var corp = name.trim().match(/^\{([^{}]+)\}$/);
+    if (corp) return { last: corp[1].trim(), first: '' };
     var parts = name.split(',');
     if (parts.length >= 2) {
       return { last: parts[0].trim(), first: parts.slice(1).join(',').trim() };
@@ -65,6 +69,7 @@ function authorListInline(authors, parenthetical) {
 
 function apaAuthorsFull(authors) {
   var formatted = authors.map(function (a) {
+    if (!a.first) return a.last;
     var initials = a.first
       .split(/\s+/)
       .filter(Boolean)
