@@ -1,4 +1,4 @@
-// Tiny toast: window.siteToast('message'). Slides in from the right, fades out leftwards.
+// Tiny toast: window.siteToast('message') or window.siteToast(node). Slides in from the right, fades out leftwards.
 (function () {
   var STAY = 2200;
   var host;
@@ -17,7 +17,13 @@
     if (!message) return;
     var el = document.createElement('div');
     el.className = 'site-toast';
-    el.textContent = message;
+    // one inner span, so mixed content (text + an inline element) is a single flex item
+    // and the toast's gap does not open spaces inside the sentence
+    var text = document.createElement('span');
+    text.className = 'site-toast-text';
+    if (typeof message === 'string') text.textContent = message;
+    else text.appendChild(message); // a Node / DocumentFragment
+    el.appendChild(text);
     getHost().appendChild(el);
     // next frame, so the starting (off-right, transparent) state is painted first
     requestAnimationFrame(function () {

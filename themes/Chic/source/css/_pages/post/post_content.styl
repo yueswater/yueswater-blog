@@ -207,6 +207,19 @@
     margin-bottom 0.8em
   mjx-container[jax="CHTML"][display="true"]
     margin 0.8em 0
+  // double-click copies the LaTeX (js/post/math-copy.js): no word-selection flash, no focus
+  // ring or border; hovering tints the formula in the accent colour
+  mjx-container
+    user-select none
+    outline none
+    border 0
+    border-radius 0.3em
+    transition background-color 0.2s
+    &:hover
+      themed(background-color, rgba(23, 71, 230, 0.08), rgba(90, 169, 255, 0.14))
+  // "式 (3)" links already have their own hover fill
+  a mjx-container:hover
+    background-color transparent
   mjx-mtable[data-latex^="\\begin{align"], mjx-mtable[data-latex^="\\begin{split"], mjx-mtable[data-latex^="\\begin{gather"], mjx-mtable[data-latex^="\\begin{eqnarray"]
     > mjx-table > mjx-itable > mjx-mtr:not(:last-child) > mjx-mtd
       padding-bottom 0.5em !important

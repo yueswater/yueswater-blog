@@ -50,6 +50,33 @@
   transform: translateX(-1.6rem);
 }
 
+/* the LaTeX wordmark, plain HTML + CSS (after Wikipedia's Template:TeX wordmark) */
+.site-toast .tex-wordmark {
+  font-family: "New Computer Modern", "CMU Serif", "cmr10", "LMRoman10-Regular", "Latin Modern Math", "Symbola", "Nimbus Roman No9 L", "Times New Roman", "Times", serif;
+  font-size: 1.15em;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.site-toast .texhtml-upper {
+  text-transform: uppercase;
+}
+
+.site-toast .texhtml-a {
+  font-size: 0.75em;
+  vertical-align: 0.25em;
+  margin-left: -0.36em;
+  margin-right: -0.15em;
+  line-height: 1ex;
+}
+
+.site-toast .texhtml-e {
+  vertical-align: -0.25em;
+  margin-left: -0.1667em;
+  margin-right: -0.125em;
+  line-height: 1ex;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-toast,
   .site-toast.is-out {

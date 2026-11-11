@@ -132,6 +132,8 @@ scripts:
   - /js/vendor/clipboard.min.js
   - /js/post/code-copy.js
   - /js/post/permalink-copy.js
+  - /js/post/math-copy.js
+  - /js/post/footnote-tip.js
   - /js/core/toast.js
   - /js/post/exercises.js
   - /js/data/supabase-views.js

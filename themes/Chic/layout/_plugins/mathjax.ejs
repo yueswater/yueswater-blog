@@ -8,7 +8,24 @@
         },
         options: {
             ignoreHtmlClass: "tex2jax_ignore|dno",
-            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+            skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+            // no right-click menu and none of the accessibility overlays (the focus box
+            // with its info icon, collapsible sub-expressions): double-click copies the
+            // LaTeX instead, see js/post/math-copy.js.
+            // The enable* options alone are overwritten at startup from the menu's
+            // default settings, so those defaults are switched off as well.
+            enableMenu: false,
+            menuOptions: {
+                settings: {
+                    enrich: false,
+                    speech: false,
+                    braille: false,
+                    collapsible: false,
+                    assistiveMml: false,
+                    inTabOrder: false,
+                    help: false
+                }
+            }
         },
         output: {
             font: "mathjax-pagella"
