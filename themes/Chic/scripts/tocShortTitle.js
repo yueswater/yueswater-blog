@@ -10,6 +10,8 @@
  * Runs on already-rendered HTML (after_post_render), so it doesn't
  * interfere with kramed's own heading id / headerlink generation.
  */
+var texSvg = require('./lib/texSvg');
+
 function decodeEntities(s) {
   return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'").replace(/&amp;/g, '&');
@@ -48,6 +50,30 @@ function mathLabel(inner) {
     .replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * Headings are typeset here, at build time, like the titles in lists (lib/texSvg.js): "$N$" in a
+ * heading becomes inline SVG, so it shows at once and the page needs no MathJax for it. data-plain
+ * is what copying the heading puts on the clipboard (js/post/title-copy.js). Formulas inside
+ * <code> are left alone.
+ */
+function typesetHeading(inner) {
+  var inCode = false;
+  return inner.split(/(<[^>]+>)/g).map(function (part) {
+    if (part.charAt(0) === '<') {
+      // the anchor link's tooltip is plain text: no $ in it
+      part = part.replace(/ title="([^"]*)"/, function (m, t) { return ' title="' + t.replace(/\$([^$]+)\$/g, '$1') + '"'; });
+      if (/^<code[\s>]/i.test(part)) inCode = true;
+      else if (/^<\/code>/i.test(part)) inCode = false;
+      return part;
+    }
+    if (inCode) return part;
+    return part.replace(/\$([^$]+)\$/g, function (m, escaped) {
+      var tex = decodeEntities(escaped);
+      return '<span class="title-math" data-plain="' + escapeAttr(plainTex(tex)) + '">' + texSvg(tex) + '</span>';
+    });
+  }).join('');
+}
+
 hexo.extend.filter.register('after_post_render', function (data) {
   data.content = data.content.replace(
     /<(h[1-6]) id="([^"]*)">((?:(?!<\/\1>)[\s\S])*)<\/\1>/g,
@@ -55,7 +81,7 @@ hexo.extend.filter.register('after_post_render', function (data) {
       var m = inner.match(/LeetCode\s+(\d+)/);
       var label = m ? 'LeetCode ' + m[1] : mathLabel(inner);
       if (!label) return full;
-      return '<' + tag + ' id="' + id + '" data-toc="' + escapeAttr(label) + '">' + inner + '</' + tag + '>';
+      return '<' + tag + ' id="' + id + '" data-toc="' + escapeAttr(label) + '">' + typesetHeading(inner) + '</' + tag + '>';
     }
   );
   return data;
