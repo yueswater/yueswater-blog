@@ -29,7 +29,7 @@ nav_lang_split:
   - about
 
 # PDF download button on posts (files come from the Supabase "pdfs" bucket: make reports reports-upload).
-pdf_enable: true
+pdf_enable: false
 
 # favicon
 favicon: /assets/favicon.png

@@ -1,6 +1,6 @@
 ---
 title: Go 語言筆記系列：環境與 Hello World
-date: '2026-11-11'
+date: '2026-11-12'
 lang: zh-TW
 permalink: articles/go/hello-to-go/
 categories: &id001
