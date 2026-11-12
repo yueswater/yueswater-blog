@@ -14,5 +14,6 @@ export function createBackend({ supabaseUrl, anonKey }) {
     list: async () => { const r = await sb.from('post_status').select('*'); fail(r); return r.data },
     save: async (rows) => fail(await sb.from('post_status').upsert(rows)),
     redeploy: async () => fail(await sb.functions.invoke('redeploy')),
+    traffic: async (days) => { const r = await sb.rpc('traffic_summary', { p_days: days }); fail(r); return r.data },
   }
 }
