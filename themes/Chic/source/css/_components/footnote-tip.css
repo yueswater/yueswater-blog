@@ -1,4 +1,4 @@
-/* footnote tooltip (js/post/footnote-tip.js): square corners, accent bar on the left.
+/* link-preview tooltip (js/post/footnote-tip.js, footnotes and every other in-page link): square corners, accent bar on the left.
    The shadow lives on the outer box as a drop-shadow, because the inner box is clipped
    by the genie animation and would clip a box-shadow away. */
 .fn-tip {
@@ -46,4 +46,52 @@
 
 .dark-theme .fn-tip-body a {
   color: #5aa9ff;
+}
+
+/* figures, tables and equations: a wider card showing the thing itself. The body also carries
+   .post-content so the figure and table styles apply; its page-sized type and spacing are reset. */
+.fn-tip-figure,
+.fn-tip-equation {
+  max-width: min(44rem, calc(100vw - 1.5rem));
+}
+
+.fn-tip-body.post-content {
+  padding: 0.7rem 0.95rem;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.fn-tip-body.post-content figure,
+.fn-tip-body.post-content figure:not(.highlight) {
+  margin: 0;
+}
+
+.fn-tip-body.post-content figure.tbl .table-container {
+  overflow-x: auto;
+}
+
+.fn-tip-body.post-content figure img {
+  max-height: 55vh;
+  width: auto;
+  max-width: 100%;
+}
+
+.fn-tip-body mjx-container[display="true"] {
+  margin: 0.2em 0;
+}
+
+/* a linked heading: the title is the first line of the card, the paragraph below it */
+.fn-tip-heading {
+  margin: 0 0 0.3em;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.fn-tip-section .fn-tip-body p {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

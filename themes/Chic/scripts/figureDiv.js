@@ -10,8 +10,11 @@
  * alt text doubles as the caption -- no separate caption line needed. An
  * optional paragraph after a blank line still overrides it if present.
  *
+ * A src ending in -light.png also emits its -dark.png twin (class fig-light /
+ * fig-dark); post_content.styl shows whichever matches the theme.
+ *
  * Figures are auto-numbered in document order per post ("圖 1", "圖 2", ...
- * or "Fig 1", "Fig 2", ... for lang: en posts) and prepended to the caption.
+ * or "Figure 1", "Figure 2", ... for lang: en posts) and prepended to the caption in bold.
  * Writing "@fig-elephant" anywhere else in the same post's body resolves to
  * a markdown link to that figure showing its number, e.g. "[圖 1](#fig-elephant)"
  * -- mirroring the @label reference syntax Typst uses (see the Typst
@@ -27,8 +30,7 @@ var FIG_ATTRS_PATTERN = '#fig-[\\w-]+';
 var IMAGE_RE = /^!\[([^\]]*)\]\(([^)\s]+)\)(?:\{([^}]*)\})?\n?([\s\S]*)$/;
 
 hexo.extend.filter.register('before_post_render', function (data) {
-  var word = data.lang === 'en' ? 'Fig' : '圖';
-  var sep = data.lang === 'en' ? ': ' : '：';
+  var word = data.lang === 'en' ? 'Figure' : '圖';
 
   var numbers = {};
   var count = 0;
@@ -60,8 +62,19 @@ hexo.extend.filter.register('before_post_render', function (data) {
       .replace(/<\/p>\s*$/, '')
       .trim();
 
-    var label = word + ' ' + numbers[id] + sep;
-    return '<figure id="' + id + '"><img src="' + src + '" alt="' + alt + '"' + extra + '><figcaption>' + label + captionHtml + '</figcaption></figure>';
+    // bold "圖 1" / "Figure 1", then a plain space and the caption (no colon)
+    var label = '<strong>' + word + ' ' + numbers[id] + '</strong> ';
+    // chart images come as a -light/-dark pair: emit both, the stylesheet shows the one for the theme
+    var imgHtml;
+    if (/-light\.\w+$/.test(src)) {
+      var darkSrc = src.replace(/-light(\.\w+)$/, '-dark$1');
+      imgHtml = '<img class="fig-light" src="' + src + '" alt="' + alt + '"' + extra + '>' +
+        '<img class="fig-dark" src="' + darkSrc + '" alt="' + alt + '"' + extra + '>';
+    } else {
+      imgHtml = '<img src="' + src + '" alt="' + alt + '"' + extra + '>';
+    }
+
+    return '<figure id="' + id + '">' + imgHtml + '<figcaption>' + label + captionHtml + '</figcaption></figure>';
   });
 
   data.content = data.content.replace(/(?<![\w@])@(fig-[\w-]+)/g, function (match, id) {

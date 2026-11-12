@@ -68,7 +68,7 @@ You can also download the installer from the [official website](https://code.vis
 
 VS Code does not understand Go by itself, so we need the official extension maintained by the Go team, [Go](https://marketplace.visualstudio.com/items?itemName=golang.go). It connects us to Go's language server, `gopls`, and features such as code completion, go to definition and instant error checking all depend on it.
 
-<figure id="fig-go-extension"><img src="images/vscode-go-extension-en.webp" alt="The Go extension page on the VS Code Marketplace, published by Go Team at Google"><figcaption>Figure 1: The Go extension, published by Go Team at Google</figcaption></figure>
+<figure id="fig-go-extension"><img src="images/vscode-go-extension-en.webp" alt="The Go extension page on the VS Code Marketplace, published by Go Team at Google"><figcaption><strong>Figure 1</strong> The Go extension, published by Go Team at Google</figcaption></figure>
 
 In the Extensions panel on the left side of VS Code, search for `Go`, pick the one published by [Go Team at Google](https://marketplace.visualstudio.com/publishers/golang), and click Install. If you prefer the command line, run this in your terminal:
 

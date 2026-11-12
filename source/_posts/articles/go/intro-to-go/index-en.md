@@ -19,13 +19,13 @@ That said, I usually write Python, use FastAPI for backends, and spend the rest 
 
 Let's start with attention. The chart below shows the TIOBE Programming Community index @citep[tiobe2026], which estimates how popular each language is from search engine queries. You can change the time range and the scale, or keep only the languages you care about (the language logos come from @citet[devicon]):
 
-<figure id="fig-lang-trend"><div class="lang-trend"></div><figcaption>Figure 1: TIOBE index of major programming languages, June 2001 to November 2026</figcaption></figure>
+<figure id="fig-lang-trend"><div class="lang-trend"></div><figcaption><strong>Figure 1</strong> TIOBE index of major programming languages, June 2001 to November 2026</figcaption></figure>
 
 For most of the last ten years Go has stayed between 1% and 3%. In November 2026 it stands at 1.69%, the lowest of these ten mainstream languages. Python, by comparison, climbed from 3.57% to 20.86%.
 
 What about jobs? This is the share of IT job ads in the UK that mention Go, according to [IT Jobs Watch](https://www.itjobswatch.co.uk/) @citep[itjobswatch2026]:
 
-<figure id="fig-go-jobs"><div class="lang-trend" data-set="jobs"></div><figcaption>Figure 2: Share of UK IT job ads that mention Go (approximate values)</figcaption></figure>
+<figure id="fig-go-jobs"><div class="lang-trend" data-set="jobs"></div><figcaption><strong>Figure 2</strong> Share of UK IT job ads that mention Go (approximate values)</figcaption></figure>
 
 For permanent roles the share peaked at about 3% in early 2022 and is now only about 0.45%. Of course, this is just one market, so take it with a grain of salt. One more detail is interesting: about 58.5% of the ads that mention Go also ask for Python, so Go looks more like a language that is paired with Python.
 
@@ -57,7 +57,7 @@ My goal is simple: I want to become as comfortable with Go as I am with Python, 
 
 So this series has four parts: the basic syntax, concurrency and the runtime, the frameworks and databases commonly used for backends, and finally a simplified payment service.
 
-{% go_roadmap Figure 3: The learning route of the Go notes series[^gopher] %}
+{% go_roadmap <strong>Figure 3</strong> The learning route of the Go notes series[^gopher] %}
 
 [^gopher]: The gopher artwork is adapted from the Go gopher designed by Renée French (CC BY 4.0) @citep[gophergo].
 

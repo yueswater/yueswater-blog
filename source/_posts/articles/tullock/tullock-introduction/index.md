@@ -17,7 +17,7 @@ tullock_sim: true
 
 2020 年，美國前紐約市長 Michael Bloomberg 參加民主黨總統初選。根據競選團隊的最終財務申報，他在約三個月的競選期間花費近 9.4 億美元 @citep[clark2020bloomberg][^bloomberg]。然而，他在 Super Tuesday 的隔天宣布退選，整場初選僅贏下美屬薩摩亞一處 @citep[ewallwice2020bloomberg]。
 
-<figure><img src="images/bloomberg-2020.jpg" alt="Michael Bloomberg 在競選活動上演說"><figcaption>Bloomberg，2020 年 2 月。<a href="https://commons.wikimedia.org/wiki/File:Michael_Bloomberg_(49474987843).jpg">Gage Skidmore</a>，<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a></figcaption></figure>
+<figure><img src="images/bloomberg-2020.jpg" alt="Michael Bloomberg 在競選活動上演說"><figcaption>Bloomberg，2020 年 2 月（<a href="https://commons.wikimedia.org/wiki/File:Michael_Bloomberg_(49474987843).jpg">Gage Skidmore</a>，<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>）</figcaption></figure>
 
 投入大量資源，卻未必換得勝利，這正是傳統理論不容易解釋的現象。
 

@@ -19,13 +19,13 @@ lang_trend: true
 
 先看關注度。下圖是 TIOBE 程式語言指數 @citep[tiobe2026]，它用搜尋引擎裡各語言的查詢量來估算熱度。你可以切換時間範圍和座標，也可以只留自己在意的語言（語言標誌來自 @citet[devicon]）：
 
-<figure id="fig-lang-trend"><div class="lang-trend"></div><figcaption>圖 1：主要程式語言的 TIOBE 指數走勢，2001 年 6 月至 2026 年 11 月</figcaption></figure>
+<figure id="fig-lang-trend"><div class="lang-trend"></div><figcaption><strong>圖 1</strong> 主要程式語言的 TIOBE 指數走勢，2001 年 6 月至 2026 年 11 月</figcaption></figure>
 
 Go 這十年大多在 1% 到 3% 之間，2026 年 11 月是 1.69%，在這十個主流語言墊底；相較於 Go，Python 則是從 3.57% 一路爬到 20.86%。
 
 那從職缺的角度看呢？根據英國 [ITJobsWatch](https://www.itjobswatch.co.uk/) @citep[itjobswatch2026] 針對 IT 廣告中有提到 Go 的比例：
 
-<figure id="fig-go-jobs"><div class="lang-trend" data-set="jobs"></div><figcaption>圖 2：英國 IT 職缺廣告中提到 Go 的占比（約略值）</figcaption></figure>
+<figure id="fig-go-jobs"><div class="lang-trend" data-set="jobs"></div><figcaption><strong>圖 2</strong> 英國 IT 職缺廣告中提到 Go 的占比（約略值）</figcaption></figure>
 
 正職在 2022 年初衝到約 3%，現在只剩約 0.45%。當然，這只是英國一個市場，參考就好。另外有個地方蠻有意思：提到 Go 的廣告裡，約 58.5% 同時要求 Python，所以 Go 比較像是和 Python 搭配的語言。
 
@@ -57,7 +57,7 @@ Go 是 Google 的 Robert Griesemer、Rob Pike 和 Ken Thompson 在 2007 年 9 �
 
 因此本系列將會分成四段：基礎語法、並行與 runtime、後端常用的框架和資料庫，最後做一個簡化的支付服務。
 
-{% go_roadmap 圖 3：Go 筆記系列的學習路線[^gopher] %}
+{% go_roadmap <strong>圖 3</strong> Go 筆記系列的學習路線[^gopher] %}
 
 [^gopher]: 地鼠造型改作自 Renée French 設計的 Go gopher（CC BY 4.0）@citep[gophergo]。
 

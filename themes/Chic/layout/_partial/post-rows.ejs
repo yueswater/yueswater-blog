@@ -31,7 +31,7 @@
                 <% group.posts.forEach(function (post) {
                     var cats = post.categories ? post.categories.map(function (c) { return c.name; }) : [];
                     var topCat = cats.length ? cats[0] : '';
-                    var excerpt = post.excerpt ? strip_html(post.excerpt).replace(/\s+/g, ' ').trim() : '';
+                    var excerpt = post.excerpt ? excerpt_inline(post.excerpt) : '';
                     var no = post_no(post);
                     var reading = reading_time(post) + ' ' + __('min_unit');
                     var meta = ' · ' + date(post.date, 'YYYY.MM.DD') + (topCat ? ' · ' + topCat : '') + ' · ' + reading;
@@ -41,7 +41,7 @@
                         <span class="post-row-no" data-meta="<%= meta %>">NO.<%= no < 10 ? '0' + no : no %></span>
                         <span class="post-row-main">
                             <span class="post-row-title"><%- title_html(post.title) %></span>
-                            <% if (excerpt) { %><span class="post-row-excerpt"><%= excerpt %></span><% } %>
+                            <% if (excerpt) { %><span class="post-row-excerpt"><%- excerpt %></span><% } %>
                         </span>
                         <span class="post-row-cats"><%= topCat %></span>
                         <time class="post-row-date" datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY.MM.DD') %></time>

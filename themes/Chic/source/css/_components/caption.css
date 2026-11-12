@@ -22,6 +22,11 @@
   color: #8397b0;
 }
 
+.post-content figcaption > strong:first-child {
+  /* "圖 1" / "Figure 1" / "表 1": a gap of 0.8em before the caption text */
+  margin-right: 0.8em;
+}
+
 .post-content figcaption .caption-credit {
   font-size: 0.9em;
 }

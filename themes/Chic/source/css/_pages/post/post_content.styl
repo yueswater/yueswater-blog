@@ -168,14 +168,118 @@
       font-size 1em
       font-weight 600
       line-height 1.4
-      letter-spacing 0.08em
+      letter-spacing 0.04em
+      // a header stays on one line (font size untouched): the columns grow to fit it
+      white-space nowrap
       text-align left
       color #fff
       background $row-fill
     th, td
-      padding 0.7em 1em
+      padding 0.7em 0.8em
       border 0
       themed(border-bottom, 1px solid $light-line, 1px solid $dark-line)
+
+  // interval cell "807 至 991" (scripts/ciRange.js): the 至 lines up between rows
+  .ci
+    position relative
+    display inline-block
+    white-space nowrap
+    font-variant-numeric tabular-nums
+  .ci-lo, .ci-hi
+    display inline-block
+    min-width 5ch
+  .ci-lo
+    text-align right
+  .ci-hi
+    text-align left
+  // a number in a centred column ("27.5 秒", "1.19"): the numbers share one box width and the
+  // last digits line up; a unit hangs outside the box
+  .num
+    position relative
+    display inline-block
+    min-width 4ch
+    text-align right
+    white-space nowrap
+    font-variant-numeric tabular-nums
+    &[data-unit]::after
+      content attr(data-unit)
+      position absolute
+      left 100%
+      padding-left 0.3em
+  // a unit after the interval hangs outside, so it does not shift the 至 of the rows without one
+  .ci-unit
+    position absolute
+    left 100%
+
+  // three-line table (scripts/tableDiv.js): rules on top, under the header and at the bottom only
+  figure.tbl
+    margin 2em 0
+    figcaption
+      margin 0 0 0.6em
+    table
+      margin 0
+      border-top 2px solid currentColor
+      border-bottom 2px solid currentColor
+      thead th
+        color inherit
+        background none
+        border-bottom 1px solid currentColor
+        // the body cells are centred (the figure is), so the header is too; only the first column,
+        // the row names, stays on the left
+        text-align center
+        &:first-child
+          text-align left
+      td
+        border-bottom 0
+        // a cell stays on one line ("< 0.001", "27.5 秒", an interval); the table scrolls on phones
+        white-space nowrap
+        padding-top 0.28em
+        padding-bottom 0.28em
+      // the figure is centred (caption.css) and its cells inherit that. The first column stays
+      // on the left and is indented one character (a header character is 1em plus its 0.04em
+      // letter-spacing), so the row names start under the second character of the header, 目 in 項目
+      td
+        &:first-child
+          text-align left
+          padding-left calc(0.8em + 1.04em)
+    // second header line ({sub}): the rule goes under it, not under the first line
+    table thead tr:not(:last-child) th
+      border-bottom 0
+      padding-bottom 0.25em
+    // a thin rule under each "模型 X", a little shorter than its column
+    table thead tr:not(:last-child) th:not(:first-child)
+      background-image linear-gradient(currentColor, currentColor)
+      background-repeat no-repeat
+      background-position center bottom
+      background-size calc(100% - 3em) 1px
+    table thead tr.head-sub th
+      padding-top 0.2em
+      font-weight 400
+    // thin rule above a row ({rule})
+    table tbody tr.rule-above td
+      border-top 1px solid currentColor
+    // a coefficient and the standard error in the row under it (empty first cell) read as one block
+    table tbody tr:has(+ tr > td:first-child:empty) td
+      padding-bottom 0.1em
+    table tbody tr:has(> td:first-child:empty) td
+      padding-top 0
+    // 註：a short line under the table; several notes become a small numbered list
+    .tbl-note
+      margin 0.6em 0 0
+      // the renderer leaves an empty paragraph after the first line; its 1.25em margin made a gap
+      p
+        margin 0
+      font-size 0.82em
+      line-height 1.6
+      text-align left
+      opacity 0.85
+      ol
+        margin 0.2em 0 0
+        padding-left 1.6em
+      li
+        margin 0
+    .tbl-note-list:not(.tbl-note-lead) .tbl-note-label
+      display block
 
   ul, ol
     margin 0 0 1.25em
@@ -244,6 +348,15 @@
     // white-backed figures melt into the tinted page (light mode only)
     body:not(.dark-theme) &
       mix-blend-mode multiply
+
+  // chart pairs (figureDiv.js): the transparent PNG drawn for the current theme is the one shown
+  img.fig-dark
+    display none
+  .dark-theme &
+    img.fig-light
+      display none
+    img.fig-dark
+      display block
 
   // shields.io-style badges (e.g. project website/commits links) are meant
   // to sit inline in a row, not stack as full-width block images
@@ -318,8 +431,16 @@
         float right
         text-align right 
 
+// a cell stays on one line ("教學文章" must not break into 教學文 / 章); a table wider than the text column scrolls
+.post-content table
+  th, td
+    white-space nowrap
+
 // phones: let long cell text wrap instead of widening the page
 @media (max-width: 699px)
   .post-content table
+    // headers do not wrap, so a wide table scrolls sideways instead of widening the page
+    display block
+    overflow-x auto
     th, td
       overflow-wrap anywhere

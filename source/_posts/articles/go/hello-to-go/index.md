@@ -68,7 +68,7 @@ winget install Microsoft.VisualStudioCode
 
 VS Code 本身不認得 Go，需要裝 Go 團隊維護的官方擴充套件 [Go](https://marketplace.visualstudio.com/items?itemName=golang.go)。它會幫我們接上 Go 的語言伺服器 `gopls`，程式碼補全、跳到定義、即時報錯等方便的功能都需要仰賴該套件。
 
-<figure id="fig-go-extension"><img src="images/vscode-go-extension.webp" alt="VS Code Marketplace 上的 Go 擴充套件頁面，發行者為 Go Team at Google"><figcaption>圖 1：Go 擴充套件，發行者為 Go Team at Google</figcaption></figure>
+<figure id="fig-go-extension"><img src="images/vscode-go-extension.webp" alt="VS Code Marketplace 上的 Go 擴充套件頁面，發行者為 Go Team at Google"><figcaption><strong>圖 1</strong> Go 擴充套件，發行者為 Go Team at Google</figcaption></figure>
 
 在 VS Code 左側的擴充套件面板搜尋 `Go`，選發行者是 [Go Team at Google](https://marketplace.visualstudio.com/publishers/golang) 的那個，按安裝即可。想用指令安裝的話，在終端機輸入：
 

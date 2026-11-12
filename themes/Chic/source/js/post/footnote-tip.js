@@ -1,6 +1,8 @@
-// Hover (or focus) a footnote number in a post: its text pops up in a square-cornered
-// tooltip that unfolds out of the number like the macOS "genie" minimise effect (and folds
-// back into it when it closes). Clicking the number still jumps to the footnote.
+// Hover (or focus) a link inside a post that points at something on the same page (a footnote,
+// a citation, a figure or table, an equation, a heading; see ref-content.js): what it points at
+// pops up in a square-cornered tooltip that unfolds out of the link like the macOS "genie"
+// minimise effect (and folds back into it when it closes). Clicking the link still jumps there.
+// The tooltip goes above or below the link, whichever side of the viewport has the room.
 (function () {
   if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;
 
@@ -8,6 +10,7 @@
   var HIDE_DELAY = 220;
   var GAP = 10;
   var MARGIN = 8;
+  var TOP = 80;          // the fixed site header covers the top of the viewport
   var OPEN_MS = 460;
   var CLOSE_MS = 260;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -15,29 +18,6 @@
   var tip = null;      // { root, body, ref, anim }
   var showTimer = 0;
   var hideTimer = 0;
-
-  function footnoteOf(ref) {
-    var id = (ref.getAttribute('href') || '').replace(/^#/, '');
-    return id ? document.getElementById(id) : null;
-  }
-
-  // the footnote's own content: without its leading "1." and the back-link arrow
-  function contentOf(note) {
-    var frag = document.createDocumentFragment();
-    var kids = Array.prototype.slice.call(note.childNodes);
-    var seenSup = false;
-    kids.forEach(function (node) {
-      if (!seenSup && node.nodeType === 1 && node.tagName === 'SUP') { seenSup = true; return; }
-      if (node.nodeType === 1 && node.tagName === 'A' && /^#reffn_/.test(node.getAttribute('href') || '')) return;
-      var copy = node.cloneNode(true);
-      if (seenSup && copy.nodeType === 3) {
-        copy.nodeValue = copy.nodeValue.replace(/^\s*[.．。]\s*/, '');
-        seenSup = false;
-      }
-      frag.appendChild(copy);
-    });
-    return frag;
-  }
 
   function clearTimers() {
     clearTimeout(showTimer);
@@ -68,30 +48,40 @@
   }
 
   function open(ref) {
-    var note = footnoteOf(ref);
-    if (!note) return;
+    var pv = window.ChicRefContent && window.ChicRefContent.preview(ref);
+    if (!pv) return;
     if (tip && tip.ref === ref) { clearTimeout(hideTimer); if (tip.closing) reopen(); return; }
     destroy();
 
     var root = document.createElement('div');
-    root.className = 'fn-tip';
+    root.className = 'fn-tip fn-tip-' + pv.kind;
     root.setAttribute('role', 'tooltip');
     var body = document.createElement('div');
     body.className = 'fn-tip-body';
-    body.appendChild(contentOf(note));
+    if (pv.kind !== 'footnote' && pv.kind !== 'cite' && pv.kind !== 'section') body.classList.add('post-content');
+    body.appendChild(pv.node);
     root.appendChild(body);
     root.style.visibility = 'hidden';
     document.body.appendChild(root);
 
-    // place it: above the number when there is room, otherwise below; kept inside the viewport
+    // place it where the room is: above the link when it fits there, else below when it fits
+    // there, else on the roomier side with the card capped to that room (it scrolls inside)
     var r = ref.getBoundingClientRect();
-    var w = root.offsetWidth;
-    var h = root.offsetHeight;
     var vw = document.documentElement.clientWidth;
     var vh = document.documentElement.clientHeight;
-    var up = r.top - h - GAP >= MARGIN || r.top > vh - r.bottom;
+    var roomAbove = r.top - GAP - TOP;
+    var roomBelow = vh - r.bottom - GAP - MARGIN;
+    var h = root.offsetHeight;
+    var up = h <= roomAbove || (h > roomBelow && roomAbove > roomBelow);
+    var room = up ? roomAbove : roomBelow;
+    if (h > room) {
+      body.style.maxHeight = Math.max(80, room) + 'px';
+      body.style.overflowY = 'auto';
+      h = root.offsetHeight;
+    }
+    var w = root.offsetWidth;
     var top = up ? r.top - h - GAP : r.bottom + GAP;
-    top = Math.max(MARGIN, Math.min(top, vh - h - MARGIN));
+    top = Math.max(TOP, Math.min(top, vh - h - MARGIN));
     var cx = r.left + r.width / 2;
     var left = Math.max(MARGIN, Math.min(cx - w / 2, vw - w - MARGIN));
     root.style.left = left + 'px';
@@ -149,8 +139,9 @@
   }
 
   function refOf(target) {
-    var a = target.closest && target.closest('.post-content a[id^="reffn_"]');
-    return a || null;
+    var a = target.closest && target.closest('.post-content a[href^="#"]');
+    if (!a || a.classList.contains('headerlink') || /^#reffn_/.test(a.getAttribute('href'))) return null;
+    return a;
   }
 
   document.addEventListener('mouseover', function (e) {

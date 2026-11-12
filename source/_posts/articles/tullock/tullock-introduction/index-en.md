@@ -17,7 +17,7 @@ tullock_sim: true
 
 In 2020, Michael Bloomberg, the former mayor of New York City, ran in the Democratic presidential primary. According to his campaign's final financial filings, he spent almost 940 million US dollars in about three months @citep[clark2020bloomberg][^bloomberg]. Yet he dropped out the day after Super Tuesday, having won only one contest in the whole primary, American Samoa @citep[ewallwice2020bloomberg].
 
-<figure><img src="images/bloomberg-2020.jpg" alt="Michael Bloomberg speaking at a campaign event"><figcaption>Bloomberg, February 2020. <a href="https://commons.wikimedia.org/wiki/File:Michael_Bloomberg_(49474987843).jpg">Gage Skidmore</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a></figcaption></figure>
+<figure><img src="images/bloomberg-2020.jpg" alt="Michael Bloomberg speaking at a campaign event"><figcaption>Bloomberg, February 2020 (<a href="https://commons.wikimedia.org/wiki/File:Michael_Bloomberg_(49474987843).jpg">Gage Skidmore</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>)</figcaption></figure>
 
 Spending a huge amount of resources without necessarily winning is exactly the kind of behavior that traditional theory has trouble explaining.
 
