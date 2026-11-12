@@ -82,7 +82,38 @@
   align-items: center;
   cursor: pointer;
 }
-.consent-row input { grid-row: 1; margin: 0; width: 1.1rem; height: 1.1rem; }
+/* flat square box in the site's accent blue; the tick is drawn in from the bottom when checked */
+.consent-row input {
+  grid-row: 1;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  margin: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  border: 1.5px solid #64748b;
+  border-radius: 0;
+  background: transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.consent-row input::after {
+  content: '';
+  position: absolute;
+  left: 0.3rem;
+  top: 0.08rem;
+  width: 0.3rem;
+  height: 0.6rem;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.22s ease-out;
+}
+.consent-row input:checked { background: #1747e6; border-color: #1747e6; }
+.consent-row input:checked::after { clip-path: inset(0); transition-delay: 0.06s; }
+.consent-row input:disabled { cursor: default; opacity: 0.5; }
 .consent-row-title { font-weight: 700; }
 .consent-row-body { grid-column: 2; font-size: 0.88rem; line-height: 1.55; opacity: 0.85; }
 
@@ -97,6 +128,9 @@
 .dark-theme .consent-btn-main:hover { background: #d8e3f2; }
 .dark-theme .consent-btn-alt { color: #f1f6fc; }
 .dark-theme .consent-btn-alt:hover { background: rgba(241, 246, 252, 0.1); }
+.dark-theme .consent-row input { border-color: #8a9ab3; }
+.dark-theme .consent-row input::after { border-color: #0f1a2e; }
+.dark-theme .consent-row input:checked { background: #5aa9ff; border-color: #5aa9ff; }
 .dark-theme .consent-btn:focus-visible,
 .dark-theme .consent-row input:focus-visible { outline-color: #5aa9ff; }
 
@@ -107,8 +141,7 @@
   background: none;
   border: 0;
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 @media (max-width: 40rem) {
@@ -118,5 +151,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .consent-backdrop,
-  .consent-panel { transition: none; }
+  .consent-panel,
+  .consent-row input,
+  .consent-row input::after { transition: none; }
 }
