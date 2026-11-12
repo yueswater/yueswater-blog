@@ -169,8 +169,10 @@
       font-weight 600
       line-height 1.4
       letter-spacing 0.04em
-      // a header stays on one line (font size untouched): the columns grow to fit it
-      white-space nowrap
+      // a header may wrap, so a table never grows wider than the text column; the lines break where
+      // scripts/tableHeaderGlue.js leaves a break (never inside a unit in parentheses), evenly filled
+      white-space normal
+      text-wrap balance
       text-align left
       color #fff
       background $row-fill
@@ -231,8 +233,6 @@
           text-align left
       td
         border-bottom 0
-        // a cell stays on one line ("< 0.001", "27.5 秒", an interval); the table scrolls on phones
-        white-space nowrap
         padding-top 0.28em
         padding-bottom 0.28em
       // the figure is centred (caption.css) and its cells inherit that. The first column stays
@@ -431,9 +431,13 @@
         float right
         text-align right 
 
-// a cell stays on one line ("教學文章" must not break into 教學文 / 章); a table wider than the text column scrolls
+// a short body cell stays on one line ("教學文章" must not break into 教學文 / 章): scripts/tableCellFit.js gives it
+// class nw; a long cell may wrap, so a table never grows wider than the text column. Every cell is centred
+// vertically, so a header that wraps does not leave its one-line neighbours hanging at the top
 .post-content table
   th, td
+    vertical-align middle
+  td.nw
     white-space nowrap
 
 // phones: let long cell text wrap instead of widening the page
