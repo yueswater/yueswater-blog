@@ -26,6 +26,8 @@
   "homepage": "https://github.com/yueswater/yueswater-blog#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
+    "@mathjax/mathjax-pagella-font": "^4.1.3",
+    "@mathjax/src": "^4.1.3",
     "clipboard": "^2.0.11",
     "hexo": "^8.1.2",
     "hexo-admonition-new": "^2.0.1",

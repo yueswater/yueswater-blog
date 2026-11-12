@@ -40,7 +40,7 @@
                     <a class="post-row-link" href="<%- url_for(post.path) %>">
                         <span class="post-row-no" data-meta="<%= meta %>">NO.<%= no < 10 ? '0' + no : no %></span>
                         <span class="post-row-main">
-                            <span class="post-row-title"><%- title_html(post.title, true) %></span>
+                            <span class="post-row-title"><%- title_html(post.title) %></span>
                             <% if (excerpt) { %><span class="post-row-excerpt"><%= excerpt %></span><% } %>
                         </span>
                         <span class="post-row-cats"><%= topCat %></span>

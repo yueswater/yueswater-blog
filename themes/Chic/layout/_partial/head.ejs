@@ -15,7 +15,7 @@
     <meta name="keywords" content="<%- config.keywords %>">
 <% } %>
 <%
-var title = page.title;
+var title = plain_title(page.title);
 
 if (is_archive()){
     title = __('archive_a');
