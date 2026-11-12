@@ -9,8 +9,9 @@ const { TeX } = require(SRC + 'input/tex.js');
 const { SVG } = require(SRC + 'output/svg.js');
 const { liteAdaptor } = require(SRC + 'adaptors/liteAdaptor.js');
 const { RegisterHTMLHandler } = require(SRC + 'handlers/html.js');
-for (const pkg of ['base', 'ams', 'newcommand', 'noundefined']) {
-  require(SRC + 'input/tex/' + pkg + '/' + pkg[0].toUpperCase() + pkg.slice(1) + 'Configuration.js');
+// file names are case-sensitive on Linux (Vercel): NoUndefined, not Noundefined
+for (const [dir, file] of [['base', 'Base'], ['ams', 'Ams'], ['newcommand', 'Newcommand'], ['noundefined', 'NoUndefined']]) {
+  require(SRC + 'input/tex/' + dir + '/' + file + 'Configuration.js');
 }
 const { MathJaxPagellaFont } = require('@mathjax/mathjax-pagella-font/cjs/svg.js');
 
