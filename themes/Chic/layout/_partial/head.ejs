@@ -105,6 +105,12 @@ if (is_archive()){
     <script src="<%- url_for(url) %>?v=<%- build_version() %>"></script>
     <% }); %>
 <% } %>
+<%# cookie consent banner + opt-in landing-source tracking (order matters: state, copy, UI, parsing, sender) %>
+<% if (theme.consent_enable) { %>
+    <% ['/js/core/consent.js', '/js/core/consent-text.js', '/js/core/consent-ui.js', '/js/data/traffic-core.js', '/js/data/traffic.js'].forEach(url => { %>
+    <script src="<%- url_for(url) %>?v=<%- build_version() %>"></script>
+    <% }); %>
+<% } %>
 <%# supabase: powers per-page view counts %>
 <% if(theme.supabase_url && theme.supabase_anon_key){ %>
     <script>

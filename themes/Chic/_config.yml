@@ -39,6 +39,10 @@ favicon: /assets/favicon.png
 supabase_url: https://oiebjktmnefstbzgyhdg.supabase.co
 supabase_anon_key: sb_publishable_tsZ5iEV8MB6ue78FLQpTUw_0zJv_r35
 
+# Cookie consent banner + traffic-source tracking (landing events go to Supabase only after the
+# visitor accepts analytics; see supabase/migrations/*_traffic_events.sql)
+consent_enable: true
+
 # Profile
 nickname: 岳氏礦泉水
 nickname_en: Anthony

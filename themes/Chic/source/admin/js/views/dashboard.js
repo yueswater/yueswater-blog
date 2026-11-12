@@ -4,9 +4,10 @@ import { build, counts, matches } from '../store.js'
 import { renderToolbar } from './toolbar.js'
 import { renderTable } from './table.js'
 import { openDialog } from './dialog.js'
+import { renderTraffic } from './traffic.js'
 
 export async function renderDashboard(root, { backend, data, email, onSignOut }) {
-  const state = { q: '', tab: 'all', selected: new Set() }
+  const state = { q: '', tab: 'all', selected: new Set(), view: 'posts' }
   let posts = build(data, await backend.list())
   const toast = el('div', { class: 'toast', role: 'status', hidden: true })
   const body = el('div', { class: 'content' })
@@ -54,13 +55,23 @@ export async function renderDashboard(root, { backend, data, email, onSignOut })
     if (keep) { const s = body.querySelector('.search'); s.focus(); s.setSelectionRange(s.value.length, s.value.length) }
   }
 
+  const views = [['posts', '文章'], ['traffic', '流量來源']]
+  const viewTabs = views.map(([key, label]) => el('button', { class: 'tab', onclick: () => setView(key) }, label))
+  function setView(key) {
+    state.view = key
+    viewTabs.forEach((b, i) => b.setAttribute('aria-selected', String(views[i][0] === key)))
+    if (key === 'traffic') renderTraffic(body, { backend })
+    else draw()
+  }
+
   root.replaceChildren(
     el('header', { class: 'bar' },
       el('strong', {}, '文章管理'),
+      el('div', { class: 'tabs' }, ...viewTabs),
       backend.mode === 'demo' ? el('span', { class: 'pill unpublished' }, '示範模式') : null,
       el('span', { class: 'spacer' }),
       el('span', { class: 'muted small' }, email),
       el('button', { class: 'btn small', onclick: onSignOut }, '登出')),
     body, toast)
-  draw()
+  setView('posts')
 }

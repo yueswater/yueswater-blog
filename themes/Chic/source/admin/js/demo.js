@@ -21,5 +21,11 @@ export function createDemo(signedIn) {
     list: async () => rows,
     save: async (changed) => { rows = [...rows.filter((r) => !changed.some((c) => c.slug === r.slug)), ...changed] },
     redeploy: async () => {},
+    traffic: async (days) => ({
+      days, total: 42,
+      channels: [{ channel: 'facebook', n: 18 }, { channel: 'direct', n: 12 }, { channel: 'google', n: 7 }, { channel: 'threads', n: 5 }],
+      campaigns: [{ campaign: 'launch', source: 'ig', medium: 'social', n: 9 }],
+      pages: [{ path: '/', n: 20 }, { path: '/posts/articles/go/hello-to-go/', n: 11 }],
+    }),
   }
 }
