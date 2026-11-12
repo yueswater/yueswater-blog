@@ -36,11 +36,11 @@
 
   function send() {
     if (ss(function (s) { return s.getItem(SENT); })) return;
-    // flag first: a reload or a second listener must not send twice
-    ss(function (s) { s.setItem(SENT, '1'); s.removeItem(LANDING); });
     var url = window.SUPABASE_URL;
     var key = window.SUPABASE_ANON_KEY;
-    if (!url || !key) return;
+    if (!url || !key) return; // not configured yet: keep the landing, try again later
+    // flag first: a reload or a second listener must not send twice
+    ss(function (s) { s.setItem(SENT, '1'); s.removeItem(LANDING); });
     fetch(url + '/rest/v1/rpc/record_visit', {
       method: 'POST',
       headers: { apikey: key, Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
@@ -58,7 +58,12 @@
     }).catch(function () { /* analytics must never break the page */ });
   }
 
-  if (current && current.analytics) send();
+  // already consented on an earlier visit: wait for the page, because the Supabase address is
+  // defined by a later inline script in <head>
+  if (current && current.analytics) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', send);
+    else send();
+  }
   C.subscribe(function (state) {
     if (state && state.analytics) send();
     else ss(function (s) { s.removeItem(LANDING); });
