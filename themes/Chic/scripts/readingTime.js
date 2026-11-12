@@ -1,29 +1,19 @@
 /**
- * Language-aware, weighted reading time. Three cost components are each
- * estimated in minutes, then scaled by their own weight before summing:
+ * Language-aware reading time, from the median speeds in public reading data
+ * (see the post articles/statistics/reading-time):
  *
- *   - text:    CJK chars / 400 per min (zh posts) or words / 200 per min
- *              (everything else) -- reading speed differs a lot by script
- *   - code:    lines inside fenced code blocks / 40 per min -- tracing
- *              through logic is much slower than reading prose, and the
- *              old version excluded code entirely
- *   - heading: h3/h4 count * a per-heading context-switch cost (20s / 10s)
- *              -- more subsections means more mental gear-shifting, even
- *              at the same word/line count
+ *   - text: CJK chars / 450 per min (zh posts), from the MECO wave 2 Chinese
+ *           readers (median of reader medians about 458), or words / 250 per
+ *           min (everything else), from Weller et al. 2020 (median 258)
+ *   - code: 2.5 seconds per line inside highlighted code blocks, from EMIP
+ *           (about 2.6 s per line, task time including answering)
  *
- * Weights (TEXT/HEADING/CODE) are a deliberately tuned judgment call, not
- * a formula with a "correct" answer -- adjust the constants below to
- * retune the estimate.
+ * The two parts are added and rounded to whole minutes, at least 1. Headings,
+ * images and formulas add nothing: there is no data on their reading cost.
  */
-var CJK_CHARS_PER_MIN = 400;
-var EN_WORDS_PER_MIN = 200;
-var CODE_LINES_PER_MIN = 40;
-var H3_SECONDS = 20;
-var H4_SECONDS = 10;
-
-var TEXT_WEIGHT = 1.5;
-var HEADING_WEIGHT = 1.2;
-var CODE_WEIGHT = 1.3;
+var CJK_CHARS_PER_MIN = 450;
+var EN_WORDS_PER_MIN = 250;
+var CODE_SECONDS_PER_LINE = 2.5;
 
 function stripMarkup(html) {
   return String(html)
@@ -46,11 +36,6 @@ function countCodeLines(html) {
   return lines;
 }
 
-function countHeadings(html, tag) {
-  var re = new RegExp('<' + tag + '[ >]', 'g');
-  return (String(html).match(re) || []).length;
-}
-
 hexo.extend.helper.register('reading_time', function (post) {
   if (!post || !post.content) return 1;
 
@@ -65,16 +50,7 @@ hexo.extend.helper.register('reading_time', function (post) {
     textMinutes = words.length / EN_WORDS_PER_MIN;
   }
 
-  var codeMinutes = countCodeLines(post.content) / CODE_LINES_PER_MIN;
+  var codeMinutes = countCodeLines(post.content) * CODE_SECONDS_PER_LINE / 60;
 
-  var h3Count = countHeadings(post.content, 'h3');
-  var h4Count = countHeadings(post.content, 'h4');
-  var headingMinutes = (h3Count * H3_SECONDS + h4Count * H4_SECONDS) / 60;
-
-  var total =
-    textMinutes * TEXT_WEIGHT +
-    headingMinutes * HEADING_WEIGHT +
-    codeMinutes * CODE_WEIGHT;
-
-  return Math.max(1, Math.ceil(total));
+  return Math.max(1, Math.round(textMinutes + codeMinutes));
 });
