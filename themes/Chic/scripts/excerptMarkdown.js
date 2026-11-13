@@ -10,13 +10,14 @@
  * post list shows a formula and not its source, with no MathJax on the list page:
  *   data.excerpt  html; $tex$ -> <span class="title-math" data-plain="tex"><svg ...></span>
  * Helpers (the model keeps only the html, so both start from it):
- *   excerpt_inline(html)  the one-line text of the post list: every tag stripped except those math spans
+ *   excerpt_inline(html)  the one-line text of the post list: every tag stripped except those math spans and <code>
  *   excerpt_plain(html)   plain text, a formula as its source without $ (meta description, link previews, share cards)
  */
 const texSvg = require('./lib/texSvg');
 
 const MATH = /\$([^$\s][^$]*?)\$/g;
 const MATH_SPAN = /<span class="title-math"[^>]*>[\s\S]*?<\/span>/g;
+const KEEP = new RegExp(MATH_SPAN.source + '|<code>[\\s\\S]*?<\\/code>', 'g'); // what the post list keeps as markup
 
 function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -46,11 +47,11 @@ hexo.extend.filter.register('after_post_render', function (data) {
 
 hexo.extend.helper.register('excerpt_inline', function (html) {
   if (!html) return '';
-  const spans = String(html).match(MATH_SPAN) || [];
-  const pieces = String(html).split(MATH_SPAN);
+  const kept = String(html).match(KEEP) || [];
+  const pieces = String(html).split(KEEP);
   return pieces.map(function (piece, i) {
     const text = escapeHtml(unescapeHtml(piece.replace(/<[^>]+>/g, '')));
-    return text + (spans[i] || '');
+    return text + (kept[i] || '');
   }).join('').replace(/\s+/g, ' ').trim();
 });
 
