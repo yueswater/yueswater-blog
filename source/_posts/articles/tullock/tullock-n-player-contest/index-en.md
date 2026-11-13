@@ -10,7 +10,7 @@ tags:
 - Economics
 - Game Theory
 - Rent-Seeking
-excerpt: We extend the Tullock contest from two players to n players and relax the contest intensity r, and look at how equilibrium spending, the conditions for existence, and rent dissipation change.
+excerpt: We extend the Tullock contest from two players to $n$ players and relax the contest intensity $r$, and look at how equilibrium spending, the conditions for existence, and rent dissipation change.
 mathjax: true
 tullock_sim: true
 ---
