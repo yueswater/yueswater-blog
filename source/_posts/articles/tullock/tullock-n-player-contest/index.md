@@ -10,7 +10,7 @@ tags:
 - 經濟學
 - 賽局理論
 - 尋租
-excerpt: 把 Tullock 競賽從兩人擴張到 n 人，並放寬競賽強度 r，觀察均衡投入、存在條件與租金耗散如何隨之改變。
+excerpt: 把 Tullock 競賽從兩人擴張到 $n$ 人，並放寬競賽強度 $r$，觀察均衡投入、存在條件與租金耗散如何隨之改變。
 mathjax: true
 tullock_sim: true
 ---
