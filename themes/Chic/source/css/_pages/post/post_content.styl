@@ -446,5 +446,9 @@
     // headers do not wrap, so a wide table scrolls sideways instead of widening the page
     display block
     overflow-x auto
+    // a table narrower than the column sits in the middle of it, not against the left edge
+    width fit-content
+    margin-left auto
+    margin-right auto
     th, td
       overflow-wrap anywhere
