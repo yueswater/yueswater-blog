@@ -1,5 +1,5 @@
 ---
-title: Go 語言筆記系列：型別
+title: Go 語言筆記系列：變數與型別
 date: '2026-11-14'
 lang: zh-TW
 permalink: articles/go/types/

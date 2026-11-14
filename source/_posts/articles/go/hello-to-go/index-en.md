@@ -185,7 +185,7 @@ It prints `Hello, Go!` again. This executable already contains everything it nee
 
 ## Summary
 
-In this post we installed Go and VS Code, created a module with `go mod init`, and wrote our first Go program. In the next post, we will start with Go's basic types and control flow.
+In this post we installed Go and VS Code, created a module with `go mod init`, and wrote our first Go program. In the next post, we will start with variables and types in Go.
 
 [^version]: At the time of writing, the Go version was `1.27.3`. If anything here is unclear or out of date, please follow the official documentation for the version you installed.
 

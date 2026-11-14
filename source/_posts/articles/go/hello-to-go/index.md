@@ -185,7 +185,7 @@ go build
 
 ## 小結
 
-這篇從安裝 Go 和 VS Code 開始，用 `go mod init` 建立 Module，並寫下第一支 Go 程式。下一篇我們將會從 Go 基本的型別與流程控制講起～
+這篇從安裝 Go 和 VS Code 開始，用 `go mod init` 建立 Module，並寫下第一支 Go 程式。下一篇我們將會從 Go 的變數與型別講起～
 
 [^version]: 本文撰寫時的 Go 版本號為 `1.27.3`，若本文撰寫之內容有歧義，請以安裝版本對應的官方文件為主。
 

@@ -1,5 +1,5 @@
 ---
-title: 'Go Notes Series: Types'
+title: 'Go Notes Series: Variables and Types'
 date: '2026-11-14'
 lang: en
 permalink: articles/go/types-en/
