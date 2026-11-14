@@ -24,6 +24,11 @@ function glue(text, lineBreak) {
     .replace(/(\d) (?=[A-Za-z])/g, '$1' + NBSP);
 }
 
+// add a class to a tag's attributes without producing a second class attribute (the browser would drop one of them)
+function withClass(attrs, cls) {
+  return /\bclass="/.test(attrs) ? attrs.replace(/\bclass="/, 'class="' + cls + ' ') : ' class="' + cls + '"' + attrs;
+}
+
 function visibleLength(html) {
   return html.replace(/<[^>]+>/g, '').replace(/&[a-z#0-9]+;/gi, ' ').trim().length;
 }
@@ -34,19 +39,30 @@ function gluedText(inner, lineBreak) {
   }).join('');
 }
 
-hexo.extend.filter.register('after_post_render', function (data) {
-  if (!data.content || data.content.indexOf('<t') < 0) return data;
-  data.content = data.content.replace(/<tr([^>]*)>([\s\S]*?)<\/tr>/g, function (m, rowAttrs, row) {
+// A code block is also a <table> (line numbers in td.gutter, code in td.code). Its cells must be left alone: adding
+// class="nw" in front of their own class would give the tag two class attributes, the browser would keep only the
+// first, and the .gutter / .code rules (padding, width) would silently stop applying.
+const CODE_BLOCK = /(<figure class="highlight[\s\S]*?<\/figure>)/g;
+
+function fitTables(html) {
+  return html.replace(/<tr([^>]*)>([\s\S]*?)<\/tr>/g, function (m, rowAttrs, row) {
     const sub = /head-sub/.test(rowAttrs);
     row = row
       .replace(/<th([^>]*)>([\s\S]*?)<\/th>/g, function (mm, attrs, inner) {
         return '<th' + attrs + '>' + gluedText(inner, !sub) + '</th>';
       })
       .replace(/<td([^>]*)>([\s\S]*?)<\/td>/g, function (mm, attrs, inner) {
-        if (visibleLength(inner) <= SHORT_CELL) return '<td class="nw"' + attrs + '>' + inner + '</td>';
+        if (visibleLength(inner) <= SHORT_CELL) return '<td' + withClass(attrs, 'nw') + '>' + inner + '</td>';
         return '<td' + attrs + '>' + gluedText(inner, false) + '</td>';
       });
     return '<tr' + rowAttrs + '>' + row + '</tr>';
   });
+}
+
+hexo.extend.filter.register('after_post_render', function (data) {
+  if (!data.content || data.content.indexOf('<t') < 0) return data;
+  data.content = data.content.split(CODE_BLOCK).map(function (part, i) {
+    return i % 2 === 1 ? part : fitTables(part); // odd parts are the captured code blocks
+  }).join('');
   return data;
 });

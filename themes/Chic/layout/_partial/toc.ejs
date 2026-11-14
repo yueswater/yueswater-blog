@@ -47,8 +47,8 @@
             if (heading.classList.contains('no-toc')) {
                 var li = a.closest('li');
                 if (li) li.remove();
-            } else if (heading.querySelector('.title-math')) {
-                // a heading with typeset maths (see tocShortTitle.js): the entry shows the same SVG, without the anchor link and footnote markers
+            } else if (heading.querySelector('.title-math, code')) {
+                // a heading with typeset maths (see tocShortTitle.js) or inline code: the entry shows the same markup (SVG / <code>), without the anchor link and footnote markers
                 var copy = heading.cloneNode(true);
                 copy.querySelectorAll('.headerlink, sup').forEach(function(el) { el.remove(); });
                 a.innerHTML = copy.innerHTML;

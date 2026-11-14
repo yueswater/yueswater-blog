@@ -1,0 +1,30 @@
+// A foldable stretch of body text (scripts/foldDiv.js, js/post/fold.js). Not a callout: the text keeps the page's own
+// look, only a "+" / "−" toggle line (the same marker as the proof and table folds) and a thin rule beside the open text
+// mark where it starts and ends.
+.post-content details.fold
+  margin 1.4em 0
+  > summary
+    cursor pointer
+    list-style none
+    user-select none
+    // same size and font as the body text
+    font-size inherit
+    font-weight 600
+    themed(color, $light-accent-color, $dark-accent-color)
+    &::-webkit-details-marker
+      display none
+    &::before
+      content '+'
+      display inline-block
+      width 1.3em
+      font-family $f-mono
+  &[open] > summary::before
+    content '\2212'
+  > .fold-body
+    margin-top 0.9rem
+    padding-left 1.1rem
+    themed(border-left, 2px solid $light-line, 2px solid $dark-line)
+    > :first-child
+      margin-top 0
+    > :last-child
+      margin-bottom 0

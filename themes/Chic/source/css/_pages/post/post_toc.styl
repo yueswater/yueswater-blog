@@ -57,6 +57,13 @@
       display none
     &:hover
       themed(color, $light-ink, $dark-ink)
+    // inline code in a heading (apply_toc_overrides in toc.ejs copies it): monospace only, entry colour and no tint
+    code
+      font-family $f-mono
+      font-size 0.9em
+      color inherit
+      background none
+      padding 0
 
   .is-active-link
     font-weight 600

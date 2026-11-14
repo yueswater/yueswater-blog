@@ -1,0 +1,28 @@
+// Foldable row groups in a table (scripts/tableFold.js, js/post/table-fold.js). The group's toggle is a button in the
+// category cell; it uses the same "+" / "−" marker as the proof and exercise folds.
+.post-content table
+  tr[hidden]
+    display none
+  // a closed group: the whole row opens it, and the second cell is the hint ("展開查看更多")
+  tr.tf-sum
+    cursor pointer
+    td:nth-child(2)
+      themed(color, $light-accent-color, $dark-accent-color)
+  .tf-toggle
+    appearance none
+    margin 0
+    padding 0
+    border 0
+    background none
+    font inherit
+    text-align left
+    cursor pointer
+    themed(color, $light-accent-color, $dark-accent-color)
+    &::before
+      content '+'
+      display inline-block
+      width 1.3em
+      font-family $f-mono
+      font-weight 600
+    &[aria-expanded=true]::before
+      content '\2212'

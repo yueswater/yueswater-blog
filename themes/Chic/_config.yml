@@ -144,6 +144,8 @@ scripts:
   - /js/post/exercises.js
   - /js/data/supabase-views.js
   - /js/post/tabset.js
+  - /js/post/table-fold.js
+  - /js/post/fold.js
   - /js/post/gallery.js
 
 # plugin functions
