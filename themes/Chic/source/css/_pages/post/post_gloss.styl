@@ -6,6 +6,7 @@
   font-size 1.3em
   font-style italic
   line-height 2.6
+  white-space nowrap   // a sentence stays on one line; phones shrink it (below) instead of wrapping
 
   .gloss-word
     position relative
@@ -75,3 +76,11 @@
   .post-content .gloss .gloss-word
     &, &::before, &::after
       transition none
+
+// narrow screens: scale the sentence with the viewport so the longest one still fits on one line
+@media (max-width: 640px)
+  .post-content .gloss
+    font-size 4.3vw
+    .gloss-word
+      margin 0
+      padding 0 0.06em
