@@ -38,3 +38,7 @@ reports/out/
 
 # Annotation tool coordinate grids
 tools/annotate/grid/
+
+# Local-only specs/plans and the vocus export scripts
+docs/
+tools/vocus-math/
