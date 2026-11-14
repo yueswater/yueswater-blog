@@ -33,9 +33,9 @@ $callout-purple-dark = #b79cff
     display block
     margin 0 (-($callout-px)) 1em
     padding 0.5em $callout-px
-    // body font, same as the text below
-    font-family $f-body
-    font-size 0.95rem
+    // same font and size as the text below
+    font-family inherit
+    font-size inherit
     font-weight 700
     line-height 1.6
     letter-spacing 0.02em
@@ -75,10 +75,9 @@ $callout-purple-dark = #b79cff
     cursor pointer
     list-style none
     user-select none
-    font-family $f-mono
-    font-size 0.74rem
+    // same size and font as the body text (like the .fold toggle line)
+    font-size inherit
     font-weight 600
-    letter-spacing 0.1em
     themed(color, $light-accent-color, $dark-accent-color)
     &::-webkit-details-marker
       display none
@@ -86,6 +85,7 @@ $callout-purple-dark = #b79cff
       content '+'
       display inline-block
       width 1.3em
+      font-family $f-mono
   &[open] > summary::before
     content '\2212'
   .proof-body
