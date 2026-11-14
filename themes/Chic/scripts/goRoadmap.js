@@ -276,7 +276,12 @@ function buildRoadmap(caption, en, here) {
   out.push(flowers(5, 133));
   out.push('<path class="g-mid" d="' + blades(43, 135, 8, 17, 5.5, 4) + '"/>');
   cfg.stages.forEach(function (st, si) {
-    out.push('<text class="stage d' + si + '" x="14" y="' + (si === 0 ? 172 : stageTop[si] + 26) + '">' + esc(T(st)) + '</text>');
+    // a stage's first chamber can sit on the right, which puts its gopher on the left over the stage name:
+    // drop the name below that gopher (sprites are drawn 30 units under the chamber centre, see layer 3)
+    var ly = si === 0 ? 172 : stageTop[si] + 26;
+    var fi = items[1 + cfg.stages.slice(0, si).reduce(function (c, s2) { return c + s2.nodes.length; }, 0)];
+    if (si && fi.x === XR && fi.node.gopher) ly = Math.max(ly, fi.y + 30 + 18);
+    out.push('<text class="stage d' + si + '" x="14" y="' + ly + '">' + esc(T(st)) + '</text>');
   });
   out.push('</g>');
 

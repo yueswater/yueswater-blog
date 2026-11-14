@@ -12,7 +12,9 @@ stages:
     title_en: Basics
     nodes:
       - { title: 環境與 Hello World, title_en: Setup and Hello World, slug: articles/go/hello-to-go/, gopher: 06-type }
-      - { title: 型別與流程控制, title_en: Types and control flow, slug: articles/go/types-and-control-flow/, gopher: 05-read }
+      - { title: 變數與型別, title_en: Variables and types, slug: articles/go/types/, gopher: 05-read }
+      - { title: 運算子, title_en: Operators, slug: articles/go/operators/ }
+      - { title: 流程控制, title_en: Control flow, slug: articles/go/control-flow/ }
       - { title: 函式, title_en: Functions, slug: articles/go/functions/ }
       - { title: slice 與 map, title_en: Slices and maps, slug: articles/go/slice-and-map/, gopher: 03-dig }
       - { title: struct 與 interface, title_en: Structs and interfaces, slug: articles/go/struct-and-interface/, gopher: 07-map }
