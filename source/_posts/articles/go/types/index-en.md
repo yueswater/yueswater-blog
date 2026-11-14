@@ -297,7 +297,41 @@ Both are IEEE 754 floating-point numbers[^ieee754] @citep[gospec|Numeric types].
 
 #### Floating-Point Precision
 
-A floating-point number stores a value using a limited number of binary significant digits. With $p$ significant bits, the gap between 1 and the next representable number above it is
+A floating-point number stores a value using a limited number of binary significant digits. IEEE 754 writes a number as a sign, an exponent and the significant bits. With $p$ significant bits,
+
+::: {.equation #eq:float-value}
+x = (-1)^{s} \left( \sum_{i=0}^{p-1} b_i \, 2^{-i} \right) 2^{n}
+:::
+
+where $s \in \{0, 1\}$ is the sign, $b_i \in \{0, 1\}$ is the $i$-th significant bit, and $n$ is the exponent. The first bit $b_0$ is always 1, so it is not stored: `float64` stores only 52 bits, and with this implicit 1 it has $p = 53$. In other words, a number can be represented exactly only if a finite sum of negative powers of 2 can make it, for example $0.625 = 2^{-1} + 2^{-3}$.
+
+::: {.example}
+Take $0.625$. Make it from negative powers of 2: $0.625 = 2^{-1} + 2^{-3}$, which is $0.101_{2}$ in binary. Move the point to just after the first 1 and you get $1.01_{2} \times 2^{-1}$.
+
+By @eq:float-value, the parts are
+
+- the sign $s = 0$ (positive)
+- the exponent $n = -1$
+- the significant bits $b_0 = 1$ (implicit), $b_1 = 0$, $b_2 = 1$, and all the rest 0
+
+Substituting into @eq:float-value gives
+
+$$
+x = (-1)^{0} \left( 1 + 0 \cdot 2^{-1} + 1 \cdot 2^{-2} \right) 2^{-1} = 1.25 \times 0.5 = 0.625
+$$
+
+Only finitely many terms are needed, so 0.625 can be stored exactly. You can look at the 64 bits of a `float64` directly:
+
+```go
+fmt.Printf("%016x\n", math.Float64bits(0.625))
+
+// 3fe4000000000000
+```
+
+The first three hex digits `3fe` hold the sign 0 and the exponent field $1022 = 1023 - 1$, so $n = -1$. The `4` after them (`0100` in binary) starts the fraction, that is $b_1 = 0$ and $b_2 = 1$, with all the rest 0.
+:::
+
+By @eq:float-value, the next representable number above 1 is the one with the last bit $b_{p-1}$ set to 1, so the gap between 1 and it is
 
 ::: {.equation #eq:float-eps}
 \varepsilon = 2^{-(p-1)}
@@ -339,6 +373,37 @@ fmt.Printf("%.20f\n%.20f\n", a, b)
 // 0.10000000149011611938
 // 0.10000000000000000555
 ```
+
+This is because 0.1 needs infinitely many terms, while @eq:float-value adds up only to $i = p - 1$.
+
+:::: {.fold}
+First write 0.1 in the form $1.\text{xxx} \times 2^{n}$. Since $0.1 = 1.6 \times 2^{-4}$, we only need to convert $0.6$ to binary. Multiply by 2 each time and take the integer part. An integer part of 1 means this bit's weight fits, and the fractional part is multiplied by 2 again:
+
+| Step | Times 2 | Integer part (this bit) | Fractional part |
+|---|---|---|---|
+| 1 | $0.6 \times 2 = 1.2$ | 1 | 0.2 |
+| 2 | $0.2 \times 2 = 0.4$ | 0 | 0.4 |
+| 3 | $0.4 \times 2 = 0.8$ | 0 | 0.8 |
+| 4 | $0.8 \times 2 = 1.6$ | 1 | 0.6 |
+
+The fractional part in step 4 is $0.6$ again, so `1001` repeats forever and never ends:
+
+$$
+0.1 = 1.\overline{1001}_{2} \times 2^{-4}
+$$
+
+`float64` keeps only 52 bits after the point, which is exactly `1001` repeated 13 times. The first discarded bits are `1001…`: the first one is 1 and nonzero bits follow, which is more than half, so rounding goes up and the last four bits `1001` become `1010`. The stored value is therefore slightly larger than 0.1, which matches the `0.10000000000000000555` printed above.
+
+You can look at the 64 bits of a `float64` directly:
+
+```go
+fmt.Printf("%016x\n", math.Float64bits(0.1))
+
+// 3fb999999999999a
+```
+
+The first three hex digits `3fb` hold the sign 0 and the exponent field $1019 = 1023 - 4$ (the field stores $n + 1023$), so $n = -4$. The remaining 13 digits `999999999999a` are the fraction: twelve `9`s (`1001`) and the rounded-up `a` (`1010`).
+::::
 
 Limited precision can also cause **adding 1 to have no effect**: from $2^{24}$ for `float32`, and from $2^{53}$ for `float64`, the gap between neighboring numbers is greater than 1, so adding 1 gets rounded back to the original number.
 
@@ -543,6 +608,217 @@ The zero value is decided by the type. The zero values of all the types are as f
 | Arrays, `struct` | Each element or field takes the zero value of its own type |
 
 So `var i int` and `var i int = 0` are exactly equivalent. We will explain `nil` when we get to slices and maps.
+
+## Exercises
+
+The problems below match the sections above. Each has a solution, folded by default, so think it through before opening it.
+
+### Predict the Output
+
+::: {.problem}
+**Problem 1**: What does this program print?
+
+```go
+var a int8 = 127
+a++
+
+var b uint8
+b--
+
+x, y := 0.1, 0.2
+fmt.Println(a, b, x+y == 0.3)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+// -128 255 false
+```
+
+- `a`: `127 + 1` goes out of range for `int8` and wraps around to `-128`.
+- `b`: `0 - 1` for `uint8` wraps to $-1 \bmod 2^8 = 255$.
+- `x+y == 0.3`: neither 0.1 nor 0.2 can be stored exactly, and their sum is `0.30000000000000004`, which is not the number closest to 0.3, so the result is `false`.
+::::
+
+::: {.problem}
+**Problem 2**: What does this program print? Why is it different from the last part of Problem 1?
+
+```go
+x, y := 0.5, 0.25
+fmt.Println(x+y == 0.75)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+// true
+```
+
+0.5 = $2^{-1}$, 0.25 = $2^{-2}$, and 0.75 = $2^{-1} + 2^{-2}$. Each can be made from a finite sum of negative powers of 2, so all of them are stored exactly and the addition has no error. 0.1 and 0.2 need infinitely many terms, which is what causes the result in Problem 1.
+::::
+
+::: {.problem}
+**Problem 3**: What does this program print?
+
+```go
+var (
+	a int
+	b float64
+	c string
+	d bool
+)
+fmt.Printf("%v %v %q %v\n", a, b, c, d)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+// 0 0 "" false
+```
+
+A variable declared without a value gets its zero value: `0` for numbers, the empty string for strings, and `false` for booleans.
+::::
+
+::: {.problem}
+**Problem 4**: What does this program print? Why?
+
+```go
+a := "hi"
+b := "你好"
+fmt.Println(len(a), len(b))
+```
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+// 2 6
+```
+
+`len` returns the number of bytes, not characters. In UTF-8 an English letter takes 1 byte and a Chinese character takes 3, so `你好` is $2 \times 3 = 6$.
+::::
+
+::: {.problem}
+**Problem 5**: What does this program print? How is it computed?
+
+```go
+var a uint8 = 200
+var b uint8 = 100
+fmt.Println(a + b)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+// 44
+```
+
+`a` and `b` are variables, so the compiler does not know the result of the addition at compile time. The program compiles and wraps around when it runs. A `uint8` has $2^8 = 256$ values, so by @eq:wrap-unsigned we get $300 \bmod 256 = 44$.
+::::
+
+### Fix the Program
+
+::: {.problem}
+**Problem 6**: Does this program compile? If not, what are the two ways to fix it, and what does each print?
+
+```go
+var a int = 10
+var b float64 = 2.5
+fmt.Println(a * b)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+It does not compile. `int` and `float64` are different types, and Go does not convert between them automatically:
+
+```go
+// invalid operation: a * b (mismatched types int and float64)
+```
+
+Fix one: convert `a` to `float64`:
+
+```go
+fmt.Println(float64(a) * b)
+
+// 25
+```
+
+Fix two: convert `b` to `int`, which drops the fractional part (2.5 becomes 2):
+
+```go
+fmt.Println(a * int(b))
+
+// 20
+```
+::::
+
+::: {.problem}
+**Problem 7**: This program tries to swap `x` and `y`. Does it compile? If not, how do you fix it?
+
+```go
+x := 10
+y := 20
+x, y := y, x
+fmt.Println(x, y)
+```
+:::
+
+:::: {.fold summary="Show solution"}
+It does not compile. The left side of `:=` needs at least one new variable, and here both `x` and `y` already exist:
+
+```go
+// no new variables on left side of :=
+```
+
+Change `:=` to `=`. The right side is fully evaluated first and then assigned to the left side, so no temporary variable is needed:
+
+```go
+x, y = y, x
+fmt.Println(x, y)
+
+// 20 10
+```
+::::
+
+::: {.problem}
+**Problem 8**: Does this line compile? Why is the result different from Problem 5?
+
+```go
+var c uint8 = 200 + 100
+```
+:::
+
+:::: {.fold summary="Show solution"}
+It does not compile:
+
+```go
+// cannot use 200 + 100 (untyped int constant 300) as uint8 value in variable declaration (overflows)
+```
+
+`200 + 100` is a constant expression, so the compiler works out `300` at compile time and knows `uint8` cannot hold it, which is a compile error. In Problem 5, `a + b` involves variables, so the result is known only at run time and simply wraps around to `44`.
+::::
+
+### Hands-On Problem
+
+::: {.problem}
+**Problem 9**: A height of `170` (cm) and a weight of `65` (kg), both declared as `int`. Compute the BMI and print it with 1 decimal place. The expected output is `22.5`.
+
+**[Note]** BMI = weight (kg) divided by the square of height (m).
+:::
+
+:::: {.fold summary="Show solution"}
+```go
+height := 170
+weight := 65
+
+m := float64(height) / 100
+bmi := float64(weight) / (m * m)
+fmt.Printf("%.1f\n", bmi)
+
+// 22.5
+```
+
+Convert first, then divide. If you write `float64(height / 100)`, both sides of `height / 100` are `int`, so integer division gives `1` first and the fractional part is already gone; converting to `float64` afterwards cannot bring it back.
+::::
 
 ## Summary
 
