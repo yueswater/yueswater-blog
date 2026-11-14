@@ -5,6 +5,7 @@ import { installStyles } from './ui/styles.js'
 const WIDGETS = {
   'two-player': () => import('./two-player/widget.js'),
   'n-player': () => import('./n-player/widget.js'),
+  'cost-budget': () => import('./cost-budget/widget.js'),
 }
 
 async function init() {

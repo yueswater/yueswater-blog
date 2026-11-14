@@ -4,7 +4,7 @@ import { LANG } from '../ui/dom.js'
 export const T = {
   zh: {
     n: '參賽人數 $n$', r: '競賽強度 $r$', V: '獎勵 $V$', c: '單位成本 $c$',
-    form: '公式候選解 $x^*$', eq: '數值均衡（平均）$\\bar{x}$',
+    form: '公式候選解 $x^*$', eq: '數值均衡（平均）$\\overline{x}$',
     pay: '個別預期報酬 $\\pi_i^*$', tc: '總競賽成本 $TC^*$', diss: '租金耗散率 $D$',
     cond: '存在條件 $r \\leq \\frac{n}{n - 1}$',
     holds: '成立', fails: '不成立',
@@ -18,7 +18,7 @@ export const T = {
   },
   en: {
     n: 'Contestants $n$', r: 'Intensity $r$', V: 'Prize $V$', c: 'Unit cost $c$',
-    form: 'Closed-form candidate $x^*$', eq: 'Numeric equilibrium (mean) $\\bar{x}$',
+    form: 'Closed-form candidate $x^*$', eq: 'Numeric equilibrium (mean) $\\overline{x}$',
     pay: 'Equilibrium payoff $\\pi_i^*$', tc: 'Total cost $TC^*$', diss: 'Rent dissipation $D$',
     cond: 'Existence $r \\leq \\frac{n}{n - 1}$',
     holds: 'holds', fails: 'fails',
