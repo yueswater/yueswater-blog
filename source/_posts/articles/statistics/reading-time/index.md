@@ -18,7 +18,7 @@ mathjax: true
 ::: {#fig-eye}
 ![閱讀一頁文字時的眼動紀錄](images/eye-tracking-reading.jpg){width=640}
 
-閱讀一頁文字時的眼動紀錄（[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Reading_Fixations_Saccades.jpg)）
+閱讀一頁文字時的眼動紀錄，來自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Reading_Fixations_Saccades.jpg)（公有領域）
 :::
 
 你是不是也常看到文章標題下方寫著**閱讀時間約 $N$ 分鐘**，然後憑它決定現在要不要讀？這個數字多半是字數除以一個固定速度，但有人讀得快、有人讀得慢，程式碼和圖片也不是照字數算。
@@ -65,7 +65,7 @@ $$
 ::: {#fig-lab}
 ![眼動實驗用的螢幕與眼動儀](images/eye-tracker-lab.jpg){width=640}
 
-眼動實驗用的螢幕與眼動儀（[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eye_tracker.jpg)）
+眼動實驗用的螢幕與眼動儀，來自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eye_tracker.jpg)（CC BY-SA 4.0）
 :::
 
 ### 中文閱讀語料
@@ -621,7 +621,7 @@ $$
 ::: {#fig-heatmap}
 ![德文維基百科首頁的視線熱點圖](images/eye-tracking-heatmap.jpg){width=640}
 
-德文維基百科首頁的視線熱點圖（[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eyetracking_heat_map_Wikipedia.jpg)）
+德文維基百科首頁的視線熱點圖，來自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eyetracking_heat_map_Wikipedia.jpg)（CC BY-SA 4.0）
 :::
 
 另外還有兩個限制：

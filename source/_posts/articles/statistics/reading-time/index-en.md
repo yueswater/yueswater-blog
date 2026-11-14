@@ -18,7 +18,7 @@ mathjax: true
 ::: {#fig-eye}
 ![Eye movements while reading a page of text](images/eye-tracking-reading.jpg){width=640}
 
-Eye movements while reading a page of text ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Reading_Fixations_Saccades.jpg))
+Eye movements while reading a page of text, from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Reading_Fixations_Saccades.jpg) (public domain)
 :::
 
 Have you ever decided whether to read a post from the **about $N$ minutes** line under its title? That number is usually a word count divided by one fixed speed, yet some people read fast and some slowly, and code and images are not timed by word count at all.
@@ -71,7 +71,7 @@ One catch: the same person usually reads several texts, so people who read more 
 ::: {#fig-lab}
 ![A screen and an eye tracker used in eye-tracking experiments](images/eye-tracker-lab.jpg){width=640}
 
-A screen and an eye tracker used in eye-tracking experiments ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eye_tracker.jpg))
+A screen and an eye tracker used in eye-tracking experiments, from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eye_tracker.jpg) (CC BY-SA 4.0)
 :::
 
 ### Chinese Reading Corpora
@@ -624,7 +624,7 @@ This projection **adds** the time for prose and code, assuming neither affects t
 ::: {#fig-heatmap}
 ![Gaze heat map on the German Wikipedia home page](images/eye-tracking-heatmap.jpg){width=640}
 
-Gaze heat map on the German Wikipedia home page ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eyetracking_heat_map_Wikipedia.jpg))
+Gaze heat map on the German Wikipedia home page, from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Eyetracking_heat_map_Wikipedia.jpg) (CC BY-SA 4.0)
 :::
 
 Two more limits:
