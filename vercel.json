@@ -531,6 +531,21 @@
       "source": "/diary/posts/:path*/",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/categories/React/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/:path+/index.html",
+      "destination": "/:path/",
+      "statusCode": 301
     }
   ]
 }
