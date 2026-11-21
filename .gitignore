@@ -46,3 +46,5 @@ tools/vocus-math/
 # Contact test-case workbooks (local only)
 tests/contact/*.xlsx
 tests/contact/.results/
+
+tests/security/.results/

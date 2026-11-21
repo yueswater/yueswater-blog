@@ -3,6 +3,10 @@
 import { el, fmtTime } from '../dom.js'
 import { renderMessage } from '/js/widgets/contact/editor.bundle.js'
 
+// what a visitor typed, minus control, zero-width and bidi-override characters (no spoofed names)
+const visible = (v) => String(v ?? '').replace(/[\u0000-\u001F\u007F\u200B\u200C\u200E\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]/g, '')
+const SAFE_EMAIL = /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i
+
 const imageNames = (md) => [...String(md || '').matchAll(/!\[[^\]\n]*\]\(([\w.-]+\.(?:png|jpe?g))\)/g)].map((m) => m[1])
 
 const TOPICS = { collab: '合作邀約', post: '文章問題', job: '工作機會', other: '其他' }
@@ -51,7 +55,10 @@ export async function renderMessages(root, { backend, notify }) {
   }
 
   function item(row) {
-    const reply = `mailto:${row.email}?subject=${encodeURIComponent('Re: ' + (TOPICS[row.topic] || row.topic))}`
+    // only a plain address goes into mailto:, so a crafted one cannot add cc / bcc / body
+    const reply = SAFE_EMAIL.test(row.email || '')
+      ? `mailto:${row.email}?subject=${encodeURIComponent('Re: ' + (TOPICS[row.topic] || row.topic))}`
+      : null
     return el('details', {
       class: `msg${row.read_at ? '' : ' unread'}`,
       open: opened.has(row.id),
@@ -63,15 +70,15 @@ export async function renderMessages(root, { backend, notify }) {
     },
       el('summary', {},
         el('span', { class: 'msg-dot', 'aria-label': row.read_at ? '已讀' : '未讀' }),
-        el('strong', {}, row.name),
+        el('strong', {}, visible(row.name)),
         el('span', { class: 'pill' }, TOPICS[row.topic] || row.topic),
         el('span', { class: 'msg-preview muted' }, row.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '[圖]').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*`#>]|^\s*-\s+/gm, '').replace(/\s+/g, ' ').slice(0, 60)),
         el('span', { class: 'muted small num' }, fmtTime(row.ts))),
       el('div', { class: 'msg-body' },
-        el('p', { class: 'muted small' }, [row.email, row.org, row.lang, row.ip && `IP ${row.ip}`].filter(Boolean).join(' · ')),
+        el('p', { class: 'muted small' }, [visible(row.email), visible(row.org), row.lang, row.ip && `IP ${row.ip}`].filter(Boolean).join(' · ')),
         bodyEl(row),
         el('div', { class: 'msg-actions' },
-          el('a', { class: 'btn small', href: reply }, '回信'),
+          reply ? el('a', { class: 'btn small', href: reply }, '回信') : null,
           row.read_at ? el('button', { class: 'btn small', onclick: () => mark(row, false) }, '標為未讀') : null)))
   }
 

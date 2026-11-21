@@ -82,14 +82,20 @@ export function cropImage(file, strings) {
     document.addEventListener('keydown', onKey, true);
 
     overlay.querySelector('[data-act=cancel]').addEventListener('click', () => done(null));
-    overlay.querySelector('[data-act=skip]').addEventListener('click', () => done(file));
+    // both buttons re-encode through a canvas: that drops EXIF (GPS position, camera) and any other
+    // metadata, so even "use original" never uploads the visitor's location. If encoding fails the
+    // upload is cancelled rather than falling back to the untouched file.
+    const encode = (x, y, w, h) => {
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(w));
+      c.height = Math.max(1, Math.round(h));
+      c.getContext('2d').drawImage(img, x, y, w, h, 0, 0, c.width, c.height);
+      c.toBlob((blob) => done(blob ? new File([blob], file.name, { type: file.type }) : null), file.type, 0.92);
+    };
+    overlay.querySelector('[data-act=skip]').addEventListener('click', () => encode(0, 0, img.naturalWidth, img.naturalHeight));
     overlay.querySelector('[data-act=ok]').addEventListener('click', () => {
       const sx = img.naturalWidth / W, sy = img.naturalHeight / H;
-      const c = document.createElement('canvas');
-      c.width = Math.round(r.w * sx);
-      c.height = Math.round(r.h * sy);
-      c.getContext('2d').drawImage(img, r.x * sx, r.y * sy, r.w * sx, r.h * sy, 0, 0, c.width, c.height);
-      c.toBlob((blob) => done(blob ? new File([blob], file.name, { type: file.type }) : file), file.type, 0.92);
+      encode(r.x * sx, r.y * sy, r.w * sx, r.h * sy);
     });
   });
 }

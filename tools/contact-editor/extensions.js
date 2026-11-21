@@ -5,6 +5,7 @@ import { BlockMath, InlineMath } from '@tiptap/extension-mathematics';
 import { Markdown } from '@tiptap/markdown';
 import { codeBlock } from './codeblock.js';
 import { contactImage } from './image.js';
+import { SafeLinks, isSafeHref } from './safe-links.js';
 
 export function buildExtensions({ strings, resolveImage, onMath, placeholder }) {
   return [
@@ -19,10 +20,11 @@ export function buildExtensions({ strings, resolveImage, onMath, placeholder }) 
         openOnClick: false,
         autolink: true,
         protocols: ['http', 'https'],
-        isAllowedUri: (url) => /^https?:\/\//i.test(url),
+        isAllowedUri: (url) => isSafeHref(url),
         HTMLAttributes: { rel: 'noopener nofollow ugc', target: '_blank' },
       },
     }),
+    SafeLinks,
     codeBlock(strings),
     contactImage(resolveImage),
     // configured separately: Mathematics.configure shares one katexOptions, so display math lost displayMode
