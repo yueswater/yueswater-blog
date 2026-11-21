@@ -42,6 +42,8 @@ export async function renderMessages(root, { backend, notify }) {
     try {
       await backend.markMessage(row.id, read)
       row.read_at = read ? new Date().toISOString() : null
+      // collapse on mark-unread: a redrawn open <details> fires toggle and would mark it read again
+      if (!read) opened.delete(row.id)
       draw()
     } catch (e) {
       notify(`更新失敗：${e.message || e}`, 'warn')
@@ -66,7 +68,7 @@ export async function renderMessages(root, { backend, notify }) {
         el('span', { class: 'msg-preview muted' }, row.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '[圖]').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*`#>]|^\s*-\s+/gm, '').replace(/\s+/g, ' ').slice(0, 60)),
         el('span', { class: 'muted small num' }, fmtTime(row.ts))),
       el('div', { class: 'msg-body' },
-        el('p', { class: 'muted small' }, [row.email, row.org, row.lang].filter(Boolean).join(' · ')),
+        el('p', { class: 'muted small' }, [row.email, row.org, row.lang, row.ip && `IP ${row.ip}`].filter(Boolean).join(' · ')),
         bodyEl(row),
         el('div', { class: 'msg-actions' },
           el('a', { class: 'btn small', href: reply }, '回信'),

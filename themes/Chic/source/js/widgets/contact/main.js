@@ -2,6 +2,7 @@
 import { initSelect } from './select.js';
 import { check, showError, initCounter } from './fields.js';
 import { createToast } from './toast.js';
+import { createPreview } from './preview.js';
 import { createContactEditor } from './editor.bundle.js';
 
 const form = document.querySelector('[data-contact]');
@@ -17,6 +18,8 @@ function boot(form) {
   const editorRoot = form.querySelector('[data-editor]');
   const editor = createContactEditor(editorRoot, { strings: S, toast });
   const touched = new Set();
+  const preview = createPreview(document.querySelector('[data-preview-dialog]'), { strings: S, editor });
+  const topicLabel = (v) => form.querySelector(`[data-value="${v}"] .cf-option-title`)?.textContent.trim() || v;
 
   const values = () => ({
     name: form.elements.name.value, email: form.elements.email.value, org: form.elements.org.value, topic: topic.value, body: textarea.value,
@@ -55,6 +58,8 @@ function boot(form) {
       else form.querySelector(`[name="${first}"]`).focus();
       return;
     }
+
+    if (!(await preview({ ...v, topicLabel: topicLabel(v.topic) }))) return;
 
     setBusy(true);
     try {

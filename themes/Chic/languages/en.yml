@@ -104,7 +104,7 @@ footer_general: General
 footer_license: Posts are licensed under CC BY-NC 4.0
 contact:
   lead: "Collaborations, questions about a post, or just saying hello: leave me a message."
-  name: "Name"
+  name: "Name / nickname"
   name_ph: "What should I call you"
   email: "Email"
   topic: "Topic"
@@ -130,6 +130,10 @@ contact:
   toast_limited: "You are sending messages too often. Please try again later."
   toast_invalid: "Some fields don't look right. Please check and resend."
   toast_fail: "Couldn't send. Try again later, or email me directly."
+  preview_title: "Review your message"
+  preview_edit: "Edit"
+  preview_confirm: "Send"
+  preview_none: "Not provided"
   bubble: "You can find me elsewhere too!"
   note_md: "Markdown and LaTeX math are supported."
   note_img: "Images must be JPG or PNG, up to 5 MB each, at most 3."

@@ -11,7 +11,7 @@ export function createDemo(signedIn) {
     { slug: 'articles/tullock/tullock-n-player-contest', status: 'scheduled', publish_at: new Date(Date.now() + 2 * day).toISOString() },
   ]
   const inbox = [
-    { id: 2, ts: new Date(Date.now() - 3600000).toISOString(), name: '示範訪客', email: 'visitor@example.com', topic: 'post', org: '某大學經濟系', body: '文章裡**第二個式子**的下標好像寫反了：\n\n1. 原文寫 $x_{ij}$\n2. 應該是 $x_{ji}$？\n\n$$\n\\sum_{i=1}^n x_{ji}\n$$\n\n```python\nprint(sum(x))\n```\n\n![截圖](demo.png)', lang: 'zh-TW', read_at: null },
+    { id: 2, ts: new Date(Date.now() - 3600000).toISOString(), name: '示範訪客', email: 'visitor@example.com', topic: 'post', org: '某大學經濟系', ip: '203.0.113.7', body: '文章裡**第二個式子**的下標好像寫反了：\n\n1. 原文寫 $x_{ij}$\n2. 應該是 $x_{ji}$？\n\n$$\n\\sum_{i=1}^n x_{ji}\n$$\n\n```python\nprint(sum(x))\n```\n\n![截圖](demo.png)', lang: 'zh-TW', read_at: null },
     { id: 1, ts: new Date(Date.now() - 3 * day).toISOString(), name: 'Demo Visitor', email: 'demo@example.com', topic: 'collab', body: 'Would you be interested in giving a short talk about econ-viz?', lang: 'en', read_at: new Date(Date.now() - 2 * day).toISOString() },
   ]
   return {

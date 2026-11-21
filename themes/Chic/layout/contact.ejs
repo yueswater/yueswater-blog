@@ -1,180 +1,229 @@
-<%#
-    Contact page: shared page head, then the message form (custom select, fields with
-    inline validation, character counter, loading button, toast) beside a list of other ways
-    to reach me. The form posts to the submit_contact RPC; see js/widgets/contact/.
-%>
-<%
-    var c = function (k) { return __('contact.' + k); };
-    var topics = ['collab', 'post', 'job', 'other'];
-    var strings = {
-        required: c('err_required'),
-        email: c('err_email'),
-        short: c('err_short'),
-        long: c('err_long'),
-        ok: c('toast_ok'),
-        limited: c('toast_limited'),
-        invalid: c('toast_invalid'),
-        fail: c('toast_fail'),
-        img_fail: c('img_fail'),
-        img_max: c('img_max'),
-        img_wait: c('img_wait'),
-        img_type: c('img_type'),
-        img_size: c('img_size'),
-        link_bad: c('link_bad'),
-        link_url: c('link_url'),
-        link_text: c('link_text'),
-        add: c('add'),
-        cancel: c('cancel'),
-        remove: c('remove'),
-        update: c('update'),
-        tool_link: c('tool_link'),
-        tool_math: c('tool_math'),
-        tool_math_block: c('tool_math_block'),
-        math_empty: c('math_empty'),
-        lang_filter: c('lang_filter'),
-        crop_title: c('crop_title'),
-        crop_free: c('crop_free'),
-        crop_skip: c('crop_skip'),
-        crop_ok: c('crop_ok')
-    };
-%>
-<%- partial('_partial/pagehead', {
-    kicker: 'CONTACT',
-    title: title_html(page.title),
-    lead: c('lead'),
-    side: false
-}) %>
-<section class="contact-sea">
-<canvas class="ascii-ocean ascii-ocean--floor" aria-hidden="true"></canvas>
-<div class="container">
-  <div class="contact">
-    <form class="cf" data-contact novalidate>
-      <div class="cf-row">
-        <div class="cf-field" data-field="name">
-          <label class="cf-label" for="cf-name"><%= c('name') %></label>
-          <input class="cf-input" id="cf-name" name="name" autocomplete="name" maxlength="80" placeholder="<%= c('name_ph') %>" aria-describedby="cf-name-err">
-          <p class="cf-error" id="cf-name-err" aria-live="polite"></p>
-        </div>
-        <div class="cf-field" data-field="email">
-          <label class="cf-label" for="cf-email"><%= c('email') %></label>
-          <input class="cf-input" id="cf-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="name@example.com" aria-describedby="cf-email-err">
-          <p class="cf-error" id="cf-email-err" aria-live="polite"></p>
-        </div>
-      </div>
+<%# Contact page: shared page head, then the message form (custom select, fields with inline validation, character
+  counter, loading button, toast) beside a list of other ways to reach me. The form posts to the submit_contact RPC; see
+  js/widgets/contact/. %>
+  <% var c=function (k) { return __('contact.' + k); }; var topics=['collab', 'post' , 'job' , 'other' ]; var strings={
+    required: c('err_required'), email: c('err_email'), short: c('err_short'), long: c('err_long'), ok: c('toast_ok'),
+    limited: c('toast_limited'), invalid: c('toast_invalid'), fail: c('toast_fail'), preview_none: c('preview_none'), img_fail: c('img_fail'), img_max:
+    c('img_max'), img_wait: c('img_wait'), img_type: c('img_type'), img_size: c('img_size'), link_bad: c('link_bad'),
+    link_url: c('link_url'), link_text: c('link_text'), add: c('add'), cancel: c('cancel'), remove: c('remove'), update:
+    c('update'), tool_link: c('tool_link'), tool_math: c('tool_math'), tool_math_block: c('tool_math_block'),
+    math_empty: c('math_empty'), lang_filter: c('lang_filter'), crop_title: c('crop_title'), crop_free: c('crop_free'),
+    crop_skip: c('crop_skip'), crop_ok: c('crop_ok') }; %>
+    <%- partial('_partial/pagehead', { kicker: 'CONTACT' , title: title_html(page.title), lead: c('lead'), side: false
+      }) %>
+      <section class="contact-sea">
+        <canvas class="ascii-ocean ascii-ocean--floor" aria-hidden="true"></canvas>
+        <div class="container">
+          <div class="contact">
+            <form class="cf" data-contact novalidate>
+              <div class="cf-row">
+                <div class="cf-field" data-field="name">
+                  <label class="cf-label" for="cf-name">
+                    <%= c('name') %>
+                  </label>
+                  <input class="cf-input" id="cf-name" name="name" autocomplete="name" maxlength="80"
+                    placeholder="<%= c('name_ph') %>" aria-describedby="cf-name-err">
+                  <p class="cf-error" id="cf-name-err" aria-live="polite"></p>
+                </div>
+                <div class="cf-field" data-field="email">
+                  <label class="cf-label" for="cf-email">
+                    <%= c('email') %>
+                  </label>
+                  <input class="cf-input" id="cf-email" name="email" type="email" inputmode="email" autocomplete="email"
+                    maxlength="200" placeholder="name@example.com" aria-describedby="cf-email-err">
+                  <p class="cf-error" id="cf-email-err" aria-live="polite"></p>
+                </div>
+              </div>
 
-      <div class="cf-field" data-field="org">
-        <label class="cf-label" for="cf-org"><%= c('org') %> <span class="cf-optional"><%= c('optional') %></span></label>
-        <input class="cf-input" id="cf-org" name="org" autocomplete="organization" maxlength="120" placeholder="<%= c('org_ph') %>">
-      </div>
+              <div class="cf-field" data-field="org">
+                <label class="cf-label" for="cf-org">
+                  <%= c('org') %> <span class="cf-optional">
+                      <%= c('optional') %>
+                    </span>
+                </label>
+                <input class="cf-input" id="cf-org" name="org" autocomplete="organization" maxlength="120"
+                  placeholder="<%= c('org_ph') %>">
+              </div>
 
-      <div class="cf-field" data-field="topic">
-        <span class="cf-label" id="cf-topic-label"><%= c('topic') %></span>
-        <div class="cf-select" data-select>
-          <button type="button" class="cf-select-trigger" id="cf-topic" aria-haspopup="listbox" aria-expanded="false"
-                  aria-labelledby="cf-topic-label cf-topic" aria-describedby="cf-topic-err">
-            <span class="cf-select-value is-placeholder" data-placeholder="<%= c('topic_ph') %>"><%= c('topic_ph') %></span>
-            <svg class="cf-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <ul class="cf-select-list" role="listbox" tabindex="-1" aria-labelledby="cf-topic-label" hidden>
-            <% topics.forEach(function (t) { %>
-            <li class="cf-option" role="option" id="cf-topic-<%= t %>" data-value="<%= t %>" aria-selected="false">
-              <span class="cf-option-text">
-                <span class="cf-option-title"><%= c('topic_' + t) %></span>
-                <span class="cf-option-hint"><%= c('topic_' + t + '_hint') %></span>
-              </span>
-              <svg class="cf-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </li>
-            <% }); %>
-          </ul>
-          <input type="hidden" name="topic" value="">
-        </div>
-        <p class="cf-error" id="cf-topic-err" aria-live="polite"></p>
-      </div>
+              <div class="cf-field" data-field="topic">
+                <span class="cf-label" id="cf-topic-label">
+                  <%= c('topic') %>
+                </span>
+                <div class="cf-select" data-select>
+                  <button type="button" class="cf-select-trigger" id="cf-topic" aria-haspopup="listbox"
+                    aria-expanded="false" aria-labelledby="cf-topic-label cf-topic" aria-describedby="cf-topic-err">
+                    <span class="cf-select-value is-placeholder" data-placeholder="<%= c('topic_ph') %>">
+                      <%= c('topic_ph') %>
+                    </span>
+                    <svg class="cf-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <ul class="cf-select-list" role="listbox" tabindex="-1" aria-labelledby="cf-topic-label" hidden>
+                    <% topics.forEach(function (t) { %>
+                      <li class="cf-option" role="option" id="cf-topic-<%= t %>" data-value="<%= t %>"
+                        aria-selected="false">
+                        <span class="cf-option-text">
+                          <span class="cf-option-title">
+                            <%= c('topic_' + t) %>
+                          </span>
+                          <span class="cf-option-hint">
+                            <%= c('topic_' + t + '_hint' ) %>
+                          </span>
+                        </span>
+                        <svg class="cf-check" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </li>
+                      <% }); %>
+                  </ul>
+                  <input type="hidden" name="topic" value="">
+                </div>
+                <p class="cf-error" id="cf-topic-err" aria-live="polite"></p>
+              </div>
 
-      <div class="cf-field" data-field="body">
-        <label class="cf-label" id="cf-body-label" for="cf-body"><%= c('body') %></label>
-        <div class="cf-editor" data-editor data-mode="rich">
-          <div class="cf-editor-bar">
-            <div class="cf-tabs" role="tablist" aria-label="<%= c('body') %>">
-              <button type="button" class="cf-tab" role="tab" data-tab="rich" aria-selected="true"><%= c('tab_rich') %></button>
-              <button type="button" class="cf-tab" role="tab" data-tab="source" aria-selected="false" tabindex="-1"><%= c('tab_source') %></button>
-            </div>
-            <div class="cf-tools" role="toolbar" aria-label="<%= c('toolbar') %>">
-              <% var I = {
-                bold: '<path d="M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z"/>',
-                italic: '<path d="M14 5h-4M14 19h-4M14 5l-4 14"/>',
-                link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
-                code: '<path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/>',
-                bullet: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
-                ordered: '<path d="M10 6h10M10 12h10M10 18h10M4 5l1.5-1v5M3.5 14.5a1.5 1.5 0 0 1 3 .5c0 1-3 2-3 3.5h3"/>',
-                block: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M9 10l-2 2 2 2M15 10l2 2-2 2"/>',
-                math: '<path d="M11 6H4l4 6-4 6h7M14 10l6 7M20 10l-6 7"/>',
-                mathBlock: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M11.5 8.5h-5l3 3.5-3 3.5h5M13.5 10.5l4 4M17.5 10.5l-4 4"/>',
-                image: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8 8.5"/>'
-              };
-              var groups = [
-                [['bold', 'tool_bold', '⌘B'], ['italic', 'tool_italic', '⌘I'], ['link', 'tool_link', '⌘K'], ['code', 'tool_code', '⌘E']],
-                [['bullet', 'tool_bullet', ''], ['ordered', 'tool_ordered', ''], ['block', 'tool_block', '']],
-                [['math', 'tool_math', ''], ['mathBlock', 'tool_math_block', ''], ['image', 'tool_image', '']]
-              ]; %>
-              <% groups.forEach(function (g, gi) { %>
-                <% if (gi) { %><span class="cf-tool-sep" aria-hidden="true"></span><% } %>
-                <% g.forEach(function (t) { %>
-              <button type="button" class="cf-tool" data-action="<%= t[0] %>" title="<%= c(t[1]) %><%= t[2] ? ' (' + t[2] + ')' : '' %>" aria-label="<%= c(t[1]) %>">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><%- I[t[0]] %></svg>
-              </button>
-                <% }); %>
-              <% }); %>
-              <input type="file" accept="image/png,image/jpeg" multiple hidden data-image-picker>
-            </div>
+              <div class="cf-field" data-field="body">
+                <label class="cf-label" id="cf-body-label" for="cf-body">
+                  <%= c('body') %>
+                </label>
+                <div class="cf-editor" data-editor data-mode="rich">
+                  <div class="cf-editor-bar">
+                    <div class="cf-tabs" role="tablist" aria-label="<%= c('body') %>">
+                      <button type="button" class="cf-tab" role="tab" data-tab="rich" aria-selected="true">
+                        <%= c('tab_rich') %>
+                      </button>
+                      <button type="button" class="cf-tab" role="tab" data-tab="source" aria-selected="false"
+                        tabindex="-1">
+                        <%= c('tab_source') %>
+                      </button>
+                    </div>
+                    <div class="cf-tools" role="toolbar" aria-label="<%= c('toolbar') %>">
+                      <% var I={ bold: '<path d="M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z"/>' ,
+                        italic: '<path d="M14 5h-4M14 19h-4M14 5l-4 14"/>' ,
+                        link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+                        , code: '<path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/>' ,
+                        bullet: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>'
+                        ,
+                        ordered: '<path d="M10 6h10M10 12h10M10 18h10M4 5l1.5-1v5M3.5 14.5a1.5 1.5 0 0 1 3 .5c0 1-3 2-3 3.5h3"/>'
+                        ,
+                        block: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M9 10l-2 2 2 2M15 10l2 2-2 2"/>'
+                        , math: '<path d="M11 6H4l4 6-4 6h7M14 10l6 7M20 10l-6 7"/>' ,
+                        mathBlock: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M11.5 8.5h-5l3 3.5-3 3.5h5M13.5 10.5l4 4M17.5 10.5l-4 4"/>'
+                        ,
+                        image: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8 8.5"/>'
+                        }; var groups=[ [['bold', 'tool_bold' , '⌘B' ], ['italic', 'tool_italic' , '⌘I' ],
+                        ['link', 'tool_link' , '⌘K' ], ['code', 'tool_code' , '⌘E' ]], [['bullet', 'tool_bullet' , '' ],
+                        ['ordered', 'tool_ordered' , '' ], ['block', 'tool_block' , '' ]], [['math', 'tool_math' , '' ],
+                        ['mathBlock', 'tool_math_block' , '' ], ['image', 'tool_image' , '' ]] ]; %>
+                        <% groups.forEach(function (g, gi) { %>
+                          <% if (gi) { %><span class="cf-tool-sep" aria-hidden="true"></span>
+                            <% } %>
+                              <% g.forEach(function (t) { %>
+                                <button type="button" class="cf-tool" data-action="<%= t[0] %>"
+                                  title="<%= c(t[1]) %><%= t[2] ? ' (' + t[2] + ')' : '' %>"
+                                  aria-label="<%= c(t[1]) %>">
+                                  <svg viewBox="0 0 24 24" aria-hidden="true"><%- I[t[0]] %></svg>
+                                </button>
+                                <% }); %>
+                                  <% }); %>
+                                    <input type="file" accept="image/png,image/jpeg" multiple hidden data-image-picker>
+                    </div>
+                  </div>
+                  <div class="cf-textarea-wrap">
+                    <div class="cf-input cf-rich" data-rich data-placeholder="<%= c('body_ph') %>"></div>
+                    <textarea class="cf-input cf-textarea" id="cf-body" name="body" rows="6" maxlength="2000"
+                      placeholder="<%= c('body_ph_md') %>"
+                      aria-describedby="cf-body-err cf-body-count cf-body-hint"></textarea>
+                    <span class="cf-count" id="cf-body-count" aria-live="off"><span data-count>0</span> / 2000</span>
+                  </div>
+                  <div class="cf-notes" id="cf-body-hint">
+                    <ul>
+                      <li>
+                        <%= c('note_md') %>
+                      </li>
+                      <li>
+                        <%= c('note_img') %>
+                      </li>
+                      <li>
+                        <%= c('note_crop') %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="cf-error" id="cf-body-err" aria-live="polite"></p>
+              </div>
+
+              <%# honeypot: hidden from people and screen readers, bots fill it in %>
+                <div class="cf-trap" aria-hidden="true">
+                  <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+                </div>
+
+                <div class="cf-actions">
+                  <button type="submit" class="cf-button" data-submit>
+                    <span class="cf-spinner" aria-hidden="true"></span>
+                    <span class="cf-button-text">
+                      <%= c('send') %>
+                    </span>
+                  </button>
+                </div>
+            </form>
+
+            <aside class="contact-side">
+              <h2 class="visually-hidden">
+                <%= c('other') %>
+              </h2>
+              <figure class="contact-peek">
+                <div class="contact-bubble">
+                  <svg viewBox="0 0 200 110" preserveAspectRatio="none" aria-hidden="true">
+                    <path
+                      d="M14 18 C 30 4, 92 9, 118 6 C 150 3, 188 8, 192 30 C 197 52, 190 68, 168 74 C 140 81, 100 76, 76 79 L 59 98 L 54 80 C 34 81, 12 78, 8 56 C 4 38, 6 26, 14 18 Z" />
+                  </svg>
+                  <p>
+                    <%= c('bubble') %>
+                  </p>
+                </div>
+                <img src="<%- url_for('/images/contact-peek.png') %>" alt="" width="1024" height="1024"
+                  decoding="async">
+                <div class="contact-board"><%- partial('_partial/profile-links', { skip: ['envelope'], labeled: true })
+                    %></div>
+                <svg class="visually-hidden" aria-hidden="true" focusable="false">
+                  <defs>
+                    <linearGradient id="ig-brand" x1="0" y1="1" x2="1" y2="0">
+                      <stop offset="0" stop-color="#feda75" />
+                      <stop offset=".3" stop-color="#fa7e1e" />
+                      <stop offset=".55" stop-color="#d62976" />
+                      <stop offset=".8" stop-color="#962fbf" />
+                      <stop offset="1" stop-color="#4f5bd5" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </figure>
+            </aside>
           </div>
-          <div class="cf-textarea-wrap">
-            <div class="cf-input cf-rich" data-rich data-placeholder="<%= c('body_ph') %>"></div>
-            <textarea class="cf-input cf-textarea" id="cf-body" name="body" rows="6" maxlength="2000" placeholder="<%= c('body_ph_md') %>" aria-describedby="cf-body-err cf-body-count cf-body-hint"></textarea>
-            <span class="cf-count" id="cf-body-count" aria-live="off"><span data-count>0</span> / 2000</span>
-          </div>
-          <div class="cf-notes" id="cf-body-hint">
-            <ul>
-              <li><%= c('note_md') %></li>
-              <li><%= c('note_img') %></li>
-              <li><%= c('note_crop') %></li>
-            </ul>
+        </div>
+      </section>
+      <dialog class="cf-preview" data-preview-dialog aria-labelledby="cf-preview-title">
+        <div class="cf-preview-box">
+          <h2 class="cf-preview-title" id="cf-preview-title"><%= c('preview_title') %></h2>
+          <dl class="cf-preview-meta">
+            <div><dt><%= c('name') %></dt><dd data-preview="name"></dd></div>
+            <div><dt><%= c('email') %></dt><dd data-preview="email"></dd></div>
+            <div><dt><%= c('org') %></dt><dd data-preview="org"></dd></div>
+            <div><dt><%= c('topic') %></dt><dd data-preview="topic"></dd></div>
+          </dl>
+          <p class="cf-preview-label"><%= c('body') %></p>
+          <div class="cf-preview-body" data-preview-body></div>
+          <div class="cf-preview-actions">
+            <button type="button" class="ce-btn" data-preview-edit><%= c('preview_edit') %></button>
+            <button type="button" class="ce-btn is-primary" data-preview-ok><%= c('preview_confirm') %></button>
           </div>
         </div>
-        <p class="cf-error" id="cf-body-err" aria-live="polite"></p>
-      </div>
-
-      <%# honeypot: hidden from people and screen readers, bots fill it in %>
-      <div class="cf-trap" aria-hidden="true">
-        <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
-      </div>
-
-      <div class="cf-actions">
-        <button type="submit" class="cf-button" data-submit>
-          <span class="cf-spinner" aria-hidden="true"></span>
-          <span class="cf-button-text"><%= c('send') %></span>
-        </button>
-      </div>
-    </form>
-
-    <aside class="contact-side">
-      <h2 class="visually-hidden"><%= c('other') %></h2>
-      <figure class="contact-peek">
-        <div class="contact-bubble">
-          <svg viewBox="0 0 200 110" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M14 18 C 30 4, 92 9, 118 6 C 150 3, 188 8, 192 30 C 197 52, 190 68, 168 74 C 140 81, 100 76, 76 79 L 46 104 L 54 80 C 34 81, 12 78, 8 56 C 4 38, 6 26, 14 18 Z"/>
-          </svg>
-          <p><%= c('bubble') %></p>
-        </div>
-        <img src="<%- url_for('/images/contact-peek.png') %>" alt="" width="1024" height="1024" decoding="async">
-        <div class="contact-board"><%- partial('_partial/profile-links', { skip: ['envelope'], labeled: true }) %></div>
-      </figure>
-    </aside>
-  </div>
-</div>
-</section>
-<div class="cf-toast" data-toast role="status" aria-live="polite" hidden></div>
-<script type="application/json" data-contact-strings><%- JSON.stringify(strings).replace(/</g, '\\u003c') %></script>
-<script src="<%- url_for('/js/widgets/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>
-<link rel="stylesheet" href="<%- url_for('/vendor/katex/katex.min.css') %>">
-<script type="module" src="<%- url_for('/js/widgets/contact/main.js') %>?v=<%- build_version() %>"></script>
+      </dialog>
+      <div class="cf-toast" data-toast role="status" aria-live="polite" hidden></div>
+      <script type="application/json"
+        data-contact-strings><%- JSON.stringify(strings).replace(/</g, '\\u003c') %></script>
+      <script src="<%- url_for('/js/widgets/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>
+      <link rel="stylesheet" href="<%- url_for('/vendor/katex/katex.min.css') %>">
+      <script type="module" src="<%- url_for('/js/widgets/contact/main.js') %>?v=<%- build_version() %>"></script>

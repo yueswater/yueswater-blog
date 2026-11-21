@@ -21,7 +21,7 @@ var iconNames = { facebook: 'Facebook', instagram: 'Instagram', threads: 'Thread
         <% for (var key in theme.links){ %>
             <% var linkItem = theme.links[key]; %>
             <% if (linkItem && linkItem.url && skipIcons.indexOf(linkItem.icon) === -1) { %>
-                <a class="link-item" title="<%- key %>" href="<%= linkItem.url %>">
+                <a class="link-item" title="<%- key %>" data-icon="<%= linkItem.icon %>" href="<%= linkItem.url %>">
                     <% if(theme.links_text_enable) { %>
                         <%= key %>
                     <%}%>

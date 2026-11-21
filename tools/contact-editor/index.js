@@ -90,6 +90,8 @@ export function createContactEditor(root, { strings, toast }) {
     busy: uploads.busy,
     focus: () => (root.dataset.mode === 'rich' ? editor.commands.focus() : textarea.focus()),
     reset: () => { editor.commands.clearContent(); textarea.value = ''; setMode('rich'); },
+    // read-only rendering of what will be sent (local image copies, same nodes as the editor)
+    preview: (el) => renderMessage(el, textarea.value, { resolveImage: uploads.resolve, strings }),
   };
 }
 

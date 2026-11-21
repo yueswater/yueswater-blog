@@ -8,7 +8,7 @@
     manage: '管理設定',
     save: '儲存設定',
     necessaryTitle: '必要',
-    necessaryBody: '瀏覽數計數器與主題偏好，網站運作所需，一律開啟。',
+    necessaryBody: '瀏覽數計數器與主題偏好，網站運作所需，一律開啟。透過聯絡我頁面送出留言時，會記錄您填寫的內容與圖片、送出時間、頁面語言、來源頁面與網際網路協定位址（IP 位址），僅用於回覆與防止濫用，不提供給第三方；IP 位址 180 天後刪除。',
     analyticsTitle: '分析',
     analyticsBody: '每次造訪只記錄一筆：頁面、語言、來源網站與活動標籤。不記錄 IP 與瀏覽器資訊，不設定 cookie，保留 13 個月。',
     footer: 'Cookie 設定'
@@ -21,7 +21,7 @@
     manage: 'Manage settings',
     save: 'Save settings',
     necessaryTitle: 'Necessary',
-    necessaryBody: 'The view counter and your theme preference. Needed for the site to work, always on.',
+    necessaryBody: 'The view counter and your theme preference. Needed for the site to work, always on. When you send a message through the contact page, the site records what you enter (including images), the time of sending, page language, source page and your Internet Protocol address (IP address), used only to reply and to prevent abuse and never shared with third parties; IP addresses are deleted after 180 days.',
     analyticsTitle: 'Analytics',
     analyticsBody: 'One record per visit: page, language, referring site and campaign tags. No IP address, no browser details, no cookie. Kept for 13 months.',
     footer: 'Cookie settings'
