@@ -1,0 +1,391 @@
+/** Contact message editor (Tiptap): document, code blocks, math, popover, crop dialog **/
+$ce-line = rgba(0, 0, 0, 0.16)
+$ce-line-dark = rgba(255, 255, 255, 0.18)
+
+.cf-rich
+  padding 0
+  cursor text
+  &:focus-within
+    themed(border-color, $light-accent-color, $dark-accent-color)
+    box-shadow 0 0 0 3px rgba(23, 71, 230, 0.18)
+
+.ce-doc
+  min-height 9rem
+  max-height 32rem
+  overflow auto
+  padding 0.7rem 0.85rem 2rem
+  outline none
+  // placeholder sits on the first empty paragraph and takes no space, so the caret starts at the left
+  p.is-editor-empty:first-child::before
+    content attr(data-placeholder)
+    float left
+    height 0
+    opacity 0.4
+    pointer-events none
+  // the site's 600 is hard to tell apart from regular in the CJK fonts; make bold unmistakable
+  strong, b
+    font-family PingFang TC, PingFang SC, 'Microsoft Jhenghei', sans-serif
+    font-weight 800
+  ol, ul
+    padding-left 1.5em
+  li > p
+    margin 0
+  .ce-img
+    display block
+    max-width 100%
+    max-height 22rem
+    margin 0.5em 0
+    border 1px solid
+    themed(border-color, $ce-line, $ce-line-dark)
+    cursor zoom-in
+    &.ProseMirror-selectednode
+      outline 2px solid $light-accent-color
+      outline-offset 2px
+    &.is-uploading
+      opacity 0.45
+      filter grayscale(1)
+      cursor progress
+  &.is-readonly .ce-img
+    cursor default
+  [data-type="inline-math"]
+    padding 0 0.15em
+    cursor pointer
+    &:hover
+      themed(background, rgba(23, 71, 230, 0.08), rgba(90, 169, 255, 0.14))
+  [data-type="block-math"]
+    margin 0.6em 0
+    padding 0.4em 0
+    text-align center
+    overflow-x auto
+    cursor pointer
+    &:hover
+      themed(background, rgba(23, 71, 230, 0.05), rgba(90, 169, 255, 0.1))
+
+.cf-tool[aria-pressed="true"]
+  opacity 1
+  themed(color, $light-accent-color, $dark-accent-color)
+  themed(background, rgba(23, 71, 230, 0.1), rgba(90, 169, 255, 0.16))
+
+// code block: line-number gutter on the left, language picker floating over the top-right corner
+$ce-code-pad = 0.75em
+.ce-code
+  --lang transparent
+  position relative
+  margin 0.6em 0
+  border-left 3px solid var(--lang)
+  themed(background, #f4f6fa, #0b1424)
+  font-family $f-mono
+  font-size 0.85em
+  line-height 1.6
+  pre
+    margin 0
+    padding $ce-code-pad 1em $ce-code-pad 3.4em
+    overflow auto
+    font inherit
+    line-height inherit
+    background none
+    code
+      padding 0
+      font inherit
+      background none
+
+.ce-gutter
+  position absolute
+  top 0
+  left 0
+  width 2.6em
+  padding $ce-code-pad 0
+  text-align right
+  user-select none
+  pointer-events none
+  opacity 0.4
+  span
+    display block
+    padding-right 0.6em
+
+.ce-lang, .ce-lang-tag
+  position absolute
+  z-index 2
+  top 0.3em
+  right 0.35em
+  font-family $f-mono
+  font-size 0.72rem
+
+.ce-lang-tag, .ce-lang-btn
+  display inline-flex
+  align-items center
+  gap 0.4em
+  &::before
+    content ''
+    width 0.6em
+    height 0.6em
+    border-radius 50%
+    background var(--lang)
+
+.ce-lang-tag
+  opacity 0.6
+
+.ce-lang-btn
+  padding 0.15em 0.5em
+  font inherit
+  color inherit
+  border 1px solid transparent
+  border-radius 0
+  themed(background, rgba(244, 246, 250, 0.9), rgba(11, 20, 36, 0.9))
+  opacity 0.55
+  cursor pointer
+  .ce-code:hover &, &:focus-visible
+    opacity 1
+  &:hover
+    themed(border-color, $ce-line, $ce-line-dark)
+
+.ce-lang-pop
+  &[hidden]
+    display none
+  position fixed
+  z-index 60
+  width 12rem
+  font-family $f-mono
+  font-size 0.72rem
+  border 1px solid
+  themed(border-color, $ce-line, $ce-line-dark)
+  themed(background, #fff, #16243a)
+  box-shadow 0 12px 32px rgba(15, 27, 45, 0.16)
+
+.ce-lang-filter
+  box-sizing border-box
+  width 100%
+  padding 0.5em 0.6em
+  font inherit
+  color inherit
+  border none
+  border-bottom 1px solid
+  themed(border-color, $ce-line, $ce-line-dark)
+  background transparent
+  outline none
+
+.ce-lang-list
+  max-height 14rem
+  margin 0
+  padding 0.25em
+  overflow auto
+  list-style none
+  li
+    display flex
+    align-items center
+    gap 0.5em
+    padding 0.35em 0.5em
+    cursor pointer
+    &::before
+      content ''
+      flex-shrink 0
+      width 0.6em
+      height 0.6em
+      border-radius 50%
+      background var(--lang)
+    &.is-active
+      themed(background, rgba(23, 71, 230, 0.08), rgba(90, 169, 255, 0.14))
+
+// syntax colours (highlight.js classes from lowlight)
+.ce-code
+  .hljs-comment, .hljs-quote
+    color #8a94a6
+    font-style italic
+  .hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-type
+    themed(color, #1747e6, #7fb6ff)
+  .hljs-string, .hljs-attr, .hljs-template-tag, .hljs-addition
+    themed(color, #0b7a52, #6fd3a4)
+  .hljs-number, .hljs-literal, .hljs-symbol, .hljs-bullet
+    themed(color, #b4530a, #ffb36b)
+  .hljs-title, .hljs-section, .hljs-function .hljs-title
+    themed(color, #7c3aed, #c4a7ff)
+  .hljs-variable, .hljs-params, .hljs-property
+    themed(color, #b42318, #ff9b8f)
+  .hljs-meta, .hljs-deletion
+    color #c2410c
+
+// shared small buttons
+.ce-btn
+  padding 0.35rem 0.8rem
+  font inherit
+  font-size 0.8rem
+  color inherit
+  border 1px solid
+  themed(border-color, $ce-line, $ce-line-dark)
+  border-radius 0
+  background transparent
+  cursor pointer
+  &.is-primary
+    color #fff
+    border-color transparent
+    themed(background, $light-accent-color, $dark-accent-color)
+  &.is-danger
+    margin-right auto
+    color #d93025
+
+.ce-chip
+  @extend .ce-btn
+  &.is-on
+    themed(border-color, $light-accent-color, $dark-accent-color)
+    themed(color, $light-accent-color, $dark-accent-color)
+
+// link / math popover
+.ce-pop
+  &[hidden]
+    display none
+  position absolute
+  z-index 25
+  top 0.6rem
+  left 50%
+  transform translateX(-50%)
+  box-sizing border-box
+  width min(22rem, 92%)
+  display flex
+  flex-direction column
+  gap 0.6rem
+  padding 0.9rem
+  border 1px solid
+  themed(border-color, $ce-line, $ce-line-dark)
+  themed(background, #fff, #16243a)
+  box-shadow 0 12px 32px rgba(15, 27, 45, 0.18)
+  label
+    display flex
+    flex-direction column
+    gap 0.3rem
+    font-size 0.75rem
+    font-weight 700
+
+.ce-pop-title
+  margin 0
+  font-size 0.85rem
+  font-weight 700
+
+.ce-field
+  box-sizing border-box
+  width 100%
+  padding 0.45rem 0.6rem
+  font inherit
+  font-size 0.88rem
+  font-weight 400
+  color inherit
+  border 1px solid
+  themed(border-color, $ce-line, $ce-line-dark)
+  border-radius 0
+  background transparent
+  outline none
+  resize vertical
+  &:focus
+    themed(border-color, $light-accent-color, $dark-accent-color)
+  &.is-mono
+    font-family $f-mono
+    font-size 0.82rem
+
+.ce-pop-preview
+  min-height 2.4rem
+  padding 0.5rem
+  overflow-x auto
+  text-align center
+  themed(background, rgba(0, 0, 0, 0.03), rgba(255, 255, 255, 0.05))
+
+.ce-muted
+  font-size 0.8rem
+  opacity 0.5
+
+.ce-pop-error
+  margin 0
+  font-size 0.78rem
+  color #d93025
+  &:empty
+    display none
+
+.ce-pop-actions
+  display flex
+  justify-content flex-end
+  gap 0.5rem
+
+// crop dialog
+.ce-crop
+  position fixed
+  inset 0
+  z-index 100
+  display flex
+  align-items center
+  justify-content center
+  padding 1.5rem
+  background rgba(10, 18, 32, 0.6)
+
+.ce-crop-box
+  display flex
+  flex-direction column
+  gap 0.9rem
+  max-width min(52rem, 100%)
+  max-height 100%
+  padding 1.1rem
+  themed(background, #fff, #16243a)
+  themed(color, #1a1a1a, #e6edf7)
+  box-shadow 0 20px 50px rgba(0, 0, 0, 0.3)
+
+.ce-crop-title
+  margin 0
+  font-weight 700
+
+.ce-crop-stage
+  position relative
+  align-self center
+  line-height 0
+  user-select none
+  img
+    display block
+    max-width min(48rem, 85vw)
+    max-height 62vh
+
+.ce-crop-rect
+  position absolute
+  box-sizing border-box
+  border 2px solid #fff
+  box-shadow 0 0 0 9999px rgba(0, 0, 0, 0.45)
+  cursor move
+  touch-action none
+  i
+    position absolute
+    width 12px
+    height 12px
+    background #fff
+    border 1px solid $light-accent-color
+  i[data-h="nw"]
+    top -7px
+    left -7px
+    cursor nwse-resize
+  i[data-h="ne"]
+    top -7px
+    right -7px
+    cursor nesw-resize
+  i[data-h="sw"]
+    bottom -7px
+    left -7px
+    cursor nesw-resize
+  i[data-h="se"]
+    bottom -7px
+    right -7px
+    cursor nwse-resize
+
+.ce-crop-stage
+  overflow hidden
+
+.ce-crop-bar
+  display flex
+  flex-wrap wrap
+  align-items center
+  justify-content space-between
+  gap 0.75rem
+
+.ce-crop-ratios, .ce-crop-actions
+  display flex
+  gap 0.4rem
+
+.cf-optional
+  margin-left 0.35em
+  font-weight 400
+  letter-spacing 0
+  text-transform none
+  opacity 0.7

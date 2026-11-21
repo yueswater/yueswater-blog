@@ -9,17 +9,21 @@
             lead   -- optional one-line description (plain text)
             label  -- small mono line at the top of the panel (plain text)
             big    -- the number shown large in the panel
+            side   -- false to drop the accent panel (the title area then spans the full width)
 %>
-<header class="pagehead">
+<% var noSide = typeof side !== 'undefined' && side === false; %>
+<header class="pagehead<%= noSide ? ' pagehead--solo' : '' %>">
     <div class="pagehead-main">
         <canvas class="ascii-ocean ascii-ocean--head" aria-hidden="true"></canvas>
         <p class="pagehead-kicker"><%= kicker %></p>
         <h1 class="pagehead-title"><%- title %></h1>
         <% if (typeof lead !== 'undefined' && lead) { %><p class="pagehead-lead"><%= lead %></p><% } %>
     </div>
+    <% if (!noSide) { %>
     <div class="pagehead-side" aria-hidden="true">
         <span class="pagehead-label"><%= label %></span>
         <% if (typeof big !== 'undefined' && big !== null) { %><span class="pagehead-big"><%= big %></span><% } %>
     </div>
+    <% } %>
 </header>
 <script src="<%- url_for('/js/widgets/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>

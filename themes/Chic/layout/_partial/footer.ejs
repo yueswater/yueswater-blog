@@ -1,9 +1,58 @@
+<%
+    var isEn = page.lang === 'en';
+    var navSuffix = isEn ? '-en' : '';
+    var splitSet = {};
+    (theme.nav_lang_split || []).forEach(function (id) { splitSet[id] = true; });
+    var browse = ['articles', 'projects', 'diary', 'category', 'tag'];
+    var cfg = theme.footer || {};
+    var tagline = isEn ? cfg.tagline_en : cfg.tagline;
+    var siteName = isEn ? theme.navname_en : theme.navname;
+    var homeHref = isEn ? '/en/' : config.root;
+%>
 <footer id="footer" class="footer">
+    <div class="footer-ocean" aria-hidden="true"><canvas class="ascii-ocean ascii-ocean--footer"></canvas></div>
+    <%
+        // The character leans on the top edge of the footer. Two copies of one image: the body is cut off at the edge
+        // (the lower half stays hidden), and a second copy shows only the hanging hand, which lies in front of the blue.
+        var peekSrc = url_for('/images/avatar-leaning-side.png');
+    %>
+    <div class="footer-peek" aria-hidden="true">
+        <img class="footer-peek-body" src="<%- peekSrc %>" alt="" loading="lazy" decoding="async">
+        <img class="footer-peek-hand" src="<%- peekSrc %>" alt="" loading="lazy" decoding="async">
+    </div>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <a class="footer-name" href="<%- url_for(homeHref) %>"><%= siteName %></a>
+            <% if (tagline) { %><p class="footer-tagline"><%= tagline %></p><% } %>
+            <%- partial('_partial/profile-links') %>
+        </div>
+        <nav class="footer-cols" aria-label="Footer">
+            <div class="footer-col">
+                <h2><%= __('footer_browse') %></h2>
+                <ul>
+                    <% browse.forEach(function (id) { if (!theme.nav[id]) return; %>
+                    <li><a href="<%- url_for(theme.nav[id] + (splitSet[id] ? navSuffix : '')) %>"><%= __('nav_' + id) %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h2><%= __('footer_general') %></h2>
+                <ul>
+                    <% (cfg.general || []).forEach(function (item) { %>
+                    <% var itemHref = item.href ? (isEn && item.href_en ? item.href_en : item.href) : url_for(item.url + (isEn ? '-en' : '')); %>
+                    <li><a href="<%- itemHref %>"<% if (item.href) { %> target="_blank" rel="noopener"<% } %>><%= isEn ? item.en : item.zh %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </nav>
+    </div>
     <div class="copyright">
         <span>© <%= new Date().getFullYear() %> Yueswater</span><span class="footer-sep"> | </span>
+        <span class="footer-license"><%= __('footer_license') %></span><span class="footer-sep"> | </span>
         <span class="powered-by">Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
         <% if (theme.consent_enable) { %>
         <span class="footer-consent-wrap" hidden><span class="footer-sep"> | </span><button type="button" class="footer-consent" data-consent-open></button></span>
         <% } %>
     </div>
 </footer>
+<script src="<%- url_for('/js/widgets/ascii-ocean.js') %>?v=<%- build_version() %>" defer></script>

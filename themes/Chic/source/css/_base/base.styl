@@ -8,16 +8,34 @@ a, button, .menu-toggle, .menu-close, .theme-toggle label, .lang-switch, .link-i
 
 html
   font-family $font-family
+  // The scrollbar track is see-through and shows this gradient, which turns footer-blue at the
+  // bottom of the page, so the footer band does not stop short of the right edge.
+  background linear-gradient(to bottom, $light-background-color calc(100% - 22rem), $light-accent-color calc(100% - 22rem))
+  &:has(.dark-theme)
+    background linear-gradient(to bottom, $dark-background-color calc(100% - 22rem), $light-accent-color calc(100% - 22rem))
+  @media (max-width: 768px)
+    background linear-gradient(to bottom, $light-background-color calc(100% - 37rem), $light-accent-color calc(100% - 37rem))
+    &:has(.dark-theme)
+      background linear-gradient(to bottom, $dark-background-color calc(100% - 37rem), $light-accent-color calc(100% - 37rem))
   &::-webkit-scrollbar
     width 8px
     height 8px
 
+  // pages without a footer (home, about) keep a plain background
+  &:not(:has(.footer))
+    background $light-background-color
+    &:has(.dark-theme)
+      background $dark-background-color
+  &::-webkit-scrollbar-track
+    background transparent
+
   &::-webkit-scrollbar-thumb
     height 40px
-    background-color #eee
+    // translucent so it reads on the pale page and on the blue footer alike
+    background-color rgba(0, 0, 0, 0.22)
     border-radius 16px
     &:hover
-      background-color #ddd
+      background-color rgba(0, 0, 0, 0.36)
 
 body
   font-size 16px

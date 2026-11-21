@@ -5,6 +5,7 @@ import { renderToolbar } from './toolbar.js'
 import { renderTable } from './table.js'
 import { openDialog } from './dialog.js'
 import { renderTraffic } from './traffic.js'
+import { renderMessages } from './messages.js'
 
 export async function renderDashboard(root, { backend, data, email, onSignOut }) {
   const state = { q: '', tab: 'all', selected: new Set(), view: 'posts' }
@@ -55,12 +56,13 @@ export async function renderDashboard(root, { backend, data, email, onSignOut })
     if (keep) { const s = body.querySelector('.search'); s.focus(); s.setSelectionRange(s.value.length, s.value.length) }
   }
 
-  const views = [['posts', '文章'], ['traffic', '流量來源']]
+  const views = [['posts', '文章'], ['traffic', '流量來源'], ['messages', '留言']]
   const viewTabs = views.map(([key, label]) => el('button', { class: 'tab', onclick: () => setView(key) }, label))
   function setView(key) {
     state.view = key
     viewTabs.forEach((b, i) => b.setAttribute('aria-selected', String(views[i][0] === key)))
     if (key === 'traffic') renderTraffic(body, { backend })
+    else if (key === 'messages') renderMessages(body, { backend, notify })
     else draw()
   }
 
