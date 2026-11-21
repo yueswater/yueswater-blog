@@ -5,35 +5,33 @@ lang: en
 layout: about
 footer: false
 about:
-  name: Song Pin-Yueh
-  nick: Ah-Yueh · Anthony
-  tag: Business, code, and Chinese cooking.
+  name: Pin-Yue, Sung
+  nick: Anthony
+  tag: Software developer with a business background
   facts:
-    - { k: SCHOOL, v: "NCCU, Intl. Business" }
-    - { k: WORK, v: GoMore · Software QA intern }
+    - { k: SCHOOL, v: "NTU PS・NCCU IB" }
+    - { k: WORK, v: GoMore · Software QA }
 ---
 
-## Hi, I'm Anthony 👋
+## About me
 
-My name is **Song Pin-Yueh**, but just call me **Ah-Yueh**. I'm a graduate student at the [Graduate Institute of International Business, NCCU](https://www.nccu.edu.tw/), studying business while somehow ending up deep in the software world.
+I'm Pin-Yue Sung (Anthony), a student at the [Graduate Institute of International Business, National Chengchi University](https://www.nccu.edu.tw/). I have a business background and work in software development. I currently work on software quality assurance at GoMore. What my studies and my job share is a focus on verifiability: whether it is a model's derivation, a program's behavior, or a conclusion drawn from data, I want the result to be reproducible and open to checking.
 
-Besides coursework, I work as a **software quality assurance intern** at GoMore, turning caffeine and curiosity into products people actually use.
+## Technical scope
 
-## What I do
-
-My work spans both frontend and backend. Here's what I reach for most:
+My work spans both frontend and backend. The tools I use most:
 
 - **Backend:** [Python](https://www.python.org/) with [FastAPI](https://fastapi.tiangolo.com/), [Django](https://www.djangoproject.com/), and [Flask](https://flask.palletsprojects.com/); also [Node.js](https://nodejs.org/)
 - **Frontend:** [React](https://react.dev/) and [Next.js](https://nextjs.org/)
 - **Mobile:** [Flutter](https://flutter.dev/)
 - **Data analysis:** [R](https://www.r-project.org/) and [Python](https://www.python.org/)
 
-## This blog
+## About this blog
 
-This is where I write **tutorials** and **notes**, mostly around programming languages and economics. The goal is simple: write the kind of tutorial I wish I'd found when I was learning. If a post here saves you a few hours of headache, it was worth it.
+The blog collects tutorials and study notes on programming languages and economics, including languages such as Go and Python, data structures and algorithms, game theory and rent-seeking models, and language-learning notes.
 
-## Off screen
+My aim is to write the kind of tutorial I wished I had found when I was learning. Posts start from a problem, give the motivation and definitions first, then walk through the derivation or implementation, with examples you can reproduce yourself. I hope they save readers some time.
 
-When I'm not coding, I'm probably in the kitchen working on **Chinese cuisine** — a craft that demands patience and rewards it in equal measure. Cooking is just another form of problem solving, to me.
+## Other
 
-Musically, I'm a devoted **EDM** fan, leaning toward **Trance** and **House**. [Avicii](https://avicii.com/) is my all-time favorite.
+In music, I prefer EDM, especially Trance and House. My favorite artist is [Avicii](https://avicii.com/).

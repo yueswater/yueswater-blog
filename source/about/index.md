@@ -6,34 +6,32 @@ layout: about
 footer: false
 about:
   name: 宋品岳
-  nick: 阿岳 · Anthony
-  tag: 念商科、寫程式、做中餐。
+  nick: Anthony
+  tag: 商科背景的軟體開發者
   facts:
-    - { k: SCHOOL, v: 政大國貿所 }
-    - { k: WORK, v: 博晶醫電 · 軟體品質保證實習生 }
+    - { k: SCHOOL, v: 台大政治系・政大國貿所 }
+    - { k: WORK, v: 博晶醫電 · 軟體品質保證 }
 ---
 
-## 嗨，我是 Anthony 👋
+## 關於我
 
-我叫**宋品岳**，不過叫我**阿岳**就好。我是[國立政治大學（政大）](https://www.nccu.edu.tw/)國貿所的學生——對，就是一個念商科卻一頭栽進軟體世界的人。
+我是宋品岳（Anthony），就讀[國立政治大學](https://www.nccu.edu.tw/)國際貿易研究所，商科背景，同時從事軟體開發。目前任職於博晶醫電，負責軟體品質保證。研究與工作之間的共同點是對可驗證性的重視：不論是模型的推導、程式的行為，還是資料呈現的結論，都希望能被重現與檢驗。
 
-除了課業之外，我在博晶醫電擔任**軟體品質保證實習生**，把咖啡因和好奇心轉化成真正能用的產品。
+## 技術範圍
 
-## 我在做什麼
+開發涵蓋前後端，常用工具如下：
 
-我的開發橫跨前後端，以下是我最常用的工具：
-
-- **後端：** [Python](https://www.python.org/) 搭配 [FastAPI](https://fastapi.tiangolo.com/)、[Django](https://www.djangoproject.com/) 和 [Flask](https://flask.palletsprojects.com/)；也會用 [Node.js](https://nodejs.org/)
+- **後端：** [Python](https://www.python.org/) 搭配 [FastAPI](https://fastapi.tiangolo.com/)、[Django](https://www.djangoproject.com/) 和 [Flask](https://flask.palletsprojects.com/)；也使用 [Node.js](https://nodejs.org/)
 - **前端：** [React](https://react.dev/) 和 [Next.js](https://nextjs.org/)
 - **行動端：** [Flutter](https://flutter.dev/)
 - **資料分析：** [R](https://www.r-project.org/) 和 [Python](https://www.python.org/)
 
-## 這個部落格
+## 關於這個部落格
 
-這裡是我寫**教學文章**、**撰寫筆記**的地方，主題圍繞著程式語言與經濟學。目標很簡單：我希望能夠寫出當初學習時希望能找到的那種教學，如果這裡的文章幫你省了幾個小時的頭痛，那就值得了！
+部落格收錄程式語言與經濟學的教學文章與學習筆記，內容包括程式、經濟學、語言學習等筆記。
 
-## 螢幕之外
+寫作目標是提供我學習時希望能找到的那種教學。文章盡量從問題出發，先交代動機與定義，再說明推導或實作，並附上可以自行重現的範例，希望能替讀者節省摸索的時間。
 
-不寫程式的時候，大概率是在廚房研究**中餐**──一個需要耐心、但也用耐心回報你的烹飪！畢竟對我來說，料理是另一種形式的問題解決過程。
+## 其他
 
-在音樂方面，我是個忠實的 **EDM** 狂粉，口味偏 **Trance** 和 **House**。而 [Avicii](https://avicii.com/) 是我的最愛。
+音樂方面，我偏好 EDM，尤其是 Trance 和 House，最喜歡的藝人是 [Avicii](https://avicii.com/)。
