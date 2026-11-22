@@ -15,6 +15,8 @@ let choosingPassword = ['invite', 'recovery'].includes(arrivedBy) || (params.get
 async function main() {
   const data = await fetch('/admin/data.json').then((r) => r.json())
   const local = ['localhost', '127.0.0.1'].includes(location.hostname)
+  // the contact editor uploads images straight to storage with the public key, as the contact page does
+  if (data.supabaseUrl && data.anonKey) { window.SUPABASE_URL = data.supabaseUrl; window.SUPABASE_ANON_KEY = data.anonKey }
   const backend = local && params.has('demo') ? createDemo(['in', 'setpw'].includes(params.get('demo'))) : createBackend(data)
 
   async function show() {

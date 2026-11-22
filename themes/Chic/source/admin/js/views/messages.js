@@ -1,8 +1,8 @@
 // "留言": messages from the contact page, newest first. Click one to expand it; it is marked read
-// when opened, and can be marked unread again. Reply opens an inline composer; the mail is sent by the
+// when opened, and can be marked unread again. Reply opens a modal editor; the mail is sent by the
 // contact-reply function from the site's own address, and the sent replies show under the message.
 import { el, fmtTime } from '../dom.js'
-import { composer } from './reply.js'
+import { openReply } from './reply.js'
 import { threadEl } from './thread.js'
 import { renderMessage } from '/js/widgets/contact/editor.bundle.js'
 
@@ -19,7 +19,6 @@ export async function renderMessages(root, { backend, notify }) {
   root.replaceChildren(out)
   let rows = []
   const opened = new Set() // ids kept open across redraws
-  const composing = new Set() // ids with the reply composer open
   const threads = new Map()   // message id -> replies sent
   const urls = new Map()   // image file name -> signed URL (valid for an hour)
 
@@ -64,26 +63,26 @@ export async function renderMessages(root, { backend, notify }) {
     if (threads.has(row.id)) return
     try {
       const all = await backend.replies([row.id])
-      threads.set(row.id, all.filter((r) => r.message_id === row.id))
+      const mine = all.filter((r) => r.message_id === row.id)
+      threads.set(row.id, mine)
+      const missing = [...new Set(mine.flatMap((r) => imageNames(r.body)))].filter((n) => !urls.has(n))
+      if (missing.length) { try { Object.entries(await backend.imageUrls(missing)).forEach(([k, v]) => urls.set(k, v)) } catch { /* blank images */ } }
       draw()
     } catch { /* the thread is a convenience; the message itself still shows */ }
   }
 
-  function replyArea(row) {
-    if (composing.has(row.id) && SAFE_EMAIL.test(row.email || '')) {
-      return composer({
-        backend, row,
-        onCancel: () => { composing.delete(row.id); draw() },
-        onSent: (reply) => {
-          threads.set(row.id, [...(threads.get(row.id) || []), reply])
-          row.replied_at = reply.ts
-          composing.delete(row.id)
-          notify('已寄出回覆')
-          draw()
-        },
-      })
-    }
-    return null
+  function reply(row) {
+    openReply({
+      backend, row, notify,
+      onSent: async (sent) => {
+        threads.set(row.id, [...(threads.get(row.id) || []), sent])
+        row.replied_at = sent.ts
+        notify('已寄出回覆', 'ok')
+        const missing = imageNames(sent.body).filter((n) => !urls.has(n))
+        if (missing.length) { try { Object.entries(await backend.imageUrls(missing)).forEach(([k, v]) => urls.set(k, v)) } catch { /* blank images */ } }
+        draw()
+      },
+    })
   }
 
   function item(row) {
@@ -109,10 +108,9 @@ export async function renderMessages(root, { backend, notify }) {
       el('div', { class: 'msg-body' },
         el('p', { class: 'muted small' }, [visible(row.email), visible(row.org), row.lang, row.ip && `IP ${row.ip}`].filter(Boolean).join(' · ')),
         bodyEl(row),
-        sent.length ? threadEl(sent) : null,
-        replyArea(row),
+        sent.length ? threadEl(sent, urls) : null,
         el('div', { class: 'msg-actions' },
-          canReply && !composing.has(row.id) ? el('button', { class: 'btn small', onclick: () => { composing.add(row.id); draw() } }, '回信') : null,
+          canReply ? el('button', { class: 'btn small', onclick: () => reply(row) }, '回信') : null,
           row.read_at ? el('button', { class: 'btn small', onclick: () => mark(row, false) }, '標為未讀') : null)))
   }
 

@@ -10,9 +10,11 @@ import { cors, json } from './cors.ts'
 import { requireAdmin } from './auth.ts'
 import { parseRequest, storedEmail } from './validate.mjs'
 import { compose } from './compose.mjs'
+import { imageNames } from './images.mjs'
 import { sendMail } from './resend.ts'
 
 const PER_HOUR = 20
+const IMAGE_TTL = 7 * 24 * 3600 // signed image links in the mail stop working after a week
 const MIN_GAP_MS = 10_000
 
 async function sha16(s: string) {
@@ -48,8 +50,16 @@ Deno.serve(async (req) => {
   if (prev && !sameAsLast && Date.now() - new Date(prev.ts).getTime() < MIN_GAP_MS) return json({ error: 'too fast' }, 429)
   if (sameAsLast && Date.now() - new Date(prev.ts).getTime() < MIN_GAP_MS) return json({ ok: true, duplicate: true })
 
+  // images are stored under bare file names in a private bucket; the mail gets signed links to them
+  const names = [...new Set([...imageNames(parsed.body), ...imageNames(msg.body)])]
+  const images: Record<string, string> = {}
+  if (names.length) {
+    const { data: signed } = await db.storage.from('contact-images').createSignedUrls(names, IMAGE_TTL)
+    for (const x of signed ?? []) if (x.signedUrl && x.path) images[x.path] = x.signedUrl
+  }
+
   const key = `contact-reply-${msg.id}-${await sha16(parsed.body)}`
-  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined }), key)
+  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined, imageOrigin: Deno.env.get('SUPABASE_URL'), images }), key)
   if (!sent) return json({ error: 'send failed' }, 502)
 
   const { data: row, error } = await db.from('contact_replies')

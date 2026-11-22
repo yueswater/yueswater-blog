@@ -1,37 +1,62 @@
-// Inline reply composer under an opened message. Sends through backend.sendReply and calls onSent(reply).
+// "回信" opens a modal dialog with the rich editor. The draft is autosaved to localStorage every 10 s
+// (keyed by message id), restored on reopen and removed after a successful send.
 import { el } from '../dom.js'
+import { createAutosave } from '/js/widgets/contact/autosave.js'
+import { createReplyEditor } from './replyEditor.js'
+import { replyShell } from './replyShell.js'
 
 export const MAX_REPLY = 5000
+const imageNames = (md) => [...String(md || '').matchAll(/!\[[^\]\n]*\]\(([\w-]+\.(?:png|jpe?g))\)/g)].map((m) => m[1])
+const hhmm = () => new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 
-export function composer({ backend, row, onSent, onCancel }) {
-  const area = el('textarea', { class: 'reply-input', rows: 6, maxLength: MAX_REPLY, placeholder: '寫下回覆，寄出後訪客會從 contact@yueswater.com 收到', 'aria-label': '回覆內容' })
-  const count = el('span', { class: 'muted small num' }, `0 / ${MAX_REPLY}`)
-  const error = el('p', { class: 'form-error', hidden: true })
-  const send = el('button', { class: 'btn small primary', type: 'button', disabled: true }, '寄出')
+export async function openReply({ backend, row, notify, onSent }) {
+  const urls = new Map()
+  const { root, editor, textarea } = createReplyEditor({ toast: notify, resolveImage: (n) => urls.get(n) || '' })
+  const shell = replyShell({ row, body: root, onSend: () => submit(), onClose: () => close() })
+  const draft = createAutosave({
+    key: `reply-draft-${row.id}`,
+    read: () => ({ body: textarea.value }),
+    isEmpty: (v) => !String(v.body).trim(),
+    onSaved: () => shell.status(`已自動儲存 ${hhmm()}`),
+  })
   let busy = false
 
   const sync = () => {
-    count.textContent = `${area.value.length} / ${MAX_REPLY}`
-    send.disabled = busy || !area.value.trim()
+    const n = textarea.value.length
+    shell.count(n, MAX_REPLY)
+    shell.canSend(!busy && textarea.value.trim() !== '' && n <= MAX_REPLY)
+  }
+  function close() {
+    draft.flush(); draft.stop()
+    editor.destroy()
+    shell.remove()
   }
   async function submit() {
-    if (busy || !area.value.trim()) return
-    busy = true; sync(); send.textContent = '寄出中…'; error.hidden = true
+    if (busy || !textarea.value.trim()) return
+    if (editor.busy()) return shell.error('圖片上傳中，請稍候')
+    busy = true; sync(); shell.sending(true); shell.error('')
+    const body = textarea.value
     try {
-      const out = await backend.sendReply(row.id, area.value)
-      onSent(out.reply || { id: Date.now(), ts: new Date().toISOString(), body: area.value.trim() })
+      const out = await backend.sendReply(row.id, body)
+      draft.clear(); draft.stop()
+      editor.destroy(); shell.remove()
+      onSent(out.reply || { id: Date.now(), ts: new Date().toISOString(), body: body.trim() })
     } catch (e) {
-      error.textContent = e.message || '寄出失敗'; error.hidden = false
-      busy = false; send.textContent = '寄出'; sync()
+      shell.error(e.message || '寄出失敗')
+      busy = false; shell.sending(false); sync()
     }
   }
-  area.addEventListener('input', sync)
-  area.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); submit() } })
-  send.addEventListener('click', submit)
-  queueMicrotask(() => area.focus())
 
-  return el('div', { class: 'msg-compose' },
-    el('p', { class: 'muted small' }, `寄給 ${String(row.email).replace(/[\u0000-\u001F\u007F​-‏‪-‮⁠-⁩﻿]/g, '')}`),
-    area, error,
-    el('div', { class: 'msg-actions' }, send, el('button', { class: 'btn small', type: 'button', onclick: onCancel }, '取消'), count))
+  textarea.addEventListener('input', sync)
+  shell.open()
+  const saved = draft.load()
+  if (saved && typeof saved.body === 'string' && saved.body.trim()) {
+    const names = imageNames(saved.body)
+    if (names.length) { try { Object.entries(await backend.imageUrls(names)).forEach(([k, v]) => urls.set(k, v)) } catch { /* images stay blank */ } }
+    editor.setMarkdown(saved.body)
+    shell.status('已還原草稿')
+  }
+  draft.start()
+  sync()
+  editor.focus()
 }

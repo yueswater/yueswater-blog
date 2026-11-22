@@ -22,7 +22,7 @@ async function put(name, file) {
   if (!res.ok) throw new Error(String(res.status));
 }
 
-export function createUploads({ getEditor, strings, toast }) {
+export function createUploads({ getEditor, strings, toast, fallbackImage = () => '' }) {
   let pending = 0;
   const count = () => {
     let n = 0;
@@ -72,5 +72,5 @@ export function createUploads({ getEditor, strings, toast }) {
     if (cropped && cropped !== entry.file) await place(cropped, { replace: name });
   }
 
-  return { add, recrop, busy: () => pending > 0, resolve: (n) => local.get(n)?.url || '' };
+  return { add, recrop, busy: () => pending > 0, resolve: (n) => local.get(n)?.url || fallbackImage(n) };
 }

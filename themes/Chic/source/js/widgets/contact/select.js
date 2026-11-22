@@ -85,6 +85,15 @@ export function initSelect(root, onChange) {
   return {
     get value() { return hidden.value; },
     focus() { trigger.focus(); },
+    // choose an option by value without moving focus or firing onChange (restoring a draft)
+    set(value) {
+      const o = options.find((x) => x.dataset.value === value);
+      if (!o) return;
+      hidden.value = value;
+      options.forEach((x) => x.setAttribute('aria-selected', String(x === o)));
+      valueEl.textContent = o.querySelector('.cf-option-title').textContent;
+      valueEl.classList.remove('is-placeholder');
+    },
     reset() {
       hidden.value = '';
       options.forEach((x) => x.setAttribute('aria-selected', 'false'));

@@ -29,7 +29,7 @@ test.describe('form validation', () => {
     await expect(contact.input('name')).toHaveValue('x'.repeat(80));
   });
 
-  for (const bad of ['plain', 'a@b', 'a b@c.d', '@c.d']) {
+  for (const bad of ['plain', 'a@b', 'a@@c.d', '@c.d']) {
     test(`email rejected: ${bad}`, async ({ contact }) => {
       await contact.input('email').fill(bad);
       await contact.input('name').focus();

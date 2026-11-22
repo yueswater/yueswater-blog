@@ -35,15 +35,20 @@ test('html escapes the reply and the quoted original', () => {
 
 test('line breaks become <br> and the text version quotes the original', () => {
   const m = compose({ to: 'v@example.com', msg: msg({ body: 'l1\nl2' }), body: 'a\nb', messageId: 1 })
+  assert.doesNotMatch(m.text, /\*\*|```/)
   assert.match(m.html, /a<br>b/)
   assert.match(m.text, /> l1\n> l2/)
 })
 
-test('quoted original is cut and images are flattened', () => {
-  const q = quoted(msg({ body: `![x](secret-file.png)\n${'a'.repeat(2000)}` }))
+test('quoted original is cut', () => {
+  const q = quoted(msg({ body: `x\n${'a'.repeat(2000)}` }))
   assert.ok(q.length <= 601)
-  assert.ok(q.startsWith('[image]'))
-  assert.doesNotMatch(q, /secret-file/)
+})
+
+test('stored image names without a signed URL never reach the html or the text', () => {
+  const m = compose({ to: 'v@example.com', msg: msg({ body: '![x](secret-file.png)' }), body: 'hi', messageId: 1 })
+  assert.doesNotMatch(m.html + m.text, /secret-file/)
+  assert.match(m.text, /\[圖片\]/)
 })
 
 test('english visitors get an english lead-in', () => {

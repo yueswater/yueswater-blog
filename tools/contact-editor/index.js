@@ -7,14 +7,14 @@ import { createPopover } from './popover.js';
 import { createUploads } from './uploads.js';
 import { wireToolbar } from './toolbar.js';
 
-export function createContactEditor(root, { strings, toast }) {
+export function createContactEditor(root, { strings, toast, resolveImage = () => '' }) {
   const host = root.querySelector('[data-rich]');
   const textarea = root.querySelector('textarea');
   const tabs = [...root.querySelectorAll('[data-tab]')];
   const popover = createPopover(root.querySelector('.cf-textarea-wrap'), strings);
   let editor;
   let tools;
-  const uploads = createUploads({ getEditor: () => editor, strings, toast });
+  const uploads = createUploads({ getEditor: () => editor, strings, toast, fallbackImage: resolveImage });
 
   const sync = () => {
     // empty paragraphs come out as &nbsp; lines; drop them and collapse the blank runs they leave
@@ -88,7 +88,15 @@ export function createContactEditor(root, { strings, toast }) {
   root.dataset.mode = 'rich';
   return {
     busy: uploads.busy,
+    destroy: () => { popover.close(); editor.destroy(); },
     focus: () => (root.dataset.mode === 'rich' ? editor.commands.focus() : textarea.focus()),
+    // load saved Markdown (a restored draft) without treating it as a new edit
+    setMarkdown: (md) => {
+      setMode('rich');
+      editor.commands.setContent(md, { contentType: 'markdown', emitUpdate: false });
+      textarea.value = md;
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    },
     reset: () => { editor.commands.clearContent(); textarea.value = ''; setMode('rich'); },
     // read-only rendering of what will be sent (local image copies, same nodes as the editor)
     preview: (el) => renderMessage(el, textarea.value, { resolveImage: uploads.resolve, strings }),

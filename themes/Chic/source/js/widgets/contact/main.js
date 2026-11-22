@@ -4,6 +4,8 @@ import { check, showError, initCounter } from './fields.js';
 import { createToast } from './toast.js';
 import { createPreview } from './preview.js';
 import { createContactEditor } from './editor.bundle.js';
+import { initDraft } from './draft.js';
+import { initEmailFilter } from './emailfilter.js';
 
 const form = document.querySelector('[data-contact]');
 if (form) boot(form);
@@ -24,6 +26,9 @@ function boot(form) {
   const values = () => ({
     name: form.elements.name.value, email: form.elements.email.value, org: form.elements.org.value, topic: topic.value, body: textarea.value,
   });
+
+  initEmailFilter(form.elements.email);
+  const draft = initDraft({ form, topic, editor, values });
 
   // validate a field once it has been left; afterwards re-check while typing
   for (const name of ['name', 'email', 'body']) {
@@ -71,6 +76,7 @@ function boot(form) {
         editor.reset();
         touched.clear();
         recount();
+        draft.clear();
       } else {
         toast(S[result] || S.fail, 'warn');
       }
