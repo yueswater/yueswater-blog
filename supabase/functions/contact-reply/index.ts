@@ -1,16 +1,17 @@
 // Edge Function `contact-reply`: an admin answers a contact message from the admin inbox; the mail goes out
 // through Resend from contact@yueswater.com.
 //
-// The browser sends { message_id, body } and, for formulas, math: the PNGs it drew and stored (checked in mathInput.mjs). Recipient, sender and subject are never read from the
+// The browser sends { message_id, body } and, for formulas, math and quote_math: the PNGs it drew and stored (checked in mathInput.mjs and quoteMath.mjs). Recipient, sender and subject are never read from the
 // request: the address comes from the stored message, so this cannot be used to mail anybody else.
 //
-// Secret (supabase secrets set ...): RESEND_API_KEY. Optional: FROM_NAME (sender display name). SUPABASE_* are provided by Supabase.
+// Secret (supabase secrets set ...): RESEND_API_KEY. Optional: FROM_NAME (sender display name), NOTIFY_EMAIL (Bcc copy of every reply to the owner; ignored when invalid; never in a response or log). SUPABASE_* are provided by Supabase.
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 import { cors, json } from './cors.ts'
 import { requireAdmin } from './auth.ts'
-import { parseRequest, storedEmail } from './validate.mjs'
+import { parseRequest, storedEmail, notifyEmail } from './validate.mjs'
 import { compose } from './compose.mjs'
 import { imageNames } from './images.mjs'
+import { resolveQuoteMath } from './quoteMath.mjs'
 import { mathPaths } from './mathRender.mjs'
 import { sendMail } from './resend.ts'
 
@@ -41,6 +42,10 @@ Deno.serve(async (req) => {
   const to = storedEmail(msg.email)
   if (!to) return json({ error: 'invalid recipient' }, 422)
 
+  // the quote's formulas are checked against the stored message, not against anything the request says about it
+  const quote = resolveQuoteMath(parsed.quoteMath ?? [], msg.body, parsed.body)
+  if ('error' in quote) return json({ error: quote.error }, 400)
+
   const hourAgo = new Date(Date.now() - 3_600_000).toISOString()
   const { count } = await db.from('contact_replies').select('id', { count: 'exact', head: true }).eq('sent_by', admin.id).gt('ts', hourAgo)
   if ((count ?? 0) >= PER_HOUR) return json({ error: 'rate limited' }, 429)
@@ -52,7 +57,7 @@ Deno.serve(async (req) => {
   if (sameAsLast && Date.now() - new Date(prev.ts).getTime() < MIN_GAP_MS) return json({ ok: true, duplicate: true })
 
   // images are stored under bare file names in a private bucket; the mail gets signed links to them
-  const names = [...new Set([...imageNames(parsed.body), ...imageNames(msg.body), ...mathPaths(parsed.math)])]
+  const names = [...new Set([...imageNames(parsed.body), ...imageNames(msg.body), ...mathPaths(parsed.math), ...mathPaths(quote.quoteMath)])]
   const images: Record<string, string> = {}
   if (names.length) {
     const { data: signed } = await db.storage.from('contact-images').createSignedUrls(names, IMAGE_TTL)
@@ -60,7 +65,7 @@ Deno.serve(async (req) => {
   }
 
   const key = `contact-reply-${msg.id}-${await sha16(parsed.body)}`
-  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined, imageOrigin: Deno.env.get('SUPABASE_URL'), images, math: parsed.math }), key)
+  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined, imageOrigin: Deno.env.get('SUPABASE_URL'), images, math: parsed.math, quoteMath: quote.quoteMath, bcc: notifyEmail(Deno.env.get('NOTIFY_EMAIL')) }), key)
   if (!sent) return json({ error: 'send failed' }, 502)
 
   const { data: row, error } = await db.from('contact_replies')

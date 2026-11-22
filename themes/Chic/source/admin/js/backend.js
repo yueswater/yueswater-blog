@@ -1,6 +1,6 @@
 // The real backend: Supabase auth + the post_status table + the redeploy function.
 // The table's row-level security is what keeps everybody else out; this page only hides what you cannot use.
-const SEND_ERRORS = { 'rate limited': '寄出太頻繁，稍後再試', 'too fast': '請稍等幾秒再寄', 'too many formulas': '一封回信最多 20 個公式', 'formula too long': '單一公式最長 1000 個字元', 'bad math': '公式資料有誤，請重新寄出' }
+const SEND_ERRORS = { 'rate limited': '寄出太頻繁，稍後再試', 'too fast': '請稍等幾秒再寄', 'too many formulas': '回信與引用的訪客訊息合計最多 20 個公式', 'formula too long': '單一公式最長 1000 個字元', 'bad math': '公式資料有誤，請重新寄出', 'bad quote math': '公式資料有誤，請重新寄出' }
 
 export function createBackend({ supabaseUrl, anonKey }) {
   const sb = window.supabase.createClient(supabaseUrl, anonKey)
@@ -25,14 +25,14 @@ export function createBackend({ supabaseUrl, anonKey }) {
     // formula PNGs go to the same private bucket as the images (admins are allowed to insert there)
     uploadImage: async (name, blob) => fail(await sb.storage.from('contact-images').upload(name, blob, { contentType: 'image/png', upsert: false })),
     // the function reads the recipient from the stored message; only { message_id, body } and the formula list (math) are sent
-    sendReply: async (messageId, body, math) => {
+    sendReply: async (messageId, body, math, quoteMath) => {
       const { data: { session } } = await sb.auth.getSession()
       let res
       try {
         res = await fetch(`${supabaseUrl}/functions/v1/contact-reply`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${session?.access_token || ''}` },
-          body: JSON.stringify(math && math.length ? { message_id: messageId, body, math } : { message_id: messageId, body }),
+          body: JSON.stringify({ message_id: messageId, body, ...(math && math.length ? { math } : {}), ...(quoteMath && quoteMath.length ? { quote_math: quoteMath } : {}) }),
         })
       } catch { throw new Error('寄出失敗') }
       const out = await res.json().catch(() => ({}))

@@ -6,7 +6,7 @@ import { MAX_FORMULAS, MAX_LATEX, DISPLAY_WIDTH, scanMath, mathLimitError, mathK
 const PATH = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.png$/
 const inRange = (v, lo, hi) => typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi
 
-function entry(x) {
+export function entry(x) {
   if (!x || typeof x !== 'object' || Array.isArray(x)) return null
   const { display, tex, path, w, h, d } = x
   if (typeof display !== 'boolean' || typeof tex !== 'string' || !tex.trim() || tex.length > MAX_LATEX) return null

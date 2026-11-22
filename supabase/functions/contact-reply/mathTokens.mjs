@@ -24,28 +24,37 @@ export function maskMath(src) {
   const lines = clean(src).split('\n')
   const items = []
   const out = []
-  const add = (display, tex, raw) => { items.push({ display, tex: tex.trim(), raw }); return items.length - 1 }
+  // start and end: where the formula sits in the cleaned text (the quote cutter must not cut inside one)
+  const add = (display, tex, raw, start, end) => { items.push({ display, tex: tex.trim(), raw, start, end }); return items.length - 1 }
+  const starts = lines.reduce((a, l, k) => (a.push(k ? a[k - 1] + lines[k - 1].length + 1 : 0), a), [])
   let fenced = false
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
+    const at = starts[i]
     if (FENCE.test(line)) { fenced = !fenced; out.push(line); continue }
     if (fenced) { out.push(line); continue }
     const one = line.match(DISPLAY_ONE)
-    if (one && one[1].trim()) { out.push(`\u0002${add(true, one[1], line.trim())}\u0002`); continue }
+    if (one && one[1].trim()) { out.push(`\u0002${add(true, one[1], line.trim(), at, at + line.length)}\u0002`); continue }
     if (DISPLAY_OPEN.test(line)) {
       let j = i + 1
       while (j < lines.length && !DISPLAY_OPEN.test(lines[j]) && !/\$/.test(lines[j])) j++
       const body = lines.slice(i + 1, j).join('\n')
       if (j < lines.length && DISPLAY_OPEN.test(lines[j]) && body.trim()) {
-        out.push(`\u0002${add(true, body, `$$\n${body}\n$$`)}\u0002`)
+        out.push(`\u0002${add(true, body, `$$\n${body}\n$$`, at, starts[j] + lines[j].length)}\u0002`)
         i = j
         continue
       }
     }
-    const spans = []
-    const hidden = line.replace(CODE_SPAN, (m) => { spans.push(m); return `\u0003${spans.length - 1}\u0003` })
-    const masked = hidden.replace(INLINE, (m, tex) => `\u0001${add(false, tex, m)}\u0001`)
-    out.push(masked.replace(/\u0003(\d+)\u0003/g, (_, n) => spans[n]))
+    // code spans are blanked with same-length filler, so match positions still line up with the real line
+    const hidden = line.replace(CODE_SPAN, (m) => '\u0003'.repeat(m.length))
+    let res = ''
+    let last = 0
+    for (const m of hidden.matchAll(INLINE)) {
+      const end = m.index + m[0].length
+      res += `${line.slice(last, m.index)}\u0001${add(false, line.slice(m.index + 1, end - 1), line.slice(m.index, end), at + m.index, at + end)}\u0001`
+      last = end
+    }
+    out.push(res + line.slice(last))
   }
   return { text: out.join('\n'), items }
 }

@@ -8,6 +8,7 @@ import { mathResolver } from './mathRender.mjs'
 import { formatTime } from './date.mjs'
 import { layout } from './template.mjs'
 import { footerText } from './footer.mjs'
+import { quoteExcerpt } from './quote.mjs'
 
 export { escapeHtml }
 export const FROM_ADDRESS = 'contact@yueswater.com'
@@ -23,7 +24,6 @@ const TOPICS = {
   en: { collab: 'Collaboration', post: 'Question about a post', job: 'Job opportunity', other: 'Other' },
 }
 const LABELS = { 'zh-TW': { image: '[圖片]', wrote: (t) => `你在 ${t} 寫道：` }, en: { image: '[image]', wrote: (t) => `On ${t}, you wrote:` } }
-const QUOTE_MAX = 600
 
 const langOf = (m) => (m.lang === 'en' ? 'en' : 'zh-TW')
 
@@ -32,19 +32,17 @@ export function subjectFor(msg) {
   return oneLine(`Re: ${TOPICS[l][msg.topic] || TOPICS[l].other}`).slice(0, 120)
 }
 
-// the visitor's original text (still Markdown), cut short
-export function quoted(msg) {
-  const t = String(msg.body ?? '').replace(/\r\n?/g, '\n').trim()
-  return t.length > QUOTE_MAX ? `${t.slice(0, QUOTE_MAX)}…` : t
-}
+// the visitor's original text (still Markdown), cut short (quote.mjs)
+export const quoted = (msg) => quoteExcerpt(msg.body)
 
 // imageOrigin: the Supabase origin; images: { 'uuid.png': signed https URL } for the file names in the texts;
-// math: the checked formula PNGs (mathInput.mjs), shown only in the admin's own text, not in the quoted message
-export function compose({ to, msg, body, messageId, fromName, imageOrigin, images, math = [], now = new Date() }) {
+// math / quoteMath: the checked formula PNGs for the admin's text and for the quoted message (mathInput.mjs, quoteMath.mjs)
+export function compose({ to, msg, body, messageId, fromName, imageOrigin, images, math = [], quoteMath = [], bcc = null, now = new Date() }) {
   const l = langOf(msg)
   const lab = LABELS[l]
   const ctx = { imageUrl: imageResolver({ origin: imageOrigin, images }), imageLabel: lab.image }
   const bodyCtx = { ...ctx, mathHtml: mathResolver({ origin: imageOrigin, images, math }) }
+  const quoteCtx = { ...ctx, mathHtml: mathResolver({ origin: imageOrigin, images, math: quoteMath }) }
   const when = formatTime(msg.ts, l)
   const head = lab.wrote(when || (l === 'en' ? 'an earlier date' : '先前'))
   const q = quoted(msg)
@@ -52,11 +50,12 @@ export function compose({ to, msg, body, messageId, fromName, imageOrigin, image
   const text = `${markdownToText(body, lab.image)}\n\n${head}\n${markdownToText(q, lab.image).split('\n').map((x) => `> ${x}`).join('\n')}\n\n-- \n${footerText({ lang: l, siteName: displayName(fromName), now })}\n`
   const html = layout({
     lang: l, siteName: displayName(fromName), subject,
-    bodyHtml: renderMarkdown(body, bodyCtx), quoteHead: head, quoteHtml: renderMarkdown(q, ctx), now,
+    bodyHtml: renderMarkdown(body, bodyCtx), quoteHead: head, quoteHtml: renderMarkdown(q, quoteCtx), now,
   })
   return {
     from: fromHeader(fromName),
     to: [to],
+    ...(bcc ? { bcc: [bcc] } : {}),
     reply_to: REPLY_TO,
     subject,
     text,

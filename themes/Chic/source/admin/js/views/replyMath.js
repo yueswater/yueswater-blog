@@ -34,9 +34,29 @@ export function createMathCheck(warn) {
   }
 }
 
-// one sender per dialog: formulas already uploaded are reused when a send is retried
-export function createMathSender(backend) {
+export const loadMath = load
+export const fillText = fill
+
+// one store per dialog: a formula is drawn and uploaded once, then reused by the reply, the quote and any retry.
+// An unparsable formula throws an Error with bad = true; a failed upload throws a plain Error for the admin.
+export function createFormulaStore(backend) {
   const done = new Map()
+  return async (m, x) => {
+    const key = m.mathKey(x.display, x.tex)
+    if (!done.has(key)) {
+      let png
+      try { png = (await m.renderAll([x]))[0] } catch { throw Object.assign(new Error(S.math_bad + x.tex), { bad: true }) }
+      const path = `${crypto.randomUUID()}.png`
+      try { await backend.uploadImage(path, png.blob) } catch { throw new Error(S.math_fail) }
+      done.set(key, { display: x.display, tex: x.tex, path, w: png.w, h: png.h, d: png.d })
+    }
+    return done.get(key)
+  }
+}
+
+export const distinct = (m, items) => items.filter((v, i) => items.findIndex((y) => m.mathKey(y.display, y.tex) === m.mathKey(v.display, v.tex)) === i)
+
+export function createMathSender(store) {
   // -> the math array for the request, or undefined when the text has no formulas; throws an Error with a message for the admin
   return async function prepare(md) {
     if (!md.includes('$')) return undefined
@@ -46,17 +66,7 @@ export function createMathSender(backend) {
     const limit = m.mathLimitError(items)
     if (limit) throw new Error(limitMessage(m, limit))
     const out = []
-    for (const x of items.filter((v, i) => items.findIndex((y) => m.mathKey(y.display, y.tex) === m.mathKey(v.display, v.tex)) === i)) {
-      const key = m.mathKey(x.display, x.tex)
-      if (!done.has(key)) {
-        let png
-        try { png = (await m.renderAll([x]))[0] } catch { throw new Error(S.math_bad + x.tex) }
-        const path = `${crypto.randomUUID()}.png`
-        try { await backend.uploadImage(path, png.blob) } catch { throw new Error(S.math_fail) }
-        done.set(key, { display: x.display, tex: x.tex, path, w: png.w, h: png.h, d: png.d })
-      }
-      out.push(done.get(key))
-    }
+    for (const x of distinct(m, items)) out.push(await store(m, x))
     return out
   }
 }

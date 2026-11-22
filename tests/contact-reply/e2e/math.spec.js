@@ -10,7 +10,7 @@ const UUID_PNG = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\
 async function recordDemo(page) {
   await page.route(/\/admin\/js\/demo\.js/, async (route) => {
     const res = await route.fetch();
-    const src = (await res.text())
+    let src = (await res.text())
       .replace('sendReply: async (messageId, body) => {', 'sendReply: async (messageId, body, math) => { window.__sent = { messageId, body, math };')
       .replace('uploadImage: async () => {},', `uploadImage: async (name, blob) => {
         const bmp = await createImageBitmap(blob); const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
@@ -18,6 +18,8 @@ async function recordDemo(page) {
         for (let i = 0; i < px.length; i += 4) if (px[i + 3] > 200 && px[i] < 90) dark++;
         (window.__png ||= []).push({ name, type: blob.type, w: bmp.width, h: bmp.height, corner: px[3], dark });
       },`);
+    // the demo message quotes formulas too; they are covered in quote-math.spec.js, so here the quote is made formula-free
+    src = src.replace('$x_{ij}$', 'x_{ij}').replace('$x_{ji}$', 'x_{ji}').replace('\\n\\n$$\\n\\\\sum_{i=1}^n x_{ji}\\n$$', '');
     if (!src.includes('window.__sent') || !src.includes('window.__png')) throw new Error('demo.js changed; update tests/contact-reply/e2e/math.spec.js');
     return route.fulfill({ response: res, body: src, headers: { ...res.headers(), 'content-type': 'text/javascript' } });
   });
