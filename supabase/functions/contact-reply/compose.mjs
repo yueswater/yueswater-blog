@@ -6,6 +6,7 @@ import { renderMarkdown, markdownToText } from './markdown.mjs'
 import { imageResolver } from './images.mjs'
 import { formatTime } from './date.mjs'
 import { layout } from './template.mjs'
+import { footerText } from './footer.mjs'
 
 export { escapeHtml }
 export const FROM_ADDRESS = 'contact@yueswater.com'
@@ -37,7 +38,7 @@ export function quoted(msg) {
 }
 
 // imageOrigin: the Supabase origin; images: { 'uuid.png': signed https URL } for the file names in the texts
-export function compose({ to, msg, body, messageId, fromName, imageOrigin, images }) {
+export function compose({ to, msg, body, messageId, fromName, imageOrigin, images, now = new Date() }) {
   const l = langOf(msg)
   const lab = LABELS[l]
   const ctx = { imageUrl: imageResolver({ origin: imageOrigin, images }), imageLabel: lab.image }
@@ -45,10 +46,10 @@ export function compose({ to, msg, body, messageId, fromName, imageOrigin, image
   const head = lab.wrote(when || (l === 'en' ? 'an earlier date' : '先前'))
   const q = quoted(msg)
   const subject = subjectFor(msg)
-  const text = `${markdownToText(body, lab.image)}\n\n${head}\n${markdownToText(q, lab.image).split('\n').map((x) => `> ${x}`).join('\n')}\n`
+  const text = `${markdownToText(body, lab.image)}\n\n${head}\n${markdownToText(q, lab.image).split('\n').map((x) => `> ${x}`).join('\n')}\n\n-- \n${footerText({ lang: l, siteName: displayName(fromName), now })}\n`
   const html = layout({
     lang: l, siteName: displayName(fromName), subject,
-    bodyHtml: renderMarkdown(body, ctx), quoteHead: head, quoteHtml: renderMarkdown(q, ctx),
+    bodyHtml: renderMarkdown(body, ctx), quoteHead: head, quoteHtml: renderMarkdown(q, ctx), now,
   })
   return {
     from: fromHeader(fromName),

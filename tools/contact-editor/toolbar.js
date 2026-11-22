@@ -7,6 +7,10 @@ const ACTIVE = {
   italic: (e) => e.isActive('italic'),
   code: (e) => e.isActive('code'),
   link: (e) => e.isActive('link'),
+  strike: (e) => e.isActive('strike'),
+  h2: (e) => e.isActive('heading', { level: 2 }),
+  h3: (e) => e.isActive('heading', { level: 3 }),
+  quote: (e) => e.isActive('blockquote'),
   bullet: (e) => e.isActive('bulletList'),
   ordered: (e) => e.isActive('orderedList'),
   block: (e) => e.isActive('codeBlock'),
@@ -72,6 +76,13 @@ export function wireToolbar(root, { editor, popover, strings, uploads, picker })
     bold: () => editor.chain().focus().toggleBold().run(),
     italic: () => editor.chain().focus().toggleItalic().run(),
     code: () => editor.chain().focus().toggleCode().run(),
+    strike: () => editor.chain().focus().toggleStrike().run(),
+    h2: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+    h3: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+    quote: () => editor.chain().focus().toggleBlockquote().run(),
+    hr: () => editor.chain().focus().setHorizontalRule().run(),
+    undo: () => editor.chain().focus().undo().run(),
+    redo: () => editor.chain().focus().redo().run(),
     bullet: () => editor.chain().focus().toggleBulletList().run(),
     ordered: () => editor.chain().focus().toggleOrderedList().run(),
     block,
@@ -89,6 +100,8 @@ export function wireToolbar(root, { editor, popover, strings, uploads, picker })
   const refresh = () => buttons.forEach((b) => {
     const test = ACTIVE[b.dataset.action];
     if (test) b.setAttribute('aria-pressed', String(test(editor)));
+    if (b.dataset.action === 'undo') b.disabled = !editor.can().undo();
+    if (b.dataset.action === 'redo') b.disabled = !editor.can().redo();
   });
   editor.on('selectionUpdate', refresh);
   editor.on('transaction', refresh);

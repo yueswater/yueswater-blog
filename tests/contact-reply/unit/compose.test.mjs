@@ -27,7 +27,7 @@ test('no header value contains a line break', () => {
 test('html escapes the reply and the quoted original', () => {
   const evil = '</script><img src=x onerror=alert(1)> "q" \'s\' &'
   const m = compose({ to: 'v@example.com', msg: msg({ body: evil }), body: evil, messageId: 1 })
-  assert.doesNotMatch(m.html, /<script|<img|onerror=alert\(1\)>/)
+  assert.doesNotMatch(m.html.replace(/<img src="https:\/\/www\.yueswater\.com\/assets\/logo-mail\.png"[^>]*>/, ''), /<script|<img|onerror=alert\(1\)>/)
   assert.match(m.html, /&lt;\/script&gt;/)
   assert.match(m.html, /&quot;q&quot;/)
   assert.equal(escapeHtml('<&>"\''), '&lt;&amp;&gt;&quot;&#39;')

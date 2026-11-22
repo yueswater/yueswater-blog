@@ -7,7 +7,8 @@ import { createPopover } from './popover.js';
 import { createUploads } from './uploads.js';
 import { wireToolbar } from './toolbar.js';
 
-export function createContactEditor(root, { strings, toast, resolveImage = () => '' }) {
+// admin: richer toolbar commands and node set (see extensions.js); the visitor form leaves it off
+export function createContactEditor(root, { strings, toast, resolveImage = () => '', admin = false }) {
   const host = root.querySelector('[data-rich]');
   const textarea = root.querySelector('textarea');
   const tabs = [...root.querySelectorAll('[data-tab]')];
@@ -30,6 +31,7 @@ export function createContactEditor(root, { strings, toast, resolveImage = () =>
       resolveImage: uploads.resolve,
       onMath: (kind, node, pos) => tools.math(kind, node.attrs.latex, pos),
       placeholder: host.dataset.placeholder,
+      admin,
     }),
     editorProps: {
       attributes: { class: 'ce-doc md', 'aria-labelledby': 'cf-body-label', 'aria-describedby': 'cf-body-err cf-body-count cf-body-hint', role: 'textbox', 'aria-multiline': 'true' },

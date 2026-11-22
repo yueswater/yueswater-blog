@@ -13,10 +13,11 @@
 .cf-tabs { display: flex; }
 .cf-tab { padding: .4rem .9rem; font: inherit; font-size: .82rem; color: var(--muted); background: none; border: 1px solid transparent; border-bottom: 0; cursor: pointer; }
 .cf-tab[aria-selected=true] { color: var(--ink); font-weight: 700; background: var(--panel); border-color: var(--line); }
-.cf-tools { display: flex; align-items: center; gap: 2px; padding-bottom: 4px; }
+.cf-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; min-width: 0; max-width: 100%; padding-bottom: 4px; }
 .cf-tool { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: 0; color: var(--muted); background: none; border: 0; cursor: pointer; }
 .cf-tool svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cf-tool:hover, .cf-tool:focus-visible, .cf-tool[aria-pressed=true] { color: var(--accent); background: var(--accent-soft); outline: none; }
+.cf-tool:disabled { opacity: .35; cursor: default; background: none; color: var(--muted); }
 .cf-tool-sep { width: 1px; height: 1.1rem; margin: 0 .35rem; background: var(--line); }
 .cf-textarea-wrap { position: relative; }
 .cf-input { box-sizing: border-box; width: 100%; margin: 0; padding: .6rem .8rem; font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); }
@@ -27,6 +28,9 @@
 .rc-modal .ce-doc p { margin: 0 0 .8em; } .rc-modal .ce-doc ol, .rc-modal .ce-doc ul { padding-left: 1.5em; } .rc-modal .ce-doc li > p { margin: 0; }
 .rc-modal .ce-doc p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; height: 0; opacity: .4; pointer-events: none; }
 .rc-modal .ce-doc code { font-family: ui-monospace, monospace; font-size: .85em; padding: .1em .35em; background: #f0f2f5; }
+.rc-modal .ce-doc h2 { margin: 1em 0 .5em; font-size: 1.25rem; } .rc-modal .ce-doc h3 { margin: .9em 0 .4em; font-size: 1.08rem; }
+.rc-modal .ce-doc blockquote { margin: 0 0 .8em; padding: .1em 0 .1em .9em; color: var(--muted); border-left: 3px solid var(--line); }
+.rc-modal .ce-doc hr { margin: 1em 0; border: 0; border-top: 1px solid var(--line); }
 .rc-modal .ce-doc a { color: var(--accent); }
 .rc-modal .ce-doc .ce-img { display: block; max-width: 100%; max-height: 18rem; margin: .5em 0; border: 1px solid var(--line); cursor: zoom-in; }
 .rc-modal .ce-doc .ce-img.is-uploading { opacity: .45; filter: grayscale(1); cursor: progress; }
@@ -70,4 +74,4 @@
 .ce-crop-rect i[data-h=sw] { bottom: -7px; left: -7px; cursor: nesw-resize; } .ce-crop-rect i[data-h=se] { bottom: -7px; right: -7px; cursor: nwse-resize; }
 .ce-crop-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
 .ce-crop-ratios, .ce-crop-actions { display: flex; gap: .4rem; }
-@media (max-width: 640px) { .rc-overlay { padding: 0; } .rc-modal { height: 100%; border: 0; } }
+@media (max-width: 640px) { .cf-editor-bar { align-items: stretch; } .cf-tools { flex: 1 1 100%; } .rc-overlay { padding: 0; } .rc-modal { height: 100%; border: 0; } }

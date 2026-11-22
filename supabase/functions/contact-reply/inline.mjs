@@ -1,4 +1,4 @@
-// Inline Markdown to safe HTML: code spans, images, links, bold, italic. The input is escaped first, so
+// Inline Markdown to safe HTML: code spans, images, links, bold, italic, strikethrough. The input is escaped first, so
 // the only tags in the output are the ones written here. Link and image targets are re-validated.
 import { escapeHtml } from './escape.mjs'
 
@@ -32,6 +32,7 @@ export function renderInline(text, ctx) {
     return url ? keep(`<a href="${escapeHtml(url)}" rel="noopener noreferrer" target="_blank" style="${LINK_STYLE}">${label}</a>`) : label
   })
   s = s.replace(/\*\*(?=\S)(.+?)(?<=\S)\*\*/g, '<strong>$1</strong>')
+  s = s.replace(/~~(?=\S)(.+?)(?<=\S)~~/g, '<s>$1</s>')
   s = s.replace(/(?<![*\w])\*(?=[^\s*])(.+?)(?<=[^\s*])\*(?![*\w])/g, '<em>$1</em>')
   for (let i = 0; i < 3 && TOKEN.test(s); i++) s = s.replace(/\u0000(\d+)\u0000/g, (_, n) => stash[n])
   return s

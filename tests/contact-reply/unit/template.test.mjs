@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { layout, SITE_URL } from '../../../supabase/functions/contact-reply/template.mjs'
 import { formatTime } from '../../../supabase/functions/contact-reply/date.mjs'
+import { footerHtml, footerText, currentYear, LOGO_URL } from '../../../supabase/functions/contact-reply/footer.mjs'
 import { compose } from '../../../supabase/functions/contact-reply/compose.mjs'
 
 test('quote date is Taipei time in a readable format, never ISO', () => {
@@ -38,4 +39,30 @@ test('composed mail: sent time is readable, body and quote are rendered, text pa
   assert.match(m.text, /^回覆 粗體/)
   assert.match(m.text, /> 原文/)
   assert.equal(typeof m.text, 'string')
+})
+
+test('footer: logo with size and alt, quiet brand link, divider, dynamic Taipei year', () => {
+  const f = footerHtml({ lang: 'en', siteName: 'S<n>', font: 'x', now: new Date('2031-06-01T00:00:00Z') })
+  assert.match(f, new RegExp(`<img src="${LOGO_URL}" width="36" height="36" alt="S&lt;n&gt;"`))
+  assert.match(LOGO_URL, /^https:\/\/www\.yueswater\.com\/assets\/.+\.png$/)
+  assert.match(f, /text-decoration:none/)
+  assert.doesNotMatch(f, /text-decoration:underline/)
+  assert.match(f, /height:1px/)
+  assert.match(f, /© 2031 S&lt;n&gt; · All rights reserved\./)
+  assert.match(footerHtml({ lang: 'zh-TW', siteName: 'x', font: 'x', now: new Date() }), /版權所有/)
+})
+
+test('year follows Asia/Taipei at the new year boundary', () => {
+  assert.equal(currentYear(new Date('2026-12-31T15:59:59Z')), '2026')
+  assert.equal(currentYear(new Date('2026-12-31T16:00:00Z')), '2027')
+})
+
+test('plain text alternative carries the same footer', () => {
+  const now = new Date('2027-02-01T00:00:00Z')
+  const m = compose({ to: 'v@example.com', messageId: 1, fromName: 'Yue', msg: { ts: '2026-11-22T02:48:44Z', topic: 'post', lang: 'en', body: 'q' }, body: 'hi', now })
+  const t = footerText({ lang: 'en', siteName: 'Yue', now })
+  assert.ok(m.text.endsWith(`${t}\n`))
+  assert.match(m.text, /© 2027 Yue/)
+  assert.match(m.html, /© 2027 Yue/)
+  assert.doesNotMatch(m.html + m.text, /[「」]/)
 })

@@ -1,5 +1,6 @@
-// Block-level Markdown to safe HTML for the mail body: paragraphs, lists and fenced code, with the inline
-// rules from inline.mjs. Anything else (HTML, headings, tables, math) stays plain escaped text.
+// Block-level Markdown to safe HTML for the mail body: paragraphs, headings (# to ###), lists, blockquotes,
+// horizontal rules and fenced code, with the inline rules from inline.mjs. Anything else (HTML, tables, math)
+// stays plain escaped text. Every tag in the output is written here; all text is escaped first.
 import { escapeHtml } from './escape.mjs'
 import { renderInline } from './inline.mjs'
 
@@ -9,11 +10,20 @@ const LIST_STYLE = 'margin:0 0 14px;padding-left:22px'
 const FENCE = /^\s*```[\w+#.-]*\s*$/
 const BULLET = /^\s*[-*]\s+(.*)$/
 const ORDERED = /^\s*\d+[.)]\s+(.*)$/
+const HEADING = /^\s{0,3}(#{1,3})\s+(\S.*)$/
+const HR = /^\s{0,3}([-*_])(?:\s*\1){2,}\s*$/
+const QUOTE = /^\s{0,3}>\s?(.*)$/
+const MAX_QUOTE_DEPTH = 3
+const H_STYLE = { 1: 'margin:22px 0 10px;font-size:22px;line-height:1.35', 2: 'margin:20px 0 10px;font-size:19px;line-height:1.4', 3: 'margin:18px 0 8px;font-size:16px;line-height:1.4' }
+const HR_STYLE = 'margin:20px 0;border:0;border-top:1px solid #dfe2e6;height:1px;line-height:1px;font-size:1px'
+const QUOTE_STYLE = 'margin:0 0 14px;padding:2px 0 2px 14px;border-left:3px solid #c5d3f5;color:#555555'
+const startsBlock = (l) => FENCE.test(l) || BULLET.test(l) || ORDERED.test(l) || HEADING.test(l) || HR.test(l) || QUOTE.test(l)
 
 const norm = (s) => String(s ?? '').replace(/\r\n?/g, '\n').replace(/\u0000/g, '')
 
-export function renderMarkdown(src, ctx) {
-  const lines = norm(src).split('\n')
+export const renderMarkdown = (src, ctx) => renderLines(norm(src).split('\n'), ctx, 0)
+
+function renderLines(lines, ctx, depth) {
   const out = []
   let i = 0
   while (i < lines.length) {
@@ -26,6 +36,15 @@ export function renderMarkdown(src, ctx) {
       out.push(`<pre style="${PRE_STYLE}">${escapeHtml(code.join('\n'))}</pre>`)
       continue
     }
+    if (HR.test(line)) { out.push(`<hr style="${HR_STYLE}">`); i++; continue }
+    const h = line.match(HEADING)
+    if (h) { out.push(`<h${h[1].length} style="${H_STYLE[h[1].length]}">${renderInline(h[2], ctx)}</h${h[1].length}>`); i++; continue }
+    if (QUOTE.test(line) && depth < MAX_QUOTE_DEPTH) {
+      const inner = []
+      for (; i < lines.length && QUOTE.test(lines[i]); i++) inner.push(lines[i].match(QUOTE)[1])
+      out.push(`<blockquote style="${QUOTE_STYLE}">${renderLines(inner, ctx, depth + 1)}</blockquote>`)
+      continue
+    }
     const kind = BULLET.test(line) ? ['ul', BULLET] : ORDERED.test(line) ? ['ol', ORDERED] : null
     if (kind) {
       const items = []
@@ -33,8 +52,9 @@ export function renderMarkdown(src, ctx) {
       out.push(`<${kind[0]} style="${LIST_STYLE}">${items.join('')}</${kind[0]}>`)
       continue
     }
-    const para = []
-    for (; i < lines.length && lines[i].trim() && !FENCE.test(lines[i]) && !BULLET.test(lines[i]) && !ORDERED.test(lines[i]); i++) para.push(renderInline(lines[i], ctx))
+    // the first line is always taken (progress guaranteed); quotes past the depth limit stay plain text
+    const para = [renderInline(line, ctx)]
+    for (i++; i < lines.length && lines[i].trim() && !(startsBlock(lines[i]) && !(depth >= MAX_QUOTE_DEPTH && QUOTE.test(lines[i]) && !HR.test(lines[i]))); i++) para.push(renderInline(lines[i], ctx))
     out.push(`<p style="${P_STYLE}">${para.join('<br>')}</p>`)
   }
   return out.join('')
@@ -46,6 +66,8 @@ export function markdownToText(src, imageLabel) {
     .replace(/!\[[^\]\n]*\]\([^)\s]*\)/g, imageLabel)
     .replace(/\[([^\]\n]+)\]\((https?:\/\/[^)\s]+)\)/g, (_, t, u) => (t === u ? u : `${t} (${u})`))
     .replace(/^\s*```[\w+#.-]*\s*$/gm, '')
+    .replace(/^\s{0,3}#{1,3}\s+/gm, '')
+    .replace(/~~(?=\S)(.+?)(?<=\S)~~/g, '$1')
     .replace(/\*\*(?=\S)(.+?)(?<=\S)\*\*/g, '$1')
     .replace(/(?<![*\w])\*(?=[^\s*])(.+?)(?<=[^\s*])\*(?![*\w])/g, '$1')
     .replace(/`([^`\n]+)`/g, '$1')

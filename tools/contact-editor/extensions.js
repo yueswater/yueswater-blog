@@ -7,13 +7,15 @@ import { codeBlock } from './codeblock.js';
 import { contactImage } from './image.js';
 import { SafeLinks, isSafeHref } from './safe-links.js';
 
-export function buildExtensions({ strings, resolveImage, onMath, placeholder }) {
+// admin: also headings (H2, H3), blockquote, horizontal rule and strikethrough. Visitors and the read-only
+// renderer never get them, so untrusted content keeps the smaller node set.
+export function buildExtensions({ strings, resolveImage, onMath, placeholder, admin = false }) {
   return [
     StarterKit.configure({
-      heading: false,
-      blockquote: false,
-      horizontalRule: false,
-      strike: false,
+      heading: admin ? { levels: [2, 3] } : false,
+      blockquote: admin ? {} : false,
+      horizontalRule: admin ? {} : false,
+      strike: admin ? {} : false,
       underline: false,
       codeBlock: false,
       link: {
