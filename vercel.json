@@ -409,6 +409,26 @@
       "statusCode": 302
     },
     {
+      "source": "/projects/wargaming",
+      "destination": "/projects/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/wargaming/",
+      "destination": "/projects/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/wargaming-en",
+      "destination": "/projects-en/",
+      "statusCode": 302
+    },
+    {
+      "source": "/projects/wargaming-en/",
+      "destination": "/projects-en/",
+      "statusCode": 302
+    },
+    {
       "source": "/about.html",
       "destination": "/about/",
       "statusCode": 301
