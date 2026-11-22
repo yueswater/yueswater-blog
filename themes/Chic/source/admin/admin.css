@@ -134,3 +134,14 @@ dialog::backdrop { background: rgb(0 0 0 / .35); }
 .msg-text .hljs-string { color: #0b7a52; }
 .msg-text .hljs-number { color: #b4530a; }
 .msg-text .hljs-comment { color: #8a94a6; font-style: italic; }
+
+/* reply composer and sent replies under a message */
+.pill.replied { background: #e6f4ec; color: #0b7a52; }
+.msg-compose { margin: 0 0 12px; }
+.reply-input { display: block; width: 100%; box-sizing: border-box; margin: 6px 0 8px; padding: 8px 10px; border: 1px solid #cfd5df; font: inherit; line-height: 1.6; resize: vertical; }
+.msg-compose .msg-actions { align-items: center; }
+.msg-compose .msg-actions .muted { margin-left: auto; }
+.msg-thread { margin: 0 0 12px; }
+.msg-reply { margin: 0 0 8px; padding: 8px 12px; border-left: 3px solid #0b7a52; background: #f4faf6; }
+.msg-reply p { margin: 0 0 4px; }
+.msg-reply-text { white-space: pre-wrap; line-height: 1.7; overflow-wrap: anywhere; }

@@ -1,6 +1,9 @@
 // "留言": messages from the contact page, newest first. Click one to expand it; it is marked read
-// when opened, and can be marked unread again. Reply opens the mail client with the sender filled in.
+// when opened, and can be marked unread again. Reply opens an inline composer; the mail is sent by the
+// contact-reply function from the site's own address, and the sent replies show under the message.
 import { el, fmtTime } from '../dom.js'
+import { composer } from './reply.js'
+import { threadEl } from './thread.js'
 import { renderMessage } from '/js/widgets/contact/editor.bundle.js'
 
 // what a visitor typed, minus control, zero-width and bidi-override characters (no spoofed names)
@@ -16,6 +19,8 @@ export async function renderMessages(root, { backend, notify }) {
   root.replaceChildren(out)
   let rows = []
   const opened = new Set() // ids kept open across redraws
+  const composing = new Set() // ids with the reply composer open
+  const threads = new Map()   // message id -> replies sent
   const urls = new Map()   // image file name -> signed URL (valid for an hour)
 
   // the body as safe HTML; images get signed URLs, fetched the first time a message is opened
@@ -54,16 +59,42 @@ export async function renderMessages(root, { backend, notify }) {
     }
   }
 
+  // replies for a message, fetched the first time it is opened
+  async function loadThread(row) {
+    if (threads.has(row.id)) return
+    try {
+      const all = await backend.replies([row.id])
+      threads.set(row.id, all.filter((r) => r.message_id === row.id))
+      draw()
+    } catch { /* the thread is a convenience; the message itself still shows */ }
+  }
+
+  function replyArea(row) {
+    if (composing.has(row.id) && SAFE_EMAIL.test(row.email || '')) {
+      return composer({
+        backend, row,
+        onCancel: () => { composing.delete(row.id); draw() },
+        onSent: (reply) => {
+          threads.set(row.id, [...(threads.get(row.id) || []), reply])
+          row.replied_at = reply.ts
+          composing.delete(row.id)
+          notify('已寄出回覆')
+          draw()
+        },
+      })
+    }
+    return null
+  }
+
   function item(row) {
-    // only a plain address goes into mailto:, so a crafted one cannot add cc / bcc / body
-    const reply = SAFE_EMAIL.test(row.email || '')
-      ? `mailto:${row.email}?subject=${encodeURIComponent('Re: ' + (TOPICS[row.topic] || row.topic))}`
-      : null
+    const canReply = SAFE_EMAIL.test(row.email || '')
+    const sent = threads.get(row.id) || []
     return el('details', {
       class: `msg${row.read_at ? '' : ' unread'}`,
       open: opened.has(row.id),
       ontoggle: (e) => {
         if (e.target.open) opened.add(row.id); else opened.delete(row.id)
+        if (e.target.open) loadThread(row)
         if (e.target.open && !row.read_at) mark(row, true)
         else if (e.target.open) e.target.querySelector('.msg-text').replaceWith(bodyEl(row))
       },
@@ -71,14 +102,17 @@ export async function renderMessages(root, { backend, notify }) {
       el('summary', {},
         el('span', { class: 'msg-dot', 'aria-label': row.read_at ? '已讀' : '未讀' }),
         el('strong', {}, visible(row.name)),
+        row.replied_at ? el('span', { class: 'pill replied' }, '已回覆') : null,
         el('span', { class: 'pill' }, TOPICS[row.topic] || row.topic),
         el('span', { class: 'msg-preview muted' }, row.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '[圖]').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*`#>]|^\s*-\s+/gm, '').replace(/\s+/g, ' ').slice(0, 60)),
         el('span', { class: 'muted small num' }, fmtTime(row.ts))),
       el('div', { class: 'msg-body' },
         el('p', { class: 'muted small' }, [visible(row.email), visible(row.org), row.lang, row.ip && `IP ${row.ip}`].filter(Boolean).join(' · ')),
         bodyEl(row),
+        sent.length ? threadEl(sent) : null,
+        replyArea(row),
         el('div', { class: 'msg-actions' },
-          reply ? el('a', { class: 'btn small', href: reply }, '回信') : null,
+          canReply && !composing.has(row.id) ? el('button', { class: 'btn small', onclick: () => { composing.add(row.id); draw() } }, '回信') : null,
           row.read_at ? el('button', { class: 'btn small', onclick: () => mark(row, false) }, '標為未讀') : null)))
   }
 

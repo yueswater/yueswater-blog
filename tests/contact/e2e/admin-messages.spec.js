@@ -52,9 +52,12 @@ test.describe('admin messages', () => {
     await expect(admin.locator('.msg-body .muted.small').first()).toContainText('IP 203.0.113.7');
   });
 
-  test('reply opens a mailto with the topic as subject', async ({ admin }) => {
+  test('reply opens an inline composer instead of a mail client', async ({ admin }) => {
     await admin.locator('.msg summary').first().click();
-    await expect(admin.getByRole('link', { name: '回信' }).first()).toHaveAttribute('href', `mailto:visitor@example.com?subject=${encodeURIComponent('Re: 文章問題')}`);
+    await expect(admin.locator('a[href^="mailto:"]')).toHaveCount(0);
+    await admin.getByRole('button', { name: '回信' }).first().click();
+    await expect(admin.locator('.msg-compose textarea')).toBeFocused();
+    await expect(admin.locator('.msg-compose')).toContainText('visitor@example.com');
   });
 
   test('body renders bold, list, math, code and image', async ({ admin }) => {

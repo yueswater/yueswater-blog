@@ -1,14 +1,8 @@
-// Admin-side privacy and mail safety: the reply link, where the sender IP appears, sign-out and the
+// Admin-side privacy and mail safety: the reply control, where the sender IP appears, sign-out and the
 // demo backend's isolation, and a very long message.
 const { test, expect } = require('./support/fixtures');
 const { message, openInbox, expand } = require('./support/admin');
 const { MAILTO_INJECTION } = require('./support/payloads');
-
-// fields a mail client would act on, from a mailto: href
-function mailtoFields(href) {
-  const url = new URL(href);
-  return { to: decodeURIComponent(url.pathname), params: [...url.searchParams.keys()].sort() };
-}
 
 test.describe('admin privacy', () => {
   test('TC-SEC-ADM-001 the sender IP is shown in the admin only', async ({ page, contact, net }) => {
@@ -24,16 +18,13 @@ test.describe('admin privacy', () => {
     await expect(admin.locator('.msg-body .muted.small')).toContainText('IP 198.51.100.23');
   });
 
-  test('TC-SEC-ADM-003 reply link cannot be given extra recipients or a body', async ({ page, net }) => {
+  test('TC-SEC-ADM-003 a malformed address gets no reply control and no mailto link', async ({ page, net }) => {
     void net;
     await openInbox(page, [message({ email: MAILTO_INJECTION })]);
     await expand(page);
-    // a malformed address gets no reply link at all; a link, if shown, may carry only the subject
-    const link = page.getByRole('link', { name: '回信' });
-    if (await link.count() === 0) return;
-    const href = await link.getAttribute('href');
-    const { params } = mailtoFields(href);
-    expect(params, `reply href: ${href}`).toEqual(['subject']);
+    // replying is an in-page composer now; an address that fails the strict check offers neither it nor a mailto
+    await expect(page.getByRole('button', { name: '回信' })).toHaveCount(0);
+    await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
   });
 
   test('TC-SEC-ADM-005 after signing out the inbox is gone', async ({ page, net }) => {

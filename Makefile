@@ -2,6 +2,7 @@ HEXO := node_modules/.bin/hexo
 
 .PHONY: help install preview build clean new deploy reports reports-upload \
 	test test-core test-contact test-contact-unit test-contact-e2e \
+	test-reply test-reply-unit test-reply-e2e \
 	test-security test-security-e2e test-security-db supabase-up supabase-down
 
 help:
@@ -15,11 +16,14 @@ help:
 	@echo "  make new title=\"...\"      Create a new post scaffold"
 	@echo ""
 	@echo "Tests:"
-	@echo "  make test                 All tests: core + contact + security"
+	@echo "  make test                 All tests: core + contact + reply + security"
 	@echo "  make test-core            Site core unit tests (consent, traffic)"
 	@echo "  make test-contact         Contact unit + e2e tests"
 	@echo "  make test-contact-unit    Contact unit tests (node:test)"
 	@echo "  make test-contact-e2e     Contact e2e tests (Playwright, Supabase mocked)"
+	@echo "  make test-reply           Admin reply tests: unit + e2e (Resend never called)"
+	@echo "  make test-reply-unit      Reply function unit tests (node:test)"
+	@echo "  make test-reply-e2e       Reply composer e2e tests (Playwright, demo backend)"
 	@echo "  make test-security        Security tests: browser + server side"
 	@echo "  make test-security-e2e    Security browser tests (Playwright, Supabase mocked)"
 	@echo "  make test-security-db     Security server-side tests (local Supabase only; skips if it is down)"
@@ -52,7 +56,7 @@ reports:
 reports-upload:
 	node reports/tools/upload.mjs
 
-test: test-core test-contact test-security
+test: test-core test-contact test-reply test-security
 
 # Site core unit tests (tests/*.test.js: consent banner state, traffic helpers)
 test-core:
@@ -66,6 +70,15 @@ test-contact-unit:
 
 test-contact-e2e:
 	npm run -s test:contact:e2e
+
+# Admin reply from the inbox. Unit tests cover the Edge Function's pure modules; e2e uses the demo backend.
+test-reply: test-reply-unit test-reply-e2e
+
+test-reply-unit:
+	npm run -s test:reply:unit
+
+test-reply-e2e:
+	npm run -s test:reply:e2e
 
 # Security tests. The server-side part only ever targets a local Supabase (see tests/security/README.md).
 test-security: test-security-e2e test-security-db
