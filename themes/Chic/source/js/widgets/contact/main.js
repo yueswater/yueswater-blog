@@ -71,10 +71,13 @@ function boot(form) {
       const result = await send(v, form.elements.website.value);
       if (result === 'ok') {
         toast(S.ok, 'ok');
+        // forget touched first: emptying the editor fires an input event, which would otherwise
+        // re-validate the now-empty body and flag it as required
+        touched.clear();
         form.reset();
         topic.reset();
         editor.reset();
-        touched.clear();
+        for (const name of ['name', 'email', 'topic', 'body']) showError(form, name, '');
         recount();
         draft.clear();
       } else {

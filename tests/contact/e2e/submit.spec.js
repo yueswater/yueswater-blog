@@ -28,7 +28,8 @@ test.describe('submit', () => {
     await expect(contact.page.locator('.cf-select-value')).toHaveText('選擇主旨');
     await expect(contact.doc.locator('p.is-editor-empty')).toHaveCount(1);
     await expect(contact.counter).toHaveText('0');
-    await expect(contact.error('name')).toHaveText('');
+    for (const name of ['name', 'email', 'topic', 'body']) await expect(contact.error(name)).toHaveText('');
+    await expect(contact.page.locator('.is-invalid')).toHaveCount(0);
   });
 
   test('button is disabled and busy while sending', async ({ contact, page }) => {
