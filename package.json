@@ -19,7 +19,9 @@
     "test:security:db": "node --test --test-concurrency=1 --test-reporter=./tests/security/reporters/progress.mjs tests/security/db/",
     "test:security": "npm run -s test:security:e2e; e=$?; npm run -s test:security:db || e=1; exit $e",
     "test:reply:unit": "node --test tests/contact-reply/unit/",
-    "test:reply:e2e": "playwright test -c tests/contact-reply/playwright.config.js"
+    "test:reply:e2e": "playwright test -c tests/contact-reply/playwright.config.js",
+    "test:notify:unit": "node --test tests/contact-notify/unit/",
+    "test:notify:db": "node --test --test-concurrency=1 tests/security/db/notify-trigger.test.mjs"
   },
   "repository": {
     "type": "git",

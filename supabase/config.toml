@@ -394,3 +394,7 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # declarative_schema_path = "./declarative"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
+
+# contact-notify is called by the database (pg_net), not by browsers: it has no user JWT and checks a shared secret instead
+[functions.contact-notify]
+verify_jwt = false

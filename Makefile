@@ -3,6 +3,7 @@ HEXO := node_modules/.bin/hexo
 .PHONY: help install preview build clean new deploy reports reports-upload \
 	test test-core test-contact test-contact-unit test-contact-e2e \
 	test-reply test-reply-unit test-reply-e2e \
+	test-notify test-notify-unit \
 	test-security test-security-e2e test-security-db supabase-up supabase-down
 
 help:
@@ -16,7 +17,7 @@ help:
 	@echo "  make new title=\"...\"      Create a new post scaffold"
 	@echo ""
 	@echo "Tests:"
-	@echo "  make test                 All tests: core + contact + reply + security"
+	@echo "  make test                 All tests: core + contact + reply + notify + security"
 	@echo "  make test-core            Site core unit tests (consent, traffic)"
 	@echo "  make test-contact         Contact unit + e2e tests"
 	@echo "  make test-contact-unit    Contact unit tests (node:test)"
@@ -56,7 +57,7 @@ reports:
 reports-upload:
 	node reports/tools/upload.mjs
 
-test: test-core test-contact test-reply test-security
+test: test-core test-contact test-reply test-notify test-security
 
 # Site core unit tests (tests/*.test.js: consent banner state, traffic helpers)
 test-core:
@@ -79,6 +80,13 @@ test-reply-unit:
 
 test-reply-e2e:
 	npm run -s test:reply:e2e
+
+# New-message email to the owner. Unit tests cover the pure modules; the DB test needs local Supabase and skips without it.
+test-notify: test-notify-unit
+	npm run -s test:notify:db
+
+test-notify-unit:
+	npm run -s test:notify:unit
 
 # Security tests. The server-side part only ever targets a local Supabase (see tests/security/README.md).
 test-security: test-security-e2e test-security-db
