@@ -169,6 +169,7 @@ contact:
   tool_math_block: "Display math"
   math_empty: "Enter a LaTeX expression"
   lang_filter: "Search languages"
+  lang_auto: "Auto"
   remove: "Remove"
   update: "Update"
   crop_title: "Crop image"

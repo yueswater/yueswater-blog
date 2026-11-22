@@ -57,13 +57,24 @@ export function wireToolbar(root, { editor, popover, strings, uploads, picker })
     });
   };
 
+  // A code block goes on the current line only when that line is empty; with text already there it
+  // is added as a new block below, so the toolbar never swallows the paragraph the user just wrote.
+  const block = () => {
+    if (editor.isActive('codeBlock')) return editor.chain().focus().toggleCodeBlock().run();
+    const { $from, empty } = editor.state.selection;
+    const onEmptyParagraph = empty && $from.parent.type.name === 'paragraph' && $from.parent.content.size === 0;
+    if ($from.depth < 1 || onEmptyParagraph) return editor.chain().focus().toggleCodeBlock().run();
+    const at = $from.after(1); // just after the current top-level block
+    return editor.chain().focus().insertContentAt(at, { type: 'codeBlock' }).setTextSelection(at + 1).run();
+  };
+
   const RUN = {
     bold: () => editor.chain().focus().toggleBold().run(),
     italic: () => editor.chain().focus().toggleItalic().run(),
     code: () => editor.chain().focus().toggleCode().run(),
     bullet: () => editor.chain().focus().toggleBulletList().run(),
     ordered: () => editor.chain().focus().toggleOrderedList().run(),
-    block: () => editor.chain().focus().toggleCodeBlock().run(),
+    block,
     link,
     math: () => math('inline'),
     mathBlock: () => math('block'),

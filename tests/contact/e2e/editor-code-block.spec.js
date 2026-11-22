@@ -4,12 +4,32 @@ const { test, expect } = require('./support/fixtures');
 const PY = '```python\ndef f(x):\n    return x * 2\nprint(f(21))\n```';
 
 test.describe('editor code block', () => {
-  test('toolbar button makes a plain-text block', async ({ contact }) => {
+  test('toolbar button on an empty line makes an auto-detected block', async ({ contact }) => {
     await contact.doc.click();
     await contact.tool('block').click();
     await contact.page.keyboard.type('hello');
-    await expect(contact.page.locator('.ce-lang-btn')).toHaveText('Plain text');
-    expect(await contact.markdown()).toBe('```plaintext\nhello\n```');
+    await expect(contact.page.locator('.ce-lang-btn')).toHaveText('自動');
+    // no language picked: the fence stays plain so the source round-trips
+    expect(await contact.markdown()).toBe('```\nhello\n```');
+  });
+
+  test('an auto block highlights without picking a language', async ({ contact }) => {
+    await contact.doc.click();
+    await contact.tool('block').click();
+    await contact.page.keyboard.type('import numpy as np');
+    await expect(contact.page.locator('.ce-lang-btn')).toHaveText('自動');
+    await expect(contact.page.locator('.ce-code [class^="hljs-"]').first()).toBeVisible();
+  });
+
+  test('the code button keeps the line you already typed and adds the block below', async ({ contact }) => {
+    await contact.doc.click();
+    await contact.page.keyboard.type('some text I just wrote');
+    await contact.tool('block').click(); // no Enter first
+    await contact.page.keyboard.type('x = 1');
+    // the text stays its own paragraph; the code block is a separate node
+    await expect(contact.page.locator('.ce-doc > p').first()).toHaveText('some text I just wrote');
+    await expect(contact.page.locator('.ce-code')).toHaveCount(1);
+    expect(await contact.markdown()).toBe('some text I just wrote\n\n```\nx = 1\n```');
   });
 
   test('line numbers follow the line count', async ({ contact }) => {
@@ -56,8 +76,9 @@ test.describe('editor code block', () => {
   test('arrow keys move through the list; Escape closes', async ({ contact }) => {
     await contact.setMarkdown('```plaintext\nx\n```');
     await contact.page.locator('.ce-lang-btn').click();
+    // the list opens on Auto; one step down lands on the first real language
     await contact.page.keyboard.press('ArrowDown');
-    await expect(contact.page.locator('.ce-lang-list li.is-active')).toHaveText('Bash');
+    await expect(contact.page.locator('.ce-lang-list li.is-active')).toHaveText('Plain text');
     await contact.page.keyboard.press('Escape');
     await expect(contact.page.locator('.ce-lang-pop')).toHaveCount(0);
   });

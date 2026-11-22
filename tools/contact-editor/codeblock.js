@@ -17,12 +17,16 @@ function picker(current, strings, onPick) {
   // the list lives on <body> with fixed positioning, so the editor's scroll box never clips it
   wrap.append(btn);
   let active = 0;
-  let shown = LANGUAGES;
+  // an explicit Auto entry (value '' -> language null) so a block can be left to auto-detection
+  const AUTO = { value: '', label: strings.lang_auto || 'Auto' };
+  const ALL = [AUTO, ...LANGUAGES];
+  let shown = ALL;
 
-  const setLabel = (v) => { btn.textContent = labelFor(v); };
+  // no language (null / '') means auto-detect; show the Auto label rather than Plain text
+  const setLabel = (v) => { btn.textContent = v ? labelFor(v) : AUTO.label; };
   const draw = () => {
     const q = filter.value.trim().toLowerCase();
-    shown = LANGUAGES.filter((l) => !q || l.label.toLowerCase().includes(q) || l.value.includes(q));
+    shown = ALL.filter((l) => !q || l.label.toLowerCase().includes(q) || l.value.includes(q));
     active = Math.min(active, Math.max(0, shown.length - 1));
     list.replaceChildren(...shown.map((l, i) => {
       const li = Object.assign(document.createElement('li'), { textContent: l.label, className: i === active ? 'is-active' : '' });
@@ -101,13 +105,15 @@ export function codeBlock(strings) {
           if (c) dom.style.setProperty('--lang', c); else dom.style.removeProperty('--lang');
           dom.dataset.language = n.attrs.language || 'plaintext';
         };
+        const tagText = (v) => (v ? labelFor(v) : (strings.lang_auto || 'Auto'));
         const lang = editor.isEditable
           ? picker(node.attrs.language, strings, (language) => {
             const pos = getPos();
             if (typeof pos !== 'number') return;
-            editor.view.dispatch(editor.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, language }));
+            // '' from the Auto entry becomes null, so the block falls back to auto-detection
+            editor.view.dispatch(editor.state.tr.setNodeMarkup(pos, undefined, { ...node.attrs, language: language || null }));
           })
-          : { dom: Object.assign(document.createElement('span'), { className: 'ce-lang-tag', textContent: labelFor(node.attrs.language) }), setLabel(v) { this.dom.textContent = labelFor(v); } };
+          : { dom: Object.assign(document.createElement('span'), { className: 'ce-lang-tag', textContent: tagText(node.attrs.language) }), setLabel(v) { this.dom.textContent = tagText(v); } };
         dom.append(lang.dom, gutter, pre);
         paint(node);
         return {
@@ -125,5 +131,6 @@ export function codeBlock(strings) {
         };
       };
     },
-  }).configure({ lowlight, defaultLanguage: 'plaintext' });
+  // defaultLanguage null: a block whose language is unset is highlighted by lowlight's auto-detection
+  }).configure({ lowlight, defaultLanguage: null });
 }
