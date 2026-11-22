@@ -4,6 +4,7 @@ import { oneLine } from './validate.mjs'
 import { escapeHtml } from './escape.mjs'
 import { renderMarkdown, markdownToText } from './markdown.mjs'
 import { imageResolver } from './images.mjs'
+import { mathResolver } from './mathRender.mjs'
 import { formatTime } from './date.mjs'
 import { layout } from './template.mjs'
 import { footerText } from './footer.mjs'
@@ -37,11 +38,13 @@ export function quoted(msg) {
   return t.length > QUOTE_MAX ? `${t.slice(0, QUOTE_MAX)}…` : t
 }
 
-// imageOrigin: the Supabase origin; images: { 'uuid.png': signed https URL } for the file names in the texts
-export function compose({ to, msg, body, messageId, fromName, imageOrigin, images, now = new Date() }) {
+// imageOrigin: the Supabase origin; images: { 'uuid.png': signed https URL } for the file names in the texts;
+// math: the checked formula PNGs (mathInput.mjs), shown only in the admin's own text, not in the quoted message
+export function compose({ to, msg, body, messageId, fromName, imageOrigin, images, math = [], now = new Date() }) {
   const l = langOf(msg)
   const lab = LABELS[l]
   const ctx = { imageUrl: imageResolver({ origin: imageOrigin, images }), imageLabel: lab.image }
+  const bodyCtx = { ...ctx, mathHtml: mathResolver({ origin: imageOrigin, images, math }) }
   const when = formatTime(msg.ts, l)
   const head = lab.wrote(when || (l === 'en' ? 'an earlier date' : '先前'))
   const q = quoted(msg)
@@ -49,7 +52,7 @@ export function compose({ to, msg, body, messageId, fromName, imageOrigin, image
   const text = `${markdownToText(body, lab.image)}\n\n${head}\n${markdownToText(q, lab.image).split('\n').map((x) => `> ${x}`).join('\n')}\n\n-- \n${footerText({ lang: l, siteName: displayName(fromName), now })}\n`
   const html = layout({
     lang: l, siteName: displayName(fromName), subject,
-    bodyHtml: renderMarkdown(body, ctx), quoteHead: head, quoteHtml: renderMarkdown(q, ctx), now,
+    bodyHtml: renderMarkdown(body, bodyCtx), quoteHead: head, quoteHtml: renderMarkdown(q, ctx), now,
   })
   return {
     from: fromHeader(fromName),

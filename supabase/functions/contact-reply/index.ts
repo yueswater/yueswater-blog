@@ -1,7 +1,7 @@
 // Edge Function `contact-reply`: an admin answers a contact message from the admin inbox; the mail goes out
 // through Resend from contact@yueswater.com.
 //
-// The browser sends only { message_id, body }. Recipient, sender and subject are never read from the
+// The browser sends { message_id, body } and, for formulas, math: the PNGs it drew and stored (checked in mathInput.mjs). Recipient, sender and subject are never read from the
 // request: the address comes from the stored message, so this cannot be used to mail anybody else.
 //
 // Secret (supabase secrets set ...): RESEND_API_KEY. Optional: FROM_NAME (sender display name). SUPABASE_* are provided by Supabase.
@@ -11,6 +11,7 @@ import { requireAdmin } from './auth.ts'
 import { parseRequest, storedEmail } from './validate.mjs'
 import { compose } from './compose.mjs'
 import { imageNames } from './images.mjs'
+import { mathPaths } from './mathRender.mjs'
 import { sendMail } from './resend.ts'
 
 const PER_HOUR = 20
@@ -51,7 +52,7 @@ Deno.serve(async (req) => {
   if (sameAsLast && Date.now() - new Date(prev.ts).getTime() < MIN_GAP_MS) return json({ ok: true, duplicate: true })
 
   // images are stored under bare file names in a private bucket; the mail gets signed links to them
-  const names = [...new Set([...imageNames(parsed.body), ...imageNames(msg.body)])]
+  const names = [...new Set([...imageNames(parsed.body), ...imageNames(msg.body), ...mathPaths(parsed.math)])]
   const images: Record<string, string> = {}
   if (names.length) {
     const { data: signed } = await db.storage.from('contact-images').createSignedUrls(names, IMAGE_TTL)
@@ -59,7 +60,7 @@ Deno.serve(async (req) => {
   }
 
   const key = `contact-reply-${msg.id}-${await sha16(parsed.body)}`
-  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined, imageOrigin: Deno.env.get('SUPABASE_URL'), images }), key)
+  const sent = await sendMail(compose({ to, msg, body: parsed.body, messageId: msg.id, fromName: Deno.env.get('FROM_NAME') ?? undefined, imageOrigin: Deno.env.get('SUPABASE_URL'), images, math: parsed.math }), key)
   if (!sent) return json({ error: 'send failed' }, 502)
 
   const { data: row, error } = await db.from('contact_replies')

@@ -6,6 +6,8 @@ const ZH = {
   tool_link: '連結', tool_code: '行內程式碼', tool_block: '程式碼區塊', tool_image: '圖片',
   link_bad: '請輸入有效的 http 或 https 網址', link_url: '網址', link_text: '連結文字', add: '加入', cancel: '取消', remove: '移除', update: '更新',
   tool_math: '行內公式', tool_math_block: '公式區塊', math_empty: '請輸入 LaTeX',
+  math_wide: '有 {n} 個公式比信件的 560 px 寬，寄出時會等比例縮小，字會變小。建議拆成多行。',
+  math_many: '一封回信最多 {n} 個公式', math_long: '單一公式最長 {n} 個字元', math_bad: '公式無法解析：', math_fail: '公式圖片上傳失敗，請再試一次',
   lang_filter: '搜尋語言', lang_auto: '自動偵測',
   img_fail: '圖片上傳失敗', img_max: '最多 3 張圖片', img_wait: '圖片上傳中，請稍候', img_type: '只接受 JPG 或 PNG', img_size: '圖片不可超過 5 MB',
   crop_title: '裁切圖片', crop_free: '自由', crop_skip: '不裁切', crop_ok: '套用',
@@ -18,6 +20,9 @@ const EN = {
   tool_link: 'Link', tool_code: 'Inline code', tool_block: 'Code block', tool_image: 'Image', bar_label: 'Formatting',
   placeholder: 'Write a reply. The visitor receives it from contact@yueswater.com', source_label: 'Reply (Markdown)',
   link_bad: 'Enter a valid http or https URL', link_url: 'URL', link_text: 'Link text', add: 'Add', cancel: 'Cancel', remove: 'Remove', update: 'Update',
+  tool_math: 'Inline math', tool_math_block: 'Display math', math_empty: 'Enter LaTeX',
+  math_wide: '{n} formula(s) are wider than the 560 px of the mail and will be scaled down, so the text gets smaller. Consider splitting them over several lines.',
+  math_many: 'At most {n} formulas per reply', math_long: 'A formula can have at most {n} characters', math_bad: 'Cannot parse formula: ', math_fail: 'Formula image upload failed, please try again',
   lang_filter: 'Search languages', lang_auto: 'Auto-detect',
   img_fail: 'Image upload failed', img_max: 'At most 3 images', img_wait: 'Uploading image, please wait', img_type: 'JPG or PNG only', img_size: 'Image must be under 5 MB',
   crop_title: 'Crop image', crop_free: 'Free', crop_skip: 'Skip', crop_ok: 'Apply',
@@ -39,6 +44,8 @@ const I = {
   undo: '<path d="M9 7L4.5 11.5 9 16M5 11.5h9a5 5 0 0 1 0 10h-2" transform="translate(0 -3)"/>',
   redo: '<path d="M15 7l4.5 4.5L15 16M19 11.5h-9a5 5 0 0 0 0 10h2" transform="translate(0 -3)"/>',
   image: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8 8.5"/>',
+  math: '<path d="M11 6H4l4 6-4 6h7M14 10l6 7M20 10l-6 7"/>',
+  mathBlock: '<rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M11.5 8.5h-5l3 3.5-3 3.5h5M13.5 10.5l4 4M17.5 10.5l-4 4"/>',
 }
 
 // [action, label key]; null = separator between groups
@@ -49,6 +56,8 @@ export const TOOLS = [
   ['bullet', 'tool_bullet'], ['ordered', 'tool_ordered'], ['quote', 'tool_quote'], ['hr', 'tool_hr'], null,
   ['block', 'tool_block'], ['image', 'tool_image'],
 ]
+// the extra buttons of the reply editor's math option (inline and display formulas, sent as PNG)
+export const MATH_TOOLS = [null, ['math', 'tool_math'], ['mathBlock', 'tool_math_block']]
 // keyboard shortcuts shown in the tooltips ('Mod' is Cmd on a Mac, Ctrl elsewhere); hr has none
 export const SHORTCUTS = {
   undo: 'Mod+Z', redo: 'Mod+Shift+Z', h2: 'Mod+Alt+2', h3: 'Mod+Alt+3', bold: 'Mod+B', italic: 'Mod+I', strike: 'Mod+Shift+S',

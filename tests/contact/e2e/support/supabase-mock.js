@@ -22,7 +22,7 @@ async function mockSupabase(page) {
 
   await page.route(/\/storage\/v1\/object\//, async (route) => {
     const req = route.request();
-    uploads.push({ name: req.url().split('/').pop(), type: req.headers()['content-type'], method: req.method() });
+    uploads.push({ name: req.url().split('/').pop(), type: req.headers()['content-type'], method: req.method(), body: req.postDataBuffer() });
     if (state.uploadDelay) await new Promise((r) => setTimeout(r, state.uploadDelay));
     return route.fulfill({ status: state.upload.status, contentType: 'application/json', body: '{}' });
   });

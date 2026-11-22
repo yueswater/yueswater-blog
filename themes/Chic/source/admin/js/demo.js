@@ -29,6 +29,7 @@ export function createDemo(signedIn) {
     messages: async () => inbox,
     imageUrls: async (names) => Object.fromEntries(names.map((n) => [n, '/assets/favicon-192.png'])),
     markMessage: async (id, read) => { const m = inbox.find((x) => x.id === id); if (m) m.read_at = read ? new Date().toISOString() : null },
+    uploadImage: async () => {}, // nothing leaves the browser in demo mode
     sendReply: async (messageId, body) => {
       await new Promise((r) => setTimeout(r, 400))
       const m = inbox.find((x) => x.id === messageId)

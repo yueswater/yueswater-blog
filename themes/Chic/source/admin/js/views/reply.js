@@ -4,6 +4,7 @@ import { el } from '../dom.js'
 import { createAutosave } from '/js/widgets/contact/autosave.js'
 import { createReplyEditor } from './replyEditor.js'
 import { replyShell } from './replyShell.js'
+import { createMathCheck, createMathSender } from './replyMath.js'
 
 export const MAX_REPLY = 5000
 const imageNames = (md) => [...String(md || '').matchAll(/!\[[^\]\n]*\]\(([\w-]+\.(?:png|jpe?g))\)/g)].map((m) => m[1])
@@ -11,7 +12,7 @@ const hhmm = () => new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', min
 
 export async function openReply({ backend, row, notify, onSent }) {
   const urls = new Map()
-  const { root, editor, textarea } = createReplyEditor({ toast: notify, resolveImage: (n) => urls.get(n) || '' })
+  const { root, editor, textarea } = createReplyEditor({ toast: notify, resolveImage: (n) => urls.get(n) || '', math: true })
   const shell = replyShell({ row, body: root, onSend: () => submit(), onClose: () => close() })
   const draft = createAutosave({
     key: `reply-draft-${row.id}`,
@@ -19,15 +20,18 @@ export async function openReply({ backend, row, notify, onSent }) {
     isEmpty: (v) => !String(v.body).trim(),
     onSaved: () => shell.status(`已自動儲存 ${hhmm()}`),
   })
+  const mathCheck = createMathCheck((t) => shell.warn(t))
+  const mathSender = createMathSender(backend)
   let busy = false
 
   const sync = () => {
     const n = textarea.value.length
     shell.count(n, MAX_REPLY)
+    mathCheck.update(textarea.value)
     shell.canSend(!busy && textarea.value.trim() !== '' && n <= MAX_REPLY)
   }
   function close() {
-    draft.flush(); draft.stop()
+    draft.flush(); draft.stop(); mathCheck.stop()
     editor.destroy()
     shell.remove()
   }
@@ -37,8 +41,9 @@ export async function openReply({ backend, row, notify, onSent }) {
     busy = true; sync(); shell.sending(true); shell.error('')
     const body = textarea.value
     try {
-      const out = await backend.sendReply(row.id, body)
-      draft.clear(); draft.stop()
+      const math = await mathSender(body)
+      const out = await backend.sendReply(row.id, body, math)
+      draft.clear(); draft.stop(); mathCheck.stop()
       editor.destroy(); shell.remove()
       onSent(out.reply || { id: Date.now(), ts: new Date().toISOString(), body: body.trim() })
     } catch (e) {

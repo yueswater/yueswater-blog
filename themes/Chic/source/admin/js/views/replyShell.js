@@ -10,13 +10,14 @@ export function replyShell({ row, body, onSend, onClose }) {
   const status = el('span', { class: 'muted small rc-status', role: 'status', 'aria-live': 'polite' })
   const count = el('span', { class: 'muted small num' })
   const error = el('p', { class: 'form-error', hidden: true, role: 'alert' })
+  const warn = el('p', { class: 'form-warn', hidden: true, role: 'status' })
   const send = el('button', { class: 'btn primary', type: 'button', disabled: true, onclick: () => onSend() }, '寄出')
   const closeBtn = el('button', { class: 'btn link rc-x', type: 'button', 'aria-label': '關閉', onclick: () => onClose() }, '×')
   const modal = el('div', { class: 'rc-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'rc-title' },
     el('div', { class: 'rc-head' },
       el('div', {}, el('h2', { id: 'rc-title' }, `回信給 ${clean(row.name)}`), el('p', { class: 'muted small' }, `寄給 ${clean(row.email)}，訪客會從 contact@yueswater.com 收到`)),
       closeBtn),
-    el('div', { class: 'rc-body' }, body, error),
+    el('div', { class: 'rc-body' }, body, warn, error),
     el('div', { class: 'rc-foot' }, status, count, el('button', { class: 'btn', type: 'button', onclick: () => onClose() }, '取消'), send))
   const overlay = el('div', { class: 'rc-overlay' }, modal)
 
@@ -40,5 +41,6 @@ export function replyShell({ row, body, onSend, onClose }) {
     canSend: (on) => { send.disabled = !on },
     sending: (on) => { send.textContent = on ? '寄出中…' : '寄出' },
     error: (t) => { error.textContent = t; error.hidden = !t },
+    warn: (t) => { warn.textContent = t; warn.hidden = !t },
   }
 }

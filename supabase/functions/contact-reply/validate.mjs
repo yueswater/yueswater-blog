@@ -1,4 +1,6 @@
 // Pure input checks for contact-reply. No Deno or Node APIs, so node:test can import it.
+import { parseMath } from './mathInput.mjs'
+
 export const MAX_BODY = 5000
 export const STRICT_EMAIL = /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/
 // control, zero-width and bidi-override characters (U+200D stays: emoji sequences need it)
@@ -9,7 +11,7 @@ export const cleanBody = (v) => String(v ?? '').replace(/\r\n?/g, '\n').replace(
 // header values must be one line: CR and LF would start a new header
 export const oneLine = (v) => String(v ?? '').replace(/[\r\n\u2028\u2029]+/g, ' ').replace(INVISIBLE, '').trim()
 
-// the request body from the browser: exactly { message_id, body }, nothing else is read
+// the request body from the browser: { message_id, body } and, when the text has formulas, math (mathInput.mjs); nothing else is read
 export function parseRequest(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return { error: 'bad request' }
   const id = input.message_id
@@ -18,7 +20,9 @@ export function parseRequest(input) {
   const body = cleanBody(input.body)
   if (!body) return { error: 'empty body' }
   if (body.length > MAX_BODY) return { error: 'body too long' }
-  return { id, body }
+  const m = parseMath(input.math, body)
+  if ('error' in m) return { error: m.error }
+  return m.math.length ? { id, body, math: m.math } : { id, body }
 }
 
 // the recipient comes only from the stored message; re-checked here in case a bad row got in

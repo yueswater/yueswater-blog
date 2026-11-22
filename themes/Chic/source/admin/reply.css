@@ -75,3 +75,4 @@
 .ce-crop-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
 .ce-crop-ratios, .ce-crop-actions { display: flex; gap: .4rem; }
 @media (max-width: 640px) { .cf-editor-bar { align-items: stretch; } .cf-tools { flex: 1 1 100%; } .rc-overlay { padding: 0; } .rc-modal { height: 100%; border: 0; } }
+.form-warn { margin: 0; padding: .5em .7em; color: var(--warn); background: var(--warn-soft); border: 1px solid var(--warn); font-size: .9rem; }
