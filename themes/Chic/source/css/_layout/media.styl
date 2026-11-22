@@ -176,13 +176,24 @@
     display: none !important
   
   .footer
+    // phone: copyright and licence share a row (wrapping if they do not fit), the credits and the
+    // cookie button each get their own quieter row
     .copyright
+      display: flex
+      flex-wrap: wrap
+      align-items: center
+      gap: 0.5rem 1.25rem
+      margin-top: 2rem
+      font-size: 13px
       .footer-sep
         display: none
-      .footer-license
-        display: block
       .powered-by
-        display: block
+        flex-basis: 100%
+        opacity: 0.8
+      .footer-consent-wrap
+        flex-basis: 100%
+      .footer-consent
+        padding: 0
 
   .post-warp
     padding-top: 6em
