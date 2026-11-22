@@ -92,8 +92,8 @@ links:
 # footer columns: browse (from nav) and general links. A general link is {zh, en, url}
 # for a site page (English gets the -en twin) or {zh, en, href, href_en} for an outside URL.
 footer:
-  tagline: 商科背景的軟體開發者
-  tagline_en: Software developer with a business background
+  tagline: 社科背景的軟體開發者
+  tagline_en: Software developer with a social science background
   general:
     - { zh: 關於, en: About, url: /about }
     - { zh: 聯絡我, en: Contact, url: /contact }

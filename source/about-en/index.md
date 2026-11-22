@@ -7,7 +7,7 @@ footer: false
 about:
   name: Pin-Yue, Sung
   nick: Anthony
-  tag: Software developer with a business background
+  tag: Software developer with a social science background
   facts:
     - { k: SCHOOL, v: "NTU PS・NCCU IB" }
     - { k: WORK, v: GoMore · Software QA }
@@ -15,7 +15,7 @@ about:
 
 ## About me
 
-I'm Pin-Yue Sung (Anthony), a student at the [Graduate Institute of International Business, National Chengchi University](https://www.nccu.edu.tw/). I have a business background and work in software development. I currently work on software quality assurance at GoMore. What my studies and my job share is a focus on verifiability: whether it is a model's derivation, a program's behavior, or a conclusion drawn from data, I want the result to be reproducible and open to checking.
+I'm Pin-Yue Sung (Anthony), a student at the [Graduate Institute of International Business, National Chengchi University](https://www.nccu.edu.tw/). I have a social science background and work in software development. I currently work on software quality assurance at GoMore. What my studies and my job share is a focus on verifiability: whether it is a model's derivation, a program's behavior, or a conclusion drawn from data, I want the result to be reproducible and open to checking.
 
 ## Technical scope
 
